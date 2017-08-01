@@ -7,7 +7,7 @@ let db = level('./.data');
 let tmp = {};
 
 export default{
-
+    
     put(key, val){
         tmp[key] = val;
         return new Promise(function (resolve, reject) {

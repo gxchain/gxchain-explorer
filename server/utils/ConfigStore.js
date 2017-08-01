@@ -3,6 +3,9 @@ import fs from 'fs'
 import path from 'path'
 
 export default{
+    /**
+     * 读取config.json的内容
+     */
     init() {
         let self = this;
         return new Promise((resolve, reject)=> {

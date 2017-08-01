@@ -3,12 +3,15 @@ import LevelDBService from '../services/LevelDBService'
 import GXChainService from '../services/GXChainService'
 import {ChainStore, ops, hash} from 'gxbjs'
 
-let current_block_height = 0;
-let max_block_height = 0;
-let syncing = false;
-let sync_block_length = 1000;
+let current_block_height = 0; //当前已同步区块高度
+let max_block_height = 0;  //最新不可逆区块高度
+let syncing = false;  //是否同步中
+let sync_block_length = 1000;  //并行同步区块数量
 
 export default{
+    /**
+     * 初始化 - 获取上一次已同步的区块高度
+     */
     init(){
         return new Promise((resolve, reject)=> {
             if (current_block_height != 0) {
@@ -26,6 +29,10 @@ export default{
         });
     },
 
+    /**
+     * 从当前已同步区块同步到指定区块
+     * @param block_height 区块高度
+     */
     sync_to_block(block_height){
         let self = this;
         if (syncing) {
@@ -61,6 +68,12 @@ export default{
         }
     },
 
+    /**
+     * 批量同步区块
+     * @param start 开始区块
+     * @param length 后续区块数量
+     * @returns {*}
+     */
     batch_sync_block(start, length){
         let promises = [];
         for (var i = 0; i < length; ++i) {
@@ -69,6 +82,9 @@ export default{
         return Promise.all(promises);
     },
 
+    /**
+     * 在服务关闭的时候保存当前已同步的区块高度
+     */
     store(){
         return new Promise((resolve, reject)=> {
             LevelDBService.put('synced_block_height', current_block_height).then((block_height)=> {

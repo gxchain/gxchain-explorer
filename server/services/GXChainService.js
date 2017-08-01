@@ -1,6 +1,5 @@
 import Promise from 'bluebird'
 import {Apis} from 'gxbjs-ws'
-import async from 'async'
 import {ChainStore, PrivateKey, TransactionBuilder, TransactionHelper, hash, FetchChain, key, Aes} from 'gxbjs'
 
 /**
