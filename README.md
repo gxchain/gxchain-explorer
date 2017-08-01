@@ -43,6 +43,32 @@ npm install
 npm start
 ```
 
+## API说明
+
+### 1. 根据区块高度获取区块信息
+
+```
+/api/block/:block_height
+```
+
+### 2. 根据tx_id获取交易信息
+
+```
+/api/transaction/:tx_id
+```
+
+### 3. 根据账户id或账户名获取账户信息
+
+```
+/api/account/:name_or_id
+```
+
+### 4. 根据账户id或账户名获取账户余额
+
+```
+/api/account_balance/:name_or_id
+```
+
 ## 常见问题
 
 ### 1. 提示GC
