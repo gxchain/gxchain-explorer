@@ -49,7 +49,7 @@ const fetch_account_balance = function (account_name) {
  */
 const fetch_block = function (block_height) {
     return new Promise(function (resolve, reject) {
-        return Apis.instance().db_api().exec('get_block', [block_height]).then(function (block) {
+        return Apis.instance().db_api().exec('get_block', [parseInt(block_height)]).then(function (block) {
             if (!block) {
                 resolve(null);
             }

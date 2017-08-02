@@ -8,7 +8,6 @@
           <h4 class="modal-title">关于公信宝区块链浏览器</h4>
         </div>
         <div class="modal-body">
-
           <table class="table table-bordered table-striped">
             <tbody>
             <tr>

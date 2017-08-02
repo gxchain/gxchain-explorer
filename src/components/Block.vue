@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4 class="page-header">区块信息</h4>
+    <h4 class="page-header">区块信息<small class="pull-right"><a v-if="block&&block.block_id" target="_blank" :href="'https://wallet.gxb.io/#/block/'+keywords">更多</a></small></h4>
     <pre v-if="block&&block.block_id">{{JSON.stringify(block, null, '\t')}}</pre>
     <p v-else class="null-tip">未查到区块信息</p>
   </div>

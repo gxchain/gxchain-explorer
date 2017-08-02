@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h4 class="page-header">交易信息</h4>
-    <pre v-if="transaction&&transaction.id">{{JSON.stringify(transaction, null, '\t')}}</pre>
+    <pre v-if="transaction&&transaction.current_block_number">{{JSON.stringify(transaction, null, '\t')}}</pre>
     <p v-else class="null-tip">{{transaction.error || '未查到交易信息'}}</p>
   </div>
 </template>
