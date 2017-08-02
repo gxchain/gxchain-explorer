@@ -18,7 +18,7 @@ router.get('/block/:block_height', function (req, res) {
  * 交易记录查询
  */
 router.get('/transaction/:tx_id', function (req, res) {
-    LevelDBService.get(req.params.tx_id).then((transaction)=> {
+    LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction)=> {
         res.send(JSON.parse(transaction));
     }).catch(ex=> {
         res.send({});

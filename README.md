@@ -43,6 +43,18 @@ npm install
 npm start
 ```
 
+## 生产环境启动
+
+```
+NODE_ENV=production node server-dist/index.js
+```
+
+或者使用pm2启动
+
+```
+NODE_ENV=production pm2 start server-dist/index.js --name gxb-explorer
+```
+
 ## API说明
 
 ### 1. 根据区块高度获取区块信息

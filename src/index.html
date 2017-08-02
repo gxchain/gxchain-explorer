@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>公信宝区块链浏览器</title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <style>
+    html {
+      position: relative;
+    }
+
+    body,html {
+      min-height: 100%;
+    }
+
+    .null-tip{
+      color:#888;
+    }
+    /* This is a compiled file, you should be editing the file in the templates directory */
+    .pace {
+      -webkit-pointer-events: none;
+      pointer-events: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    .pace-inactive {
+      display: none;
+    }
+    .pace .pace-progress {
+      background: #ffffff;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      right: 100%;
+      width: 100%;
+      height: 2px;
+    }
+  </style>
+  <script data-pace-options='{ "ajax": true, "document": true, "eventLag": false, "elements": false }'
+          src="//cdn.bootcss.com/pace/1.0.2/pace.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
+</html>

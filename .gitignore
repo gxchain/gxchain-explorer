@@ -7,9 +7,12 @@ logs
 # Temp data
 .data
 dist
+server-dist
+tools
+*.zip
 
 # IDE
-.idea/**
+.idea
 
 # Runtime data
 pids
