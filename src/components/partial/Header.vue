@@ -118,6 +118,15 @@
     background-color: transparent
   }
 
+  .site-header h1{
+    font-size: 20px;
+  }
+
+  .site-header p {
+    color: #f4f4f4;
+    font-size: 15px;
+  }
+
   @media screen and (min-width: 768px) {
     .site-header {
       padding-bottom: 50px;
@@ -127,22 +136,14 @@
     .site-header .jumbotron {
       padding-top: 0
     }
-  }
-
-  .site-header h1{
-    font-size: 20px;
-  }
-
-  @media screen and (min-width: 768px) {
     .site-header h1 {
       font-size: 56px;
       text-shadow: -5px 5px 0 rgba(0, 0, 0, .1)
     }
-  }
-
-  .site-header p {
-    color: #f4f4f4;
-    font-size:15px;
+    .site-header p {
+      color: #f4f4f4;
+      font-size: 21px;
+    }
   }
 
   .site-header .fa {
