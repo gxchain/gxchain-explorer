@@ -22,7 +22,7 @@
     </nav>
     <div class="container jumbotron">
       <div class="row">
-        <div class="col-xs-12"><h1>公信宝区块链浏览器</h1>
+        <div class="col-xs-12"><h1>公信宝区块链浏览器(Beta)</h1>
           <p>提供区块、交易、账户等查询功能</p>
           <div class="search-wraper" role="search">
             <div class="form-group">

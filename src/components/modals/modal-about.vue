@@ -11,12 +11,20 @@
           <table class="table table-bordered table-striped">
             <tbody>
             <tr>
-              <th>版本号:</th>
+              <th width="100">版本号:</th>
               <td>1.0.0</td>
             </tr>
             <tr>
               <th>版本介绍:</th>
               <td>本版本实现了区块、交易记录和账户信息的功能,同时提供了网页和API两个两种方式进行查询, 不同的用户可以根据不同的需求进行选择</td>
+            </tr>
+            <tr>
+              <th>项目介绍:</th>
+              <td>本项目是公信链（GXChain）的浏览器，GXChain基于Graphene底层进行开发，因此本项目理论上来说支持也Graphene的链，任何的项目可以无偿使用和任意修改，并且欢迎对此项目有兴趣的小伙伴来提交Pull Request</td>
+            </tr>
+            <tr>
+              <th>项目地址:</th>
+              <td><a nofollow target="_blank" href="https://github.com/gxchain/gxb-explorer">https://github.com/gxchain/gxb-explorer</a></td>
             </tr>
             </tbody>
           </table>

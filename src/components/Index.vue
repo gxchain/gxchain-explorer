@@ -55,7 +55,7 @@
     destroyed() {
       clearInterval(this.intervalHandler);
       ChainStore.unsubscribe(this.onUpdate);
-      self.connected=false;
+      self.connected = false;
       Apis.close();
     },
     methods: {
@@ -80,7 +80,7 @@
 
           ChainStore.init().then(() => {
             ChainStore.subscribe(self.onUpdate);
-            Apis.instance().db_api().exec("get_objects", [['2.0.0', "2.1.0"]]);
+            Apis.instance().db_api().exec("get_objects", [['2.0.0', "2.1.0", '2.3.1']]);
           });
         });
       },
@@ -89,7 +89,7 @@
           this.runTimer();
         }
         this.last_updated_at = new Date();
-        if (!ChainStore.getObject("2.0.0") || !ChainStore.getObject("2.1.0")) {
+        if (!ChainStore.getObject("2.0.0") || !ChainStore.getObject("2.1.0") || !ChainStore.getObject("2.3.1")) {
           return;
         }
         let globalParams = ChainStore.getObject("2.0.0").toJS();

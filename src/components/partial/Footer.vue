@@ -3,7 +3,7 @@
     <div class="footer-outer">
       <div class="footer-inner">
         <div class="text-center">
-          @2017 Powered by GXB
+          @2017 Powered by GXB &nbsp;<a target='_blank' nofollow href="https://github.com/gxchain/gxb-explorer"><span class="fa fa-lg fa-github"></span></a>
         </div>
       </div>
     </div>
