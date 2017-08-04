@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h4 class="page-header">交易信息</h4>
-    <pre v-if="transaction&&transaction.current_block_number">{{JSON.stringify(transaction, null, '\t')}}</pre>
+    <json v-if="transaction&&transaction.current_block_number" :json="transaction"></json>
     <p v-else class="null-tip">{{transaction.error || '未查到交易信息'}}</p>
   </div>
 </template>
@@ -9,6 +9,7 @@
 <script>
   import {mapGetters, mapActions} from 'vuex'
   import {fetch_transaction} from '@/services/CommonService'
+  import JSON from './partial/JSON.vue'
 
   export default {
     data() {
@@ -38,6 +39,9 @@
       keywords() {
         this.fetch_transaction()
       }
+    },
+    components:{
+      json:JSON
     },
     mounted() {
       if (this.$route.params.tx_id != this.keywords) {

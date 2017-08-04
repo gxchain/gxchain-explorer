@@ -75,3 +75,13 @@
   }
 
 </style>
+
+<style>
+  .no-padding {
+    padding: 0;
+  }
+
+  .no-margin {
+    margin: 0;
+  }
+</style>
