@@ -72,7 +72,7 @@
                     <router-link :to="{path:'/block/'+getLastConfirmedBlock(witness)}">{{getLastConfirmedBlock(witness)}}</router-link>
                   </td>
                   <td>
-                    {{ChainStore.getObject(witness)&&ChainStore.getObject(witness).get('total_votes') | number(2)}}&nbsp;GXC
+                    {{ChainStore.getObject(witness)&&ChainStore.getObject(witness).get('total_votes')/100000 | number(2)}}&nbsp;GXC
                   </td>
                 </tr>
                 </tbody>
@@ -101,7 +101,7 @@
                   <router-link :to="{path:'/account/'+getCommitteeAccountName(member)}">{{getCommitteeAccountName(member)}}</router-link>
                 </td>
                 <td>
-                  {{ChainStore.getObject(member)&&ChainStore.getObject(member).get('total_votes') | number(2)}}&nbsp;GXC
+                  {{ChainStore.getObject(member)&&ChainStore.getObject(member).get('total_votes')/100000 | number(2)}}&nbsp;GXC
                 </td>
               </tr>
               </tbody>
@@ -193,6 +193,7 @@
         this.global_params = ChainStore.getObject("2.0.0").toJS();
         this.block_info = ChainStore.getObject("2.1.0").toJS();
         this.supply_info = ChainStore.getObject('2.3.1').toJS();
+        console.log(this.supply_info);
       }
     }
   }

@@ -4,6 +4,19 @@ import LevelDBService from '../services/LevelDBService'
 let router = express.Router();
 
 /**
+ * 供应查询
+ */
+
+router.get('/supply',function (req,res) {
+  GXChainService.gxs_supply().then(function (gxs) {
+    res.send({
+      total_supply:gxs.current_supply/100000,
+      circulating_supply:31510000
+    })
+  })
+});
+
+/**
  * 区块查询
  */
 router.get('/block/:block_height', function (req, res) {

@@ -8,13 +8,13 @@ import {ChainStore, PrivateKey, TransactionBuilder, TransactionHelper, hash, Fet
  * @returns {*}
  */
 const fetch_account = function (account_name) {
-    return new Promise(function (resolve, reject) {
-        return FetchChain('getAccount', account_name).then((account)=> {
-            resolve(account);
-        }).catch((ex)=> {
-            reject(ex);
-        });
-    })
+  return new Promise(function (resolve, reject) {
+    return FetchChain('getAccount', account_name).then((account) => {
+      resolve(account);
+    }).catch((ex) => {
+      reject(ex);
+    });
+  })
 }
 
 
@@ -23,23 +23,23 @@ const fetch_account = function (account_name) {
  * @param account_name
  */
 const fetch_account_balance = function (account_name) {
-    return new Promise((resolve,reject)=>{
-        fetch_account(account_name).then((account)=> {
-            let balanceObj = account.get('balances').toJS();
-            let assets = Object.keys(balanceObj);
-            let balanceIds=[];
-            assets.forEach(function (asset) {
-                balanceIds.push(balanceObj[asset]);
-            })
-            Apis.instance().db_api().exec('get_objects',[balanceIds],true).then((balances)=>{
-                resolve(balances);
-            }).catch(ex=>{
-                reject(ex);
-            })
-        }).catch(ex=> {
-            reject(ex)
-        })
+  return new Promise((resolve, reject) => {
+    fetch_account(account_name).then((account) => {
+      let balanceObj = account.get('balances').toJS();
+      let assets = Object.keys(balanceObj);
+      let balanceIds = [];
+      assets.forEach(function (asset) {
+        balanceIds.push(balanceObj[asset]);
+      })
+      Apis.instance().db_api().exec('get_objects', [balanceIds], true).then((balances) => {
+        resolve(balances);
+      }).catch(ex => {
+        reject(ex);
+      })
+    }).catch(ex => {
+      reject(ex)
     })
+  })
 }
 
 
@@ -48,23 +48,37 @@ const fetch_account_balance = function (account_name) {
  * @param block_height 区块高度
  */
 const fetch_block = function (block_height) {
-    return new Promise(function (resolve, reject) {
-        return Apis.instance().db_api().exec('get_block', [parseInt(block_height)]).then(function (block) {
-            if (!block) {
-                resolve(null);
-            }
-            else {
-                resolve(block);
-            }
-        }).catch(function (ex) {
-            reject(ex);
-        });
+  return new Promise(function (resolve, reject) {
+    return Apis.instance().db_api().exec('get_block', [parseInt(block_height)]).then(function (block) {
+      if (!block) {
+        resolve(null);
+      }
+      else {
+        resolve(block);
+      }
+    }).catch(function (ex) {
+      reject(ex);
+    });
+  })
+}
+
+/**
+ * 公信股供应量查询接口
+ */
+const gxs_supply = function () {
+  return new Promise(function (resolve, reject) {
+    return Apis.instance().db_api().exec('get_objects', [['2.3.1']]).then(function (resps) {
+      resolve(resps[0]);
+    }).catch((ex) => {
+      reject(ex);
     })
+  })
 }
 
 
-export default{
-    fetch_block,
-    fetch_account,
-    fetch_account_balance
+export default {
+  gxs_supply,
+  fetch_block,
+  fetch_account,
+  fetch_account_balance
 };

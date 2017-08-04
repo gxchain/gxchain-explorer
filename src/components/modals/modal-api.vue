@@ -23,6 +23,11 @@
       return {
         apis: [
           {
+            name: '供应量查询',
+            api: '/api/supply',
+            example: `http://${location.host}/api/supply`
+          },
+          {
             name: '区块查询',
             api: '/api/block/:block_height',
             example: `http://${location.host}/api/block/1407251`

@@ -75,7 +75,7 @@
   .site-header {
     position: relative;
     text-align: center;
-    background-color: #1d8eca;
+    background-color: #1d8fcb;
     color: #fff;
     margin-bottom: 0
   }
