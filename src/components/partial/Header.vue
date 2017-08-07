@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link :to="{path:'/'}" class="navbar-brand">GXB-Explorer</router-link>
+          <router-link :to="{path:'/'}" class="navbar-brand"><img height="28px" src="/static/logo-gxb.png"/></router-link>
         </div>
         <nav id="bs-navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -102,16 +102,10 @@
   }
 
   .main-navbar .navbar-brand {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 15px;
+    marign:0;
     height: 30px;
-  }
-
-  @media (min-width: 768px) {
-    .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
-      margin-left: 15px
-    }
+    position: relative;
+    top:-5px;
   }
 
   .jumbotron {

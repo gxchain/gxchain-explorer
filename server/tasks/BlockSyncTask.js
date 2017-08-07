@@ -49,9 +49,13 @@ export default {
             return;
           }
           block.transactions.forEach((transaction, j) => {
-            let tx_id = block.transaction_ids[j];
+            let tx_id = block.transaction_ids[j]; // GXChain based api will return transaction_ids as an array
+
+            // Logic for Graphene based chain, we should calculate tx_id ourself
+            // Please do know that this will not work in browser at this time, so do the calc in node
             // let tr_buffer = ops.transaction.toBuffer(transaction)
             // let tx_id = hash.sha256(tr_buffer).toString('hex').substr(0, 40);
+
             transaction.current_block_number = current_block_height+i;
             LevelDBService.put(tx_id, JSON.stringify(transaction));
           });

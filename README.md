@@ -4,6 +4,14 @@
 
 > 任何一方可以无偿使用此浏览器或进行二次开发, 但请注明项目来源:Powered by GXB
 
+## 功能
+- [x] 区块同步
+- [x] 区块查询
+- [x] 账户查询
+- [x] 交易查询
+- [ ] 可视化（部分）
+- [ ] 多语言
+
 ## 环境依赖
 
 必要环境: Node 6+
@@ -84,4 +92,4 @@ NODE_ENV=production pm2 start server-dist/index.js --name gxb-explorer
 ## 常见问题
 
 ### 1. 提示GC
-区块太大可能导致内存不足, 可以修改BlocksyncTask.js中的sync_block_length,默认值为1000
+区块太大可能导致内存不足, 可以修改BlocksyncTask.js中的sync_block_length,默认值为1000(每次同步1000个区块)

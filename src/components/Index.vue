@@ -39,7 +39,7 @@
                 <th>总发行</th>
                 <td>{{supply_info.current_supply/100000 | number(2)}}&nbsp;GXS</td>
                 <th>当前供给</th>
-                <td>{{35510000 | number(2)}}&nbsp;GXS</td>
+                <td>{{40510000 | number(2)}}&nbsp;GXS</td>
               </tr>
               </tbody>
             </table>
@@ -193,7 +193,6 @@
         this.global_params = ChainStore.getObject("2.0.0").toJS();
         this.block_info = ChainStore.getObject("2.1.0").toJS();
         this.supply_info = ChainStore.getObject('2.3.1').toJS();
-        console.log(this.supply_info);
       }
     }
   }
