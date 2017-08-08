@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <h4 class="page-header">交易信息</h4>
+    <h4 class="page-header">{{$t('transaction.title')}}</h4>
     <json v-if="transaction&&transaction.current_block_number" :json="transaction"></json>
-    <p v-else class="null-tip">{{transaction.error || '未查到交易信息'}}</p>
+    <p v-else class="null-tip">{{transaction.error || $t('transaction.empty')}}</p>
   </div>
 </template>
 
@@ -18,31 +18,37 @@
       }
     },
     methods: {
+
       ...mapActions({
         setKeywords: 'setKeywords'
       }),
+
       fetch_transaction() {
         let self = this;
         fetch_transaction(this.$route.params.tx_id).then(function (resp) {
           self.transaction = resp.body;
         }).catch(ex => {
-          self.transaction = {error: '获取交易信息失败'};
+          self.transaction = {error: this.$t('transaction.error')};
         });
       }
     },
+
     computed: {
       ...mapGetters({
         keywords: 'keywords'
       })
     },
+
     watch: {
       keywords() {
         this.fetch_transaction()
       }
     },
-    components:{
-      json:JSON
+
+    components: {
+      json: JSON
     },
+
     mounted() {
       if (this.$route.params.tx_id != this.keywords) {
         this.setKeywords({keywords: this.$route.params.tx_id})

@@ -4,9 +4,9 @@
     <div class="main-container">
       <div class="text-center" v-if="keywords">
         <div id="seg" class="btn-group btn-group-lg" role="group">
-          <router-link :to="{path:'/block/'+keywords}" class="btn btn-default">区块</router-link>
-          <router-link :to="{path:'/transaction/'+keywords}" class="btn btn-default">交易</router-link>
-          <router-link :to="{path:'/account/'+keywords}" class="btn btn-default">账户</router-link>
+          <router-link :to="{path:'/block/'+keywords}" class="btn btn-default">{{$t('header.block')}}</router-link>
+          <router-link :to="{path:'/transaction/'+keywords}" class="btn btn-default">{{$t('header.transaction')}}</router-link>
+          <router-link :to="{path:'/account/'+keywords}" class="btn btn-default">{{$t('header.account')}}</router-link>
         </div>
       </div>
       <router-view></router-view>

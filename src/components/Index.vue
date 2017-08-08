@@ -1,8 +1,8 @@
 <template>
   <div class="container">
 
-    <h4 class="page-header">最新状态:
-      <small>上次更新时间:{{delta}}秒前</small>
+    <h4 class="page-header">{{$t('index.latest_status')}}:
+      <small>{{$t('index.last_updated_at',{seconds:delta})}}</small>
     </h4>
 
     <div class="row">
@@ -11,18 +11,18 @@
       <div class="col-md-12">
         <div v-if="block_info&&global_params&&supply_info" class="panel panel-default">
           <div class="panel-heading">
-            <span class="fa fa-chain"></span>&nbsp;区块信息
+            <span class="fa fa-chain"></span>&nbsp;{{$t('index.summary.title')}}
           </div>
           <div class="panel-body no-padding">
             <table class="table table-striped table-bordered no-margin">
               <tbody>
               <tr>
-                <th>最新区块</th>
+                <th>{{$t('index.summary.head_block_number')}}</th>
                 <td>
                   <router-link :to="{path:'/block/'+block_info.head_block_number}">{{block_info.head_block_number}}
                   </router-link>
                 </td>
-                <th>最新不可逆区块</th>
+                <th>{{$t('index.summary.last_irreversible_block_num')}}</th>
                 <td>
                   <router-link :to="{path:'/block/'+block_info.last_irreversible_block_num}">
                     {{block_info.last_irreversible_block_num}}
@@ -30,15 +30,15 @@
                 </td>
               </tr>
               <tr>
-                <th>出块时间</th>
-                <td>{{global_params.parameters.block_interval}}秒</td>
-                <th>最近缺失</th>
+                <th>{{$t('index.summary.block_interval')}}</th>
+                <td>{{global_params.parameters.block_interval}}</td>
+                <th>{{$t('index.summary.recently_missed_count')}}</th>
                 <td>{{block_info.recently_missed_count}}</td>
               </tr>
               <tr>
-                <th>总发行</th>
+                <th>{{$t('index.summary.total_supply')}}</th>
                 <td>{{supply_info.current_supply/100000 | number(2)}}&nbsp;GXS</td>
-                <th>当前供给</th>
+                <th>{{$t('index.summary.circulating_supply')}}</th>
                 <td>{{40510000 | number(2)}}&nbsp;GXS</td>
               </tr>
               </tbody>
@@ -51,16 +51,16 @@
       <div class="col-md-6">
         <div v-if="global_params" class="panel panel-default">
           <div class="panel-heading">
-            <span class="fa fa-eye"></span>&nbsp;活跃见证人
+            <span class="fa fa-eye"></span>&nbsp;{{$t('index.witness.title')}}
           </div>
           <div class="panel-body no-padding">
             <div class="table-responsive">
               <table class="table table-striped table-bordered no-margin">
                 <thead>
                 <tr>
-                  <th>见证人</th>
-                  <th>最新确认区块</th>
-                  <th>总票数</th>
+                  <th>{{$t('index.witness.witness')}}</th>
+                  <th>{{$t('index.witness.last_confirmed_block')}}</th>
+                  <th>{{$t('index.witness.votes')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,14 +85,14 @@
       <div class="col-md-6">
         <div v-if="global_params" class="panel panel-default">
           <div class="panel-heading">
-            <span class="fa fa-users"></span>&nbsp;活跃理事会成员
+            <span class="fa fa-users"></span>&nbsp;{{$t('index.committee.title')}}
           </div>
           <div class="panel-body no-padding">
             <table class="table table-striped table-bordered no-margin">
               <thead>
               <tr>
-                <th>账户名</th>
-                <th>总得票</th>
+                <th>{{$t('index.committee.account')}}</th>
+                <th>{{$t('index.committee.votes')}}</th>
               </tr>
               </thead>
               <tbody>
@@ -138,50 +138,46 @@
         return parseInt((this.timer - this.last_updated_at) / 1000);
       }
     },
+
     mounted() {
       ChainStore.subscribe(this.onUpdate);
       Apis.instance().db_api().exec("get_objects", [['2.0.0', "2.1.0","2.3.1"]]).then(()=>{
         this.onUpdate()
       });
     },
+
     destroyed() {
       clearInterval(this.intervalHandler);
       ChainStore.unsubscribe(this.onUpdate);
     },
 
     methods: {
-      /**
-       * 获取理事会成员账户名
-       */
+
       getCommitteeAccountName(member) {
         if (ChainStore.getObject(member) && ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account'))) {
           return ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account')).get('name');
         }
         return null
       },
-      /**
-       * 获取见证人账户名
-       */
+
       getWitnessAccountName(witness) {
         if (ChainStore.getObject(witness) && ChainStore.getObject(ChainStore.getObject(witness).get('witness_account'))) {
           return ChainStore.getObject(ChainStore.getObject(witness).get('witness_account')).get('name');
         }
         return null
       },
-      /**
-       * 获取最近确认区块
-       * @param witness 见证人id
-       * @returns {*}
-       */
+
       getLastConfirmedBlock(witness) {
         return ChainStore.getObject(witness) && ChainStore.getObject(witness).get('last_confirmed_block_num');
       },
+
       runTimer: function () {
         let self = this;
         this.intervalHandler = setInterval(function () {
           self.timer = new Date();
         }, 300)
       },
+
       onUpdate() {
         if (this.timer == 0) {
           this.runTimer();

@@ -10,24 +10,34 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link :to="{path:'/'}" class="navbar-brand"><img height="28px" src="/static/logo-gxb.png"/></router-link>
+          <router-link :to="{path:'/'}" class="navbar-brand"><img height="28px" src="/static/logo-gxb.png"/>
+          </router-link>
         </div>
         <nav id="bs-navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#modal-api" data-toggle="modal">API</a></li>
-            <li><a href="#modal-about" data-toggle="modal">关于</a></li>
+            <li><a href="#modal-about" data-toggle="modal">{{$t("header.about")}}</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                 aria-expanded="false">{{$t('header.language')}}<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li @click="switchLanguage('zh')"><a href="javascript:;">中文</a></li>
+                <li role="separator" class="divider"></li>
+                <li @click="switchLanguage('en')"><a href="javascript:;">English</a></li>
+              </ul>
+            </li>
           </ul>
         </nav>
       </div>
     </nav>
     <div class="container jumbotron">
       <div class="row">
-        <div class="col-xs-12"><h1>公信宝区块链浏览器(Beta)</h1>
-          <p>提供区块、交易、账户等查询功能</p>
+        <div class="col-xs-12"><h1>{{$t('header.title')}}(Beta)</h1>
+          <p>{{$t('header.subtitle')}}</p>
           <div class="search-wraper" role="search">
             <div class="form-group">
               <input @change="eventChanged" v-model="search" class="form-control search clearable"
-                     placeholder="在此输入区块id、交易id、账户id或者账户名进行查询" autocomplete="off" autofocus=""
+                     :placeholder="$t('header.search')" autocomplete="off" autofocus=""
                      tabindex="0" autocorrect="off" autocapitalize="off" spellcheck="false">
               <i class="fa fa-search"></i>
             </div>
@@ -41,6 +51,7 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
+  import {set_item} from '@/services/CommonService'
 
   export default {
     data() {
@@ -56,7 +67,7 @@
     watch: {
       'keywords'() {
         if (this.keywords != this.search) {
-          this.search = this.keywords;
+          this.search = this.keywords
         }
       }
     },
@@ -66,6 +77,10 @@
       }),
       eventChanged() {
         this.setKeywords({keywords: this.search})
+      },
+      switchLanguage(locale) {
+        this._i18n.locale = locale
+        set_item('locale', locale)
       }
     }
   }
@@ -97,22 +112,37 @@
     background-color: transparent
   }
 
+  .main-navbar .nav .open > a,
+  .main-navbar .nav .open > a:hover,
+  .main-navbar .nav .open > a:focus {
+    background: transparent;
+  }
+
+  .dropdown-menu > li > a {
+    color: #666;
+  }
+
+  .dropdown-menu > li > a:hover,
+  .dropdown-menu > li > a:focus {
+    color: #333;
+  }
+
   .main-navbar .navbar-toggle .icon-bar {
     background-color: #fff
   }
 
   .main-navbar .navbar-brand {
-    marign:0;
+    marign: 0;
     height: 30px;
     position: relative;
-    top:-5px;
+    top: -5px;
   }
 
   .jumbotron {
     background-color: transparent
   }
 
-  .site-header h1{
+  .site-header h1 {
     font-size: 20px;
   }
 
@@ -130,10 +160,12 @@
     .site-header .jumbotron {
       padding-top: 0
     }
+
     .site-header h1 {
       font-size: 56px;
       text-shadow: -5px 5px 0 rgba(0, 0, 0, .1)
     }
+
     .site-header p {
       color: #f4f4f4;
       font-size: 21px;

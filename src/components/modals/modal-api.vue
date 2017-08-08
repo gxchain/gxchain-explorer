@@ -5,7 +5,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">API说明</h4>
+          <h4 class="modal-title">{{$t('api.title')}}</h4>
         </div>
         <div class="modal-body">
           <div v-for="(api,i) in apis">
@@ -23,27 +23,27 @@
       return {
         apis: [
           {
-            name: '供应量查询',
+            name: this.$t('api.query_supply'),
             api: '/api/supply',
             example: `http://${location.host}/api/supply`
           },
           {
-            name: '区块查询',
+            name: this.$t('api.query_block'),
             api: '/api/block/:block_height',
             example: `http://${location.host}/api/block/1407251`
           },
           {
-            name: '交易查询',
+            name: this.$t('api.query_transaction'),
             api: '/api/transaction/:tx_id',
             example: `http://${location.host}/api/transaction/69ce90cdb52189dee863d2bcf6ce153d89657295`
           },
           {
-            name: '账户查询',
+            name: this.$t('api.query_account'),
             api: '/api/account/:id_or_name',
             example: `http://${location.host}/api/account/paul`
           },
           {
-            name: '余额查询',
+            name: this.$t('api.query_account_balance'),
             api: '/api/account_balance/:id_or_name',
             example: `http://${location.host}/api/account_balance/paul`
           },
