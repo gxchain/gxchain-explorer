@@ -1,6 +1,6 @@
 {
   "name": "gxb-explorer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "gxchain explorer",
   "main": "index.js",
   "scripts": {

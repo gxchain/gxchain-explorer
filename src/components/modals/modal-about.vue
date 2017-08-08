@@ -13,7 +13,7 @@
             <tbody>
             <tr>
               <th width="100">{{$t('about.version')}}:</th>
-              <td>1.0.0</td>
+              <td>1.0.1</td>
             </tr>
             <tr>
               <th>{{$t('about.version_intro_title')}}:</th>
