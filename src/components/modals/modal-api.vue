@@ -19,9 +19,9 @@
 </template>
 <script>
   export default {
-    data() {
-      return {
-        apis: [
+    computed:{
+      apis(){
+        return [
           {
             name: this.$t('api.query_supply'),
             api: '/api/supply',
