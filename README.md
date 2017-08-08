@@ -1,4 +1,4 @@
-# 公信宝区块链浏览(GXChain Explorer)
+# 公信宝区块链浏览器(GXChain Explorer)
 
 公信宝区块链浏览器是构建在公信链(GXChain)上的一个查询工具,提供区块(Block)查询,交易(Transaction)查询和账户(Account)查询功能
 
