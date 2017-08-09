@@ -118,10 +118,6 @@
     background: transparent;
   }
 
-  .dropdown-menu > li > a {
-    color: #666;
-  }
-
   .dropdown-menu > li > a:hover,
   .dropdown-menu > li > a:focus {
     color: #333;
@@ -169,6 +165,10 @@
     .site-header p {
       color: #f4f4f4;
       font-size: 21px;
+    }
+
+    .dropdown-menu > li > a {
+      color: #666;
     }
   }
 
