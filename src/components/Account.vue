@@ -144,8 +144,8 @@
           let gxs = balances.find(function (balance_info) {
             return balance_info.asset_type == '1.3.1'
           });
-          account.balances['1.3.0'] = (gxc ? (gxc.balance / 10000).toFixed(5) : 0) + '';
-          account.balances['1.3.1'] = (gxs ? (gxs.balance / 10000).toFixed(5) : 0) + '';
+          account.balances['1.3.0'] = (gxc ? (gxc.balance / 100000).toFixed(5) : 0) + '';
+          account.balances['1.3.1'] = (gxs ? (gxs.balance / 100000).toFixed(5) : 0) + '';
 
           self.account = account;
         }).catch(ex => {
