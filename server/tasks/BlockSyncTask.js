@@ -6,7 +6,7 @@ import {ChainStore, ops, hash} from 'gxbjs'
 let current_block_height = 0; //当前已同步区块高度
 let max_block_height = 0;  //最新不可逆区块高度
 let syncing = false;  //是否同步中
-let sync_block_length = 1000;  //并行同步区块数量
+let sync_block_length = 600;  //并行同步区块数量
 
 export default {
   /**
