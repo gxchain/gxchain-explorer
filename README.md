@@ -92,4 +92,4 @@ NODE_ENV=production pm2 start server-dist/index.js --name gxb-explorer
 ## 常见问题
 
 ### 1. 提示GC
-区块太大可能导致内存不足, 可以修改BlocksyncTask.js中的sync_block_length,默认值为1000(每次同步1000个区块)
+区块太大可能导致内存不足, 可以修改BlocksyncTask.js中的sync_block_length,默认值为600(每次同步600个区块)
