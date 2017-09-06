@@ -104,7 +104,8 @@ const locale = {
     query_block: '区块查询',
     query_transaction: '交易查询',
     query_account: '账户查询',
-    query_account_balance: '余额查询'
+    query_account_balance: '余额查询',
+    get_account_header: '账户头像'
   }
 }
 

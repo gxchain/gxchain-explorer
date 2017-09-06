@@ -1,6 +1,9 @@
 import express from 'express';
 import GXChainService from '../services/GXChainService'
 import LevelDBService from '../services/LevelDBService'
+import jdenticon from 'jdenticon'
+import crypto from 'crypto'
+
 let router = express.Router();
 
 /**
@@ -58,6 +61,14 @@ router.get('/account_balance/:account_id_or_name', function (req, res) {
     }).catch(ex=>{
         res.send({});
     })
+})
+
+router.get('/header/:account_name',function (req,res) {
+  var hash = crypto.createHash('sha256').update(req.params.account_name, 'utf8').digest('hex');
+  let png = jdenticon.toPng(hash, 80);
+  res.set('content-type','image/png');
+  res.write(png);
+  res.end();
 })
 
 module.exports = router;

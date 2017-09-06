@@ -104,7 +104,8 @@ const locale = {
     query_block: 'Query Block:',
     query_transaction: 'Query Transaction:',
     query_account: 'Query Account:',
-    query_account_balance: 'Query Account Balance:'
+    query_account_balance: 'Query Account Balance:',
+    get_account_header: 'Get Account Header:'
   }
 }
 

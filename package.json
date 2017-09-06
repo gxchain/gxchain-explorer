@@ -38,6 +38,8 @@
     "express": "~4.13.1",
     "figlet": "^1.2.0",
     "gxbjs": "^1.2.58",
+    "hashjs": "^1.2.0",
+    "jdenticon": "^1.7.2",
     "jquery": "^1.12.4",
     "level": "^1.7.0",
     "morgan": "~1.6.1",
