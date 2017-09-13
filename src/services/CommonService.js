@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+import filters from '@/filters'
 const baseURL = location.host;
 
 export const fetch_block = (block_height) => {
@@ -26,6 +26,18 @@ export const fetch_account_balance = (id_or_name) => {
   })
 }
 
+export const formatted_asset = (asset_id,amount,decimalOffset) => {
+  switch (asset_id){
+    case '1.3.0':
+      return filters.number((amount / 100000).toFixed(decimalOffset),5) + ' GXC';
+      break;
+    case '1.3.1':
+      return filters.number((amount / 100000).toFixed(decimalOffset),5) + ' GXS';
+      break;
+    default:
+      return amount;
+  }
+}
 
 let fallbackStore = {};
 export const set_item = (key, val) => {

@@ -1,8 +1,38 @@
 <template>
   <div class="container">
-    <h4 class="page-header">{{$t('transaction.title')}}</h4>
+    <div class="row" v-if="transaction&&transaction.current_block_number">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="fa fa-exchange">&nbsp;{{$t('transaction.title')}}</span>
+          </div>
+          <div class="panel-body no-padding">
+            <div class="table-responsive">
+              <table class="table table-striped no-margin">
+                <tbody>
+                  <tr>
+                    <th>{{$t('transaction.current_block_number')}}</th>
+                    <td align="right">
+                      <router-link :to="{path:'/block/' + transaction.current_block_number}">
+                        {{transaction.current_block_number}}
+                      </router-link>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Operation v-for="(operation,index) in transaction.operations" :key="index" :id="index" :operation="operation"></Operation>
+    </div>
+
     <json v-if="transaction&&transaction.current_block_number" :json="transaction"></json>
-    <p v-else class="null-tip">{{transaction.error || $t('transaction.empty')}}</p>
+
+    <div v-if="!transaction||!transaction.current_block_number">
+      <h4 class="page-header">{{$t('transaction.title')}}</h4>
+      <p class="null-tip">{{transaction.error || $t('transaction.empty')}}</p>
+    </div>
   </div>
 </template>
 
@@ -10,6 +40,7 @@
   import {mapGetters, mapActions} from 'vuex'
   import {fetch_transaction} from '@/services/CommonService'
   import JSON from './partial/JSON.vue'
+  import Operation from './partial/Operation.vue'
 
   export default {
     data() {
@@ -46,7 +77,8 @@
     },
 
     components: {
-      json: JSON
+      json: JSON,
+      Operation: Operation
     },
 
     mounted() {
