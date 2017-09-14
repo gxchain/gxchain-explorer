@@ -76,6 +76,7 @@
         setKeywords: 'setKeywords'
       }),
       eventChanged() {
+        this.search = this.search.replace(/(^\s*)|(\s*$)/g, "")
         this.setKeywords({keywords: this.search})
       },
       switchLanguage(locale) {
