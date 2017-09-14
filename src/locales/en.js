@@ -8,7 +8,7 @@ const locale = {
     language: 'Language: English',
     title: 'GXB Block Explorer',
     subtitle: 'Find Block, Transaction and Account',
-    search: 'Enter block number, transaction id, account name or id here'
+    search: 'Enter block number, txid, account name or id here'
   },
   // index
   index: {
