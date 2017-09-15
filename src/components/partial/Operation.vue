@@ -67,6 +67,25 @@
                 <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
               </tr>
             </tbody>
+
+            <tbody v-if="ops[op[0]] == 'account_whitelist'">
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_whitelist.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.authorizing_account')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].authorizing_account}">{{op[1].authorizing_account}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.account_to_list')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].account_to_list}">{{op[1].account_to_list}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            </tbody>
           </table>
         </div>
       </div>
