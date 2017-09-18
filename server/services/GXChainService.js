@@ -75,10 +75,24 @@ const gxs_supply = function () {
   })
 }
 
+/**
+ * 获取产品信息
+ * @param product_id
+ */
+const fetch_product = function (product_id) {
+  return new Promise(function (resolve, reject) {
+    return Apis.instance().db_api().exec('get_free_data_products', [[product_id]]).then(function (resps) {
+      resolve(resps[0]);
+    }).catch((ex) => {
+        reject(ex);
+    });
+  })
+}
 
 export default {
   gxs_supply,
   fetch_block,
   fetch_account,
-  fetch_account_balance
+  fetch_account_balance,
+  fetch_product
 };

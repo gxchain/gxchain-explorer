@@ -26,6 +26,12 @@ export const fetch_account_balance = (id_or_name) => {
   })
 }
 
+export const fetch_product = (product_id) => {
+  return Vue.http.get(`//${baseURL}/api/product/${product_id}`, {
+    responseType: 'json'
+  })
+}
+
 export const formatted_asset = (asset_id,amount,decimalOffset) => {
   switch (asset_id){
     case '1.3.0':
