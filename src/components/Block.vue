@@ -17,21 +17,22 @@
           <li>{{$t('block.previous')}}：{{block.previous}}</li>
           <li>{{$t('block.transactions')}}：{{block.transactions.length}}</li>
         </ul>
+        <!--翻页-->
+        <div class="pager" v-if="block&&block.block_id">
+          <button @click="goPrev" class="btn btn-default pull-left">
+            <span class="fa fa-angle-left"></span>
+          </button>
+          <button @click="goNext" class="btn btn-default pull-right">
+            <span class="fa fa-angle-right"></span>
+          </button>
+        </div>
         <div class="table-responsive" v-for="(transaction,i) in block.transactions">
           <Operation v-if="block" v-for="(operation,index) in transaction.operations" :key="index" :id="index" :operation="operation" :txid="block.transaction_ids[i]"></Operation>
         </div>
       </div>
     </div>
 
-    <!--翻页-->
-    <div class="pager" v-if="block&&block.block_id">
-      <button @click="goPrev" class="btn btn-default pull-left">
-        <span class="fa fa-angle-left"></span>
-      </button>
-      <button @click="goNext" class="btn btn-default pull-right">
-        <span class="fa fa-angle-right"></span>
-      </button>
-    </div>
+
 
     <!--区块json-->
     <json v-if="block&&block.block_id" :json="block"></json>
@@ -115,5 +116,9 @@
 <style scoped>
   .block-summary {
     margin-top: 15px;
+  }
+  .pager{
+    padding-right: 15px;
+    padding-left: 15px;
   }
 </style>
