@@ -71,4 +71,15 @@ router.get('/header/:account_name',function (req,res) {
   res.end();
 })
 
+/**
+ * 产品信息查询
+ */
+router.get('/product/:product_id', function (req, res) {
+  GXChainService.fetch_product(req.params.product_id).then((product)=> {
+    res.send(JSON.stringify(product));
+  }).catch(ex=>{
+    res.send({});
+  })
+})
+
 module.exports = router;
