@@ -133,11 +133,39 @@ const locale = {
       "league_data_product_update": "更新联盟数据产品",
       "league_create": "创建联盟",
       "league_update": "更新联盟",
-      "data_transaction_create":"发起数据交易",
-      "data_transaction_update":"更新数据交易",
-      "data_transaction_pay":"数据支付",
+      "data_transaction_create": {
+        "name": "发起数据交易",
+        "request_id": "请求ID",
+        "product_id": "产品名称",
+        "version": "版本",
+        "fee": "手续费",
+        "requester": "发起人",
+        "create_date_time": "创建时间"
+      },
+      "data_transaction_update":{
+        "name": "更新数据交易",
+        "request_id": "请求ID",
+        "new_status": "",
+        "fee": "手续费",
+        "new_requester": "",
+        "memo": ""
+      },
+      "data_transaction_pay":{
+        "name": "数据支付",
+        "fee": "手续费",
+        "from": "来自",
+        "to": "发往",
+        "amount": "金额",
+        "request_id": "请求ID"
+      },
       "account_upgrade_data_transaction_member":"交易节点认证",
-      "data_transaction_datasource_upload":"数据存证",
+      "data_transaction_datasource_upload":{
+        "name": "数据存证",
+        "request_id": "请求ID",
+        "requester": "发起人",
+        "datasource": "数据源",
+        "fee": "手续费"
+      },
       "data_transaction_datasource_validate_error":"数据交易失败"
     },
   },
