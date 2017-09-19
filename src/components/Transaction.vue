@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <Operation v-for="(operation,index) in transaction.operations" :key="index" :id="index" :operation="operation"></Operation>
+      <Operation v-if="transaction&&transaction.current_block_number" v-for="(operation,index) in transaction.operations" :key="index" :id="index" :operation="operation"></Operation>
     </div>
 
     <json v-if="transaction&&transaction.current_block_number" :json="transaction"></json>
@@ -56,6 +56,7 @@
 
       fetch_transaction() {
         let self = this;
+        this.transaction = {};
         fetch_transaction(this.$route.params.tx_id).then(function (resp) {
           self.transaction = resp.body;
         }).catch(ex => {
