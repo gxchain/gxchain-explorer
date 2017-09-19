@@ -49,7 +49,7 @@ const locale = {
   // transaction
   transaction: {
     title: 'Transaction Info',
-    empty: 'No record',
+    empty: 'No record, Possible reason: The transaction information has not yet been recorded to the irreversible block',
     error:'Fetch error',
     current_block_number: 'Current Block',
     trx_op: "Operation Info",

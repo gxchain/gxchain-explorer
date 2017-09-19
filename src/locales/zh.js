@@ -50,7 +50,7 @@ const locale = {
   transaction: {
     title: '交易信息',
     error:'发生错误, 获取交易信息失败',
-    empty: '未查到交易信息',
+    empty: '未查到交易信息，可能原因：交易信息尚未记录到不可逆区块',
     current_block_number: '当前区块',
     trx_type: "类型",
     trx_op: "操作信息",
