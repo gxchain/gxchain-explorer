@@ -137,7 +137,6 @@ const locale = {
         "request_id": "Request id",
         "product_id": "Product name",
         "version": "Version",
-        "params": "Params",
         "fee": "Fee",
         "requester": "Requester",
         "create_date_time": "Create datetime"

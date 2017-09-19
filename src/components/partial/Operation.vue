@@ -3,6 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <span class="fa fa-list">&nbsp;{{$t('transaction.trx_op')}} <span v-if="id>0">{{id}}</span></span>
+        <span class="right" v-if="this.txid"><router-link :to="{path:'/transaction/'+this.txid}">txid:{{this.txid}}</router-link></span>
       </div>
       <div class="panel-body no-padding">
         <div class="table-responsive">
@@ -101,15 +102,11 @@
               </tr>
               <tr>
                 <th>{{$t('transaction.trxTypes.data_transaction_create.product_id')}}</th>
-                <td align="right">{{formatted_product(op[1].product_id,'product_name')}}</td>
+                <td align="right">{{formatted_product(op[1].product_id,'product_id')}}</td>
               </tr>
               <tr>
                 <th>{{$t('transaction.trxTypes.data_transaction_create.version')}}</th>
                 <td align="right">{{op[1].version}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.params')}}</th>
-                <td align="right">{{op[1].params}}</td>
               </tr>
               <tr>
                 <th>{{$t('transaction.trxTypes.data_transaction_create.fee')}}</th>
@@ -117,7 +114,7 @@
               </tr>
               <tr>
                 <th>{{$t('transaction.trxTypes.data_transaction_create.requester')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].requester}">{{formatted_account(op[1].requester,'requester')}}</router-link></td>
+                <td align="right"><router-link :to="{path: '/account/'+op[1].requester}">{{formatted_account(op[1].requester,'requester')}}</router-link></td>
               </tr>
               <tr>
                 <th>{{$t('transaction.trxTypes.data_transaction_create.create_date_time')}}</th>
@@ -194,39 +191,54 @@
       },
       operation: {
         type: Array
+      },
+      txid: {
+        type: String
       }
     },
     data() {
       return {
-        items: {
-          'product_name': '',
-        },
+        items: [],
         ops: Object.keys(ChainTypes.operations),
         op: this.operation,
       }
     },
     methods: {
-       formatted_account:function (id,key) {
+       formatted_account(id,key) {
          let self = this;
-          fetch_account(id).then(function (res) {
-            self.op[1][key] = res.body.name;
-          }).catch(ex => {
-            console.error(ex);
-          })
-          return this.op[1][key];
-      },
-      formatted_product:function (id,key) {
-        let self = this;
-        fetch_product(id).then(function (res) {
-          self.items[key] = res.body.product_name;
-        }).catch(ex => {
-          console.error(ex);
-        })
-        return this.items[key];
-      },
-      formatted_number:function (asset_id,amount,decimalOffset) {
+         if (this.items[key]){
+           return this.op[1][key];
+         }
+         self.items[key] = true;
+         fetch_account(id).then(function (res) {
+           self.op[1][key] = res.body.name;
+         }).catch(ex => {
+           console.error(ex);
+         })
+         return this.op[1][key];
+       },
+       formatted_product(id,key) {
+         let self = this;
+         if (this.items[key]){
+           return this.op[1][key];
+         }
+         self.items[key] = true;
+         fetch_product(id).then(function (res) {
+           self.op[1][key] = res.body.product_name;
+         }).catch(ex => {
+           console.error(ex);
+         })
+         return this.op[1][key];
+       },
+       formatted_number(asset_id,amount,decimalOffset) {
           return formatted_asset(asset_id,amount,decimalOffset);
-      }
+       }
     }
   }
 </script>
+
+<style scoped>
+  .right{
+    float: right;
+  }
+</style>

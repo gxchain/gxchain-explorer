@@ -138,7 +138,6 @@ const locale = {
         "request_id": "请求ID",
         "product_id": "产品名称",
         "version": "版本",
-        "params": "参数",
         "fee": "手续费",
         "requester": "发起人",
         "create_date_time": "创建时间"
