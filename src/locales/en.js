@@ -57,36 +57,52 @@ const locale = {
     trxTypes: {
       "all": "Show all",
       "transfer": {
-        "name": "Transfer",
-        "from": "From",
-        "amount": "Amount",
-        "to": "To",
-        "fee": "Fee",
+        name: "Transfer",
+        from: "From",
+        amount: "Amount",
+        to: "To",
+        fee: "Fee",
       },
       "limit_order_create": "Place order",
       "limit_order_cancel": "Cancel order",
       "call_order_update": "Update margin",
       "account_create": {
-        "name": "Create account",
-        "fee": "Fee",
-        "registrar": "Registrar",
-        "referrer": "Referrer",
-        "account": "Account",
+        name: "Create account",
+        fee: "Fee",
+        registrar: "Registrar",
+        referrer: "Referrer",
+        account: "Account",
       },
       "account_update": {
-        "name":"Update account",
-        "fee": "Fee",
-        "account": "Account",
+        name:"Update account",
+        fee: "Fee",
+        account: "Account",
       },
       "account_whitelist": {
-        "name":"Account whitelist",
-        "fee": "Fee",
-        "authorizing_account": "Authorizing account",
-        "account_to_list": "Listed account",
-        "new_listing": "New listing",
+        name:"Account whitelist",
+        fee: "Fee",
+        authorizing_account: "Authorizing account",
+        account_to_list: "Listed account",
+        new_listing: "New listing",
+        whitelist_states: {
+          no_listing: "Unlisted",
+          white_listed: "Whitelisted",
+          black_listed: "Blacklisted",
+          white_and_black_listed: "Whitelisted and blacklisted"
+        },
       },
-      "account_upgrade": "Upgrade Account",
-      "account_transfer": "Transfer Account",
+      "account_upgrade":{
+        name: "Upgrade Account",
+        account_to_upgrade: 'Upgrade account',
+        fee: "Fee",
+        upgrade_to_lifetime_member: 'Upgrade to lifetime member'
+      },
+      "account_transfer": {
+        name: "Transfer Account",
+        account_id: "Account id",
+        new_owner: "New Owner",
+        fee: "Fee"
+      },
       "asset_create": "Create asset",
       "asset_update": "Update asset",
       "asset_update_bitasset": "Update SmartCoin",
@@ -102,9 +118,24 @@ const locale = {
       "witness_create": "Create witness",
       "witness_update": "Update witness",
       "witness_withdraw_pay": "Witness pay withdrawal",
-      "proposal_create": "Create proposal",
-      "proposal_update": "Update proposal",
-      "proposal_delete": "Delete proposal",
+      "proposal": {
+        proposal_create: "Create proposal",
+        proposal_update: "Update proposal",
+        proposal_delete: "Delete proposal",
+        review_period: "Review period begin",
+        expiration_time: "Expiration time",
+        proposed_ops: "Proposed operations",
+        fee_paying_account: "Fee paying account",
+        fee: "Fee",
+        update: {
+          active_approvals_to_add: "Active approvals to add",
+          active_approvals_to_remove: "Active approvals to remove",
+          owner_approvals_to_add: "Owner approvals to add",
+          owner_approvals_to_remove: "Owner approvals to remove",
+          key_approvals_to_add: "Key approvals to add",
+          key_approvals_to_remove: "Key approvals to remove"
+        },
+      },
       "withdraw_permission_create": "Create withdrawal permission",
       "withdraw_permission_update": "Update withdrawal permission",
       "withdraw_permission_claim": "Claim withdrawal permission",
@@ -122,50 +153,154 @@ const locale = {
       "blind_transfer": "Blinded transfer",
       "transfer_from_blind": "Transfer from blinded account",
       "asset_claim_fees": "Claim asset fees",
-      "account_upgrade_merchant":"Merchant verify",
-      "account_upgrade_datasource":"DataSource verify",
+      "account_upgrade_merchant": {
+        name: "Merchant verify",
+        account_to_upgrade: "Upgrade account",
+        auth_referrer: "Auth referrer",
+        upgrade_to_merchant_member: "Upgrade to merchant member",
+        fee: "Fee"
+      },
+      "account_upgrade_datasource": {
+        name: "DataSource verify",
+        account_to_upgrade: "Upgrade account",
+        auth_referrer: "Auth referrer",
+        upgrade_to_datasource_member: "Upgrade to datasource member",
+        fee: "Fee"
+      },
+      "stale_data_market_category_create":"Market category created | stale",
+      "stale_data_market_category_update":"Market category updated | stale",
+      "stale_free_data_product_create": {
+        name: "Data item for free marked created | stale",
+        product_name: "Product name",
+        issuer: "Issuer",
+        fee: "Fee",
+        create_date_time:"Create datetime"
+      },
+      "stale_free_data_product_update": {
+        name: "Data item form free market updated | stale",
+        free_data_product: "Product id",
+        new_product_name: "New product name",
+        new_status: "New status",
+        fee: "Fee"
+      },
+      "stale_league_data_product_create": {
+        name: "Data item for alliance created | stale",
+        product_name: "Product name",
+        issuer: "Issuer",
+        fee: "Fee",
+        create_date_time:"Create datetime"
+      },
+      "stale_league_data_product_update": {
+        name: "Data item for alliance updated | stale",
+        free_data_product: "Product id",
+        new_product_name: "New product name",
+        new_status: "New status",
+        fee: "Fee"
+      },
+      "stale_league_create": {
+        name: "Alliance created | stale",
+        legue_name: "Legue name",
+        fee: "Fee",
+        create_date_time:"Create datetime"
+      },
+      "league_update": {
+        name: "Alliance updated | stale",
+        legue: "Legue id",
+        new_legue_name: "New legue name",
+        new_status: "New status",
+        fee: "Fee"
+      },
       "data_market_category_create":"Market category created",
       "data_market_category_update":"Market category updated",
-      "free_data_product_create":"Data item for free marked created",
-      "free_data_product_update":"Data item form free market updated",
-      "league_data_product_create": "Data item for alliance created",
-      "league_data_product_update": "Data item for alliance updated",
-      "league_create": "Alliance created",
-      "league_update": "Alliance updated",
+      "free_data_product_create": {
+        name: "Data item for free marked created",
+        product_name: "Product name",
+        issuer: "Issuer",
+        fee: "Fee",
+        create_date_time:"Create datetime"
+      },
+      "free_data_product_update": {
+        name: "Data item form free market updated",
+        free_data_product: "Product id",
+        new_product_name: "New product name",
+        new_status: "New status",
+        fee: "Fee"
+      },
+      "league_data_product_create": {
+        name: "Data item for alliance created",
+        product_name: "Product name",
+        issuer: "Issuer",
+        fee: "Fee",
+        create_date_time:"Create datetime"
+      },
+      "league_data_product_update": {
+        name: "Data item for alliance updated",
+        free_data_product: "Product id",
+        new_product_name: "New product name",
+        new_status: "New status",
+        fee: "Fee"
+      },
+      "league_create": {
+        name: "Alliance created",
+        legue_name: "Legue name",
+        fee: "Fee",
+        create_date_time:"Create datetime"
+      },
+      "league_update": {
+        name: "Alliance updated",
+        legue: "Legue id",
+        new_legue_name: "New legue name",
+        new_status: "New status",
+        fee: "Fee"
+      },
       "data_transaction_create": {
-        "name": "Data transaction created",
-        "request_id": "Request id",
-        "product_id": "Product name",
-        "version": "Version",
-        "fee": "Fee",
-        "requester": "Requester",
-        "create_date_time": "Create datetime"
+        name: "Data transaction created",
+        request_id: "Request id",
+        product_id: "Product name",
+        version: "Version",
+        fee: "Fee",
+        requester: "Requester",
+        create_date_time: "Create datetime"
       },
       "data_transaction_update":{
-        "name": "Data transaction updated",
-        "request_id": "Request id",
-        "new_status": "New status",
-        "fee": "Fee",
-        "new_requester": "New requester",
-        "memo": "Memo"
+        name: "Data transaction updated",
+        request_id: "Request id",
+        new_status: "New status",
+        fee: "Fee",
+        new_requester: "New requester",
       },
       "data_transaction_pay":{
-        "name": "Data transaction pay",
-        "fee": "Fee",
-        "from": "From",
-        "to": "To",
-        "amount": "Amount",
-        "request_id": "Request id"
+        name: "Data transaction pay",
+        fee: "Fee",
+        from: "From",
+        to: "To",
+        amount: "Amount",
+        request_id: "Request id"
       },
-      "account_upgrade_data_transaction_member":"Upgrade to DE witness",
+      "account_upgrade_data_transaction_member": {
+        name: "Upgrade to DE witness",
+        fee: "Fee",
+        account_to_upgrade: 'Upgrade account',
+        upgrade_to_data_transaction_member: 'Upgrade to data transaction member'
+      },
       "data_transaction_datasource_upload":{
-        "name": "Copyright stored",
-        "request_id": "Request id",
-        "requester": "Requester",
-        "datasource": "Datasource",
-        "fee": "Fee"
+        name: "Copyright stored",
+        request_id: "Request id",
+        requester: "Requester",
+        datasource: "Datasource",
+        fee: "Fee"
       },
-      "data_transaction_datasource_validate_error":"Data transaction fail"
+      "data_transaction_datasource_validate_error":{
+        name: "Data transaction fail",
+        request_id: "Request id",
+        datasource: "Datasource",
+        fee: "Fee"
+      },
+      "status_states":{
+        0: "Unpublished",
+        1: "Published",
+        2: "Deleted"
+      }
     },
   },
   // account
