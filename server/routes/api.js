@@ -65,7 +65,7 @@ router.get('/account_balance/:account_id_or_name', function (req, res) {
 
 router.get('/header/:account_name', function (req, res) {
   var hash = crypto.createHash('sha256').update(req.params.account_name, 'utf8').digest('hex');
-  var size = req.query.size || 80;
+  var size = Number(req.query.size || "80");
   let png = jdenticon.toPng(hash, size);
   res.set('content-type', 'image/png');
   res.write(png);
