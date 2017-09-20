@@ -57,36 +57,52 @@ const locale = {
     trxTypes: {
       "all":"显示全部",
       "transfer": {
-        "name": "转账",
-        "from": "来自",
-        "amount": "金额",
-        "to": "发往",
-        "fee": "手续费",
+        name: "转账",
+        from: "来自",
+        amount: "金额",
+        to: "发往",
+        fee: "手续费",
       },
       "limit_order_create": "限价单",
       "limit_order_cancel": "取消限价单",
       "call_order_update": "更新订单",
       "account_create": {
-        "name":"创建账户",
-        "fee": "手续费",
-        "registrar": "注册人",
-        "referrer": "推荐人",
-        "account": "账户名",
+        name:"创建账户",
+        fee: "手续费",
+        registrar: "注册人",
+        referrer: "推荐人",
+        account: "账户名",
       },
       "account_update": {
-        "name":"更新账户",
-        "fee": "手续费",
-        "account": "账户名",
+        name:"更新账户",
+        fee: "手续费",
+        account: "账户名",
       },
       "account_whitelist": {
-        "name":"账户白名单",
-        "fee": "手续费",
-        "authorizing_account": "授权账户",
-        "account_to_list": "Listed account",
-        "new_listing": "New listing",
+        name:"账户白名单",
+        fee: "手续费",
+        authorizing_account: "授权账户",
+        account_to_list: "被操作账户",
+        new_listing: "操作",
+        whitelist_states: {
+          no_listing: "从列表移除",
+          white_listed: "加入白名单",
+          black_listed: "加入黑名单",
+          white_and_black_listed: "加入白/黑名单"
+        }
       },
-      "account_upgrade": "升级账户",
-      "account_transfer": "账户转移",
+      "account_upgrade": {
+        name: "升级账户",
+        account_to_upgrade: '升级账户',
+        fee: "手续费",
+        upgrade_to_lifetime_member: '认证为终身会员'
+      },
+      "account_transfer": {
+        name: "账户转移",
+        account_id: "原账户",
+        new_owner: "新账户",
+        fee: "手续费"
+      },
       "asset_create": "创建资产",
       "asset_update": "更新资产",
       "asset_update_bitasset": "更新智能币",
@@ -100,9 +116,24 @@ const locale = {
       "committee_member_create": "创建理事会成员",
       "witness_create": "创建见证人",
       "witness_withdraw_pay": "见证人取回报酬",
-      "proposal_create": "创建提案",
-      "proposal_update": "更新提案",
-      "proposal_delete": "删除提案",
+      "proposal": {
+        proposal_create: "创建提案",
+        proposal_update: "更新提案",
+        proposal_delete: "删除提案",
+        review_period: "复审期开始",
+        expiration_time: "过期时间",
+        proposed_ops: "提议操作",
+        fee_paying_account: "付费账户",
+        fee: "手续费",
+        update: {
+          active_approvals_to_add: "要添加的活跃权限许可",
+          active_approvals_to_remove: "要移除的活跃权限许可",
+          owner_approvals_to_add: "要添加的账户权限许可",
+          owner_approvals_to_remove: "要移除的账户权限许可",
+          key_approvals_to_add: "要添加的公钥许可",
+          key_approvals_to_remove: "要移除的公钥许可"
+        },
+      },
       "withdraw_permission_create": "创建提取权限",
       "withdraw_permission_update": "更新提取权限",
       "withdraw_permission_claim": "主张提取权限",
@@ -123,50 +154,154 @@ const locale = {
       "transfer_from_blind": "从隐私账户转出",
       "committee_member_update": "更新理事会成员账户",
       "asset_claim_fees": "领取资产手续费",
-      "account_upgrade_merchant":"商户认证",
-      "account_upgrade_datasource":"数据源认证",
+      "account_upgrade_merchant": {
+        name: "商户认证",
+        account_to_upgrade: "升级账户",
+        auth_referrer: "授权账户",
+        upgrade_to_merchant_member: "认证为认证商户",
+        fee: "手续费"
+      },
+      "account_upgrade_datasource": {
+        name: "数据源认证",
+        account_to_upgrade: "升级账户",
+        auth_referrer: "授权账户",
+        upgrade_to_datasource_member: "认证为数据源",
+        fee: "手续费"
+      },
+      "stale_data_market_category_create": "创建类目 | stale",
+      "stale_data_market_category_update": "更新类目 | stale",
+      "stale_free_data_product_create": {
+        name: "创建自由市场数据产品 | stale",
+        product_name: "产品名称",
+        issuer: "发行人",
+        fee: "手续费",
+        create_date_time:"创建时间"
+      },
+      "stale_free_data_product_update": {
+        name: "更新自由市场数据产品 | stale",
+        free_data_product: "产品ID",
+        new_product_name: "新产品名称",
+        new_status: "新状态",
+        fee: "手续费"
+      },
+      "stale_league_data_product_create": {
+        name: "创建联盟数据产品 | stale",
+        product_name: "产品名称",
+        issuer: "发行人",
+        fee: "手续费",
+        create_date_time:"创建时间"
+      },
+      "stale_league_data_product_update": {
+        name: "更新联盟数据产品 | stale",
+        free_data_product: "产品ID",
+        new_product_name: "新产品名称",
+        new_status: "新状态",
+        fee: "手续费"
+      },
+      "stale_league_create": {
+        name: "创建联盟 | stale",
+        league_name: "联盟名称",
+        fee: "手续费",
+        create_date_time:"创建时间"
+      },
+      "stale_league_update": {
+        name: "更新联盟 | stale",
+        league: "联盟ID",
+        new_league_name: "新联盟名称",
+        new_status: "新状态",
+        fee: "手续费"
+      },
       "data_market_category_create":"创建类目",
       "data_market_category_update":"更新类目",
-      "free_data_product_create":"创建自由市场数据产品",
-      "free_data_product_update":"更新自由市场数据产品",
-      "league_data_product_create": "创建联盟数据产品",
-      "league_data_product_update": "更新联盟数据产品",
-      "league_create": "创建联盟",
-      "league_update": "更新联盟",
+      "free_data_product_create": {
+        name: "创建自由市场数据产品",
+        product_name: "产品名称",
+        issuer: "发行人",
+        fee: "手续费",
+        create_date_time:"创建时间"
+      },
+      "free_data_product_update": {
+        name: "更新自由市场数据产品",
+        free_data_product: "产品ID",
+        new_product_name: "新产品名称",
+        new_status: "新状态",
+        fee: "手续费"
+      },
+      "league_data_product_create": {
+        name: "创建联盟数据产品",
+        product_name: "产品名称",
+        issuer: "发行人",
+        fee: "手续费",
+        create_date_time:"创建时间"
+      },
+      "league_data_product_update": {
+        name: "更新联盟数据产品",
+        free_data_product: "产品ID",
+        new_product_name: "新产品名称",
+        new_status: "新状态",
+        fee: "手续费"
+      },
+      "league_create": {
+        name: "创建联盟",
+        league_name: "联盟名称",
+        fee: "手续费",
+        create_date_time:"创建时间"
+      },
+      "league_update": {
+        name: "更新联盟",
+        league: "联盟ID",
+        new_league_name: "新联盟名称",
+        new_status: "新状态",
+        fee: "手续费"
+      },
       "data_transaction_create": {
-        "name": "发起数据交易",
-        "request_id": "请求ID",
-        "product_id": "产品名称",
-        "version": "版本",
-        "fee": "手续费",
-        "requester": "发起人",
-        "create_date_time": "创建时间"
+        name: "发起数据交易",
+        request_id: "请求ID",
+        product_id: "产品名称",
+        version: "版本",
+        fee: "手续费",
+        requester: "发起人",
+        create_date_time: "创建时间"
       },
       "data_transaction_update":{
-        "name": "更新数据交易",
-        "request_id": "请求ID",
-        "new_status": "",
-        "fee": "手续费",
-        "new_requester": "",
-        "memo": ""
+        name: "更新数据交易",
+        request_id: "请求ID",
+        fee: "手续费",
+        new_requester: "新发起人",
+        new_status: "新状态",
       },
       "data_transaction_pay":{
-        "name": "数据支付",
-        "fee": "手续费",
-        "from": "来自",
-        "to": "发往",
-        "amount": "金额",
-        "request_id": "请求ID"
+        name: "数据支付",
+        fee: "手续费",
+        from: "来自",
+        to: "发往",
+        amount: "金额",
+        request_id: "请求ID"
       },
-      "account_upgrade_data_transaction_member":"交易节点认证",
+      "account_upgrade_data_transaction_member": {
+        name: "交易节点认证",
+        fee: "手续费",
+        account_to_upgrade: '升级账户',
+        upgrade_to_data_transaction_member: '认证为交易确认节点'
+      },
       "data_transaction_datasource_upload":{
-        "name": "数据存证",
-        "request_id": "请求ID",
-        "requester": "发起人",
-        "datasource": "数据源",
-        "fee": "手续费"
+        name: "数据存证",
+        request_id: "请求ID",
+        requester: "发起人",
+        datasource: "数据源",
+        fee: "手续费"
       },
-      "data_transaction_datasource_validate_error":"数据交易失败"
+      "data_transaction_datasource_validate_error":{
+        name: "数据交易失败",
+        request_id: "请求ID",
+        datasource: "数据源",
+        fee: "手续费"
+      },
+      "status_states":{
+        0: "未发布",
+        1: "已发布",
+        2: "已删除"
+      }
     },
   },
   // account
