@@ -49,7 +49,7 @@ const locale = {
   // transaction
   transaction: {
     title: 'Transaction Info',
-    empty: 'No record',
+    empty: 'No record, Possible reason: The transaction information has not yet been recorded to the irreversible block',
     error:'Fetch error',
     current_block_number: 'Current Block',
     trx_op: "Operation Info",
@@ -132,11 +132,39 @@ const locale = {
       "league_data_product_update": "Data item for alliance updated",
       "league_create": "Alliance created",
       "league_update": "Alliance updated",
-      "data_transaction_create":"Data transaction created",
-      "data_transaction_update":"Data transaction updated",
-      "data_transaction_pay":"Data transaction pay",
+      "data_transaction_create": {
+        "name": "Data transaction created",
+        "request_id": "Request id",
+        "product_id": "Product name",
+        "version": "Version",
+        "fee": "Fee",
+        "requester": "Requester",
+        "create_date_time": "Create datetime"
+      },
+      "data_transaction_update":{
+        "name": "Data transaction updated",
+        "request_id": "Request id",
+        "new_status": "New status",
+        "fee": "Fee",
+        "new_requester": "New requester",
+        "memo": "Memo"
+      },
+      "data_transaction_pay":{
+        "name": "Data transaction pay",
+        "fee": "Fee",
+        "from": "From",
+        "to": "To",
+        "amount": "Amount",
+        "request_id": "Request id"
+      },
       "account_upgrade_data_transaction_member":"Upgrade to DE witness",
-      "data_transaction_datasource_upload":"Copyright stored",
+      "data_transaction_datasource_upload":{
+        "name": "Copyright stored",
+        "request_id": "Request id",
+        "requester": "Requester",
+        "datasource": "Datasource",
+        "fee": "Fee"
+      },
       "data_transaction_datasource_validate_error":"Data transaction fail"
     },
   },
