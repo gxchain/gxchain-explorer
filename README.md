@@ -8,6 +8,8 @@ GXChain Explorer is a search tool build on GXChain, supporting block search, tra
 
 > Please keep our copyright "Powered by GXB" if you want use it for free
 
+Thanks [shuang-guo](https://github.com/shuang-guo) for providing english translation
+
 ## 功能 Function
 - [x] 区块同步 Block synchronization
 - [x] 区块查询 Block search
