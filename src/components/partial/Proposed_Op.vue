@@ -1,9 +1,8 @@
 <template>
-  <div class="col-md-12">
+
     <div class="panel panel-default">
       <div class="panel-heading">
-        <span class="fa fa-list">&nbsp;{{$t('transaction.trx_op')}} <span v-if="id>0">{{id}}</span></span>
-        <span class="right" v-if="this.txid"><router-link :to="{path:'/transaction/'+this.txid}">txid:{{this.txid}}</router-link></span>
+        <span class="fa fa-tags">&nbsp;{{$t('transaction.trxTypes.proposal.proposed_ops')}}</span>
       </div>
       <div class="panel-body no-padding">
         <div class="table-responsive">
@@ -11,26 +10,26 @@
             <!-- 账户相关 -->
             <!-- 0:transfer -->
             <tbody v-if="ops[op[0]] == 'transfer'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-success">{{$t('transaction.trxTypes.transfer.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.transfer.from')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].from}">{{formatted_account(op[1].from,'from')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.transfer.to')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].to}">{{formatted_account(op[1].to,'to')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.transfer.amount')}}</th>
-                <td align="right">{{formatted_number(op[1].amount.asset_id,op[1].amount.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.transfer.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-success">{{$t('transaction.trxTypes.transfer.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.transfer.from')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].from}">{{formatted_account(op[1].from,'from')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.transfer.to')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].to}">{{formatted_account(op[1].to,'to')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.transfer.amount')}}</th>
+              <td align="right">{{formatted_number(op[1].amount.asset_id,op[1].amount.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.transfer.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
             </tbody>
             <!-- 1:limit_order_create -->
             <tbody v-if="ops[op[0]] == 'limit_order_create'">
@@ -62,64 +61,64 @@
             </tbody>
             <!-- 5:account_create -->
             <tbody v-if="ops[op[0]] == 'account_create'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_create.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_create.registrar')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].registrar}">{{formatted_account(op[1].registrar,'registrar')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_create.referrer')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].referrer}">{{formatted_account(op[1].referrer,'referrer')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_create.account')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].name}">{{op[1].name}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_create.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_create.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_create.registrar')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].registrar}">{{formatted_account(op[1].registrar,'registrar')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_create.referrer')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].referrer}">{{formatted_account(op[1].referrer,'referrer')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_create.account')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].name}">{{op[1].name}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
             </tbody>
             <!-- 6:account_update -->
             <tbody v-if="ops[op[0]] == 'account_update'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_update.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_update.account')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].account}">{{formatted_account(op[1].account,'account')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_update.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_update.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_update.account')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].account}">{{formatted_account(op[1].account,'account')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_update.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
             </tbody>
             <!-- 7:account_whitelist -->
             <tbody v-if="ops[op[0]] == 'account_whitelist'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_whitelist.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_whitelist.authorizing_account')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].authorizing_account}">{{formatted_account(op[1].authorizing_account,'authorizing_account')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_whitelist.account_to_list')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].account_to_list}">{{formatted_account(op[1].account_to_list,'account_to_list')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_whitelist.new_listing')}}</th>
-                <td align="right">{{$t(formatted_listing(op[1].new_listing))}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.account_whitelist.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.account_whitelist.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.authorizing_account')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].authorizing_account}">{{formatted_account(op[1].authorizing_account,'authorizing_account')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.account_to_list')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].account_to_list}">{{formatted_account(op[1].account_to_list,'account_to_list')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.new_listing')}}</th>
+              <td align="right">{{$t(formatted_listing(op[1].new_listing))}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.account_whitelist.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
             </tbody>
             <!-- 8:account_upgrade -->
             <tbody v-if="ops[op[0]] == 'account_upgrade'">
@@ -247,98 +246,7 @@
               <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.witness_update')}}</span></td>
             </tr>
             </tbody>
-            <!-- 22:proposal_create -->
-            <tbody v-if="ops[op[0]] == 'proposal_create'">
-            <tr>
-              <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.proposal.proposal_create')}}</span></td>
-            </tr>
-            <tr>
-              <th>{{$t('transaction.trxTypes.proposal.fee')}}</th>
-              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-            </tr>
-            <tr>
-              <th>{{$t('transaction.trxTypes.proposal.fee_paying_account')}}</th>
-              <td align="right"><router-link :to="{path: '/account/' + op[1].fee_paying_account}">{{formatted_account(op[1].fee_paying_account,'fee_paying_account')}}</router-link></td>
-            </tr>
-            <tr>
-              <th>{{$t('transaction.trxTypes.proposal.expiration_time')}}</th>
-              <td align="right">{{op[1].expiration_time}}</td>
-            </tr>
-            <tr v-if="op[1].proposed_ops[0]">
-              <td colspan="2"><Proposed_Op v-for="(operation,index) in op[1].proposed_ops[0]" :key="index" :id="index" :operation="operation"></Proposed_Op></td>
-            </tr>
-            </tbody>
-            <!-- 23:proposal_update -->
-            <tbody v-if="ops[op[0]] == 'proposal_update'">
-            <tr>
-              <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.proposal.proposal_update')}}</span></td>
-            </tr>
-            <tr>
-              <th>{{$t('transaction.trxTypes.proposal.fee')}}</th>
-              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-            </tr>
-            <tr>
-              <th>{{$t('transaction.trxTypes.proposal.fee_paying_account')}}</th>
-              <td align="right"><router-link :to="{path: '/account/' + op[1].fee_paying_account}">{{formatted_account(op[1].fee_paying_account,'fee_paying_account')}}</router-link></td>
-            </tr>
-            <tr v-if="op[1].active_approvals_to_add.length>0">
-              <th>{{$t('transaction.trxTypes.proposal.update.active_approvals_to_add')}}</th>
-              <td align="right">
-                <span class="account_span" v-for="(account,index) in op[1].active_approvals_to_add" :key="index">
-                  <router-link :to="{path: '/account/' + account}">{{account}}</router-link>
-                </span>
-              </td>
-            </tr>
-            <tr v-if="op[1].active_approvals_to_remove.length>0">
-              <th>{{$t('transaction.trxTypes.proposal.update.active_approvals_to_remove')}}</th>
-              <td align="right">
-                <span class="account_span" v-for="(account,index) in op[1].active_approvals_to_remove" :key="index">
-                  <router-link :to="{path: '/account/' + account}">{{account}}</router-link>
-                </span>
-              </td>
-            </tr>
-            <tr v-if="op[1].owner_approvals_to_add.length>0">
-              <th>{{$t('transaction.trxTypes.proposal.update.owner_approvals_to_add')}}</th>
-              <td align="right">
-                <span class="account_span" v-for="(account,index) in op[1].owner_approvals_to_add" :key="index">
-                  <router-link :to="{path: '/account/' + account}">{{account}}</router-link>
-                </span>
-              </td>
-            </tr>
-            <tr v-if="op[1].owner_approvals_to_remove.length>0">
-              <th>{{$t('transaction.trxTypes.proposal.update.owner_approvals_to_remove')}}</th>
-              <td align="right">
-                <span class="account_span" v-for="(account,index) in op[1].owner_approvals_to_remove" :key="index">
-                  <router-link :to="{path: '/account/' + account}">{{account}}</router-link>
-                </span>
-              </td>
-            </tr>
-            <tr v-if="op[1].key_approvals_to_add.length>0">
-              <th>{{$t('transaction.trxTypes.proposal.update.key_approvals_to_add')}}</th>
-              <td align="right">
-                <span class="account_span" v-for="(account,index) in op[1].key_approvals_to_add" :key="index">
-                  <router-link :to="{path: '/account/' + account}">{{account}}</router-link>
-                </span>
-              </td>
-            </tr>
-            <tr v-if="op[1].key_approvals_to_remove.length>0">
-              <th>{{$t('transaction.trxTypes.proposal.update.key_approvals_to_remove')}}</th>
-              <td align="right">
-                <span class="account_span" v-for="(account,index) in op[1].key_approvals_to_remove" :key="index">
-                  <router-link :to="{path: '/account/' + account}">{{account}}</router-link>
-                </span>
-              </td>
-            </tr>
-            </tbody>
-            <!-- 24:proposal_delete -->
-            <tbody v-if="ops[op[0]] == 'proposal_delete'">
-            <tr>
-              <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-danger">{{$t('transaction.trxTypes.proposal.proposal_delete')}}</span></td>
-            </tr>
-            </tbody>
+
             <!-- 25:withdraw_permission_create -->
             <tbody v-if="ops[op[0]] == 'withdraw_permission_create'">
             <tr>
@@ -635,76 +543,76 @@
             </tbody>
             <!-- 53:stale_league_create -->
             <tbody v-if="ops[op[0]] == 'stale_league_create'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.stale_league_create.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_create.league_name')}}</th>
-                <td align="right">{{op[1].league_name}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_create.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_create.create_date_time')}}</th>
-                <td align="right">{{op[1].create_date_time}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.stale_league_create.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_create.league_name')}}</th>
+              <td align="right">{{op[1].league_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_create.create_date_time')}}</th>
+              <td align="right">{{op[1].create_date_time}}</td>
+            </tr>
             </tbody>
             <!-- 54:stale_league_update -->
             <tbody v-if="ops[op[0]] == 'stale_league_update'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.stale_league_update.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_update.league')}}</th>
-                <td align="right">{{op[1].league}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_update.new_league_name')}}</th>
-                <td align="right">{{op[1].new_league_name}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_update.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.stale_league_update.new_status')}}</th>
-                <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.stale_league_update.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_update.league')}}</th>
+              <td align="right">{{op[1].league}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_update.new_league_name')}}</th>
+              <td align="right">{{op[1].new_league_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_update.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.stale_league_update.new_status')}}</th>
+              <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
+            </tr>
             </tbody>
             <!-- 55:data_transaction_create -->
             <tbody v-if="ops[op[0]] == 'data_transaction_create'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.data_transaction_create.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.request_id')}}</th>
-                <td align="right">{{op[1].request_id}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.product_id')}}</th>
-                <td align="right">{{formatted_product(op[1].product_id,'product_id')}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.version')}}</th>
-                <td align="right">{{op[1].version}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.requester')}}</th>
-                <td align="right"><router-link :to="{path: '/account/'+op[1].requester}">{{formatted_account(op[1].requester,'requester')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_create.create_date_time')}}</th>
-                <td align="right">{{op[1].create_date_time}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.data_transaction_create.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_create.request_id')}}</th>
+              <td align="right">{{op[1].request_id}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_create.product_id')}}</th>
+              <td align="right">{{formatted_product(op[1].product_id,'product_id')}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_create.version')}}</th>
+              <td align="right">{{op[1].version}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_create.requester')}}</th>
+              <td align="right"><router-link :to="{path: '/account/'+op[1].requester}">{{formatted_account(op[1].requester,'requester')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_create.create_date_time')}}</th>
+              <td align="right">{{op[1].create_date_time}}</td>
+            </tr>
             </tbody>
             <!-- 56:data_transaction_update -->
             <tbody v-if="ops[op[0]] == 'data_transaction_update'">
@@ -777,26 +685,26 @@
             </tbody>
             <!-- 59:data_transaction_datasource_upload -->
             <tbody v-if="ops[op[0]] == 'data_transaction_datasource_upload'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.data_transaction_datasource_upload.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.request_id')}}</th>
-                <td align="right">{{op[1].request_id}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.requester')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].requester}">{{formatted_account(op[1].requester,'requester')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.datasource')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].datasource}">{{formatted_account(op[1].datasource,'datasource')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.data_transaction_datasource_upload.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.request_id')}}</th>
+              <td align="right">{{op[1].request_id}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.requester')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].requester}">{{formatted_account(op[1].requester,'requester')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.datasource')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].datasource}">{{formatted_account(op[1].datasource,'datasource')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
             </tbody>
             <!-- 60:data_transaction_datasource_validate_error -->
             <tbody v-if="ops[op[0]] == 'data_transaction_datasource_validate_error'">
@@ -879,26 +787,26 @@
             </tbody>
             <!-- 65:league_data_product_create -->
             <tbody v-if="ops[op[0]] == 'league_data_product_create'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.league_data_product_create.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_data_product_create.product_name')}}</th>
-                <td align="right">{{op[1].product_name}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_data_product_create.issuer')}}</th>
-                <td align="right"><router-link :to="{path: '/account/' + op[1].issuer}">{{formatted_account(op[1].issuer,'issuer')}}</router-link></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_data_product_create.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_data_product_create.create_date_time')}}</th>
-                <td align="right">{{op[1].create_date_time}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.league_data_product_create.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.product_name')}}</th>
+              <td align="right">{{op[1].product_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.issuer')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].issuer}">{{formatted_account(op[1].issuer,'issuer')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.create_date_time')}}</th>
+              <td align="right">{{op[1].create_date_time}}</td>
+            </tr>
             </tbody>
             <!-- 66:league_data_product_update -->
             <tbody v-if="ops[op[0]] == 'league_data_product_update'">
@@ -925,65 +833,61 @@
             </tbody>
             <!-- 67:league_create -->
             <tbody v-if="ops[op[0]] == 'league_create'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.league_create.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_create.league_name')}}</th>
-                <td align="right">{{op[1].league_name}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_create.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_create.create_date_time')}}</th>
-                <td align="right">{{op[1].create_date_time}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.league_create.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_create.league_name')}}</th>
+              <td align="right">{{op[1].league_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_create.create_date_time')}}</th>
+              <td align="right">{{op[1].create_date_time}}</td>
+            </tr>
             </tbody>
             <!-- 68:league_update -->
             <tbody v-if="ops[op[0]] == 'league_update'">
-              <tr>
-                <th>{{$t('transaction.trx_type')}}</th>
-                <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.league_update.name')}}</span></td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_update.league')}}</th>
-                <td align="right">{{op[1].league}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_update.new_league_name')}}</th>
-                <td align="right">{{op[1].new_league_name}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_update.fee')}}</th>
-                <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
-              </tr>
-              <tr>
-                <th>{{$t('transaction.trxTypes.league_update.new_status')}}</th>
-                <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
-              </tr>
+            <tr>
+              <th>{{$t('transaction.trx_type')}}</th>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.league_update.name')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_update.league')}}</th>
+              <td align="right">{{op[1].league}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_update.new_league_name')}}</th>
+              <td align="right">{{op[1].new_league_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_update.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.league_update.new_status')}}</th>
+              <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
+            </tr>
             </tbody>
 
           </table>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
   import {ChainTypes} from 'gxbjs/es'
-  import Proposed_Op from './Proposed_Op.vue'
+
   import {fetch_account,fetch_product,formatted_asset} from '@/services/CommonService'
   let ops = Object.keys(ChainTypes.operations);
 
   export default {
     props: {
-      id: {
-        type: Number
-      },
       operation: {
         type: Array
       },
@@ -1042,18 +946,12 @@
           }
         }
       }
-    },
-    components: {
-      Proposed_Op: Proposed_Op
-    },
+    }
   }
 </script>
 
 <style scoped>
   .right{
     float: right;
-  }
-  .account_span{
-    padding-left:10px
   }
 </style>

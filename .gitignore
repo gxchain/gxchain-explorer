@@ -5,6 +5,7 @@ logs
 *.log
 
 # Temp data
+.bak
 .data
 dist
 server-dist
