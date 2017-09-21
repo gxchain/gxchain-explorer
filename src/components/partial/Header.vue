@@ -19,11 +19,11 @@
             <li><a href="#modal-about" data-toggle="modal">{{$t("header.about")}}</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                 aria-expanded="false">{{$t('header.language')}}<span class="caret"></span></a>
+                 aria-expanded="false"><img class="flagimg" :src="flagImg[$t('header.flag')]"><span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li @click="switchLanguage('zh')"><a href="javascript:;">中文</a></li>
+                <li @click="switchLanguage('zh')"><a href="javascript:;"><img class="flagimg" :src="flagImg['zh']">中文</a></li>
                 <li role="separator" class="divider"></li>
-                <li @click="switchLanguage('en')"><a href="javascript:;">English</a></li>
+                <li @click="switchLanguage('en')"><a href="javascript:;"><img class="flagimg" :src="flagImg['en']">English</a></li>
               </ul>
             </li>
           </ul>
@@ -56,7 +56,11 @@
   export default {
     data() {
       return {
-        search: ''
+        search: '',
+        flagImg: {
+            'zh': require('../../../static/language-dropdown/img/CN.png'),
+            'en': require('../../../static/language-dropdown/img/US.png')
+        }
       }
     },
     computed: {
@@ -222,5 +226,10 @@
 
   .site-header span {
     font-size: 14px
+  }
+
+  .flagimg{
+    width: 20px;
+    margin-right: 10px;
   }
 </style>

@@ -6,6 +6,7 @@ const locale = {
     account: 'Account',
     about: 'About',
     language: 'Language: English',
+    flag: 'en',
     title: 'GXB Block Explorer',
     subtitle: 'Find Block, Transaction and Account',
     search: 'Enter block number, txid, account name or id here'
