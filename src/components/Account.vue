@@ -101,7 +101,8 @@
       <div class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <span class="fa fa-users"></span>&nbsp;{{$t('index.transactions.title')}}
+            <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
+            <a class="pull-right more-btn" v-on:click="collapse" v-if="latestTransactions.length > 9">{{$t('account.basic.more')}}</a>
           </div>
           <div class="panel-body no-padding">
             <table class="table table-striped table-bordered no-margin">
@@ -112,7 +113,7 @@
                 <th class="right">{{$t('index.transactions.time')}}</th>
               </tr>
               </thead>
-              <History_Op :latestTransactions="latestTransactions"/>
+              <History_Op :latestTransactions="latestTransactions" parent="Account"/>
             </table>
           </div>
         </div>
@@ -139,7 +140,7 @@
       return {
         account_info: null,
         latestTransactions: [],
-        history_length: 9,
+        history_length: 100,
         ChainStore
       }
     },
@@ -149,7 +150,9 @@
       ...mapActions({
         setKeywords: 'setKeywords'
       }),
-
+      collapse() {
+        $('.collapse').collapse('toggle');
+      },
       onUpdate() {
         if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
           return;
@@ -188,7 +191,7 @@
         this.account_info  = null;
         this.latestTransactions  = [];
       },
-      '$route' (to, from) {
+      '$route' () {
         if (this.$route.params.id_or_name != this.keywords) {
           this.setKeywords({keywords: this.$route.params.id_or_name});
           this.account_info  = null;
@@ -244,13 +247,13 @@
   .center{
     text-align: center;
   }
-
+  .more-btn{
+    cursor: pointer;
+  }
   .overflow-wrap {
     word-break: break-all;
   }
-
   .overflow-nowrap{
     white-space: nowrap;
   }
-
 </style>

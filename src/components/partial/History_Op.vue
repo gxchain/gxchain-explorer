@@ -1,6 +1,6 @@
 <template>
   <tbody>
-    <tr v-for="(op,index) in latestTransactions" :key="index">
+    <tr v-for="(op,index) in latestTransactions" :key="index" :class="((index > 8)&&(parent == 'Account')) ? 'collapse' : ''">
       <!-- 账户相关 -->
       <!-- 0:transfer -->
       <th v-if="ops[op[0]] == 'transfer'">
@@ -769,6 +769,9 @@
     props: {
       latestTransactions: {
         type: Array
+      },
+      parent: {
+        type: String
       }
     },
     data() {

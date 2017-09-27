@@ -112,7 +112,7 @@
       <div class="col-md-8">
         <div v-if="latestBlocks" class="panel panel-default">
           <div class="panel-heading">
-            <span class="fa fa-users"></span>&nbsp;{{$t('index.transactions.title')}}
+            <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
           </div>
           <div class="panel-body no-padding">
             <table class="table table-striped table-bordered no-margin">
