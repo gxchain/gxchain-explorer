@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-
-    <div class="panel panel-default" v-if="block&&block.block_id">
+    <Loading v-show="loading"/>
+    <div class="panel panel-default" v-if="block&&block.block_id" v-show="!loading">
       <div class="panel-heading">
         <span class="fa fa-chain"></span>&nbsp;{{$t('block.title')}}
         <a class="pull-right" target="_blank" :href="'https://wallet.gxb.io/#/block/'+keywords">{{$t('block.more')}}</a>
@@ -35,8 +35,8 @@
 
 
     <!--区块json-->
-    <json v-if="block&&block.block_id" :json="block"></json>
-    <div v-else>
+    <json v-if="block&&block.block_id" :json="block" v-show="!loading"></json>
+    <div v-else v-show="!loading">
       <h4 class="page-header">{{$t('block.title')}}</h4>
       <p class="null-tip">{{$t('block.empty')}}</p>
     </div>
@@ -55,6 +55,7 @@
   export default {
     data() {
       return {
+        loading: true,
         block: null,
         account_name: null,
       }
@@ -70,6 +71,7 @@
         this.account_name = null;
         fetch_block(this.$route.params.block_height).then(function (resp) {
           self.block = resp.body;
+          self.loading = false;
           Apis.instance().db_api().exec("get_objects", [[self.block.witness]]).then((res)=>{
             fetch_account(res[0].witness_account).then(function (res) {
               self.account_name = res.body.name;
@@ -79,6 +81,7 @@
           })
         }, function () {
           self.block = {error: this.$t('block.error')};
+          self.loading = false;
         })
       },
 

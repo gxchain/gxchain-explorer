@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="row" v-if="account_info&&account_info.id">
+    <Loading v-show="loading"/>
+    <div class="row" v-if="account_info&&account_info.id" v-show="!loading">
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -119,7 +120,7 @@
         </div>
       </div>
     </div>
-    <div v-if="!account_info||!account_info.id">
+    <div v-if="!account_info||!account_info.id" v-show="!loading">
       <h4 class="page-header">{{$t('account.title')}}</h4>
       <p class="null-tip">{{$t('account.empty')}}</p>
     </div>
@@ -138,6 +139,7 @@
   export default {
     data() {
       return {
+        loading: true,
         account_info: null,
         latestTransactions: [],
         history_length: 100,
@@ -154,8 +156,13 @@
         $('.collapse').collapse('toggle');
       },
       onUpdate() {
-        if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
-          return;
+        try {
+          if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+            this.loading = false;
+            return;
+          }
+        }catch(e){
+          this.loading = false;
         }
         this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
         this.account_info.balances['1.3.0'] = this.account_info.balances['1.3.0'] ? this.formatted_number('1.3.0',ChainStore.getObject(this.account_info.balances['1.3.0']).get("balance"),5) : this.formatted_number('1.3.0',0,5);
@@ -178,6 +185,7 @@
               this.latestTransactions.pop();
             }
           }
+          this.loading = false;
         }
       },
 
@@ -227,7 +235,7 @@
     },
     mounted() {
       if (this.$route.params.id_or_name != this.keywords) {
-        this.setKeywords({keywords: this.$route.params.id_or_name})
+        this.setKeywords({keywords: this.$route.params.id_or_name});
       }
       ChainStore.subscribe(this.onUpdate);
     },

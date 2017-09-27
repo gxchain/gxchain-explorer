@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link :to="{path:'/'}" class="navbar-brand"><img height="28px" src="/static/logo-gxb.png"/>
+          <router-link :to="{path:'/'}" class="navbar-brand"><img height="28px" src="/static/logo-gxb.png" v-on:click="clearInput"/>
           </router-link>
         </div>
         <nav id="bs-navbar" class="collapse navbar-collapse">
@@ -86,6 +86,9 @@
       switchLanguage(locale) {
         this._i18n.locale = locale
         set_item('locale', locale)
+      },
+      clearInput() {
+        this.setKeywords({keywords: ''})
       }
     }
   }

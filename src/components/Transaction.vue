@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="row" v-if="transaction&&transaction.current_block_number">
+    <Loading v-show="loading"/>
+    <div class="row" v-if="transaction&&transaction.current_block_number" v-show="!loading">
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -27,9 +28,9 @@
       <Operation v-if="transaction&&transaction.current_block_number" v-for="(operation,index) in transaction.operations" :key="index" :id="index" :operation="operation"></Operation>
     </div>
 
-    <json v-if="transaction&&transaction.current_block_number" :json="transaction"></json>
+    <json v-if="transaction&&transaction.current_block_number" :json="transaction" v-show="!loading"></json>
 
-    <div v-if="!transaction||!transaction.current_block_number">
+    <div v-if="!transaction||!transaction.current_block_number" v-show="!loading">
       <h4 class="page-header">{{$t('transaction.title')}}</h4>
       <p class="null-tip">{{transaction.error || $t('transaction.empty')}}</p>
     </div>
@@ -45,6 +46,7 @@
   export default {
     data() {
       return {
+        loading: true,
         transaction: {}
       }
     },
@@ -59,8 +61,10 @@
         this.transaction = {};
         fetch_transaction(this.$route.params.tx_id).then(function (resp) {
           self.transaction = resp.body;
+          self.loading = false;
         }).catch(ex => {
           self.transaction = {error: this.$t('transaction.error')};
+          self.loading = false;
         });
       }
     },
