@@ -45,6 +45,12 @@ export const formatted_asset = (asset_id,amount,decimalOffset) => {
   }
 }
 
+export const calc_block_time = (block_number, block_interval, head_block, head_block_time,) => {
+  if (!block_interval || !head_block) return null;
+  const seconds_below = (head_block - block_number) * block_interval;
+  return new Date(head_block_time - seconds_below * 1000);
+}
+
 let fallbackStore = {};
 export const set_item = (key, val) => {
   try {

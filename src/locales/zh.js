@@ -27,13 +27,19 @@ const locale = {
     witness: {
       title: '活跃见证人',
       witness: '见证人',
-      last_confirmed_block: '最近确认区块',
+      last_confirmed_block: '最近确认',
       votes: '总票数'
     },
     committee: {
       title: '活跃理事会成员',
       account: '账户',
       votes: '总票数'
+    },
+    transactions: {
+      title: '最近交易记录',
+      type: '类型',
+      content: '内容',
+      time: '时间'
     }
   },
   // block
@@ -169,51 +175,20 @@ const locale = {
         upgrade_to_datasource_member: "认证为数据源",
         fee: "手续费"
       },
-      "stale_data_market_category_create": "创建类目 | stale",
-      "stale_data_market_category_update": "更新类目 | stale",
-      "stale_free_data_product_create": {
-        name: "创建自由市场数据产品 | stale",
-        product_name: "产品名称",
+      "data_market_category_create": {
+        name: "创建类目",
+        category_name: '类目名称',
         issuer: "发行人",
         fee: "手续费",
-        create_date_time:"创建时间"
+        create_date_time: "创建时间"
       },
-      "stale_free_data_product_update": {
-        name: "更新自由市场数据产品 | stale",
-        free_data_product: "产品ID",
-        new_product_name: "新产品名称",
+      "data_market_category_update": {
+        name: "更新类目",
+        category: "类目ID",
+        new_category_name: '类目名称',
         new_status: "新状态",
         fee: "手续费"
       },
-      "stale_league_data_product_create": {
-        name: "创建联盟数据产品 | stale",
-        product_name: "产品名称",
-        issuer: "发行人",
-        fee: "手续费",
-        create_date_time:"创建时间"
-      },
-      "stale_league_data_product_update": {
-        name: "更新联盟数据产品 | stale",
-        free_data_product: "产品ID",
-        new_product_name: "新产品名称",
-        new_status: "新状态",
-        fee: "手续费"
-      },
-      "stale_league_create": {
-        name: "创建联盟 | stale",
-        league_name: "联盟名称",
-        fee: "手续费",
-        create_date_time:"创建时间"
-      },
-      "stale_league_update": {
-        name: "更新联盟 | stale",
-        league: "联盟ID",
-        new_league_name: "新联盟名称",
-        new_status: "新状态",
-        fee: "手续费"
-      },
-      "data_market_category_create":"创建类目",
-      "data_market_category_update":"更新类目",
       "free_data_product_create": {
         name: "创建自由市场数据产品",
         product_name: "产品名称",
@@ -304,6 +279,64 @@ const locale = {
         2: "已删除"
       }
     },
+    operation: {
+      "pending": " %(blocks)s 个区块待定",
+      "no_recent": "近期无交易",
+      "reg_account": "{registrar} 注册了账户 {new_account}",
+      "transfer": "{from} 发送 {amount} 到 {to}",
+      "account_create": "{registrar} 注册了账户 {account}",
+      "account_transfer": "{account} 转移了账户 {new_account}",
+      "proposal_create": "{account} 创建了拟议交易",
+      "proposal_update": "{account} 更新了拟议交易",
+      "proposal_delete": "{account} 删除了拟议交易",
+      "fill_order": "{account} 以 {price} 的价格购买了 {received}",
+      "vesting_balance_withdraw": "{account} 提取了解冻金额 {amount}",
+      "balance_claim": "{account} 领取了余额 {amount}",
+      "publish_feed": "{account} 发布了喂价 {price}",
+      "set_proxy": "{account} 设置 {proxy} 为他的投票代理",
+      "update_account": "{account} 更新了它的账户信息",
+      "limit_order_sell": "{account} 提交卖单，以 {price} 的价格卖出 {amount} ",
+      "limit_order_buy": "{account} 提交买单，以 {price} 的价格买入 {amount} ",
+      "call_order_update": "{account} 调整了 {debtSymbol} 债务 {debt} ，以及抵押 {collateral}",
+      "asset_reserve": "{account} 保留了 {amount}",
+      "asset_issue": "{account} 发行了 {amount} 到 {to}",
+      "asset_create": "{account} 创建了资产 {asset}",
+      "asset_update": "{account} 更新了资产 {asset}",
+      "lifetime_upgrade_account": "{account} 升级到终身会员",
+      "annual_upgrade_account": "{account} 升级到年度会员",
+      "unlisted_by": "{lister} 将 {listee} 移出清单",
+      "whitelisted_by": "{lister} 将 {listee} 加入白名单",
+      "blacklisted_by": "{lister} 将 {listee} 加入黑名单",
+      "limit_order_cancel": "{account} 取消了订单 #%(order)s",
+      "transfer_account": "{account} 所有权转移到 {to}",
+      "asset_update_feed_producers": "{account} 更新了资产 {asset} 的喂价者",
+      "asset_fund_fee_pool": "{account} 向 {asset} 手续费池注入 {amount}",
+      "asset_settle": "{account} 请求清算 {amount}",
+      "asset_global_settle": "{account} 请求以 {price} 的价格进行全局清算 {asset}",
+      "witness_create": "{account} 升级到见证人",
+      "witness_update": "{account} 更新了见证人信息",
+      "witness_pay": "提取见证人收入到账户",
+      "witness_receive": "Received witness from witness",
+      "worker_create": "{account} 创建了预算提案，请求每日支付 {pay}",
+      "committee_member_update_global_parameters": "{account} 更新了全局理事会参数",
+      "override_transfer": "{issuer} 从 {from} 到 {to} 发送 {amount} ",
+      "account_upgrade_merchant":"{account} 认证为商户",
+      "account_upgrade_datasource":"{account} 认证为数据源",
+      "data_market_category_create":"{issuer} 创建了类目 {category}",
+      "data_market_category_update":"{issuer} 决议通过并更新了类目 {category}",
+      "free_data_product_create":"{issuer} 创建了自由市场数据产品 {product}",
+      "free_data_product_update":"{issuer} 决议通过并更新了自由市场数据产品 {product}",
+      "league_data_product_create": "{issuer} 创建了联盟数据产品 {product}",
+      "league_data_product_update": "{issuer} 决议通过并更新了联盟数据产品 {product}",
+      "league_create": "{issuer} 创建了联盟 {league}",
+      "league_update": "{issuer} 决议通过并更新了联盟 {league}",
+      "data_transaction_create": "{account} 发起了一笔数据交易请求",
+      "data_transaction_update":"{account} 更新了一笔数据交易请求状态",
+      "data_transaction_pay": "{from} 支付金额为 {amount} 的数据购买费用到 {to}",
+      "account_upgrade_data_transaction_member":"{account} 升级为交易确认节点",
+      "data_transaction_datasource_upload":"{account} 验证了数据源 {datasource} 的数据上传",
+      "data_transaction_datasource_validate_error":"{account} 数据返回验证失败"
+    }
   },
   // account
   account: {

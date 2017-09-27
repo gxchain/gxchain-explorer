@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <div class="row" v-if="account&&account.id">
+    <div class="row" v-if="account_info&&account_info.id">
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-address-card-o">&nbsp;{{$t('account.basic.title')}}</span>
-            <a class="pull-right" :href="'https://wallet.gxb.io/#/account/'+account.name+'/overview'"
+            <a class="pull-right" :href="'https://wallet.gxb.io/#/account/'+account_info.name+'/overview'"
                target="_blank">{{$t('account.basic.more')}}</a>
           </div>
           <div class="panel-body no-padding">
@@ -14,17 +14,17 @@
                 <tbody>
                 <tr>
                   <th width="220px">{{$t('account.basic.account_name')}}</th>
-                  <td>{{account.name}}</td>
+                  <td>{{account_info.name}}</td>
                 </tr>
                 <tr>
                   <th>{{$t('account.basic.account_id')}}</th>
-                  <td>{{account.id}}</td>
+                  <td>{{account_info.id}}</td>
                 </tr>
                 <tr>
                   <th>{{$t('account.basic.referrer_name')}}</th>
                   <td>
-                    <router-link :to="{path:'/block/'+account.referrer_name}">
-                      {{account.referrer_name}}({{account.referrer}})
+                    <router-link :to="{path:'/account/'+account_info.referrer_name}">
+                      {{account_info.referrer_name}}({{account_info.referrer}})
                     </router-link>
                   </td>
                 </tr>
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-legal"></span>&nbsp;{{$t('account.permissions.title')}}
@@ -51,17 +51,17 @@
                 <tbody>
                 <tr class="active">
                   <th width="80%"><span class="fa fa-lock">&nbsp;{{$t('account.permissions.active')}}</span></th>
-                  <th>{{$t('account.permissions.threshold')}}（{{account.active.weight_threshold}}）</th>
+                  <th>{{$t('account.permissions.threshold')}}({{account_info.active.weight_threshold}})</th>
                 </tr>
-                <tr v-for="auth in account.active.key_auths">
+                <tr v-for="auth in account_info.active.key_auths">
                   <td class="overflow-wrap">{{auth[0]}}</td>
                   <td>{{auth[1]}}</td>
                 </tr>
                 <tr class="active">
                   <th><span class="fa fa-lock">&nbsp;{{$t('account.permissions.owner')}}</span></th>
-                  <th>{{$t('account.permissions.threshold')}}（{{account.owner.weight_threshold}}）</th>
+                  <th>{{$t('account.permissions.threshold')}}({{account_info.owner.weight_threshold}})</th>
                 </tr>
-                <tr v-for="auth in account.owner.key_auths">
+                <tr v-for="auth in account_info.owner.key_auths">
                   <td class="overflow-wrap">{{auth[0]}}</td>
                   <td>{{auth[1]}}</td>
                 </tr>
@@ -70,8 +70,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-money"></span>&nbsp;{{$t('account.balances.title')}}
@@ -89,35 +87,61 @@
               <tbody>
               <tr>
                 <th>GXC</th>
-                <td align="right">{{account.balances['1.3.0'] | number(5)}}</td>
+                <td align="right">{{account_info.balances['1.3.0']}}</td>
               </tr>
               <tr>
                 <th>GXS</th>
-                <td align="right">{{account.balances['1.3.1'] | number(5)}}</td>
+                <td align="right">{{account_info.balances['1.3.1']}}</td>
               </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+      <div class="col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
+            <a class="pull-right more-btn" v-on:click="collapse" v-if="latestTransactions.length > 9">{{$t('account.basic.more')}}</a>
+          </div>
+          <div class="panel-body no-padding">
+            <table class="table table-striped table-bordered no-margin">
+              <thead>
+              <tr>
+                <th>{{$t('index.transactions.type')}}</th>
+                <th class="center">{{$t('index.transactions.content')}}</th>
+                <th class="right">{{$t('index.transactions.time')}}</th>
+              </tr>
+              </thead>
+              <History_Op :latestTransactions="latestTransactions" parent="Account"/>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div v-if="!account||!account.id">
+    <div v-if="!account_info||!account_info.id">
       <h4 class="page-header">{{$t('account.title')}}</h4>
-      <p class="null-tip">{{account.error || $t('account.empty')}}</p>
+      <p class="null-tip">{{$t('account.empty')}}</p>
     </div>
   </div>
 </template>
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
-  import {fetch_account, fetch_account_balance} from '@/services/CommonService'
+  import {ChainStore} from 'gxbjs'
+  import {Apis} from 'gxbjs-ws'
+  import {fetch_account, fetch_account_balance, formatted_asset, calc_block_time} from '@/services/CommonService'
   import Promise from 'bluebird'
   import filters from '@/filters'
+  import History_Op from './partial/History_Op.vue'
 
   export default {
     data() {
       return {
-        account: {}
+        account_info: null,
+        latestTransactions: [],
+        history_length: 100,
+        ChainStore
       }
     },
     filters: filters,
@@ -126,37 +150,53 @@
       ...mapActions({
         setKeywords: 'setKeywords'
       }),
+      collapse() {
+        $('.collapse').collapse('toggle');
+      },
+      onUpdate() {
+        if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+          return;
+        }
+        this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
+        this.account_info.balances['1.3.0'] = this.account_info.balances['1.3.0'] ? this.formatted_number('1.3.0',ChainStore.getObject(this.account_info.balances['1.3.0']).get("balance"),5) : this.formatted_number('1.3.0',0,5);
+        this.account_info.balances['1.3.1'] = this.account_info.balances['1.3.1'] ? this.formatted_number('1.3.1',ChainStore.getObject(this.account_info.balances['1.3.1']).get("balance"),5) : this.formatted_number('1.3.1',0,5);
 
-      fetch_account_info() {
-        let self = this;
-        Promise.all([
-          fetch_account(this.$route.params.id_or_name),
-          fetch_account_balance(this.$route.params.id_or_name)
-        ]).then(function (resps) {
-          let account = resps[0].body;
-          if (!account.id) {
-            return self.account = {};
+        if (this.account_info.history) {
+          let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
+          for (let i=length - 1; i>=0; i--){
+            this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
+
+            if (ChainStore.getObject("2.0.0")&&ChainStore.getObject("2.1.0")){
+              let block_interval = ChainStore.getObject("2.0.0").get("parameters").get("block_interval");
+              let head_block_number = ChainStore.getObject("2.1.0").get("head_block_number");
+              let head_block_time = new Date(ChainStore.getObject("2.1.0").get("time") + "+00:00");
+              this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
+            }
+
+            this.latestTransactions.unshift(this.account_info.history[i].op);
+            if (this.latestTransactions.length > length) {
+              this.latestTransactions.pop();
+            }
           }
-          let balances = resps[1].body;
-          let gxc = balances.find(function (balance_info) {
-            return balance_info.asset_type == '1.3.0'
-          });
-          let gxs = balances.find(function (balance_info) {
-            return balance_info.asset_type == '1.3.1'
-          });
-          account.balances['1.3.0'] = (gxc ? (gxc.balance / 100000).toFixed(5) : 0) + '';
-          account.balances['1.3.1'] = (gxs ? (gxs.balance / 100000).toFixed(5) : 0) + '';
+        }
+      },
 
-          self.account = account;
-        }).catch(ex => {
-          console.error(ex);
-          self.account = {error: '获取账户信息失败'};
-        })
+      formatted_number(asset_id, amount, decimalOffset) {
+        return formatted_asset(asset_id, amount, decimalOffset);
       }
     },
     watch: {
       keywords() {
-        this.fetch_account_info();
+        this.onUpdate();
+        this.account_info  = null;
+        this.latestTransactions  = [];
+      },
+      '$route' () {
+        if (this.$route.params.id_or_name != this.keywords) {
+          this.setKeywords({keywords: this.$route.params.id_or_name});
+          this.account_info  = null;
+          this.latestTransactions  = [];
+        }
       }
     },
     computed: {
@@ -167,19 +207,19 @@
 
       account_type() {
         let result = [];
-        if (this.account.membership_expiration_date != '1970-01-01T00:00:00') {
+        if (this.account_info.membership_expiration_date != '1970-01-01T00:00:00') {
           result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`)
         }
         else {
           result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`)
         }
-        if (this.account.merchant_expiration_date != '1970-01-01T00:00:00') {
+        if (this.account_info.merchant_expiration_date != '1970-01-01T00:00:00') {
           result.push(`<span class="label label-info">${this.$t('account.membership.merchant')}</span>`)
         }
-        if (this.account.datasource_expiration_date != '1970-01-01T00:00:00') {
+        if (this.account_info.datasource_expiration_date != '1970-01-01T00:00:00') {
           result.push(`<span class="label label-warning">${this.$t('account.membership.datasource')}</span>`)
         }
-        if (this.account.data_transaction_member_expiration_date != '1970-01-01T00:00:00') {
+        if (this.account_info.data_transaction_member_expiration_date != '1970-01-01T00:00:00') {
           result.push(`<span class="label label-warning">${this.$t('account.membership.data_transaction_member')}</span>`)
         }
         return result.join('&nbsp;');
@@ -189,19 +229,31 @@
       if (this.$route.params.id_or_name != this.keywords) {
         this.setKeywords({keywords: this.$route.params.id_or_name})
       }
-      this.fetch_account_info();
+      ChainStore.subscribe(this.onUpdate);
     },
+    destroyed() {
+      ChainStore.unsubscribe(this.onUpdate);
+    },
+    components: {
+      History_Op: History_Op
+    }
   }
 </script>
 
 <style scoped>
-
+  .right{
+    text-align: right;
+  }
+  .center{
+    text-align: center;
+  }
+  .more-btn{
+    cursor: pointer;
+  }
   .overflow-wrap {
     word-break: break-all;
   }
-
   .overflow-nowrap{
     white-space: nowrap;
   }
-
 </style>

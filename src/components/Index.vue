@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-show="true">
 
     <h4 class="page-header">{{$t('index.latest_status')}}:
       <small>{{$t('index.last_updated_at',{seconds:delta})}}</small>
@@ -48,7 +48,7 @@
       </div>
 
       <!--见证人-->
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div v-if="global_params" class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-eye"></span>&nbsp;{{$t('index.witness.title')}}
@@ -80,9 +80,7 @@
             </div>
           </div>
         </div>
-      </div>
-       <!--理事会成员-->
-      <div class="col-md-6">
+        <!--理事会成员-->
         <div v-if="global_params" class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-users"></span>&nbsp;{{$t('index.committee.title')}}
@@ -110,6 +108,27 @@
         </div>
       </div>
 
+       <!--历史交易记录-->
+      <div class="col-md-8">
+        <div v-if="latestBlocks" class="panel panel-default">
+          <div class="panel-heading">
+            <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
+          </div>
+          <div class="panel-body no-padding">
+            <table class="table table-striped table-bordered no-margin">
+              <thead>
+              <tr>
+                <th>{{$t('index.transactions.type')}}</th>
+                <th class="center">{{$t('index.transactions.content')}}</th>
+                <th class="right">{{$t('index.transactions.time')}}</th>
+              </tr>
+              </thead>
+              <History_Op :latestTransactions="latestTransactions"/>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -120,6 +139,8 @@
   import {ChainStore} from 'gxbjs'
   import {Apis, Manager} from 'gxbjs-ws'
   import filters from '../filters'
+  import History_Op from './partial/History_Op.vue'
+  import {calc_block_time} from '@/services/CommonService'
 
   export default {
     data() {
@@ -129,6 +150,9 @@
         block_info: null,
         global_params: null,
         supply_info: null,
+        latestBlocks: [],
+        latestTransactions: [],
+        history_length: 35,
         ChainStore
       }
     },
@@ -142,6 +166,7 @@
     mounted() {
       ChainStore.subscribe(this.onUpdate);
       Apis.instance().db_api().exec("get_objects", [['2.0.0', "2.1.0","2.3.1"]]).then(()=>{
+        this.getInitialBlocks(ChainStore.getObject("2.1.0").toJS().head_block_number);
         this.onUpdate()
       });
     },
@@ -171,6 +196,50 @@
         return ChainStore.getObject(witness) && ChainStore.getObject(witness).get('last_confirmed_block_num');
       },
 
+      getInitialBlocks(maxBlock) {
+        if (maxBlock) {
+          this.getBlocks(maxBlock , 5);
+        }
+      },
+
+      getBlocks(maxBlock, length) {
+        for (let i = length-1; i >= 0; i--) {
+          let height = maxBlock - i;
+          Apis.instance().db_api().exec("get_block", [
+            height
+          ])
+            .then((result) => {
+              if (!result) {
+                return false;
+              }
+              result.id = height; // The returned object for some reason does not include the block height..
+              this.latestBlocks.unshift(result);
+              if (this.latestBlocks.length > 20) {
+                this.latestBlocks.pop();
+              }
+              if (result.transactions.length > 0) {
+                result.transactions.forEach(trx => {
+                  trx.operations.forEach(op => {
+                    op.block_id = result.id;
+                    if (ChainStore.getObject("2.0.0")&&ChainStore.getObject("2.1.0")){
+                      let block_interval = ChainStore.getObject("2.0.0").get("parameters").get("block_interval");
+                      let head_block_number = ChainStore.getObject("2.1.0").get("head_block_number");
+                      let head_block_time = new Date(ChainStore.getObject("2.1.0").get("time") + "+00:00");
+                      op.timestamp = calc_block_time(result.id, block_interval, head_block_number, head_block_time);
+                    }
+                    this.latestTransactions.unshift(op);
+                    if (this.latestTransactions.length > this.history_length) {
+                      this.latestTransactions.pop();
+                    }
+                  })
+                });
+              }
+            }).catch((error) => {
+            console.log("Error in Index.getBlocks: ", error);
+          });
+        }
+      },
+
       runTimer: function () {
         let self = this;
         this.intervalHandler = setInterval(function () {
@@ -189,12 +258,28 @@
         this.global_params = ChainStore.getObject("2.0.0").toJS();
         this.block_info = ChainStore.getObject("2.1.0").toJS();
         this.supply_info = ChainStore.getObject('2.3.1').toJS();
+
+        if (this.latestBlocks[0]){
+          if (this.block_info.head_block_number > this.latestBlocks[0].id){
+            let length = this.block_info.head_block_number - this.latestBlocks[0].id;
+            this.getBlocks(this.block_info.head_block_number, length);
+          }
+        }
       }
-    }
+    },
+    components: {
+      History_Op: History_Op
+    },
   }
 </script>
 
 <style scoped>
+  .right{
+    text-align: right;
+  }
+  .center{
+    text-align: center;
+  }
 
   #search-result .btn-group {
     margin: 20px;
