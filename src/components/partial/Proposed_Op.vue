@@ -439,36 +439,68 @@
             <tbody v-if="ops[op[0]] == 'stale_data_market_category_create'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.stale_data_market_category_create')}}</span></td>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.data_market_category_create')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.category_name')}}</th>
+              <td align="right">{{op[1].category_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.issuer')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].issuer}">{{formatted_account(op[1].issuer,'issuer')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.create_date_time')}}</th>
+              <td align="right">{{op[1].create_date_time}}</td>
             </tr>
             </tbody>
             <!-- 48:stale_data_market_category_update -->
             <tbody v-if="ops[op[0]] == 'stale_data_market_category_update'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.stale_data_market_category_update')}}</span></td>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.data_market_category_update')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.category')}}</th>
+              <td align="right">{{op[1].category}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.new_category_name')}}</th>
+              <td align="right">{{op[1].new_category_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.new_status')}}</th>
+              <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
             </tr>
             </tbody>
             <!-- 49:stale_free_data_product_create -->
             <tbody v-if="ops[op[0]] == 'stale_free_data_product_create'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.stale_free_data_product_create.name')}}</span></td>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.free_data_product_create.name')}}</span></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_create.product_name')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_create.product_name')}}</th>
               <td align="right">{{op[1].product_name}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_create.issuer')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_create.issuer')}}</th>
               <td align="right"><router-link :to="{path: '/account/' + op[1].issuer}">{{formatted_account(op[1].issuer,'issuer')}}</router-link></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_create.fee')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_create.fee')}}</th>
               <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_create.create_date_time')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_create.create_date_time')}}</th>
               <td align="right">{{op[1].create_date_time}}</td>
             </tr>
             </tbody>
@@ -476,22 +508,22 @@
             <tbody v-if="ops[op[0]] == 'stale_free_data_product_update'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.stale_free_data_product_update.name')}}</span></td>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.free_data_product_update.name')}}</span></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_update.free_data_product')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_update.free_data_product')}}</th>
               <td align="right">{{op[1].free_data_product}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_update.new_product_name')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_update.new_product_name')}}</th>
               <td align="right">{{op[1].new_product_name}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_update.fee')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_update.fee')}}</th>
               <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_free_data_product_update.new_status')}}</th>
+              <th>{{$t('transaction.trxTypes.free_data_product_update.new_status')}}</th>
               <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
             </tr>
             </tbody>
@@ -499,22 +531,22 @@
             <tbody v-if="ops[op[0]] == 'stale_league_data_product_create'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.stale_league_data_product_create.name')}}</span></td>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.league_data_product_create.name')}}</span></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_create.product_name')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.product_name')}}</th>
               <td align="right">{{op[1].product_name}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_create.issuer')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.issuer')}}</th>
               <td align="right"><router-link :to="{path: '/account/' + op[1].issuer}">{{formatted_account(op[1].issuer,'issuer')}}</router-link></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_create.fee')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.fee')}}</th>
               <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_create.create_date_time')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_create.create_date_time')}}</th>
               <td align="right">{{op[1].create_date_time}}</td>
             </tr>
             </tbody>
@@ -522,22 +554,22 @@
             <tbody v-if="ops[op[0]] == 'stale_league_data_product_update'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.stale_league_data_product_update.name')}}</span></td>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.league_data_product_update.name')}}</span></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_update.league_data_product')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_update.league_data_product')}}</th>
               <td align="right">{{op[1].league_data_product}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_update.new_product_name')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_update.new_product_name')}}</th>
               <td align="right">{{op[1].new_product_name}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_update.fee')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_update.fee')}}</th>
               <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_data_product_update.new_status')}}</th>
+              <th>{{$t('transaction.trxTypes.league_data_product_update.new_status')}}</th>
               <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
             </tr>
             </tbody>
@@ -545,18 +577,18 @@
             <tbody v-if="ops[op[0]] == 'stale_league_create'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.stale_league_create.name')}}</span></td>
+              <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.league_create.name')}}</span></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_create.league_name')}}</th>
+              <th>{{$t('transaction.trxTypes.league_create.league_name')}}</th>
               <td align="right">{{op[1].league_name}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_create.fee')}}</th>
+              <th>{{$t('transaction.trxTypes.league_create.fee')}}</th>
               <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_create.create_date_time')}}</th>
+              <th>{{$t('transaction.trxTypes.league_create.create_date_time')}}</th>
               <td align="right">{{op[1].create_date_time}}</td>
             </tr>
             </tbody>
@@ -564,22 +596,22 @@
             <tbody v-if="ops[op[0]] == 'stale_league_update'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
-              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.stale_league_update.name')}}</span></td>
+              <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.league_update.name')}}</span></td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_update.league')}}</th>
+              <th>{{$t('transaction.trxTypes.league_update.league')}}</th>
               <td align="right">{{op[1].league}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_update.new_league_name')}}</th>
+              <th>{{$t('transaction.trxTypes.league_update.new_league_name')}}</th>
               <td align="right">{{op[1].new_league_name}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_update.fee')}}</th>
+              <th>{{$t('transaction.trxTypes.league_update.fee')}}</th>
               <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
             </tr>
             <tr>
-              <th>{{$t('transaction.trxTypes.stale_league_update.new_status')}}</th>
+              <th>{{$t('transaction.trxTypes.league_update.new_status')}}</th>
               <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
             </tr>
             </tbody>
@@ -731,12 +763,44 @@
               <th>{{$t('transaction.trx_type')}}</th>
               <td align="right"><span class="label label-warning">{{$t('transaction.trxTypes.data_market_category_create')}}</span></td>
             </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.category_name')}}</th>
+              <td align="right">{{op[1].category_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.issuer')}}</th>
+              <td align="right"><router-link :to="{path: '/account/' + op[1].issuer}">{{formatted_account(op[1].issuer,'issuer')}}</router-link></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_create.create_date_time')}}</th>
+              <td align="right">{{op[1].create_date_time}}</td>
+            </tr>
             </tbody>
             <!-- 62:data_market_category_update -->
             <tbody v-if="ops[op[0]] == 'data_market_category_update'">
             <tr>
               <th>{{$t('transaction.trx_type')}}</th>
               <td align="right"><span class="label label-primary">{{$t('transaction.trxTypes.data_market_category_update')}}</span></td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.category')}}</th>
+              <td align="right">{{op[1].category}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.new_category_name')}}</th>
+              <td align="right">{{op[1].new_category_name}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.fee')}}</th>
+              <td align="right">{{formatted_number(op[1].fee.asset_id,op[1].fee.amount,5)}}</td>
+            </tr>
+            <tr>
+              <th>{{$t('transaction.trxTypes.data_market_category_update.new_status')}}</th>
+              <td align="right">{{$t('transaction.trxTypes.status_states.' + op[1].new_status)}}</td>
             </tr>
             </tbody>
             <!-- 63:free_data_product_create -->

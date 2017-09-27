@@ -5,6 +5,7 @@ logs
 *.log
 
 # Temp data
+.DS_Store
 .bak
 .data
 dist

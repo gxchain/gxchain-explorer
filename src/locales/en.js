@@ -27,13 +27,19 @@ const locale = {
     witness: {
       title: 'Active Witnesses',
       witness: 'Witness',
-      last_confirmed_block: 'Last Confirmed Block',
+      last_confirmed_block: 'Confirmed',
       votes: 'Votes'
     },
     committee: {
       title: 'Active Committees',
       account: 'Account',
       votes: 'Votes'
+    },
+    transactions: {
+      title: 'Recent Transaction Records',
+      type: 'Type',
+      content: 'Content',
+      time: 'Time'
     }
   },
   // block
@@ -168,51 +174,20 @@ const locale = {
         upgrade_to_datasource_member: "Upgrade to datasource member",
         fee: "Fee"
       },
-      "stale_data_market_category_create":"Market category created | stale",
-      "stale_data_market_category_update":"Market category updated | stale",
-      "stale_free_data_product_create": {
-        name: "Data item for free marked created | stale",
-        product_name: "Product name",
+      "data_market_category_create": {
+        name: "Market category created",
+        category_name: 'Category name',
         issuer: "Issuer",
         fee: "Fee",
-        create_date_time:"Create datetime"
+        create_date_time: "Create datetime"
       },
-      "stale_free_data_product_update": {
-        name: "Data item form free market updated | stale",
-        free_data_product: "Product id",
-        new_product_name: "New product name",
+      "data_market_category_update": {
+        name: "Market category updated",
+        category: "Category id",
+        new_category_name: 'New category name',
         new_status: "New status",
         fee: "Fee"
       },
-      "stale_league_data_product_create": {
-        name: "Data item for alliance created | stale",
-        product_name: "Product name",
-        issuer: "Issuer",
-        fee: "Fee",
-        create_date_time:"Create datetime"
-      },
-      "stale_league_data_product_update": {
-        name: "Data item for alliance updated | stale",
-        free_data_product: "Product id",
-        new_product_name: "New product name",
-        new_status: "New status",
-        fee: "Fee"
-      },
-      "stale_league_create": {
-        name: "Alliance created | stale",
-        legue_name: "Legue name",
-        fee: "Fee",
-        create_date_time:"Create datetime"
-      },
-      "league_update": {
-        name: "Alliance updated | stale",
-        legue: "Legue id",
-        new_legue_name: "New legue name",
-        new_status: "New status",
-        fee: "Fee"
-      },
-      "data_market_category_create":"Market category created",
-      "data_market_category_update":"Market category updated",
       "free_data_product_create": {
         name: "Data item for free marked created",
         product_name: "Product name",
@@ -303,6 +278,64 @@ const locale = {
         2: "Deleted"
       }
     },
+    operation: {
+      "pending": "pending %(blocks)s blocks",
+      "no_recent": "No recent transactions",
+      "reg_account": "{registrar} registered the account {new_account}",
+      "transfer": "{from} sent {amount} to {to}",
+      "proposal_create": "{account} created a proposed transaction",
+      "proposal_update": "{account} updated a proposed transaction",
+      "proposal_delete": "{account} deleted a proposed transaction",
+      "account_create": "{registrar} created a account {account}",
+      "account_transfer": "{account} transfer to {new_account}",
+      "fill_order": "{account} bought {received} at {price}",
+      "vesting_balance_withdraw": "{account} withdrew vesting balance of {amount}",
+      "balance_claim": "{account} claimed a balance of {amount}",
+      "publish_feed": "{account} published feed price of {price}",
+      "set_proxy": "{account} set {proxy} as their voting proxy",
+      "update_account": "{account} updated their account data",
+      "limit_order_sell": "{account} placed an order to sell {amount} at {price}",
+      "limit_order_buy": "{account} placed an order to buy {amount} at {price}",
+      "limit_order_cancel": "{account} cancelled order #%(order)s",
+      "call_order_update": "{account} changed {debtSymbol} debt by {debt} and collateral by {collateral}",
+      "asset_reserve": "{account} reserved (burnt) {amount}",
+      "asset_issue": "{account} issued {amount} to {to}",
+      "asset_fund_fee_pool": "{account} funded {asset} fee pool with {amount}",
+      "asset_create": "{account} created the asset {asset}",
+      "asset_update": "{account} updated the asset {asset}",
+      "lifetime_upgrade_account": "{account} was upgraded to lifetime member",
+      "annual_upgrade_account": "{account} was upgraded to annual member",
+      "unlisted_by": "{lister} unlisted the account {listee}",
+      "whitelisted_by": "{lister} whitelisted the account {listee}",
+      "blacklisted_by": "{lister} blacklisted the account {listee}",
+      "transfer_account": "{account} ownership transferred to {to}",
+      "asset_update_feed_producers": "{account} updated the feed producers for the asset {asset}",
+      "asset_settle": "{account} requested settlement of {amount}",
+      "asset_global_settle": "{account} requested global settlement of {asset} at {price}",
+      "witness_create": "{account} was upgraded to become a witness",
+      "witness_update": "{account} update its witness info",
+      "witness_pay": "Withdrew witness pay to account",
+      "witness_receive": "Received witness from witness",
+      "committee_member_update_global_parameters": "{account} updated the global committee parameters",
+      "worker_create": "{account} created a worker proposal with daily pay of {pay}",
+      "override_transfer": "{issuer} transferred {amount} from {from} to {to}",
+      "account_upgrade_merchant":"{account} was upgraded to merchant",
+      "account_upgrade_datasource":"{account} was upgraded to datasource",
+      "data_market_category_create":"{issuer} created the market category {category}",
+      "data_market_category_update":"{issuer} passed the proposal and updated the market category {category}",
+      "free_data_product_create":"{issuer} created the free market product {product}",
+      "free_data_product_update":"{issuer} passed the proposal and updated the free market product {product}",
+      "league_data_product_create": "{issuer} created the alliance market product {product}",
+      "league_data_product_update": "{issuer} passed the proposal and updated the alliance market product named  {product}",
+      "league_create": "{issuer} created the league {league}",
+      "league_update": "{issuer} passed the proposal and updated the league {league}",
+      "data_transaction_create": "{account} created a data transaction",
+      "data_transaction_update":"{account} updated a data transaction",
+      "data_transaction_pay": "{from} payed {amount} for data transaction to {to}",
+      "account_upgrade_data_transaction_member":"{account} was upgraded to data transaction confirm node",
+      "data_transaction_datasource_upload":"{account} confirmed an data upload from {datasource}",
+      "data_transaction_datasource_validate_error":"{account} returned an error when processing the data upload"
+    }
   },
   // account
   account: {
