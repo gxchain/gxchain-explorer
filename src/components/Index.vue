@@ -167,8 +167,8 @@
     mounted() {
       ChainStore.subscribe(this.onUpdate);
       Apis.instance().db_api().exec("get_objects", [['2.0.0', "2.1.0","2.3.1"]]).then(()=>{
+        this.onUpdate();
         this.getInitialBlocks(ChainStore.getObject("2.1.0").toJS().head_block_number);
-        this.onUpdate()
       });
     },
 

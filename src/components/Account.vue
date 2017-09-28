@@ -195,15 +195,17 @@
     },
     watch: {
       keywords() {
+        this.loading = true;
+        this.account_info = null;
+        this.latestTransactions = [];
         this.onUpdate();
-        this.account_info  = null;
-        this.latestTransactions  = [];
       },
       '$route' () {
         if (this.$route.params.id_or_name != this.keywords) {
+          this.loading = true;
+          this.account_info = null;
+          this.latestTransactions = [];
           this.setKeywords({keywords: this.$route.params.id_or_name});
-          this.account_info  = null;
-          this.latestTransactions  = [];
         }
       }
     },

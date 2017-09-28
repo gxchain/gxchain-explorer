@@ -415,7 +415,7 @@
           self.$set(self.account, id, account.toJS().name);
         }).catch(ex => {
           console.error(ex);
-        })
+        });
       },
       formatted_number(asset_id, amount, decimalOffset) {
         return formatted_asset(asset_id, amount, decimalOffset);

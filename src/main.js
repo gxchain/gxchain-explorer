@@ -12,10 +12,10 @@ import Loading from './components/partial/Loading.vue'
 
 Vue.use(VueTimeago, {
   name: 'timeago',
-  locale: 'zh-CN',
+  locale: 'zh',
   locales: {
-    'zh-CN': require('vue-timeago/locales/zh-CN.json'),
-    'en-US': require('vue-timeago/locales/en-US.json')
+    'zh': require('vue-timeago/locales/zh-CN.json'),
+    'en': require('vue-timeago/locales/en-US.json')
   }
 })
 Vue.use(VueResource)

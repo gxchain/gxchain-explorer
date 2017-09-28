@@ -746,7 +746,7 @@
         </i18n>
       </td>
 
-      <td align="right"><timeago :since="op.timestamp" :auto-update="1"></timeago></td>
+      <td align="right"><timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago></td>
     </tr>
   </tbody>
 </template>
@@ -792,7 +792,7 @@
           self.$set(self.account, id, account.toJS().name);
         }).catch(ex => {
           console.error(ex);
-        })
+        });
       },
       formatted_number(asset_id, amount, decimalOffset) {
         return formatted_asset(asset_id, amount, decimalOffset);
