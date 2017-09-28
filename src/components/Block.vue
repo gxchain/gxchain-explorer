@@ -72,13 +72,15 @@
         fetch_block(this.$route.params.block_height).then(function (resp) {
           self.block = resp.body;
           self.loading = false;
-          Apis.instance().db_api().exec("get_objects", [[self.block.witness]]).then((res)=>{
-            fetch_account(res[0].witness_account).then(function (res) {
-              self.account_name = res.body.name;
-            }).catch(ex => {
-              console.error(ex);
+          if (self.block){
+            Apis.instance().db_api().exec("get_objects", [[self.block.witness]]).then((res)=>{
+              fetch_account(res[0].witness_account).then(function (res) {
+                self.account_name = res.body.name;
+              }).catch(ex => {
+                console.error(ex);
+              })
             })
-          })
+          }
         }, function () {
           self.block = {error: this.$t('block.error')};
           self.loading = false;
@@ -86,10 +88,12 @@
       },
 
       goNext() {
+        this.loading = true;
         this.setKeywords({keywords: parseInt(this.$route.params.block_height) + 1});
       },
 
       goPrev() {
+        this.loading = true;
         this.setKeywords({keywords: parseInt(this.$route.params.block_height) - 1});
       }
 
@@ -101,6 +105,7 @@
     },
     watch: {
       keywords() {
+        this.loading = true;
         this.fetch_block();
       }
     },

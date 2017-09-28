@@ -77,6 +77,7 @@
 
     watch: {
       keywords() {
+        this.loading = true;
         this.fetch_transaction()
       }
     },

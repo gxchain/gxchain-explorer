@@ -976,7 +976,7 @@
           self.op[1][key] = account.toJS().name;
         }).catch(ex => {
           console.error(ex);
-        })
+        });
         return this.op[1][key];
       },
       formatted_product(id, key) {
@@ -989,7 +989,7 @@
           self.op[1][key] = product.product_name;
         }).catch(ex => {
           console.error(ex);
-        })
+        });
         return this.op[1][key];
       },
       formatted_number(asset_id, amount, decimalOffset) {
