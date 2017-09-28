@@ -8,6 +8,7 @@ import VueResource from 'vue-resource'
 import store from '@/vuex/store'
 import locales from '@/locales'
 import VueTimeago from 'vue-timeago'
+import Loading from './components/partial/Loading.vue'
 
 Vue.use(VueTimeago, {
   name: 'timeago',
@@ -18,6 +19,7 @@ Vue.use(VueTimeago, {
   }
 })
 Vue.use(VueResource)
+Vue.component('Loading', Loading)
 
 Vue.config.productionTip = true
 

@@ -1,19 +1,19 @@
 <template>
-  <div class="container" v-show="true">
+  <div class="container">
+    <Loading v-show="loading"/>
 
-    <h4 class="page-header">{{$t('index.latest_status')}}:
+    <h4 class="page-header" v-show="!loading">{{$t('index.latest_status')}}:
       <small>{{$t('index.last_updated_at',{seconds:delta})}}</small>
     </h4>
 
-    <div class="row">
-
+    <div class="row" v-show="!loading">
       <!--区块信息-->
       <div class="col-md-12">
         <div v-if="block_info&&global_params&&supply_info" class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-chain"></span>&nbsp;{{$t('index.summary.title')}}
           </div>
-          <div class="panel-body no-padding">
+          <div class="panel-body no-padding table-responsive">
             <table class="table table-striped table-bordered no-margin">
               <tbody>
               <tr>
@@ -145,6 +145,7 @@
   export default {
     data() {
       return {
+        loading: true,
         timer: 0,
         last_updated_at: 0,
         block_info: null,
@@ -212,6 +213,7 @@
               if (!result) {
                 return false;
               }
+
               result.id = height; // The returned object for some reason does not include the block height..
               this.latestBlocks.unshift(result);
               if (this.latestBlocks.length > 20) {
@@ -234,8 +236,11 @@
                   })
                 });
               }
+
+              if (i == 0){this.loading = false;}
             }).catch((error) => {
-            console.log("Error in Index.getBlocks: ", error);
+              console.log("Error in Index.getBlocks: ", error);
+              this.loading = false;
           });
         }
       },
@@ -255,6 +260,7 @@
         if (!ChainStore.getObject("2.0.0") || !ChainStore.getObject("2.1.0") || !ChainStore.getObject("2.3.1")) {
           return;
         }
+
         this.global_params = ChainStore.getObject("2.0.0").toJS();
         this.block_info = ChainStore.getObject("2.1.0").toJS();
         this.supply_info = ChainStore.getObject('2.3.1').toJS();

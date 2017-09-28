@@ -946,8 +946,7 @@
 
 <script>
   import {ChainTypes} from 'gxbjs/es'
-
-  import {fetch_account,fetch_product,formatted_asset} from '@/services/CommonService'
+  import {fetch_account_by_chain,fetch_product_by_chain,formatted_asset} from '@/services/CommonService'
   let ops = Object.keys(ChainTypes.operations);
 
   export default {
@@ -967,42 +966,42 @@
       }
     },
     methods: {
-       formatted_account(id,key) {
-         let self = this;
-         if (this.items[key]){
-           return this.op[1][key];
-         }
-         self.items[key] = true;
-         fetch_account(id).then(function (res) {
-           self.op[1][key] = res.body.name;
-         }).catch(ex => {
-           console.error(ex);
-         })
-         return this.op[1][key];
-       },
-       formatted_product(id,key) {
-         let self = this;
-         if (this.items[key]){
-           return this.op[1][key];
-         }
-         self.items[key] = true;
-         fetch_product(id).then(function (res) {
-           self.op[1][key] = res.body.product_name;
-         }).catch(ex => {
-           console.error(ex);
-         })
-         return this.op[1][key];
-       },
-       formatted_number(asset_id,amount,decimalOffset) {
-          return formatted_asset(asset_id,amount,decimalOffset);
-       },
+      formatted_account(id, key) {
+        let self = this;
+        if (this.items[key]) {
+          return this.op[1][key];
+        }
+        this.items[key] = true;
+        fetch_account_by_chain(id).then((account) => {
+          self.op[1][key] = account.toJS().name;
+        }).catch(ex => {
+          console.error(ex);
+        })
+        return this.op[1][key];
+      },
+      formatted_product(id, key) {
+        let self = this;
+        if (this.items[key]) {
+          return this.op[1][key];
+        }
+        self.items[key] = true;
+        fetch_product_by_chain(id).then(function (product) {
+          self.op[1][key] = product.product_name;
+        }).catch(ex => {
+          console.error(ex);
+        })
+        return this.op[1][key];
+      },
+      formatted_number(asset_id, amount, decimalOffset) {
+        return formatted_asset(asset_id, amount, decimalOffset);
+      },
       formatted_listing(new_listing) {
-         let account_listing = {
-            no_listing: 0,
-            white_listed: 1,
-            black_listed: 2,
-            white_and_black_listed: 1 | 2
-         }
+        let account_listing = {
+          no_listing: 0,
+          white_listed: 1,
+          black_listed: 2,
+          white_and_black_listed: 1 | 2
+        }
         let listings = Object.keys(account_listing);
         for (var i = 0; i < listings.length; i++) {
           if (account_listing[listings[i]] === new_listing) {
