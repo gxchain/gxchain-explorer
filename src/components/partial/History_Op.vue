@@ -754,7 +754,7 @@
 <script>
   import {ChainTypes} from 'gxbjs/es'
   import History_Proposed_Op from './History_Proposed_Op.vue'
-  import {fetch_account, formatted_asset} from '@/services/CommonService'
+  import {fetch_account_by_chain, formatted_asset} from '@/services/CommonService'
 
   let ops = Object.keys(ChainTypes.operations);
   let account_listing = {
@@ -788,11 +788,11 @@
           return this.account[id];
         }
         this.items[id] = true;
-        fetch_account(id).then(function (res) {
-          self.$set(self.account, id, res.body.name);
+        fetch_account_by_chain(id).then((account) => {
+          self.$set(self.account, id, account.toJS().name);
         }).catch(ex => {
           console.error(ex);
-        });
+        })
       },
       formatted_number(asset_id, amount, decimalOffset) {
         return formatted_asset(asset_id, amount, decimalOffset);

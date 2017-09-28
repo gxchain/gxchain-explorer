@@ -30,6 +30,8 @@
     z-index:999;
   }
   .loading img{
+    width: 100%;
+    height: 100%;
     -webkit-transform: rotate(360deg);
     animation: rotation 1s linear infinite;
     -moz-animation: rotation 1s linear infinite;

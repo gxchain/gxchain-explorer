@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import filters from '@/filters'
+import Promise from 'bluebird'
+import {Apis} from 'gxbjs-ws'
+import {ChainStore, FetchChain} from 'gxbjs'
+import Immutable from 'immutable'
 const baseURL = location.host;
 
 export const fetch_block = (block_height) => {
@@ -29,6 +33,52 @@ export const fetch_account_balance = (id_or_name) => {
 export const fetch_product = (product_id) => {
   return Vue.http.get(`//${baseURL}/api/product/${product_id}`, {
     responseType: 'json'
+  })
+}
+
+export const fetch_account_by_chain = (account_name) => {
+  return new Promise(function (resolve, reject) {
+    return FetchChain('getAccount', account_name).then((account) => {
+      resolve(account);
+    }).catch((ex) => {
+      reject(ex);
+    });
+  })
+}
+
+export const fetch_product_by_chain = (prod_id) => {
+  return new Promise(function (resolve, reject) {
+    let prod = ChainStore.objects_by_id.get(prod_id);
+    if(prod){
+      prod = prod.toJS();
+      prod.schema_contexts = prod.schema_contexts.map(function (schema) {
+        if(typeof schema.schema_context =='string'){
+          schema.schema_context = JSON.parse(schema.schema_context);
+        }
+        return schema;
+      });
+      resolve(prod);
+    }
+    else{
+      return Apis.instance().db_api().exec('get_objects', [[prod_id]]).then(function (resp) {
+        if (!resp || resp.length == 0) {
+          reject(new Error('product not found'));
+        }
+        else {
+          let prod = Object.assign({schema_contexts:[]},resp[0]);
+          prod.schema_contexts = prod.schema_contexts.map(function (schema) {
+            if(typeof schema.schema_context =='string'){
+              schema.schema_context = JSON.parse(schema.schema_context);
+            }
+            return schema;
+          });
+          ChainStore.objects_by_id.set(prod_id,Immutable.fromJS(prod));
+          resolve(prod);
+        }
+      }).catch(function (ex) {
+        reject(ex);
+      });
+    }
   })
 }
 
