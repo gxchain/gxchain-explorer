@@ -15,8 +15,8 @@ Thanks [shuang-guo](https://github.com/shuang-guo) for providing english transla
 - [x] 区块查询 Block search
 - [x] 账户查询 Account search
 - [x] 交易查询 Transaction search
-- [ ] 可视化（部分）Visualization (partial)
-- [ ] 多语言（已添加中文、英文）Multi-language supported（Chinese and English）
+- [x] 可视化 Visualization
+- [x] 多语言（已添加中文、英文）Multi-language supported（Chinese and English）
 
 ## 环境依赖 System requirement
 
