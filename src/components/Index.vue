@@ -72,7 +72,7 @@
                     <router-link :to="{path:'/block/'+getLastConfirmedBlock(witness)}">{{getLastConfirmedBlock(witness)}}</router-link>
                   </td>
                   <td>
-                    {{ChainStore.getObject(witness)&&ChainStore.getObject(witness).get('total_votes')/100000 | number(2)}}&nbsp;GXC
+                    {{ChainStore.getObject(witness)&&ChainStore.getObject(witness).get('total_votes')/100000 | number(2)}}
                   </td>
                 </tr>
                 </tbody>
@@ -99,7 +99,7 @@
                   <router-link :to="{path:'/account/'+getCommitteeAccountName(member)}">{{getCommitteeAccountName(member)}}</router-link>
                 </td>
                 <td>
-                  {{ChainStore.getObject(member)&&ChainStore.getObject(member).get('total_votes')/100000 | number(2)}}&nbsp;GXC
+                  {{ChainStore.getObject(member)&&ChainStore.getObject(member).get('total_votes')/100000 | number(2)}}
                 </td>
               </tr>
               </tbody>
