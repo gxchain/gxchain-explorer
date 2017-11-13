@@ -110,11 +110,27 @@ const locale = {
         new_owner: "新账户",
         fee: "手续费"
       },
-      "asset_create": "创建资产",
+      "asset_create": {
+        name: "创建资产",
+        fee: "手续费",
+        issuer: "发行人",
+        symbol: "代码",
+        precision: "精度",
+        max_supply: "最大供给量",
+        description: "描述",
+        market_fee: "市场手续费",
+        maximum_market_fee: "最大市场手续费"
+      },
       "asset_update": "更新资产",
       "asset_update_bitasset": "更新智能币",
       "asset_update_feed_producers": "更新资产喂价者",
-      "asset_issue": "资产发行",
+      "asset_issue": {
+        name: "资产发行",
+        fee: "手续费",
+        issuer: "发行人",
+        asset_to_issue: "发行数量",
+        issue_to_account: "发往"
+      },
       "asset_reserve": "销毁资产",
       "asset_fund_fee_pool": "积存资产费用池",
       "asset_settle": "资产结算",
@@ -148,12 +164,24 @@ const locale = {
       "fill_order": "订单撮合",
       "delegate_update_global_parameters": "全局参数更新",
       "vesting_balance_create": "创建冻结账目余额",
-      "vesting_balance_withdraw": "提取解冻账户余额",
+      "vesting_balance_withdraw": {
+        name: "提取解冻账户余额",
+        owner: "发往",
+        amount: "金额",
+        fee: "手续费"
+      },
       "worker_create": "创建雇员",
       "custom": "自定义",
       "assert": "断言操作",
       "balance_claim": "领取余额",
-      "override_transfer": "优先覆盖转账",
+      "override_transfer": {
+        name: "优先覆盖转账",
+        fee: "手续费",
+        issuer: "发行人",
+        from: "来自",
+        to: "发往",
+        amount: "金额"
+      },
       "witness_update": "更新见证人",
       "committee_member_update_global_parameters": "全局参数更新",
       "transfer_to_blind": "向隐私账户转账",
@@ -273,6 +301,19 @@ const locale = {
         datasource: "数据源",
         fee: "手续费"
       },
+      "balance_lock":{
+        name: "冻结余额",
+        create_date_time: "开始时间",
+        amount: "锁定金额",
+        program_id: "锁仓期限",
+        term: "个月",
+        interest_rate: "奖励年化",
+      },
+      "balance_unlock":{
+        name: "解冻余额",
+        account: "解锁账户",
+        lock_id: "锁定ID"
+      },
       "status_states":{
         0: "未发布",
         1: "已发布",
@@ -335,7 +376,9 @@ const locale = {
       "data_transaction_pay": "{from} 支付金额为 {amount} 的数据购买费用到 {to}",
       "account_upgrade_data_transaction_member":"{account} 升级为交易确认节点",
       "data_transaction_datasource_upload":"{account} 验证了数据源 {datasource} 的数据上传",
-      "data_transaction_datasource_validate_error":"{account} 数据返回验证失败"
+      "data_transaction_datasource_validate_error":"{account} 数据返回验证失败",
+      "balance_lock":"{account} 参与忠诚计划，冻结了 {amount}",
+      "balance_unlock":"{account} 完成一笔忠诚计划余额解冻操作"
     }
   },
   // account

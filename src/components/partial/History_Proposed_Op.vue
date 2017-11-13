@@ -93,7 +93,13 @@
 
       <!-- 资产相关 -->
       <!-- 10:asset_create -->
-      <td align="right" v-if="ops[op[0]] == 'asset_create'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'asset_create'">
+        <i18n path="transaction.operation.asset_create">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].issuer)}">{{ formatted_account(op[1].issuer) }}
+          </router-link>
+          <span place="asset">{{ op[1].symbol}}</span>
+        </i18n>
+      </td>
       <!-- 11:asset_update -->
       <td align="right" v-if="ops[op[0]] == 'asset_update'">-</td>
       <!-- 12:asset_update_bitasset -->
@@ -101,7 +107,15 @@
       <!-- 13:asset_update_feed_producers -->
       <td align="right" v-if="ops[op[0]] == 'asset_update_feed_producers'">-</td>
       <!-- 14:asset_issue -->
-      <td align="right" v-if="ops[op[0]] == 'asset_issue'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'asset_issue'">
+        <i18n path="transaction.operation.asset_issue">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].issuer)}">{{ formatted_account(op[1].issuer) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].asset_to_issue.asset_id, op[1].asset_to_issue.amount, 5) }}</span>
+          <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].issue_to_account)}">{{ formatted_account(op[1].issue_to_account) }}
+          </router-link>
+        </i18n>
+      </td>
       <!-- 15:asset_reserve -->
       <td align="right" v-if="ops[op[0]] == 'asset_reserve'">-</td>
       <!-- 16:asset_fund_fee_pool -->
@@ -136,7 +150,14 @@
       <!-- 32:vesting_balance_create -->
       <td align="right" v-if="ops[op[0]] == 'vesting_balance_create'">-</td>
       <!-- 33:vesting_balance_withdraw -->
-      <td align="right" v-if="ops[op[0]] == 'vesting_balance_withdraw'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'vesting_balance_withdraw'">
+        <i18n path="transaction.operation.vesting_balance_withdraw">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].owner)}">
+            {{ formatted_account(op[1].owner) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+        </i18n>
+      </td>
       <!-- 34:worker_create -->
       <td align="right" v-if="ops[op[0]] == 'worker_create'">-</td>
       <!-- 35:custom -->
@@ -146,7 +167,20 @@
       <!-- 37:balance_claim -->
       <td align="right" v-if="ops[op[0]] == 'balance_claim'">-</td>
       <!-- 38:override_transfer -->
-      <td align="right" v-if="ops[op[0]] == 'override_transfer'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'override_transfer'">
+        <i18n path="transaction.operation.override_transfer">
+          <router-link place="issuer" :to="{path: '/account/' + formatted_account(op[1].issuer)}">
+            {{ formatted_account(op[1].issuer) }}
+          </router-link>
+          <router-link place="from" :to="{path: '/account/' + formatted_account(op[1].from)}">
+            {{ formatted_account(op[1].from) }}
+          </router-link>
+          <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].to)}">
+            {{ formatted_account(op[1].to) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+        </i18n>
+      </td>
       <!-- 39:transfer_to_blind -->
       <td align="right" v-if="ops[op[0]] == 'transfer_to_blind'">-</td>
       <!-- 40:blind_transfer -->
@@ -374,6 +408,24 @@
           <span place="league">{{op[1].new_league_name}}</span>
         </i18n>
       </td>
+
+      <!-- 71:balance_lock -->
+      <td align="right" v-if="ops[op[0]] == 'balance_lock'">
+        <i18n path="transaction.operation.balance_lock">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1]['account'])}">
+            {{ formatted_account(op[1]['account']) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+        </i18n>
+      </td>
+      <!-- 72:balance_unlock -->
+      <td align="right" v-if="ops[op[0]] == 'balance_unlock'">
+        <i18n path="transaction.operation.balance_unlock">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1]['account'])}">
+            {{ formatted_account(op[1]['account']) }}
+          </router-link>
+        </i18n>
+      </td>
     </tr>
   </tbody>
 </template>
@@ -388,18 +440,15 @@
     white_listed: 1,
     black_listed: 2,
     white_and_black_listed: 1 | 2
-  }
+  };
   let listings = Object.keys(account_listing);
-
   export default {
     props: {
-      latestTransactions: {
-        type: Array
-      }
+      latestTransactions: {}
     },
     data() {
       return {
-        items: [],
+        items: {},
         account: {},
         ops: Object.keys(ChainTypes.operations)
       }
@@ -414,6 +463,7 @@
         fetch_account_by_chain(id).then((account) => {
           self.$set(self.account, id, account.toJS().name);
         }).catch(ex => {
+          self.items[id] = false;
           console.error(ex);
         });
       },

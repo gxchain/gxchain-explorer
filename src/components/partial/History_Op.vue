@@ -145,10 +145,16 @@
       <!-- 10:asset_create -->
       <th v-if="ops[op[0]] == 'asset_create'">
         <router-link :to="{path: '/block/' + op['block_id']}">
-          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-warning">{{$t('transaction.trxTypes.asset_create')}}</span>
+          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-warning">{{$t('transaction.trxTypes.asset_create.name')}}</span>
         </router-link>
       </th>
-      <td align="right" v-if="ops[op[0]] == 'asset_create'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'asset_create'">
+        <i18n path="transaction.operation.asset_create">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].issuer)}">{{ formatted_account(op[1].issuer) }}
+          </router-link>
+          <span place="asset">{{ op[1].symbol}}</span>
+        </i18n>
+      </td>
       <!-- 11:asset_update -->
       <th v-if="ops[op[0]] == 'asset_update'">
         <router-link :to="{path: '/block/' + op['block_id']}">
@@ -173,10 +179,18 @@
       <!-- 14:asset_issue -->
       <th v-if="ops[op[0]] == 'asset_issue'">
         <router-link :to="{path: '/block/' + op['block_id']}">
-          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-warning">{{$t('transaction.trxTypes.asset_issue')}}</span>
+          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-warning">{{$t('transaction.trxTypes.asset_issue.name')}}</span>
         </router-link>
       </th>
-      <td align="right" v-if="ops[op[0]] == 'asset_issue'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'asset_issue'">
+        <i18n path="transaction.operation.asset_issue">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].issuer)}">{{ formatted_account(op[1].issuer) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].asset_to_issue.asset_id, op[1].asset_to_issue.amount, 5) }}</span>
+          <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].issue_to_account)}">{{ formatted_account(op[1].issue_to_account) }}
+          </router-link>
+        </i18n>
+      </td>
       <!-- 15:asset_reserve -->
       <th v-if="ops[op[0]] == 'asset_reserve'">
         <router-link :to="{path: '/block/' + op['block_id']}">
@@ -327,10 +341,17 @@
       <!-- 33:vesting_balance_withdraw -->
       <th v-if="ops[op[0]] == 'vesting_balance_withdraw'">
         <router-link :to="{path: '/block/' + op['block_id']}">
-          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-primary">{{$t('transaction.trxTypes.vesting_balance_withdraw')}}</span>
+          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-primary">{{$t('transaction.trxTypes.vesting_balance_withdraw.name')}}</span>
         </router-link>
       </th>
-      <td align="right" v-if="ops[op[0]] == 'vesting_balance_withdraw'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'vesting_balance_withdraw'">
+        <i18n path="transaction.operation.vesting_balance_withdraw">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].owner)}">
+            {{ formatted_account(op[1].owner) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+        </i18n>
+      </td>
       <!-- 34:worker_create -->
       <th v-if="ops[op[0]] == 'worker_create'">
         <router-link :to="{path: '/block/' + op['block_id']}">
@@ -362,10 +383,23 @@
       <!-- 38:override_transfer -->
       <th v-if="ops[op[0]] == 'override_transfer'">
         <router-link :to="{path: '/block/' + op['block_id']}">
-          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-primary">{{$t('transaction.trxTypes.override_transfer')}}</span>
+          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-primary">{{$t('transaction.trxTypes.override_transfer.name')}}</span>
         </router-link>
       </th>
-      <td align="right" v-if="ops[op[0]] == 'override_transfer'">-</td>
+      <td align="right" v-if="ops[op[0]] == 'override_transfer'">
+        <i18n path="transaction.operation.override_transfer">
+          <router-link place="issuer" :to="{path: '/account/' + formatted_account(op[1].issuer)}">
+            {{ formatted_account(op[1].issuer) }}
+          </router-link>
+          <router-link place="from" :to="{path: '/account/' + formatted_account(op[1].from)}">
+            {{ formatted_account(op[1].from) }}
+          </router-link>
+          <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].to)}">
+            {{ formatted_account(op[1].to) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+        </i18n>
+      </td>
       <!-- 39:transfer_to_blind -->
       <th v-if="ops[op[0]] == 'transfer_to_blind'">
         <router-link :to="{path: '/block/' + op['block_id']}">
@@ -746,6 +780,34 @@
         </i18n>
       </td>
 
+      <!-- 71:balance_lock -->
+      <th v-if="ops[op[0]] == 'balance_lock'">
+        <router-link :to="{path: '/block/' + op['block_id']}">
+          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-primary">{{$t('transaction.trxTypes.balance_lock.name')}}</span>
+        </router-link>
+      </th>
+      <td align="right" v-if="ops[op[0]] == 'balance_lock'">
+        <i18n path="transaction.operation.balance_lock">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1]['account'])}">
+            {{ formatted_account(op[1]['account']) }}
+          </router-link>
+          <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+        </i18n>
+      </td>
+      <!-- 72:balance_unlock -->
+      <th v-if="ops[op[0]] == 'balance_unlock'">
+        <router-link :to="{path: '/block/' + op['block_id']}">
+          <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"  class="label label-primary">{{$t('transaction.trxTypes.balance_unlock.name')}}</span>
+        </router-link>
+      </th>
+      <td align="right" v-if="ops[op[0]] == 'balance_unlock'">
+        <i18n path="transaction.operation.balance_unlock">
+          <router-link place="account" :to="{path: '/account/' + formatted_account(op[1]['account'])}">
+            {{ formatted_account(op[1]['account']) }}
+          </router-link>
+        </i18n>
+      </td>
+
       <td align="right"><timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago></td>
     </tr>
   </tbody>
@@ -762,21 +824,18 @@
     white_listed: 1,
     black_listed: 2,
     white_and_black_listed: 1 | 2
-  }
+  };
   let listings = Object.keys(account_listing);
-
   export default {
     props: {
-      latestTransactions: {
-        type: Array
-      },
+      latestTransactions: {},
       parent: {
         type: String
       }
     },
     data() {
       return {
-        items: [],
+        items: {},
         account: {},
         ops: Object.keys(ChainTypes.operations)
       }
@@ -791,6 +850,7 @@
         fetch_account_by_chain(id).then((account) => {
           self.$set(self.account, id, account.toJS().name);
         }).catch(ex => {
+          self.items[id] = false;
           console.error(ex);
         });
       },
