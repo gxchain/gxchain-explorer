@@ -4,41 +4,30 @@ import {ChainStore, FetchChain} from 'gxbjs'
 import Immutable from 'immutable'
 
 /**
- * 获取账户信息
+ * get account information by name
  * @param account_name
- * @returns {*}
  */
-const fetch_account = function (account_name) {
-  return new Promise(function (resolve, reject) {
-    return FetchChain('getAccount', account_name).then((account) => {
-      resolve(account);
-    }).catch((ex) => {
-      reject(ex);
-    });
-  })
+const fetch_account = (account_name) => {
+  return Apis.instance().db_api().exec('get_account_by_name', [account_name])
 }
 
+const fetch_full_account = (account) => {
+  return Apis.instance().db_api().exec('get_full_accounts', [[account], true])
+}
+
+
 /**
- * 获取最新账户余额
+ * fetch account balance of GXS by account name or id
  * @param account_name
+ * @returns {bluebird}
  */
-const fetch_account_balance = function (account_name) {
+const fetch_account_balance = (account_name) => {
   return new Promise((resolve, reject) => {
-    fetch_account(account_name).then((account) => {
-      let balanceObj = account.get('balances').toJS();
-      let assets = Object.keys(balanceObj);
-      let balanceIds = [];
-      assets.forEach(function (asset) {
-        balanceIds.push(balanceObj[asset]);
+    resolve(fetch_account(account_name).then((account) => {
+      return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
+        return balances;
       })
-      Apis.instance().db_api().exec('get_objects', [balanceIds], true).then((balances) => {
-        resolve(balances);
-      }).catch(ex => {
-        reject(ex);
-      })
-    }).catch(ex => {
-      reject(ex)
-    })
+    }))
   })
 }
 
@@ -118,6 +107,7 @@ export default {
   gxs_supply,
   fetch_block,
   fetch_account,
+  fetch_full_account,
   fetch_account_balance,
   fetch_product
 };
