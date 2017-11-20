@@ -110,11 +110,27 @@ const locale = {
         new_owner: "New Owner",
         fee: "Fee"
       },
-      "asset_create": "Create asset",
+      "asset_create": {
+        name: "Create asset",
+        fee: "Fee",
+        issuer: "Issuer",
+        symbol: "Symbol",
+        precision: "Precision",
+        max_supply: "Maximum supply",
+        description: "Description",
+        market_fee: "Market fee",
+        maximum_market_fee: "Maximum market fee"
+      },
       "asset_update": "Update asset",
       "asset_update_bitasset": "Update SmartCoin",
       "asset_update_feed_producers": "Update asset feed producers",
-      "asset_issue": "Issue asset",
+      "asset_issue": {
+        name: "Issue asset",
+        fee: "Fee",
+        issuer: "Issuer",
+        asset_to_issue: "Amount to issue",
+        issue_to_account: "To"
+      },
       "asset_reserve": "Reserve asset",
       "asset_fund_fee_pool": "Fund asset fee pool",
       "asset_settle": "Asset settlement",
@@ -150,12 +166,24 @@ const locale = {
       "fill_order": "Fill order",
       "committee_member_update_global_parameters": "Global parameters update",
       "vesting_balance_create": "Create vesting balance",
-      "vesting_balance_withdraw": "Withdraw vesting balance",
+      "vesting_balance_withdraw": {
+        name: "Withdraw vesting balance",
+        owner: "To",
+        amount: "Amount",
+        fee: "Fee"
+      },
       "worker_create": "Create budget item",
       "custom": "Custom",
       "assert": "Assert operation",
       "balance_claim": "Claim balance",
-      "override_transfer": "Override transfer",
+      "override_transfer": {
+        name: "Override transfer",
+        fee: "Fee",
+        issuer: "Issuer",
+        from: "From",
+        to: "To",
+        amount: "Amount"
+      },
       "transfer_to_blind": "Transfer to blinded account",
       "blind_transfer": "Blinded transfer",
       "transfer_from_blind": "Transfer from blinded account",
@@ -272,6 +300,19 @@ const locale = {
         datasource: "Datasource",
         fee: "Fee"
       },
+      "balance_lock":{
+        name: "Banlance Lock",
+        create_date_time: "Start Date",
+        amount: "Lockup Amount",
+        program_id: "Lockup Term",
+        term: " Months",
+        interest_rate: "Annualized Bonus"
+      },
+      "balance_unlock":{
+        name: "Balance Unlock",
+        account: "Unlock Account",
+        lock_id: "Lock ID",
+      },
       "status_states":{
         0: "Unpublished",
         1: "Published",
@@ -334,7 +375,9 @@ const locale = {
       "data_transaction_pay": "{from} payed {amount} for data transaction to {to}",
       "account_upgrade_data_transaction_member":"{account} was upgraded to data transaction confirm node",
       "data_transaction_datasource_upload":"{account} confirmed an data upload from {datasource}",
-      "data_transaction_datasource_validate_error":"{account} returned an error when processing the data upload"
+      "data_transaction_datasource_validate_error":"{account} returned an error when processing the data upload",
+      "balance_lock":"{account} locked {amount} for loyalty program",
+      "balance_unlock":"{account} complete a loyalty program"
     }
   },
   // account
