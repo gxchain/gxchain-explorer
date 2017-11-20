@@ -776,7 +776,7 @@
     },
     data() {
       return {
-        items: [],
+        items: {},
         account: {},
         ops: Object.keys(ChainTypes.operations)
       }

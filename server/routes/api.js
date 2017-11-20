@@ -45,7 +45,7 @@ router.get('/transaction/:tx_id', function (req, res) {
  * 账户查询
  */
 router.get('/account/:account_id_or_name', function (req, res) {
-  GXChainService.fetch_account(req.params.account_id_or_name).then((account) => {
+  GXChainService.fetch_full_account(req.params.account_id_or_name).then((account) => {
     res.send(account.toJS());
   }).catch(ex => {
     res.send({});
