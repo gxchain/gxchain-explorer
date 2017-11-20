@@ -466,6 +466,7 @@
           self.items[id] = false;
           console.error(ex);
         });
+        return this.account[id];
       },
       formatted_number(asset_id, amount, decimalOffset) {
         return formatted_asset(asset_id, amount, decimalOffset);

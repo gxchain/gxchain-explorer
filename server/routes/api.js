@@ -46,7 +46,7 @@ router.get('/transaction/:tx_id', function (req, res) {
  */
 router.get('/account/:account_id_or_name', function (req, res) {
   GXChainService.fetch_full_account(req.params.account_id_or_name).then((account) => {
-    res.send(account.length>0?account[0][1].account:{});
+    res.send(account.length>0?account[0][1]:{});
   }).catch(ex => {
     res.send({});
   })
