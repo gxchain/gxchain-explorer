@@ -14,7 +14,7 @@ const locale = {
   // index
   index: {
     latest_status: '最新状态',
-    last_updated_at: '上次更新时间: {seconds}秒前',
+    last_updated_at: '上次更新时间: {datetime}',
     summary: {
       title: '区块信息',
       head_block_number: '最新区块',
@@ -435,6 +435,27 @@ const locale = {
     query_account: '账户查询',
     query_account_balance: '余额查询',
     get_account_header: '账户头像'
+  },
+  holdrank: {
+    locknum:'目前冻结的GXS总量',
+    last_updated_at:'本次更新日期: {datetime}',
+    rank: {
+      active: '激活排行',
+      lock: '冻结排行',
+      all: '总量排行'
+    },
+    table:{
+      userid:'账户id',
+      username:'账户名',
+      activegxs:'激活中的GXS',
+      peractive:'占激活百分比',
+      lockgxs:'冻结中的GXS',
+      perlock:'占冻结百分比',
+      allgxs:'总量GXS(激活+冻结)',
+      perall:'占总量百分比',
+      detail:'官方实时详情',
+      click:'点击查看'
+    }
   }
 }
 
