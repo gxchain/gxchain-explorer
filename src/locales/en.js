@@ -434,6 +434,27 @@ const locale = {
     query_account: 'Query Account:',
     query_account_balance: 'Query Account Balance:',
     get_account_header: 'Get Account Header:'
+  },
+  holdrank: {
+    locknum:'Total Frozen',
+    last_updated_at:'Updated at: {datetime}',
+    rank: {
+      active: 'Holding Rank',
+      lock: 'Frozen Rank',
+      all: 'Total Rank'
+    },
+    table:{
+      userid:'Account ID',
+      username:'Account Name',
+      activegxs:'Holding GXS',
+      peractive:'Holding Percent',
+      lockgxs:'Frozen GXS',
+      perlock:'Frozen Percent',
+      allgxs:'Total GXS',
+      perall:'Total Percent',
+      detail:'Official Details',
+      click:'click'
+    }
   }
 }
 
