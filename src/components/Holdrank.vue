@@ -63,7 +63,7 @@
 
 <script>
 
-  
+import {get_rank} from '@/services/HoldrankService'
 
 export default {
     data() {
@@ -90,26 +90,18 @@ export default {
     methods: {
         getHoldRank: function () {
             let self = this;
-            $.ajax({
-                type : "get",
-                url : "http://gxs.imcrm.cn/gxsapi/holdrank.php?type="+ self.$route.params.type,
-                dataType : "jsonp",
-                jsonp: "callback",
-                success : function(response){
-                    //console.log(response);
-                    if (response['code'] == 200) {
-                        self.loading = false;
-                        self.holdrank = response['data']['hold'];
-                        self.locknum = response['data']['locknum'];
-                        self.uptime = response['data']['uptime'];
-                    } else {
-                       console.log('error2'); 
-                    }
-                },
-                error:function(){
-                    console.log('error1');
-                }
+
+            get_rank(self.$route.params.type).then(function (rankdata) {
+                self.holdrank = rankdata['data']['hold'];
+                self.locknum = rankdata['data']['locknum'];
+                self.uptime = rankdata['data']['uptime'];
+                self.loading = false;
+                console.log(self.holdrank);
+
+            }).catch(ex => {
+                console.error(ex);
             });
+           
         }
      }
   }

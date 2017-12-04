@@ -14,7 +14,7 @@ const locale = {
   // index
   index: {
     latest_status: '最新状态',
-    last_updated_at: '上次更新时间: {datetime}',
+    last_updated_at: '上次更新时间: {seconds}秒前',
     summary: {
       title: '区块信息',
       head_block_number: '最新区块',
