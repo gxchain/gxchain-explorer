@@ -1,5 +1,14 @@
 import fs from 'fs';
 import os from 'os';
+import path from "path"; 
+
+let base_path = path.resolve(__dirname,'../tasks/.tmp/holdrank'),//存放路径
+    date_path = base_path + '/txt_date.txt',//记录的日期以及冻结总量
+    all_path = '',//总量排名
+    active_path = '',//激活排名
+    lock_path = '',//冻结排名
+    nowdate = '';
+
 const get_rank = (typeid) => {
 	let fileRankData = '', 
     holdrankArr = [],
@@ -9,28 +18,45 @@ const get_rank = (typeid) => {
     allNum = 100000000,
     lockNum = 0,
     result = {};
-    switch(typeid)
+
+    if (!fs.existsSync(date_path)) {
+        return {};
+    }
+    dateLockData = fs.readFileSync(date_path,'utf-8');
+    dataLock = dateLockData.split(':');
+
+    nowdate = dataLock[0];
+
+    all_path = getPath(nowdate,'txt_all.txt');
+    active_path = getPath(nowdate,'txt_active.txt');
+    lock_path = getPath(nowdate,'txt_lock.txt');
+
+    switch(parseInt(typeid))
     {
         case 1:
-            fileRankData = fs.readFileSync("./server/tasks/Holdrank/txt_active.txt",'utf-8');
+            fileRankData = readFile(active_path);
             break;
         case 2:
-            fileRankData = fs.readFileSync("./server/tasks/Holdrank/txt_lock.txt",'utf-8');
+
+            fileRankData = readFile(lock_path);
             break;
         case 3:
-            fileRankData = fs.readFileSync("./server/tasks/Holdrank/txt_all.txt",'utf-8');
+            fileRankData = readFile(all_path);
             break;
         default:
-            fileRankData = fs.readFileSync("./server/tasks/Holdrank/txt_active.txt",'utf-8');
+            fileRankData = readFile(active_path);
             break; 
     }
+
+    if (!fileRankData) {
+         return {};
+    };
+
     fileRankData.split(os.EOL).forEach(function(value, index, array) {
         if(value){
             holdrankArr[index] = value.split(':');
         }
     });
-    dateLockData = fs.readFileSync("./server/tasks/Holdrank/txt_date.txt",'utf-8');
-    dataLock = dateLockData.split(':');
     lockNum = dataLock[1];
     activeNum = allNum - lockNum;
     holdrankArr.forEach(function(value, index, array) {
@@ -42,7 +68,18 @@ const get_rank = (typeid) => {
     return result;
 }
 
+
+function getPath(date,pathname){
+    return base_path + "/" + date + "-" + pathname;
+}
+
+function readFile(pathstr){
+    if (!fs.existsSync(pathstr)) {
+        return false;
+    } else {
+        return fs.readFileSync(pathstr,'utf-8');
+    }
+}
 export default {
   get_rank
 };
-
