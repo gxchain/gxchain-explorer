@@ -2,14 +2,13 @@ import {Apis} from "gxbjs-ws";
 import fs from "fs";
 import os from "os";
 import cron from "cron"; 
-import path from "path"; 
 import _ from 'lodash';
-
+import path from 'path';
 
 let wintness = 'wss://node5.gxb.io',
     all_lock = 0,
     date_lock_str = '',
-    base_path = path.resolve(__dirname,'.tmp/holdrank'),//存放路径
+    base_path = process.cwd() + '/.tmp/holdrank',//存放路径
     date_path = base_path + '/txt_date.txt',//记录的日期以及冻结总量
     info_path = '',//全部会员数据
     all_path = '',//总量排名
@@ -20,21 +19,23 @@ let wintness = 'wss://node5.gxb.io',
 
 export default {
     init(){
-        info_path = getPath('txt_accountinfo.txt');
-        console.log(info_path);
-        all_path = getPath('txt_all.txt');
-        active_path = getPath('txt_active.txt');
-        lock_path = getPath('txt_lock.txt');
-        if(fs.existsSync(info_path) && fs.existsSync(date_path) && fs.existsSync(all_path) && fs.existsSync(active_path) && fs.existsSync(lock_path)){
-                
-        } else {
-            //记录日期的文件也没有的时候，即全站首次
-            if (!fs.existsSync(date_path)) {
-                console.log('非计划任务触发执行');
-                cronfuc();
+        try{
+            info_path = getPath('txt_accountinfo.txt');
+            all_path = getPath('txt_all.txt');
+            active_path = getPath('txt_active.txt');
+            lock_path = getPath('txt_lock.txt');
+            if(fs.existsSync(info_path) && fs.existsSync(date_path) && fs.existsSync(all_path) && fs.existsSync(active_path) && fs.existsSync(lock_path)){
+                    
+            } else {
+                //记录日期的文件也没有的时候，即全站首次
+                if (!fs.existsSync(date_path)) {
+                    cronfuc();
+                }
+                docron();
             }
-            docron();
-        }
+        }catch (err) {
+            console.log('cron init error');
+        } 
     }
 }
 
@@ -46,7 +47,6 @@ function docron(){
 }
 
 function cronfuc(){
-    console.log('cron start');
     info_path = getPath('txt_accountinfo.txt');
     all_path = getPath('txt_all.txt');
     active_path = getPath('txt_active.txt');
@@ -61,11 +61,8 @@ function cronfuc(){
         if (fs.existsSync(info_path)) {
             fs.unlinkSync(info_path);
         }
-        console.log('do cron');
-        console.log(dateFtt('yyyy-MM-dd hh:mm:ss',new Date()));
 
         Apis.instance().db_api().exec('get_account_count', [false]).then(function (resp) {
-            console.log('api start');
             account_count = resp;
             accountinfo(resp-1);
         }).catch(function(){}); 
@@ -79,12 +76,12 @@ function accountinfo(accountNum){
                 info = resp[0][1];
                 info['balances'].forEach(function(value, index, array) {
                     if (value['asset_type'] == '1.3.1') {
-                        active += parseInt(value['balance'] / 100000);
+                        active += parseInt(value['balance']);
                     }
                 });
                 info['locked_balances'].forEach(function(value, index, array) {
                     if (value['amount']['asset_id'] == '1.3.1') {
-                        lock += parseInt(value['amount']['amount'] / 100000);
+                        lock += parseInt(value['amount']['amount']);
                     }
                 });
 
@@ -95,8 +92,6 @@ function accountinfo(accountNum){
                 fs.appendFile(info_path, str,  function(err) {
                     account_count --;
                     if (account_count <= 0) {
-                        console.log('文件记录完毕');
-                        console.log(dateFtt('yyyy-MM-dd hh:mm:ss',new Date()));
                         date_lock_str = nowdate + ':' + all_lock;
                         fs.writeFile(date_path, date_lock_str,  function(err) {
                         });
@@ -115,7 +110,6 @@ function runsort(){
             info[index] = value.split(':');
         }
     });
-    console.log(active_path);
     fs.writeFile(active_path, arrFtt(info,2),  function(err) {});
     fs.writeFile(lock_path, arrFtt(info,3),  function(err) {});
     fs.writeFile(all_path, arrFtt(info,4),  function(err) {});

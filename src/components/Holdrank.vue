@@ -6,9 +6,9 @@
                 <hr/>
                 <div class="alert alert-info" role="alert">
                 <p>{{$t('holdrank.last_updated_at',{datetime:uptime})}}</p>
-                <p>{{$t('holdrank.locknum')}}:{{locknum}}</p>
+                <p>{{$t('holdrank.locknum')}}:{{formatted_number('1.3.1',locknum,5)}}</p>
                 </div>
-                <div class="panel-heading">
+                <div style="margin-bottom:10px;">
                     <ul class="nav nav-tabs">
                         <li role="presentation" v-bind:class="{ active: this.$route.params.type == 1 }">
                             <router-link :to="{path:'/holdrank/1'}">{{$t('holdrank.rank.active')}}
@@ -38,19 +38,17 @@
                                 <td>{{$t('holdrank.table.perlock')}}</td>
                                 <td>{{$t('holdrank.table.allgxs')}}</td>
                                 <td>{{$t('holdrank.table.perall')}}</td>
-                                <td>{{$t('holdrank.table.detail')}}</td>
                             </tr>
                             <tr v-for="r in holdrank">
                                 <td>{{r.ranknum}}</td>
-                                <td>{{r.userid}}</td>
-                                <td>{{r.username}}</td>
-                                <td>{{r.activegxs}}</td>
-                                <td>{{r.peractive}}%</td>
-                                <td>{{r.lockgxs}}</td>
-                                <td>{{r.perlock}}%</td>
-                                <td>{{r.allgxs}}</td>
-                                <td>{{r.perall}}%</td>
-                                <td><a :href="r.accountlink" target="_blank">{{$t('holdrank.table.click')}}</a></td>
+                                <td>1.2.{{r.userid}}</td>
+                                <td><a :href="r.accountlink" target="_blank">{{r.username}}</a></td>
+                                <td>{{formatted_number('1.3.1',r.activegxs,5)}}</td>
+                                <td class="text-right">{{r.peractive}}%</td>
+                                <td>{{formatted_number('1.3.1',r.lockgxs,5)}}</td>
+                                <td class="text-right">{{r.perlock}}%</td>
+                                <td>{{formatted_number('1.3.1',r.allgxs,5)}}</td>
+                                <td class="text-right">{{r.perall}}%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -63,7 +61,7 @@
 
 <script>
 
-import {get_rank} from '@/services/HoldrankService'
+import {formatted_asset,get_rank} from '@/services/CommonService'
 
 export default {
     data() {
@@ -96,12 +94,14 @@ export default {
                 self.locknum = rankdata['data']['locknum'];
                 self.uptime = rankdata['data']['uptime'];
                 self.loading = false;
-                console.log(self.holdrank);
 
             }).catch(ex => {
                 console.error(ex);
             });
            
+        },
+        formatted_number(asset_id, amount, decimalOffset) {
+            return formatted_asset(asset_id, amount, decimalOffset);
         }
      }
   }

@@ -451,9 +451,7 @@ const locale = {
       lockgxs:'Frozen GXS',
       perlock:'Frozen Percent',
       allgxs:'Total GXS',
-      perall:'Total Percent',
-      detail:'Official Details',
-      click:'click'
+      perall:'Total Percent'
     }
   }
 }

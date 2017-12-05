@@ -452,9 +452,7 @@ const locale = {
       lockgxs:'冻结中的GXS',
       perlock:'占冻结百分比',
       allgxs:'总量GXS(激活+冻结)',
-      perall:'占总量百分比',
-      detail:'官方实时详情',
-      click:'点击查看'
+      perall:'占总量百分比'
     }
   }
 }
