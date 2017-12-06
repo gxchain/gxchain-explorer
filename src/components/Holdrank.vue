@@ -10,15 +10,15 @@
                 </div>
                 <div style="margin-bottom:10px;">
                     <ul class="nav nav-tabs">
-                        <li role="presentation" v-bind:class="{ active: this.$route.params.type == 1 }">
+                        <li role="presentation" v-bind:class="{ active: typeid == 1 }">
                             <router-link :to="{path:'/holdrank/1'}">{{$t('holdrank.rank.active')}}
                             </router-link>
                         </li>
-                        <li role="presentation" v-bind:class="{ active: this.$route.params.type == 2 }">
+                        <li role="presentation" v-bind:class="{ active: typeid == 2 }">
                             <router-link :to="{path:'/holdrank/2'}">{{$t('holdrank.rank.lock')}}
                             </router-link>
                         </li>
-                        <li role="presentation" v-bind:class="{ active: this.$route.params.type == 3 }">
+                        <li role="presentation" v-bind:class="{ active: typeid == 3 }">
                             <router-link :to="{path:'/holdrank/3'}">{{$t('holdrank.rank.all')}}
                             </router-link>
                         </li>
@@ -32,23 +32,35 @@
                                 <td>#</td>
                                 <td>{{$t('holdrank.table.userid')}}</td>
                                 <td>{{$t('holdrank.table.username')}}</td>
-                                <td>{{$t('holdrank.table.activegxs')}}</td>
-                                <td>{{$t('holdrank.table.peractive')}}</td>
-                                <td>{{$t('holdrank.table.lockgxs')}}</td>
-                                <td>{{$t('holdrank.table.perlock')}}</td>
-                                <td>{{$t('holdrank.table.allgxs')}}</td>
-                                <td>{{$t('holdrank.table.perall')}}</td>
+                                <template v-if="typeid == 2">
+                                <td class="text-right">{{$t('holdrank.table.lockgxs')}}</td>
+                                <td class="text-right">{{$t('holdrank.table.perlock')}}</td>
+                                </template>    
+                                <template v-else-if="typeid == 3">
+                                <td class="text-right">{{$t('holdrank.table.allgxs')}}</td>
+                                <td class="text-right">{{$t('holdrank.table.perall')}}</td>
+                                </template>   
+                                <template v-else>
+                                <td class="text-right">{{$t('holdrank.table.activegxs')}}</td>
+                                <td class="text-right">{{$t('holdrank.table.peractive')}}</td>
+                                </template>   
                             </tr>
                             <tr v-for="r in holdrank">
                                 <td>{{r.ranknum}}</td>
                                 <td>1.2.{{r.userid}}</td>
                                 <td><a :href="r.accountlink" target="_blank">{{r.username}}</a></td>
-                                <td>{{formatted_number('1.3.1',r.activegxs,5)}}</td>
-                                <td class="text-right">{{r.peractive}}%</td>
-                                <td>{{formatted_number('1.3.1',r.lockgxs,5)}}</td>
+                                <template v-if="typeid == 2">
+                                <td class="text-right">{{formatted_number('1.3.1',r.lockgxs,5)}}</td>
                                 <td class="text-right">{{r.perlock}}%</td>
-                                <td>{{formatted_number('1.3.1',r.allgxs,5)}}</td>
+                                </template>   
+                                <template v-else-if="typeid == 3">
+                                <td class="text-right">{{formatted_number('1.3.1',r.allgxs,5)}}</td>
                                 <td class="text-right">{{r.perall}}%</td>
+                                </template>  
+                                <template v-else>
+                                <td class="text-right">{{formatted_number('1.3.1',r.activegxs,5)}}</td>
+                                <td class="text-right">{{r.peractive}}%</td>
+                                </template>    
                             </tr>
                         </tbody>
                     </table>
@@ -70,6 +82,7 @@ export default {
         holdrank:[],
         locknum:0,
         uptime:'',
+        typeid:1
       }
     },
     computed: {
@@ -94,6 +107,7 @@ export default {
                 self.locknum = rankdata['data']['locknum'];
                 self.uptime = rankdata['data']['uptime'];
                 self.loading = false;
+                self.typeid = self.$route.params.type;
 
             }).catch(ex => {
                 console.error(ex);
