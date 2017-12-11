@@ -143,15 +143,14 @@
 </template>
 
 <script>
-
-    import {ChainStore} from 'gxbjs';
-    import {Apis} from 'gxbjs-ws';
+    import { ChainStore } from 'gxbjs';
+    import { Apis } from 'gxbjs-ws';
     import filters from '../filters';
     import History_Op from './partial/History_Op.vue';
-    import {calc_block_time} from '@/services/CommonService';
+    import { calc_block_time } from '@/services/CommonService';
 
     export default {
-        data() {
+        data () {
             return {
                 loading: true,
                 timer: 0,
@@ -167,12 +166,12 @@
         },
         filters,
         computed: {
-            delta() {
+            delta () {
                 return parseInt((this.timer - this.last_updated_at) / 1000);
             }
         },
 
-        mounted() {
+        mounted () {
             ChainStore.subscribe(this.onUpdate);
             Apis.instance().db_api().exec('get_objects', [['2.0.0', '2.1.0', '2.3.1']]).then(() => {
                 this.onUpdate();
@@ -180,38 +179,38 @@
             });
         },
 
-        destroyed() {
+        destroyed () {
             clearInterval(this.intervalHandler);
             ChainStore.unsubscribe(this.onUpdate);
         },
 
         methods: {
 
-            getCommitteeAccountName(member) {
+            getCommitteeAccountName (member) {
                 if (ChainStore.getObject(member) && ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account'))) {
                     return ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account')).get('name');
                 }
                 return null;
             },
 
-            getWitnessAccountName(witness) {
+            getWitnessAccountName (witness) {
                 if (ChainStore.getObject(witness) && ChainStore.getObject(ChainStore.getObject(witness).get('witness_account'))) {
                     return ChainStore.getObject(ChainStore.getObject(witness).get('witness_account')).get('name');
                 }
                 return null;
             },
 
-            getLastConfirmedBlock(witness) {
+            getLastConfirmedBlock (witness) {
                 return ChainStore.getObject(witness) && ChainStore.getObject(witness).get('last_confirmed_block_num');
             },
 
-            getInitialBlocks(maxBlock) {
+            getInitialBlocks (maxBlock) {
                 if (maxBlock) {
                     this.getBlocks(maxBlock, 5);
                 }
             },
 
-            getBlocks(maxBlock, length) {
+            getBlocks (maxBlock, length) {
                 for (let i = length - 1; i >= 0; i--) {
                     let height = maxBlock - i;
                     Apis.instance().db_api().exec('get_block', [
@@ -245,7 +244,7 @@
                                 });
                             }
 
-                            if (i == 0) {
+                            if (i === 0) {
                                 this.loading = false;
                             }
                         }).catch((error) => {
@@ -262,8 +261,8 @@
                 }, 300);
             },
 
-            onUpdate() {
-                if (this.timer == 0) {
+            onUpdate () {
+                if (this.timer === 0) {
                     this.runTimer();
                 }
                 this.last_updated_at = new Date();
@@ -285,7 +284,7 @@
         },
         components: {
             History_Op: History_Op
-        },
+        }
     };
 </script>
 

@@ -2,21 +2,20 @@ import Promise from 'bluebird';
 import LevelDBService from '../services/LevelDBService';
 import GXChainService from '../services/GXChainService';
 
-let current_block_height = 0; //当前已同步区块高度
-let max_block_height = 0;  //最新不可逆区块高度
-let syncing = false;  //是否同步中
-let sync_block_length = 100;  //并行同步区块数量
+let current_block_height = 0; // 当前已同步区块高度
+let max_block_height = 0;  // 最新不可逆区块高度
+let syncing = false;  // 是否同步中
+let sync_block_length = 100;  // 并行同步区块数量
 
 export default {
     /**
      * 初始化 - 获取上一次已同步的区块高度
      */
-    init() {
+    init () {
         return new Promise((resolve) => {
-            if (current_block_height != 0) {
+            if (current_block_height !== 0) {
                 resolve(current_block_height);
-            }
-            else {
+            } else {
                 LevelDBService.get('synced_block_height').then((block_height) => {
                     current_block_height = block_height || 0;
                     resolve(current_block_height);
@@ -32,7 +31,7 @@ export default {
      * 从当前已同步区块同步到指定区块
      * @param block_height 区块高度
      */
-    sync_to_block(block_height) {
+    sync_to_block (block_height) {
         let self = this;
         if (syncing) {
             return;
@@ -78,7 +77,7 @@ export default {
      * @param length 后续区块数量
      * @returns {*}
      */
-    batch_sync_block(start, length) {
+    batch_sync_block (start, length) {
         let promises = [];
         for (var i = 0; i < length; ++i) {
             promises.push(GXChainService.fetch_block(parseInt(start) + i));
@@ -89,7 +88,7 @@ export default {
     /**
      * 在服务关闭的时候保存当前已同步的区块高度
      */
-    store() {
+    store () {
         return new Promise((resolve, reject) => {
             LevelDBService.put('synced_block_height', current_block_height).then(() => {
                 resolve(current_block_height);

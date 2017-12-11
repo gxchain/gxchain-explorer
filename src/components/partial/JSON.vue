@@ -11,7 +11,7 @@
             json: {}
         },
         computed: {
-            content() {
+            content () {
                 return prismjs.highlight(JSON.stringify(this.json, null, '  '), prismjs.languages.js);
             }
         }

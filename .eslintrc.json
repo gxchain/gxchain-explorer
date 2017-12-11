@@ -1,5 +1,5 @@
 {
-    "extends": "eslint:recommended",
+    "extends": "standard",
     "root": true,
     "parserOptions": {
         "ecmaVersion": 6,
@@ -15,13 +15,16 @@
         "amd": true,
         "jquery": true
     },
-    "plugins": ["html", "vue"],
+    "plugins": ["html", "vue", "standard"],
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single"],
-        "semi": ["error", "always"],
+        "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
         "no-debugger": ["error"],
         "no-console": ["off"],
+        "no-new": ["off"],
+        "no-extend-native": ["off"],
+        "camelcase": ["off"],
         "vue/jsx-uses-vars": 2
     }
 }

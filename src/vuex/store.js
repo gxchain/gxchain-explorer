@@ -8,13 +8,13 @@ const state = {
 };
 
 const mutations = {
-    setKeywords(state, payload) {
+    setKeywords (state, payload) {
         state.keywords = payload.keywords;
     }
 };
 
 const actions = {
-    setKeywords({commit}, payload) {
+    setKeywords ({commit}, payload) {
         commit('setKeywords', payload);
     }
 };

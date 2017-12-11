@@ -20,7 +20,7 @@
 <script>
     export default {
         computed: {
-            apis() {
+            apis () {
                 return [
                     {
                         name: this.$t('api.query_supply'),
@@ -51,7 +51,7 @@
                         name: this.$t('api.get_account_header'),
                         api: '/api/header/:account_name',
                         example: `http://${location.host}/api/header/paul`
-                    },
+                    }
                 ];
             }
         }

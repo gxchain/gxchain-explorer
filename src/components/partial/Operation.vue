@@ -1453,9 +1453,9 @@
 </template>
 
 <script>
-    import {ChainTypes} from 'gxbjs/es';
+    import { ChainTypes } from 'gxbjs/es';
     import Proposed_Op from './Proposed_Op.vue';
-    import {fetch_account_by_chain, fetch_product_by_chain, formatted_asset} from '@/services/CommonService';
+    import { fetch_account_by_chain, fetch_product_by_chain, formatted_asset } from '@/services/CommonService';
 
     let ops = Object.keys(ChainTypes.operations);
 
@@ -1471,15 +1471,15 @@
                 type: String
             }
         },
-        data() {
+        data () {
             return {
                 items: {},
                 ops: ops,
-                op: this.operation,
+                op: this.operation
             };
         },
         methods: {
-            formatted_account(id, key) {
+            formatted_account (id, key) {
                 let self = this;
                 if (this.items[key]) {
                     return this.op[1][key];
@@ -1493,7 +1493,7 @@
                 });
                 return this.op[1][key];
             },
-            formatted_product(id, key) {
+            formatted_product (id, key) {
                 let self = this;
                 if (this.items[key]) {
                     return this.op[1][key];
@@ -1507,10 +1507,10 @@
                 });
                 return this.op[1][key];
             },
-            formatted_number(asset_id, amount, decimalOffset) {
+            formatted_number (asset_id, amount, decimalOffset) {
                 return formatted_asset(asset_id, amount, decimalOffset);
             },
-            formatted_listing(new_listing) {
+            formatted_listing (new_listing) {
                 let account_listing = {
                     no_listing: 0,
                     white_listed: 1,
@@ -1527,7 +1527,7 @@
         },
         components: {
             Proposed_Op: Proposed_Op
-        },
+        }
     };
 </script>
 

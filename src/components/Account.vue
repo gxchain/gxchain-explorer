@@ -132,14 +132,14 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import {ChainStore} from 'gxbjs';
-    import {formatted_asset, calc_block_time} from '@/services/CommonService';
+    import { mapGetters, mapActions } from 'vuex';
+    import { ChainStore } from 'gxbjs';
+    import { formatted_asset, calc_block_time } from '@/services/CommonService';
     import filters from '@/filters';
     import History_Op from './partial/History_Op.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 loading: true,
                 account_info: null,
@@ -154,10 +154,10 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
-            collapse() {
+            collapse () {
                 $('.collapse').collapse('toggle');
             },
-            onUpdate() {
+            onUpdate () {
                 try {
                     if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
                         this.loading = false;
@@ -191,19 +191,19 @@
                 }
             },
 
-            formatted_number(asset_id, amount, decimalOffset) {
+            formatted_number (asset_id, amount, decimalOffset) {
                 return formatted_asset(asset_id, amount, decimalOffset);
             }
         },
         watch: {
-            keywords() {
+            keywords () {
                 this.loading = true;
                 this.account_info = null;
                 this.latestTransactions = [];
                 this.onUpdate();
             },
-            '$route'() {
-                if (this.$route.params.id_or_name != this.keywords) {
+            '$route' () {
+                if (this.$route.params.id_or_name !== this.keywords) {
                     this.loading = true;
                     this.account_info = null;
                     this.latestTransactions = [];
@@ -217,33 +217,32 @@
                 keywords: 'keywords'
             }),
 
-            account_type() {
+            account_type () {
                 let result = [];
-                if (this.account_info.membership_expiration_date != '1970-01-01T00:00:00') {
+                if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
                     result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
-                }
-                else {
+                } else {
                     result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
                 }
-                if (this.account_info.merchant_expiration_date != '1970-01-01T00:00:00') {
+                if (this.account_info.merchant_expiration_date !== '1970-01-01T00:00:00') {
                     result.push(`<span class="label label-info">${this.$t('account.membership.merchant')}</span>`);
                 }
-                if (this.account_info.datasource_expiration_date != '1970-01-01T00:00:00') {
+                if (this.account_info.datasource_expiration_date !== '1970-01-01T00:00:00') {
                     result.push(`<span class="label label-warning">${this.$t('account.membership.datasource')}</span>`);
                 }
-                if (this.account_info.data_transaction_member_expiration_date != '1970-01-01T00:00:00') {
+                if (this.account_info.data_transaction_member_expiration_date !== '1970-01-01T00:00:00') {
                     result.push(`<span class="label label-warning">${this.$t('account.membership.data_transaction_member')}</span>`);
                 }
                 return result.join('&nbsp;');
             }
         },
-        mounted() {
-            if (this.$route.params.id_or_name != this.keywords) {
+        mounted () {
+            if (this.$route.params.id_or_name !== this.keywords) {
                 this.setKeywords({keywords: this.$route.params.id_or_name});
             }
             ChainStore.subscribe(this.onUpdate);
         },
-        destroyed() {
+        destroyed () {
             ChainStore.unsubscribe(this.onUpdate);
         },
         components: {

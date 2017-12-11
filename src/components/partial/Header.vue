@@ -58,11 +58,11 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import {set_item} from '@/services/CommonService';
+    import { mapGetters, mapActions } from 'vuex';
+    import { set_item } from '@/services/CommonService';
 
     export default {
-        data() {
+        data () {
             return {
                 search: '',
                 flagImg: {
@@ -77,8 +77,8 @@
             })
         },
         watch: {
-            'keywords'() {
-                if (this.keywords != this.search) {
+            'keywords' () {
+                if (this.keywords !== this.search) {
                     this.search = this.keywords;
                 }
             }
@@ -87,15 +87,15 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
-            eventChanged() {
+            eventChanged () {
                 this.search = this.search.replace(/(^\s*)|(\s*$)/g, '');
                 this.setKeywords({keywords: this.search});
             },
-            switchLanguage(locale) {
+            switchLanguage (locale) {
                 this._i18n.locale = locale;
                 set_item('locale', locale);
             },
-            clearInput() {
+            clearInput () {
                 this.setKeywords({keywords: ''});
             }
         }

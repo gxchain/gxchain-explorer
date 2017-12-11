@@ -40,25 +40,23 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import {fetch_transaction} from '@/services/CommonService';
+    import { mapGetters, mapActions } from 'vuex';
+    import { fetch_transaction } from '@/services/CommonService';
     import JSON from './partial/JSON.vue';
     import Operation from './partial/Operation.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 loading: true,
                 transaction: {}
             };
         },
         methods: {
-
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
-
-            fetch_transaction() {
+            fetch_transaction () {
                 let self = this;
                 this.transaction = {};
                 fetch_transaction(this.$route.params.tx_id).then(function (resp) {
@@ -70,31 +68,27 @@
                 });
             }
         },
-
         computed: {
             ...mapGetters({
                 keywords: 'keywords'
             })
         },
-
         watch: {
-            keywords() {
+            keywords () {
                 this.loading = true;
                 this.fetch_transaction();
             }
         },
-
         components: {
             json: JSON,
             Operation: Operation
         },
-
-        mounted() {
-            if (this.$route.params.tx_id != this.keywords) {
+        mounted () {
+            if (this.$route.params.tx_id !== this.keywords) {
                 this.setKeywords({keywords: this.$route.params.tx_id});
             }
             this.fetch_transaction();
-        },
+        }
     };
 </script>
 

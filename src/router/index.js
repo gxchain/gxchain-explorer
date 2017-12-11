@@ -33,7 +33,6 @@ const router = new Router({
     ]
 });
 
-
 router.beforeEach((to, from, next) => {
     connect(next);
 });

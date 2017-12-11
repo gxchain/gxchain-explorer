@@ -4,8 +4,8 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import path from 'path';
 import Promise from 'bluebird';
-import {Apis, Manager} from 'gxbjs-ws';
-import {ChainStore} from 'gxbjs';
+import { Apis, Manager } from 'gxbjs-ws';
+import { ChainStore } from 'gxbjs';
 import BlockSyncTask from './tasks/BlockSyncTask';
 import LevelDBService from './services/LevelDBService';
 import figlet from 'figlet';
@@ -48,18 +48,17 @@ if (app.get('env') === 'development') {
 
     var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
     app.use(staticPath, express.static('./static'));
-}
-else {
+} else {
     app.use(logger('combined'));
     app.use(express.static('./dist'));
 }
-
 
 app.use(require('connect-history-api-fallback')({
     index: '/',
     rewrites: [
         {
-            from: '/api/*', to: function (options) {
+            from: '/api/*',
+            to: function (options) {
                 return options.parsedUrl.href;
             }
         }
@@ -73,8 +72,7 @@ let connected = false;
 const connectedCheck = function (req, res, next) {
     if (connected) {
         next();
-    }
-    else {
+    } else {
         res.status(500).send({
             message: '正在初始化数据,请稍后再试'
         });
@@ -125,10 +123,9 @@ const filterAndSortURLs = (latencies, witnesses) => {
     return us;
 };
 
+let witnesses = app.get('env') === 'development' ? config.dev.witnesses : config.build.witnesses;
 
-let witnesses = app.get('env') == 'development' ? config.dev.witnesses : config.build.witnesses;
-
-if (witnesses.length == 0) {
+if (witnesses.length === 0) {
     console.error('未配置启动节点,请先在config.json文件中配置common.witnesses');
     process.exit(1);
 }
@@ -141,13 +138,12 @@ let connect = function (callback) {
     connectionManager.checkConnections().then((resp) => {
         let urls = filterAndSortURLs(resp, witnesses);
         console.log(urls);
-        if (urls.length == 0) {
+        if (urls.length === 0) {
             console.error('无可用连接,3秒后重试');
             setTimeout(function () {
                 connect(callback);
             }, 3000);
-        }
-        else {
+        } else {
             connectionManager.urls = urls;
             connectionManager.connectWithFallback(true).then(() => {
                 console.log('已连接');
@@ -183,16 +179,18 @@ let startServer = function () {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', () => {
-
         devMiddleware && devMiddleware.waitUntilValid(() => {
             var uri = `http://localhost:${port}`;
             console.log('> Listening at ' + uri + '\n');
-            if (app.get('env') == 'development' && autoOpenBrowser) {
+            if (app.get('env') === 'development' && autoOpenBrowser) {
                 opn(uri);
             }
         });
     });
     figlet('GXB-EXPLORER', 'Standard', function (err, text) {
+        if (err) {
+            console.log(err);
+        }
         console.log(colors.rainbow('\n=*=*=*=*=*=*=*=*=*==*=*=公信宝区块链浏览器已启动=*=*=*==*=*=*=*=*=*=*=\n'));
         console.log(colors.cyan(`${(text || '').split('\n').map(function (line) {
             return `${line}`;
@@ -248,8 +246,7 @@ Apis.setRpcConnectionStatusCallback(function (status) {
     if (status === 'reconnect') {
         console.log('断开重连');
         ChainStore.resetCache();
-    }
-    else if (connected && (status == 'closed' || status == 'error')) { // 出错重连
+    } else if (connected && (status === 'closed' || status === 'error')) { // 出错重连
         connected = false;
         console.log('重新连接其他witness');
         connect(function () {
@@ -269,7 +266,7 @@ connect(function () {
 /**
  * Event listener for HTTP server "error" event.
  */
-function onError(error) {
+function onError (error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -295,7 +292,7 @@ function onError(error) {
 
 process.stdin.resume();
 
-function exitHandler(reason, err) {
+function exitHandler (reason, err) {
     if (err) console.log(err.stack);
     console.log('程序退出:', reason);
     Promise.all([BlockSyncTask.store(), LevelDBService.put('last-close', new Date().getTime())]).then(function () {
@@ -305,11 +302,11 @@ function exitHandler(reason, err) {
     });
 }
 
-//do something when app is closing
+// do something when app is closing
 process.on('exit', exitHandler.bind(null, 'exit'));
 
-//catches ctrl+c event
+// catches ctrl+c event
 process.on('SIGINT', exitHandler.bind(null, 'SIGINT'));
 
-//catches uncaught exceptions
+// catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, 'uncaughtException'));

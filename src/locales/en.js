@@ -68,7 +68,7 @@ const locale = {
                 from: 'From',
                 amount: 'Amount',
                 to: 'To',
-                fee: 'Fee',
+                fee: 'Fee'
             },
             'limit_order_create': 'Place order',
             'limit_order_cancel': 'Cancel order',
@@ -78,12 +78,12 @@ const locale = {
                 fee: 'Fee',
                 registrar: 'Registrar',
                 referrer: 'Referrer',
-                account: 'Account',
+                account: 'Account'
             },
             'account_update': {
                 name: 'Update account',
                 fee: 'Fee',
-                account: 'Account',
+                account: 'Account'
             },
             'account_whitelist': {
                 name: 'Account whitelist',
@@ -96,7 +96,7 @@ const locale = {
                     white_listed: 'Whitelisted',
                     black_listed: 'Blacklisted',
                     white_and_black_listed: 'Whitelisted and blacklisted'
-                },
+                }
             },
             'account_upgrade': {
                 name: 'Upgrade Account',
@@ -157,7 +157,7 @@ const locale = {
                     owner_approvals_to_remove: 'Owner approvals to remove',
                     key_approvals_to_add: 'Key approvals to add',
                     key_approvals_to_remove: 'Key approvals to remove'
-                },
+                }
             },
             'withdraw_permission_create': 'Create withdrawal permission',
             'withdraw_permission_update': 'Update withdrawal permission',
@@ -271,7 +271,7 @@ const locale = {
                 request_id: 'Request id',
                 new_status: 'New status',
                 fee: 'Fee',
-                new_requester: 'New requester',
+                new_requester: 'New requester'
             },
             'data_transaction_pay': {
                 name: 'Data transaction pay',
@@ -311,7 +311,7 @@ const locale = {
             'balance_unlock': {
                 name: 'Balance Unlock',
                 account: 'Unlock Account',
-                lock_id: 'Lock ID',
+                lock_id: 'Lock ID'
             },
             'status_states': {
                 0: 'Unpublished',

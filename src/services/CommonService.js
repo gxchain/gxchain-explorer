@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import filters from '@/filters';
 import Promise from 'bluebird';
-import {Apis} from 'gxbjs-ws';
-import {ChainStore, FetchChain} from 'gxbjs';
+import { Apis } from 'gxbjs-ws';
+import { ChainStore, FetchChain } from 'gxbjs';
 import Immutable from 'immutable';
 
 const baseURL = location.host;
@@ -53,22 +53,20 @@ export const fetch_product_by_chain = (prod_id) => {
         if (prod) {
             prod = prod.toJS();
             prod.schema_contexts = prod.schema_contexts.map(function (schema) {
-                if (typeof schema.schema_context == 'string') {
+                if (typeof schema.schema_context === 'string') {
                     schema.schema_context = JSON.parse(schema.schema_context);
                 }
                 return schema;
             });
             resolve(prod);
-        }
-        else {
+        } else {
             return Apis.instance().db_api().exec('get_objects', [[prod_id]]).then(function (resp) {
-                if (!resp || resp.length == 0) {
+                if (!resp || resp.length === 0) {
                     reject(new Error('product not found'));
-                }
-                else {
+                } else {
                     let prod = Object.assign({schema_contexts: []}, resp[0]);
                     prod.schema_contexts = prod.schema_contexts.map(function (schema) {
-                        if (typeof schema.schema_context == 'string') {
+                        if (typeof schema.schema_context === 'string') {
                             schema.schema_context = JSON.parse(schema.schema_context);
                         }
                         return schema;
@@ -104,8 +102,7 @@ let fallbackStore = {};
 export const set_item = (key, val) => {
     try {
         localStorage.setItem(key, val);
-    }
-    catch (ex) {
+    } catch (ex) {
         console.log('fallback to memory store');
         fallbackStore[key] = val;
     }
@@ -114,9 +111,7 @@ export const set_item = (key, val) => {
 export const get_item = (key) => {
     try {
         return localStorage.getItem(key);
-    }
-    catch (ex) {
+    } catch (ex) {
         return fallbackStore[key];
     }
-
 };

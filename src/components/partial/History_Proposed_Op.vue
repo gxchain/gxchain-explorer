@@ -439,8 +439,8 @@
 </template>
 
 <script>
-    import {ChainTypes} from 'gxbjs/es';
-    import {fetch_account_by_chain, formatted_asset} from '@/services/CommonService';
+    import { ChainTypes } from 'gxbjs/es';
+    import { fetch_account_by_chain, formatted_asset } from '@/services/CommonService';
 
     let ops = Object.keys(ChainTypes.operations);
     let account_listing = {
@@ -454,7 +454,7 @@
         props: {
             latestTransactions: {}
         },
-        data() {
+        data () {
             return {
                 listings,
                 items: {},
@@ -463,7 +463,7 @@
             };
         },
         methods: {
-            formatted_account(id) {
+            formatted_account (id) {
                 let self = this;
                 if (this.items[id]) {
                     return this.account[id];
@@ -477,7 +477,7 @@
                 });
                 return this.account[id];
             },
-            formatted_number(asset_id, amount, decimalOffset) {
+            formatted_number (asset_id, amount, decimalOffset) {
                 return formatted_asset(asset_id, amount, decimalOffset);
             }
         }

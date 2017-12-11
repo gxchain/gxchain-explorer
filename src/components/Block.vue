@@ -47,18 +47,18 @@
 </template>
 
 <script>
-    import {Apis} from 'gxbjs-ws';
-    import {mapGetters, mapActions} from 'vuex';
-    import {fetch_block, fetch_account} from '@/services/CommonService';
+    import { Apis } from 'gxbjs-ws';
+    import { mapGetters, mapActions } from 'vuex';
+    import { fetch_block, fetch_account } from '@/services/CommonService';
     import JSON from './partial/JSON.vue';
     import Operation from './partial/Operation.vue';
 
     export default {
-        data() {
+        data () {
             return {
                 loading: true,
                 block: null,
-                account_name: null,
+                account_name: null
             };
         },
         methods: {
@@ -66,7 +66,7 @@
                 setKeywords: 'setKeywords'
             }),
 
-            fetch_block() {
+            fetch_block () {
                 let self = this;
                 this.block = null;
                 this.account_name = null;
@@ -88,12 +88,12 @@
                 });
             },
 
-            goNext() {
+            goNext () {
                 this.loading = true;
                 this.setKeywords({keywords: parseInt(this.$route.params.block_height) + 1});
             },
 
-            goPrev() {
+            goPrev () {
                 this.loading = true;
                 this.setKeywords({keywords: parseInt(this.$route.params.block_height) - 1});
             }
@@ -105,7 +105,7 @@
             })
         },
         watch: {
-            keywords() {
+            keywords () {
                 this.loading = true;
                 this.fetch_block();
             }
@@ -114,8 +114,8 @@
             json: JSON,
             Operation: Operation
         },
-        mounted() {
-            if (this.$route.params.block_height != this.keywords) {
+        mounted () {
+            if (this.$route.params.block_height !== this.keywords) {
                 this.setKeywords({keywords: this.$route.params.block_height});
             }
             this.fetch_block();

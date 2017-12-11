@@ -896,9 +896,9 @@
 </template>
 
 <script>
-    import {ChainTypes} from 'gxbjs/es';
+    import { ChainTypes } from 'gxbjs/es';
     import History_Proposed_Op from './History_Proposed_Op.vue';
-    import {fetch_account_by_chain, formatted_asset} from '@/services/CommonService';
+    import { fetch_account_by_chain, formatted_asset } from '@/services/CommonService';
 
     let ops = Object.keys(ChainTypes.operations);
     let account_listing = {
@@ -917,7 +917,7 @@
                 type: String
             }
         },
-        data() {
+        data () {
             return {
                 listings,
                 items: {},
@@ -926,7 +926,7 @@
             };
         },
         methods: {
-            formatted_account(id) {
+            formatted_account (id) {
                 let self = this;
                 if (this.items[id]) {
                     return this.account[id];
@@ -940,15 +940,15 @@
                 });
                 return this.account[id];
             },
-            formatted_number(asset_id, amount, decimalOffset) {
+            formatted_number (asset_id, amount, decimalOffset) {
                 return formatted_asset(asset_id, amount, decimalOffset);
             }
         },
-        updated() {
+        updated () {
             $('[data-toggle="tooltip"]').tooltip();
         },
         components: {
-            History_Proposed_Op: History_Proposed_Op,
+            History_Proposed_Op: History_Proposed_Op
         }
     };
 </script>

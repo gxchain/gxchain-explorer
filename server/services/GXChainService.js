@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
-import {Apis} from 'gxbjs-ws';
-import {ChainStore} from 'gxbjs';
+import { Apis } from 'gxbjs-ws';
+import { ChainStore } from 'gxbjs';
 import Immutable from 'immutable';
 
 /**
@@ -15,7 +15,6 @@ const fetch_full_account = (account) => {
     return Apis.instance().db_api().exec('get_full_accounts', [[account], true]);
 };
 
-
 /**
  * fetch account balance of GXS by account name or id
  * @param account_name
@@ -27,7 +26,7 @@ const fetch_account_balance = (account_name) => {
             return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
                 return balances;
             });
-        }).catch((ex) => {reject(ex);}));
+        }).catch((ex) => { reject(ex) }));
     });
 };
 
@@ -40,8 +39,7 @@ const fetch_block = function (block_height) {
         return Apis.instance().db_api().exec('get_block', [parseInt(block_height)]).then(function (block) {
             if (!block) {
                 resolve(null);
-            }
-            else {
+            } else {
                 resolve(block);
             }
         }).catch(function (ex) {
@@ -73,22 +71,20 @@ const fetch_product = function (prod_id) {
         if (prod) {
             prod = prod.toJS();
             prod.schema_contexts = prod.schema_contexts.map(function (schema) {
-                if (typeof schema.schema_context == 'string') {
+                if (typeof schema.schema_context === 'string') {
                     schema.schema_context = JSON.parse(schema.schema_context);
                 }
                 return schema;
             });
             resolve(prod);
-        }
-        else {
+        } else {
             return Apis.instance().db_api().exec('get_objects', [[prod_id]]).then(function (resp) {
-                if (!resp || resp.length == 0) {
+                if (!resp || resp.length === 0) {
                     reject(new Error('product not found'));
-                }
-                else {
+                } else {
                     let prod = Object.assign({schema_contexts: []}, resp[0]);
                     prod.schema_contexts = prod.schema_contexts.map(function (schema) {
-                        if (typeof schema.schema_context == 'string') {
+                        if (typeof schema.schema_context === 'string') {
                             schema.schema_context = JSON.parse(schema.schema_context);
                         }
                         return schema;

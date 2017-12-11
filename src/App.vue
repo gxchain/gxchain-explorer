@@ -28,7 +28,7 @@
     import modalAbout from './components/modals/modal-about.vue';
     import header from './components/partial/Header.vue';
     import footer from './components/partial/Footer.vue';
-    import {mapGetters} from 'vuex';
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'app',
@@ -38,22 +38,19 @@
             })
         },
         watch: {
-            keywords() {
+            keywords () {
                 this.keywordsChanged();
             }
         },
         methods: {
-            keywordsChanged() {
+            keywordsChanged () {
                 if (!this.keywords) {
                     this.$router.push('/');
-                }
-                else if (/^\d+$/.test(this.keywords)) { // block
+                } else if (/^\d+$/.test(this.keywords)) { // block
                     this.$router.push(`/block/${this.keywords}`);
-                }
-                else if (this.keywords.length == 40) { //transaction
+                } else if (this.keywords.length === 40) { // transaction
                     this.$router.push(`/transaction/${this.keywords}`);
-                }
-                else { //account
+                } else { // account
                     this.$router.push(`/account/${this.keywords}`);
                 }
             }

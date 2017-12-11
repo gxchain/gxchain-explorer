@@ -51,7 +51,7 @@ const locale = {
         previous: '上一区块',
         transactions: '交易数量',
         empty: '未查到区块信息',
-        error: '发生错误, 获取区块信息失败',
+        error: '发生错误, 获取区块信息失败'
     },
     // transaction
     transaction: {
@@ -68,7 +68,7 @@ const locale = {
                 from: '来自',
                 amount: '金额',
                 to: '发往',
-                fee: '手续费',
+                fee: '手续费'
             },
             'limit_order_create': '限价单',
             'limit_order_cancel': '取消限价单',
@@ -78,12 +78,12 @@ const locale = {
                 fee: '手续费',
                 registrar: '注册人',
                 referrer: '推荐人',
-                account: '账户名',
+                account: '账户名'
             },
             'account_update': {
                 name: '更新账户',
                 fee: '手续费',
-                account: '账户名',
+                account: '账户名'
             },
             'account_whitelist': {
                 name: '账户白名单',
@@ -155,7 +155,7 @@ const locale = {
                     owner_approvals_to_remove: '要移除的账户权限许可',
                     key_approvals_to_add: '要添加的公钥许可',
                     key_approvals_to_remove: '要移除的公钥许可'
-                },
+                }
             },
             'withdraw_permission_create': '创建提取权限',
             'withdraw_permission_update': '更新提取权限',
@@ -272,7 +272,7 @@ const locale = {
                 request_id: '请求ID',
                 fee: '手续费',
                 new_requester: '新发起人',
-                new_status: '新状态',
+                new_status: '新状态'
             },
             'data_transaction_pay': {
                 name: '数据支付',
@@ -307,7 +307,7 @@ const locale = {
                 amount: '锁定金额',
                 program_id: '锁仓期限',
                 term: '个月',
-                interest_rate: '奖励年化',
+                interest_rate: '奖励年化'
             },
             'balance_unlock': {
                 name: '解冻余额',
