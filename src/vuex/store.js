@@ -1,31 +1,31 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const state = {
-  keywords: ''
-}
+    keywords: ''
+};
 
 const mutations = {
-  setKeywords(state, payload) {
-    state.keywords = payload.keywords;
-  }
-}
+    setKeywords(state, payload) {
+        state.keywords = payload.keywords;
+    }
+};
 
 const actions = {
-  setKeywords({commit}, payload) {
-    commit('setKeywords', payload)
-  }
-}
+    setKeywords({commit}, payload) {
+        commit('setKeywords', payload);
+    }
+};
 
 const getters = {
-  keywords: state => state.keywords
-}
+    keywords: state => state.keywords
+};
 
 export default new Vuex.Store({
-  state,
-  getters,
-  actions,
-  mutations
-})
+    state,
+    getters,
+    actions,
+    mutations
+});

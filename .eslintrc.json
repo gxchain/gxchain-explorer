@@ -1,0 +1,27 @@
+{
+    "extends": "eslint:recommended",
+    "root": true,
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true,
+        "amd": true,
+        "jquery": true
+    },
+    "plugins": ["html", "vue"],
+    "rules": {
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "no-debugger": ["error"],
+        "no-console": ["off"],
+        "vue/jsx-uses-vars": 2
+    }
+}
