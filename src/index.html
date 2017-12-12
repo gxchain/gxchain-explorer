@@ -1,49 +1,61 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="公信宝区块链浏览器提供账户查询、区块查询、交易查询等功能">
-  <meta name="keywords" content="公信宝 区块链 浏览器 账户查询 区块查询 交易查询 Graphene BTS BlockChain Explorer">
-  <link rel="shortcut icon" href="/static/favicon.ico">
-  <title>GXB Explorer - 公信宝区块链浏览器</title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <style>
-    html {
-      position: relative;
-    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="公信宝区块链浏览器提供账户查询、区块查询、交易查询等功能">
+    <meta name="keywords" content="公信宝 区块链 浏览器 账户查询 区块查询 交易查询 Graphene BTS BlockChain Explorer">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <title>GXB Explorer - 公信宝区块链浏览器</title>
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        html {
+            position: relative;
+        }
 
-    body,html {
-      min-height: 100%;
-    }
+        body, html {
+            min-height: 100%;
+        }
 
-    .null-tip{
-      color:#888;
-    }
-    /* This is a compiled file, you should be editing the file in the templates directory */
-    .pace {
-      -webkit-pointer-events: none;
-      pointer-events: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-    .pace-inactive {
-      display: none;
-    }
-    .pace .pace-progress {
-      background: #ffffff;
-      position: fixed;
-      z-index: 2000;
-      top: 0;
-      right: 100%;
-      width: 100%;
-      height: 2px;
-    }
-  </style>
-  <script data-pace-options='{ "ajax": true, "document": true, "eventLag": false, "elements": false }'
-          src="//cdn.bootcss.com/pace/1.0.2/pace.js"></script>
+        .null-tip {
+            color: #888;
+        }
+
+        /* This is a compiled file, you should be editing the file in the templates directory */
+        .pace {
+            -webkit-pointer-events: none;
+            pointer-events: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .pace-inactive {
+            display: none;
+        }
+
+        .pace .pace-progress {
+            background: #ffffff;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            right: 100%;
+            width: 100%;
+            height: 2px;
+        }
+    </style>
+    <script data-pace-options='{ "ajax": true, "document": true, "eventLag": false, "elements": false }'
+            src="//cdn.bootcss.com/pace/1.0.2/pace.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement('script');
+            hm.src = 'https://hm.baidu.com/hm.js?865c2327e0f1a60388327b99a378bcdd';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 <body>
 <div id="app"></div>

@@ -73,31 +73,26 @@
 
 <script>
 
-import {formatted_asset,get_rank} from '@/services/CommonService'
+import {formatted_asset, get_rank} from '@/services/CommonService';
 
 export default {
-    data() {
-      return {
-        loading:true,
-        holdrank:[],
-        locknum:0,
-        uptime:'',
-        typeid:1
-      }
+    data () {
+        return {
+            loading: true,
+            holdrank: [],
+            locknum: 0,
+            uptime: '',
+            typeid: 1
+        };
     },
-    computed: {
-      
-    },
+    computed: {},
     watch: {
-      "$route": "getHoldRank"
+        '$route': 'getHoldRank'
     },
-    mounted() {
+    mounted () {
         this.getHoldRank();
     },
-
-    destroyed() {
-    },
-
+    destroyed () {},
     methods: {
         getHoldRank: function () {
             let self = this;
@@ -108,16 +103,13 @@ export default {
                 self.uptime = rankdata['data']['uptime'];
                 self.loading = false;
                 self.typeid = self.$route.params.type;
-
             }).catch(ex => {
                 console.error(ex);
             });
-           
         },
-        formatted_number(asset_id, amount, decimalOffset) {
+        formatted_number (asset_id, amount, decimalOffset) {
             return formatted_asset(asset_id, amount, decimalOffset);
         }
-     }
-  }
-
+    }
+};
 </script>
