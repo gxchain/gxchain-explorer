@@ -7,7 +7,7 @@
     "start": "nodemon server/index.js --exec babel-node --watch server",
     "clear": "rm -rf dist server-dist",
     "prebuild": "npm run clear",
-    "build": "babel server -d server-dist && node build/build.js",
+    "build": "webpack --progress --hide-modules --config build/webpack.server.config.js && node build/build.js",
     "server": "NODE_ENV=production node server-dist/index.js"
   },
   "repository": {
