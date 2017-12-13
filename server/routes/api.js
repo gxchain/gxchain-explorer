@@ -88,11 +88,11 @@ router.get('/product/:product_id', function (req, res) {
  * 持仓
  */
 router.get('/holdrank/:typeid', function (req, res) {
-    try{
+    try {
         res.send(JSON.stringify(HoldrankService.get_rank(req.params.typeid)));
-    }catch(err){
+    } catch (err) {
         res.send({});
     }
-})
+});
 
 module.exports = router;

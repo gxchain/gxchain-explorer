@@ -223,7 +223,6 @@ let startSubScribe = function () {
  * 初始化连接
  */
 let initConnection = function () {
-
     console.log('初始化数据缓存');
     let promises = [
         ChainStore.init(),

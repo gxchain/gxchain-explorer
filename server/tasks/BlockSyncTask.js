@@ -59,7 +59,7 @@ export default {
                     });
                 });
                 current_block_height = parseInt(current_block_height) + length;
-                //console.log(`${current_block_height}/${max_block_height}已同步,同步区块数:`, blocks.length);
+                console.log(`${current_block_height}/${max_block_height}已同步,同步区块数:`, blocks.length);
                 syncing = false;
                 if (current_block_height < max_block_height) {
                     self.sync_to_block(max_block_height);
