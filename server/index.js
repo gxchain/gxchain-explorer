@@ -2,11 +2,13 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import http from 'http';
+
 import path from 'path';
 import Promise from 'bluebird';
 import { Apis, Manager } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
 import BlockSyncTask from './tasks/BlockSyncTask';
+import HoldrankTask from './tasks/HoldrankTask';
 import LevelDBService from './services/LevelDBService';
 import figlet from 'figlet';
 import colors from 'colors/safe';
@@ -17,6 +19,7 @@ import webpack from 'webpack';
 import config from '../config';
 
 require('debug')('gxb-explorer:server');
+
 let autoOpenBrowser = !!config.dev.autoOpenBrowser;
 let app = express();
 let compiler = webpack(webpackConfig);
@@ -223,7 +226,8 @@ let initConnection = function () {
     console.log('初始化数据缓存');
     let promises = [
         ChainStore.init(),
-        BlockSyncTask.init()
+        BlockSyncTask.init(),
+        HoldrankTask.init()
     ];
     Promise.all(promises).then(function () {
         startSubScribe();

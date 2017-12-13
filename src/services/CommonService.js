@@ -37,6 +37,12 @@ export const fetch_product = (product_id) => {
     });
 };
 
+export const get_rank = (typeid) => {
+    return Vue.http.get(`//${baseURL}/api/holdrank/${typeid}`, {
+        responseType: 'json'
+    });
+};
+
 export const fetch_account_by_chain = (account_name) => {
     return new Promise(function (resolve, reject) {
         return FetchChain('getAccount', account_name).then((account) => {
