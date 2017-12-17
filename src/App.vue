@@ -22,46 +22,46 @@
 </template>
 
 <script>
-  import 'bootstrap'
-  import 'bootstrap/dist/css/bootstrap.css'
-  import modalApi from './components/modals/modal-api.vue'
-  import modalAbout from './components/modals/modal-about.vue'
-  import header from './components/partial/Header.vue'
-  import footer from './components/partial/Footer.vue'
-  import { mapGetters } from 'vuex'
+    import 'bootstrap';
+    import 'bootstrap/dist/css/bootstrap.css';
+    import modalApi from './components/modals/modal-api.vue';
+    import modalAbout from './components/modals/modal-about.vue';
+    import header from './components/partial/Header.vue';
+    import footer from './components/partial/Footer.vue';
+    import { mapGetters } from 'vuex';
 
-  export default {
-    name: 'app',
-    computed: {
-      ...mapGetters({
-        keywords: 'keywords'
-      })
-    },
-    watch: {
-      keywords () {
-        this.keywordsChanged()
-      }
-    },
-    methods: {
-      keywordsChanged () {
-        if (!this.keywords) {
-          this.$router.push('/')
-        } else if (/^\d+$/.test(this.keywords)) { // block
-          this.$router.push(`/block/${this.keywords}`)
-        } else if (this.keywords.length === 40) { // transaction
-          this.$router.push(`/transaction/${this.keywords}`)
-        } else { // account
-          this.$router.push(`/account/${this.keywords}`)
+    export default {
+        name: 'app',
+        computed: {
+            ...mapGetters({
+                keywords: 'keywords'
+            })
+        },
+        watch: {
+            keywords () {
+                this.keywordsChanged();
+            }
+        },
+        methods: {
+            keywordsChanged () {
+                if (!this.keywords) {
+                    this.$router.push('/');
+                } else if (/^\d+$/.test(this.keywords)) { // block
+                    this.$router.push(`/block/${this.keywords}`);
+                } else if (this.keywords.length === 40) { // transaction
+                    this.$router.push(`/transaction/${this.keywords}`);
+                } else { // account
+                    this.$router.push(`/account/${this.keywords}`);
+                }
+            }
+        },
+        components: {
+            vHeader: header,
+            vFooter: footer,
+            modalApi,
+            modalAbout
         }
-      }
-    },
-    components: {
-      vHeader: header,
-      vFooter: footer,
-      modalApi,
-      modalAbout
-    }
-  }
+    };
 </script>
 
 <style scoped>
