@@ -5,10 +5,12 @@ import Block from '@/components/Block';
 import Transaction from '@/components/Transaction';
 import Account from '@/components/Account';
 import connect from '@/common/connect';
+import Holdrank from '@/components/Holdrank';
 
 Vue.use(Router);
 
 const router = new Router({
+
     routes: [
         {
             path: '/',
@@ -29,7 +31,13 @@ const router = new Router({
             path: '/account/:id_or_name',
             name: 'Account',
             component: Account
+        },
+        {
+            path: '/holdrank/:type',
+            name: 'Holdrank',
+            component: Holdrank
         }
+
     ]
 });
 
