@@ -35,15 +35,15 @@
                                 <template v-if="typeid == 2">
                                 <td class="text-right">{{$t('holdrank.table.lockgxs')}}</td>
                                 <td class="text-right">{{$t('holdrank.table.perlock')}}</td>
-                                </template>    
+                                </template>
                                 <template v-else-if="typeid == 3">
                                 <td class="text-right">{{$t('holdrank.table.allgxs')}}</td>
                                 <td class="text-right">{{$t('holdrank.table.perall')}}</td>
-                                </template>   
+                                </template>
                                 <template v-else>
                                 <td class="text-right">{{$t('holdrank.table.activegxs')}}</td>
                                 <td class="text-right">{{$t('holdrank.table.peractive')}}</td>
-                                </template>   
+                                </template>
                             </tr>
                             <tr v-for="r in holdrank">
                                 <td>{{r.ranknum}}</td>
@@ -52,27 +52,25 @@
                                 <template v-if="typeid == 2">
                                 <td class="text-right">{{formatted_number('1.3.1',r.lockgxs,5)}}</td>
                                 <td class="text-right">{{r.perlock}}%</td>
-                                </template>   
+                                </template>
                                 <template v-else-if="typeid == 3">
                                 <td class="text-right">{{formatted_number('1.3.1',r.allgxs,5)}}</td>
                                 <td class="text-right">{{r.perall}}%</td>
-                                </template>  
+                                </template>
                                 <template v-else>
                                 <td class="text-right">{{formatted_number('1.3.1',r.activegxs,5)}}</td>
                                 <td class="text-right">{{r.peractive}}%</td>
-                                </template>    
+                                </template>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
 <script>
-
 import {formatted_asset, get_rank} from '@/services/CommonService';
 
 export default {

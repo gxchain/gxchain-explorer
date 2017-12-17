@@ -7,7 +7,7 @@ const locale = {
         about: 'About',
         language: 'Language: English',
         flag: 'en',
-        title: 'GXB Block Explorer',
+        title: 'GXS Block Explorer',
         subtitle: 'Find Block, Transaction and Account',
         search: 'Enter block number, txid, account name or id here'
     },
@@ -413,12 +413,12 @@ const locale = {
     },
     // about
     about: {
-        title: 'About GXB Blockchain Explorer',
+        title: 'About GXS Blockchain Explorer',
         version: 'Version',
         version_intro_title: 'About this version',
         version_intro: 'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
         project_intro_title: 'About this project',
-        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXB Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXS for your good job.',
+        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXS Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXS for your good job.',
         github: 'Github',
         about_company: 'About GXB',
         company_intro1: 'GXB was founded in 2016, working on a blockchain based decentralized data transaction project.',
