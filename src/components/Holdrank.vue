@@ -1,34 +1,50 @@
+<style scoped>
+    #seg {
+        margin: 20px 10px;
+    }
+
+    .router-link-active {
+        border-color: #008fcd !important;
+        background: #008fcd !important;;
+        color: #fff !important;;
+    }
+
+    .close{
+        line-height: 13px;
+    }
+
+    .title td{
+        font-weight: 500;
+    }
+</style>
+
 <template>
     <div class="container">
         <Loading v-show="loading"/>
+        <div class="text-center">
+            <div id="seg" class="btn-group btn-group-lg text-center" role="group">
+                <router-link :to="{path:'/holdrank/1'}" class="btn btn-default">{{$t('holdrank.rank.active')}}
+                </router-link>
+                <router-link :to="{path:'/holdrank/2'}" class="btn btn-default">{{$t('holdrank.rank.lock')}}
+                </router-link>
+                <router-link :to="{path:'/holdrank/3'}" class="btn btn-default">{{$t('holdrank.rank.all')}}
+                </router-link>
+            </div>
+        </div>
         <div class="row" v-show="!loading">
             <div class="col-md-12">
                 <hr/>
                 <div class="alert alert-info" role="alert">
-                <p>{{$t('holdrank.last_updated_at',{datetime:uptime})}}</p>
-                <p>{{$t('holdrank.locknum')}}:{{formatted_number('1.3.1',locknum,5)}}</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p>
+                        <span>{{$t('holdrank.locknum')}}: {{formatted_number('1.3.1',locknum,5)}}</span>
+                        <span>（{{$t('holdrank.last_updated_at',{datetime:uptime})}}）</span>
+                    </p>
                 </div>
-                <div style="margin-bottom:10px;">
-                    <ul class="nav nav-tabs">
-                        <li role="presentation" v-bind:class="{ active: typeid == 1 }">
-                            <router-link :to="{path:'/holdrank/1'}">{{$t('holdrank.rank.active')}}
-                            </router-link>
-                        </li>
-                        <li role="presentation" v-bind:class="{ active: typeid == 2 }">
-                            <router-link :to="{path:'/holdrank/2'}">{{$t('holdrank.rank.lock')}}
-                            </router-link>
-                        </li>
-                        <li role="presentation" v-bind:class="{ active: typeid == 3 }">
-                            <router-link :to="{path:'/holdrank/3'}">{{$t('holdrank.rank.all')}}
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-
                 <div class="panel-body no-padding table-responsive">
                     <table class="table table-striped table-bordered no-margin">
                         <tbody>
-                            <tr>
+                            <tr class="title">
                                 <td>#</td>
                                 <td>{{$t('holdrank.table.userid')}}</td>
                                 <td>{{$t('holdrank.table.username')}}</td>
@@ -94,7 +110,6 @@ export default {
     methods: {
         getHoldRank: function () {
             let self = this;
-
             get_rank(self.$route.params.type).then(function (rankdata) {
                 self.holdrank = rankdata['data']['hold'];
                 self.locknum = rankdata['data']['locknum'];

@@ -18,6 +18,7 @@
                 <nav id="bs-navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
+                        <li><router-link :to="{path:'/holdrank/1'}" @click.native="clearInput">排行</router-link></li>
                         <li><a href="#modal-about" data-toggle="modal">{{$t("header.about")}}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
