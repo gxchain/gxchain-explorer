@@ -192,7 +192,7 @@ let startServer = function () {
     });
     figlet('GXB-EXPLORER', 'Standard', function (err, text) {
         if (err) {
-            console.log(err);
+            console.error(err);
         }
         console.log(colors.rainbow('\n=*=*=*=*=*=*=*=*=*==*=*=公信宝区块链浏览器已启动=*=*=*==*=*=*=*=*=*=*=\n'));
         console.log(colors.cyan(`${(text || '').split('\n').map(function (line) {

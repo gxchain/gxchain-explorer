@@ -12,12 +12,13 @@
                         <span class="icon-bar"></span>
                     </button>
                     <router-link :to="{path:'/'}" class="navbar-brand">
-                        <img height="28px" src="/static/logo-gxb.png" v-on:click="clearInput"/>
+                        <img height="28px" src="/static/logo-gxs.png" v-on:click="clearInput"/>
                     </router-link>
                 </div>
                 <nav id="bs-navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
+                        <li><router-link :to="{path:'/holdrank/1'}" @click.native="clearInput">排行</router-link></li>
                         <li><a href="#modal-about" data-toggle="modal">{{$t("header.about")}}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -40,7 +41,7 @@
         </nav>
         <div class="container jumbotron">
             <div class="row">
-                <div class="col-xs-12"><h1>{{$t('header.title')}}(Beta)</h1>
+                <div class="col-xs-12"><h1>{{$t('header.title')}}</h1>
                     <p>{{$t('header.subtitle')}}</p>
                     <div class="search-wraper" role="search">
                         <div class="form-group">
