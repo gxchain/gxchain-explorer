@@ -20,7 +20,6 @@
 
 <template>
     <div class="container">
-        <Loading v-show="loading"/>
         <div class="text-center">
             <div id="seg" class="btn-group btn-group-lg text-center" role="group">
                 <router-link :to="{path:'/holdrank/1'}" class="btn btn-default">{{$t('holdrank.rank.active')}}
@@ -31,6 +30,7 @@
                 </router-link>
             </div>
         </div>
+        <Loading v-show="loading"/>
         <div class="row" v-show="!loading">
             <div class="col-md-12">
                 <hr/>
