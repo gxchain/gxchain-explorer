@@ -20,16 +20,10 @@ export default {
     init () {
         try {
             info_path = getPath('txt_accountinfo.txt');
-            all_path = getPath('txt_all.txt');
-            active_path = getPath('txt_active.txt');
-            lock_path = getPath('txt_lock.txt');
-            if (fs.existsSync(info_path) && fs.existsSync(date_path) && fs.existsSync(all_path) && fs.existsSync(active_path) && fs.existsSync(lock_path)) {} else {
-                // 记录日期的文件也没有的时候，即全站首次
-                if (!fs.existsSync(date_path)) {
-                    cronfuc();
-                }
-                docron();
+            if (!fs.existsSync(date_path) || !fs.existsSync(info_path)) {
+                cronfuc();
             }
+            docron();
         } catch (err) {
             console.log('cron init error');
         };
