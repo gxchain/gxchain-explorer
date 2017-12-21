@@ -31,7 +31,7 @@ export default {
 };
 
 function docron () {
-    new cron.CronJob('00 02 * * *', function () {
+    new cron.CronJob('30 00 * * *', function () {
         cronfuc();
     }, null, true, 'UTC');
 }
@@ -42,14 +42,11 @@ function cronfuc () {
     active_path = getPath('txt_active.txt');
     lock_path = getPath('txt_lock.txt');
 
-    if (fs.existsSync(info_path) && fs.existsSync(date_path) && fs.existsSync(all_path) && fs.existsSync(active_path) && fs.existsSync(lock_path)) {
+    if (fs.existsSync(info_path)) {
 
     } else {
         if (!fs.existsSync(base_path)) {
             mkdir(base_path);
-        }
-        if (fs.existsSync(info_path)) {
-            fs.unlinkSync(info_path);
         }
 
         Apis.instance().db_api().exec('get_account_count', [false]).then(function (resp) {
