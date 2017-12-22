@@ -19,7 +19,8 @@ let account_count = 0;
 export default {
     init () {
         try {
-            info_path = getPath('txt_accountinfo.txt');
+            nowdate = dateFtt('yyyy-MM-dd', new Date());
+            info_path = base_path + '/' + nowdate + '-txt_accountinfo.txt';
             if (!fs.existsSync(date_path) || !fs.existsSync(info_path)) {
                 cronfuc();
             }
@@ -37,10 +38,11 @@ function docron () {
 }
 
 function cronfuc () {
-    info_path = getPath('txt_accountinfo.txt');
-    all_path = getPath('txt_all.txt');
-    active_path = getPath('txt_active.txt');
-    lock_path = getPath('txt_lock.txt');
+    nowdate = dateFtt('yyyy-MM-dd', new Date());
+    info_path = base_path + '/' + nowdate + '-txt_accountinfo.txt';
+    all_path = base_path + '/' + nowdate + '-txt_all.txt';
+    active_path = base_path + '/' + nowdate + '-txt_active.txt';
+    lock_path = base_path + '/' + nowdate + '-txt_lock.txt';
 
     if (fs.existsSync(info_path)) {
 
@@ -48,7 +50,6 @@ function cronfuc () {
         if (!fs.existsSync(base_path)) {
             mkdir(base_path);
         }
-
         Apis.instance().db_api().exec('get_account_count', [false]).then(function (resp) {
             account_count = resp;
             accountinfo(resp - 1);
@@ -57,7 +58,6 @@ function cronfuc () {
 }
 
 function accountinfo (accountNum) {
-    all_lock = 0;
     for (var i = accountNum; i >= 0; i--) {
         Apis.instance().db_api().exec('get_full_accounts', [
             ['1.2.' + i], false
@@ -81,14 +81,11 @@ function accountinfo (accountNum) {
             });
 
             all = active + lock;
-            all_lock += lock;
             userid = resp[0][0].replace('1.2.', '');
             str = userid + ':' + info['account']['name'] + ':' + active + ':' + lock + ':' + all + os.EOL;
             fs.appendFile(info_path, str, function (errr) {
                 account_count--;
                 if (account_count <= 0) {
-                    date_lock_str = nowdate + ':' + all_lock;
-                    fs.writeFile(date_path, date_lock_str, function (errr) {});
                     runsort();
                 };
             });
@@ -103,6 +100,9 @@ function runsort () {
             info[index] = value.split(':');
         }
     });
+    all_lock = _.sumBy(info, function (o) { return parseInt(o[3]) });
+    date_lock_str = nowdate + ':' + all_lock;
+    fs.writeFile(date_path, date_lock_str, function (errr) {});
     fs.writeFile(active_path, arrFtt(info, 2), function (errr) {});
     fs.writeFile(lock_path, arrFtt(info, 3), function (errr) {});
     fs.writeFile(all_path, arrFtt(info, 4), function (errr) {});
@@ -165,7 +165,3 @@ function arrFtt (info, index) {
     return tempArr.join(os.EOL);
 }
 
-function getPath (pathname) {
-    nowdate = dateFtt('yyyy-MM-dd', new Date());
-    return base_path + '/' + nowdate + '-' + pathname;
-}
