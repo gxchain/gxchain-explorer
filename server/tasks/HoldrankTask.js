@@ -15,6 +15,7 @@ let active_path = ''; // 激活排名
 let lock_path = ''; // 冻结排名
 let nowdate = '';
 let account_count = 0;
+let cron_sta = false;
 
 export default {
     init () {
@@ -32,9 +33,12 @@ export default {
 };
 
 function docron () {
-    new cron.CronJob('30 00 * * *', function () {
-        cronfuc();
-    }, null, true, 'UTC');
+    if (!cron_sta) {
+        new cron.CronJob('30 00 * * *', function () {
+            cronfuc();
+            cron_sta = true;
+        }, null, true, 'UTC');
+    }
 }
 
 function cronfuc () {

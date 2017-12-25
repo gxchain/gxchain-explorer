@@ -201,6 +201,7 @@ let startServer = function () {
         }).join('\n')}`));
         console.log(colors.rainbow('=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=**=*=*=*=*=*=*=\n'));
     });
+    HoldrankTask.init();
 };
 
 /**
@@ -227,8 +228,7 @@ let initConnection = function () {
     console.log('初始化数据缓存');
     let promises = [
         ChainStore.init(),
-        BlockSyncTask.init(),
-        HoldrankTask.init()
+        BlockSyncTask.init()
     ];
     Promise.all(promises).then(function () {
         startSubScribe();
