@@ -40,7 +40,7 @@
                                 <th>{{$t('index.summary.total_supply')}}</th>
                                 <td>{{supply_info.current_supply / 100000 | number(2)}}&nbsp;GXS</td>
                                 <th>{{$t('index.summary.circulating_supply')}}</th>
-                                <td>{{40510000 | number(2)}}&nbsp;GXS</td>
+                                <td>{{60000000 | number(2)}}&nbsp;GXS</td>
                             </tr>
                             </tbody>
                         </table>
