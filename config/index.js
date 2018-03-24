@@ -10,6 +10,8 @@ module.exports = {
     assetsPublicPath: '/',
     productionSourceMap: false,
     witnesses: [
+        // 'ws://172.19.19.148:28090',
+        // 'ws://172.19.19.149:28090'
       // "wss://node1.gxb.io",
       "wss://node5.gxb.io",
       "wss://node8.gxb.io",
