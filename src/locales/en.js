@@ -388,7 +388,8 @@ const locale = {
             'data_transaction_datasource_upload': '{account} confirmed an data upload from {datasource}',
             'data_transaction_datasource_validate_error': '{account} returned an error when processing the data upload',
             'balance_lock': '{account} locked {amount} for loyalty program',
-            'balance_unlock': '{account} complete a loyalty program'
+            'balance_unlock': '{account} complete a loyalty program',
+            'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}'
         }
     },
     // account
