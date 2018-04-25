@@ -44,6 +44,7 @@ const locale = {
     },
     // block
     block: {
+        id: '区块ID',
         title: '区块信息',
         more: '更多',
         timestamp: '区块生成时间',
@@ -314,6 +315,16 @@ const locale = {
                 account: '解锁账户',
                 lock_id: '锁定ID'
             },
+            'proxy_transfer': {
+                name: '代理转账',
+                from: '来自',
+                to: '发往',
+                amount: '金额',
+                memo: '备注(memo)',
+                proxy_memo: '记账备注(proxy memo)',
+                proxy_account: '代理记账人',
+                fee: '手续费'
+            },
             'status_states': {
                 0: '未发布',
                 1: '已发布',
@@ -378,7 +389,8 @@ const locale = {
             'data_transaction_datasource_upload': '{account} 验证了数据源 {datasource} 的数据上传',
             'data_transaction_datasource_validate_error': '{account} 数据返回验证失败',
             'balance_lock': '{account} 参与忠诚计划，冻结了 {amount}',
-            'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作'
+            'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
+            'proxy_transfer': '{account} 发起了一笔代理记账交易: {from} 发送 {amount} 到 {to}'
         }
     },
     // account

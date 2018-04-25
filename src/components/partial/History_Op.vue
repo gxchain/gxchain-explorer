@@ -887,6 +887,28 @@
                 </router-link>
             </i18n>
         </td>
+        <!-- 73:proxy_transfer -->
+        <th v-if="ops[op[0]] == 'proxy_transfer'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-success">{{$t('transaction.trxTypes.proxy_transfer.name')}}</span>
+            </router-link>
+        </th>
+        <td align="right" v-if="ops[op[0]] == 'proxy_transfer'">
+            <i18n path="transaction.operation.proxy_transfer">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].request_params.proxy_account)}">
+                    {{ formatted_account(op[1].request_params.proxy_account) }}
+                </router-link>
+                <router-link place="from" :to="{path: '/account/' + formatted_account(op[1].request_params.from)}">
+                    {{ formatted_account(op[1].request_params.from) }}
+                </router-link>
+                <span place="amount">{{ formatted_number(op[1].request_params.amount.asset_id, op[1].request_params.amount.amount, 5) }}</span>
+                <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].request_params.to)}">
+                    {{ formatted_account(op[1].request_params.to)
+                    }}
+                </router-link>
+            </i18n>
+        </td>
 
         <td align="right">
             <timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago>

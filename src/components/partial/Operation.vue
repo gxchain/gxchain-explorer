@@ -1113,7 +1113,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>{{$t('transaction.trxTypes.account_upgrade_data_transaction_member.account_to_upgrade')}}</th>
+                            <th>
+                                {{$t('transaction.trxTypes.account_upgrade_data_transaction_member.account_to_upgrade')}}
+                            </th>
                             <td align="right">
                                 <router-link :to="{path: '/account/' + op[1].account_to_upgrade}">
                                     {{formatted_account(op[1].account_to_upgrade, 'account_to_upgrade')}}
@@ -1445,6 +1447,60 @@
                             </td>
                         </tr>
                         </tbody>
+                        <!-- 73:proxy_transfer -->
+                        <tbody v-if="ops[op[0]] == 'proxy_transfer'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-success">{{$t('transaction.trxTypes.proxy_transfer.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.from')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].request_params.from}">
+                                    {{formatted_account(op[1].request_params.from, 'from')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.to')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].request_params.to}">
+                                    {{formatted_account(op[1].request_params.to, 'to')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.proxy_account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].request_params.proxy_account}">
+                                    {{formatted_account(op[1].request_params.proxy_account, 'proxy_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.amount')}}</th>
+                            <td align="right">{{formatted_number(op[1].request_params.amount.asset_id,
+                                op[1].request_params.amount.amount, 5)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.fee')}}</th>
+                            <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.memo')}}</th>
+                            <td align="right">{{op[1].request_params.memo}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.proxy_transfer.proxy_memo')}}</th>
+                            <td align="right" v-if="op[1].proxy_memo.indexOf('Q')===0"><a
+                                    :href="`/api/ipfs/${op[1].proxy_memo}`" target="_blank">{{op[1].proxy_memo}}</a>
+                            </td>
+                            <td align="right" v-else>{{op[1].proxy_memo}}</td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -1475,23 +1531,24 @@
             return {
                 items: {},
                 ops: ops,
+                account: {},
                 op: this.operation
             };
         },
         methods: {
-            formatted_account (id, key) {
+            formatted_account (id) {
                 let self = this;
-                if (this.items[key]) {
-                    return this.op[1][key];
+                if (this.items[id]) {
+                    return this.account[id];
                 }
-                this.items[key] = true;
+                this.items[id] = true;
                 fetch_account_by_chain(id).then((account) => {
-                    self.op[1][key] = account.toJS().name;
+                    self.$set(self.account, id, account.toJS().name);
                 }).catch(ex => {
-                    self.items[key] = false;
+                    self.items[id] = false;
                     console.error(ex);
                 });
-                return this.op[1][key];
+                return this.account[id];
             },
             formatted_product (id, key) {
                 let self = this;

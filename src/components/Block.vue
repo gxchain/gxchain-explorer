@@ -9,6 +9,7 @@
             </div>
             <div class="panel-body no-padding">
                 <ul class="block-summary">
+                    <li>{{$t('block.id')}}：{{block.block_id}}</li>
                     <li>{{$t('block.timestamp')}}：{{new Date(block.timestamp).format('yyyy-MM-dd hh:mm:ss')}}</li>
                     <li>{{$t('block.witness')}}：
                         <router-link :to="{path:'/account/'+account_name}">
@@ -48,8 +49,8 @@
 
 <script>
     import { Apis } from 'gxbjs-ws';
-    import { mapGetters, mapActions } from 'vuex';
-    import { fetch_block, fetch_account } from '@/services/CommonService';
+    import { mapActions, mapGetters } from 'vuex';
+    import { fetch_account, fetch_block } from '@/services/CommonService';
     import JSON from './partial/JSON.vue';
     import Operation from './partial/Operation.vue';
 
@@ -76,7 +77,7 @@
                     if (self.block) {
                         Apis.instance().db_api().exec('get_objects', [[self.block.witness]]).then((res) => {
                             fetch_account(res[0].witness_account).then(function (res) {
-                                self.account_name = res.body.name;
+                                self.account_name = res.body.account ? res.body.account.name : '';
                             }).catch(ex => {
                                 console.error(ex);
                             });

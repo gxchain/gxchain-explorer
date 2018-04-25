@@ -44,6 +44,7 @@ const locale = {
     },
     // block
     block: {
+        id: 'Block ID',
         title: 'Block Info',
         more: 'More',
         timestamp: 'Timestamp',
@@ -301,7 +302,7 @@ const locale = {
                 fee: 'Fee'
             },
             'balance_lock': {
-                name: 'Banlance Lock',
+                name: 'Balance Lock',
                 create_date_time: 'Start Date',
                 amount: 'Lockup Amount',
                 program_id: 'Lockup Term',
@@ -312,6 +313,16 @@ const locale = {
                 name: 'Balance Unlock',
                 account: 'Unlock Account',
                 lock_id: 'Lock ID'
+            },
+            'proxy_transfer': {
+                name: 'Proxy Transfer',
+                from: 'From',
+                to: 'To',
+                amount: 'Amount',
+                memo: 'Memo',
+                proxy_memo: 'Proxy memo',
+                proxy_account: 'Proxy Account',
+                fee: 'Fee'
             },
             'status_states': {
                 0: 'Unpublished',

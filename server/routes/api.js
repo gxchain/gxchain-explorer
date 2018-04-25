@@ -4,6 +4,7 @@ import LevelDBService from '../services/LevelDBService';
 import HoldrankService from '../services/HoldrankService';
 import jdenticon from 'jdenticon';
 import crypto from 'crypto';
+import IPFSService from '../services/IPFSService';
 
 let router = express.Router();
 
@@ -93,6 +94,17 @@ router.get('/holdrank/:typeid', function (req, res) {
     } catch (err) {
         res.send({});
     }
+});
+
+/**
+ * 交易记录查询
+ */
+router.get('/ipfs/:hash', function (req, res) {
+    IPFSService.download(req.params.hash, ['/ip4/139.196.138.193/tcp/5001', '/ip4/106.14.194.229/tcp/5001']).then((result) => {
+        res.send(result);
+    }).catch(() => {
+        res.send('');
+    });
 });
 
 module.exports = router;
