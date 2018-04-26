@@ -1495,7 +1495,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.proxy_transfer.proxy_memo')}}</th>
-                            <td align="right" v-if="op[1].proxy_memo.indexOf('Q')===0"><a
+                            <td align="right" v-if="op[1].proxy_memo.indexOf('Qm')===0"><a
                                     :href="`/api/ipfs/${op[1].proxy_memo}`" target="_blank">{{op[1].proxy_memo}}</a>
                             </td>
                             <td align="right" v-else>{{op[1].proxy_memo}}</td>
