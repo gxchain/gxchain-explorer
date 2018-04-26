@@ -13,16 +13,12 @@ export default {
         return new Promise(function (resolve, reject) {
             const inner = (d, index) => {
                 let ipfs_api = ipfsAPI(addrs[index]);
-                let obj = {
-                    Data: new Buffer(d),
-                    Links: []
-                };
-                ipfs_api.object.put(obj, function (err, node) {
+                ipfs_api.add(new Buffer(d), function (err, files) {
                     if (err) {
                         reject(err);
                     } else {
-                        let nodeJSON = node.toJSON();
-                        resolve(nodeJSON.multihash);
+                        // let nodeJSON = node.toJSON();
+                        resolve(files[0].hash);
                     }
                 });
             };
@@ -37,11 +33,10 @@ export default {
         if (!(addrs instanceof Array)) {
             addrs = [addrs];
         }
-        console.log('downloading:', hash, addrs);
         return new Promise(function (resolve, reject) {
             const inner = (h, index) => {
                 let ipfs_api = ipfsAPI(addrs[index]);
-                ipfs_api.object.data(h, function (err, data) {
+                ipfs_api.cat(h, function (err, data) {
                     if (err) {
                         console.error('download failed:', err);
                         if (index === addrs.length - 1) {
@@ -50,7 +45,6 @@ export default {
                             inner(h, index + 1);
                         }
                     } else {
-                        console.log('downloaded', data);
                         resolve(data.toString());
                     }
                 });

@@ -8,7 +8,8 @@
     "clear": "rm -rf dist server-dist",
     "prebuild": "npm run clear",
     "build": "webpack --progress --hide-modules --config build/webpack.server.config.js && node build/build.js",
-    "server": "NODE_ENV=production node server-dist/index.js"
+    "server": "NODE_ENV=production node server-dist/index.js",
+    "example/ipfs":"babel-node examples/ipfs"
   },
   "repository": {
     "type": "git",

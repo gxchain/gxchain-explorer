@@ -214,7 +214,7 @@ let startSubScribe = function () {
     subscribed = true;
     ChainStore.subscribe(function () {
         let dynamicGlobal = ChainStore.getObject('2.1.0').toJS();
-        console.log('latest block:', dynamicGlobal.last_irreversible_block_num);
+        // console.log('latest block:', dynamicGlobal.last_irreversible_block_num);
         BlockSyncTask.sync_to_block(dynamicGlobal.last_irreversible_block_num);
     });
     Apis.instance().db_api().exec('get_objects', [['2.1.0']]);
