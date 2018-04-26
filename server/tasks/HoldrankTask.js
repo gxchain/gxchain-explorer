@@ -66,6 +66,7 @@ function cronfuc () {
 }
 
 function accountinfo (accountNum) {
+    all_lock = 0;
     for (var i = accountNum; i >= 0; i--) {
         Apis.instance().db_api().exec('get_full_accounts', [
             ['1.2.' + i], false
