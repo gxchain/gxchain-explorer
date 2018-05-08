@@ -10,7 +10,7 @@
             <div class="panel-body no-padding">
                 <ul class="block-summary">
                     <li>{{$t('block.id')}}：{{block.block_id}}</li>
-                    <li>{{$t('block.timestamp')}}：{{new Date(block.timestamp).format('yyyy-MM-dd hh:mm:ss')}}</li>
+                    <li>{{$t('block.timestamp')}}：{{new Date(block.timestamp+'Z').format('yyyy-MM-dd hh:mm:ss')}}</li>
                     <li>{{$t('block.witness')}}：
                         <router-link :to="{path:'/account/'+account_name}">
                             {{account_name}}
