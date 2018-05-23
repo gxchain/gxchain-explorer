@@ -30,11 +30,11 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.transfer.amount')}}</th>
-                        <td align="right">{{formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.transfer.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 1:limit_order_create -->
@@ -102,7 +102,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 6:account_update -->
@@ -123,7 +123,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 7:account_whitelist -->
@@ -156,7 +156,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_whitelist.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 8:account_upgrade -->
@@ -177,7 +177,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_upgrade.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_upgrade.upgrade_to_lifetime_member')}}</th>
@@ -210,7 +210,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_transfer.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
 
@@ -256,7 +256,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.asset_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 11:asset_update -->
@@ -303,7 +303,7 @@
                     <tr>
                         <th>{{$t('transaction.trxTypes.asset_issue.asset_to_issue')}}</th>
                         <td align="right">
-                            {{formatted_number(op[1].asset_to_issue.asset_id, op[1].asset_to_issue.amount, 5)}}
+                            {{formatted_asset(op[1].asset_to_issue.asset_id, op[1].asset_to_issue.amount)}}
                         </td>
                     </tr>
                     <tr>
@@ -316,7 +316,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.asset_issue.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 15:asset_reserve -->
@@ -471,11 +471,11 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.vesting_balance_withdraw.amount')}}</th>
-                        <td align="right">{{formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.vesting_balance_withdraw.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 34:worker_create -->
@@ -541,11 +541,11 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.override_transfer.amount')}}</th>
-                        <td align="right">{{formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.override_transfer.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 39:transfer_to_blind -->
@@ -630,7 +630,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_upgrade_merchant.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 46:account_upgrade_datasource -->
@@ -663,7 +663,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_upgrade_datasource.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 47:stale_data_market_category_create -->
@@ -688,7 +688,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_create.create_date_time')}}</th>
@@ -713,7 +713,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_update.new_status')}}</th>
@@ -742,7 +742,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_create.create_date_time')}}</th>
@@ -767,7 +767,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_update.new_status')}}</th>
@@ -796,7 +796,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_create.create_date_time')}}</th>
@@ -821,7 +821,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_update.new_status')}}</th>
@@ -842,7 +842,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_create.create_date_time')}}</th>
@@ -867,7 +867,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_update.new_status')}}</th>
@@ -896,7 +896,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_create.requester')}}</th>
@@ -937,7 +937,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 57:data_transaction_pay -->
@@ -954,7 +954,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_pay.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_pay.from')}}</th>
@@ -971,7 +971,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_pay.amount')}}</th>
-                        <td align="right">{{formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 58:account_upgrade_data_transaction_member -->
@@ -999,7 +999,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.account_upgrade_data_transaction_member.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 59:data_transaction_datasource_upload -->
@@ -1032,7 +1032,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_datasource_upload.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 60:data_transaction_datasource_validate_error -->
@@ -1057,7 +1057,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_transaction_datasource_validate_error.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 61:data_market_category_create -->
@@ -1082,7 +1082,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_create.create_date_time')}}</th>
@@ -1107,7 +1107,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.data_market_category_update.new_status')}}</th>
@@ -1136,7 +1136,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_create.create_date_time')}}</th>
@@ -1161,7 +1161,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.free_data_product_update.new_status')}}</th>
@@ -1190,7 +1190,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_create.create_date_time')}}</th>
@@ -1215,7 +1215,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_data_product_update.new_status')}}</th>
@@ -1236,7 +1236,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_create.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_create.create_date_time')}}</th>
@@ -1261,7 +1261,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_update.fee')}}</th>
-                        <td align="right">{{formatted_number(op[1].fee.asset_id, op[1].fee.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.league_update.new_status')}}</th>
@@ -1289,7 +1289,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.balance_lock.amount')}}</th>
-                        <td align="right">{{formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5)}}</td>
+                        <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
                     </tr>
                     </tbody>
                     <!-- 72:balance_unlock -->
@@ -1321,7 +1321,7 @@
 
 <script>
     import { ChainTypes } from 'gxbjs/es';
-    import { fetch_account_by_chain, fetch_product_by_chain, formatted_asset } from '@/services/CommonService';
+    import { fetch_account_by_chain, fetch_product_by_chain, fetch_asset_by_id } from '@/services/CommonService';
 
     let ops = Object.keys(ChainTypes.operations);
 
@@ -1370,8 +1370,19 @@
                 });
                 return this.op[1][key];
             },
-            formatted_number (asset_id, amount, decimalOffset) {
-                return formatted_asset(asset_id, amount, decimalOffset);
+            formatted_asset (asset_id, amount) {
+                let self = this;
+                if (this.items[asset_id + amount]) {
+                    return this.op[1][asset_id + amount];
+                }
+                this.items[asset_id + amount] = true;
+                fetch_asset_by_id(asset_id, amount).then((asset) => {
+                    self.op[1][asset_id + amount] = asset;
+                }).catch(ex => {
+                    self.items[asset_id + amount] = false;
+                    console.error(ex);
+                });
+                return this.op[1][asset_id + amount];
             },
             formatted_listing (new_listing) {
                 let account_listing = {

@@ -87,15 +87,56 @@ export const fetch_product_by_chain = (prod_id) => {
     });
 };
 
-export const formatted_asset = (asset_id, amount, decimalOffset) => {
-    switch (asset_id) {
-        case '1.3.0':
-            return filters.number((amount / 100000).toFixed(decimalOffset), 5) + ' GXC';
-        case '1.3.1':
-            return filters.number((amount / 100000).toFixed(decimalOffset), 5) + ' GXS';
-        default:
-            return amount;
-    }
+/**
+ * get objects by id
+ * @param ids
+ */
+export const get_objects = (ids) => {
+    return Apis.instance().db_api().exec('get_objects', [ids]);
+};
+
+let assetsMap = {};
+/***
+ * get assets by ids
+ * @param ids
+ * @returns {bluebird}
+ */
+export const get_assets_by_ids = (ids) => {
+    return new Promise(function (resolve, reject) {
+        let new_ids = [];
+        ids.forEach(id => {
+            if (!assetsMap[id]) {
+                new_ids.push(id);
+            }
+        });
+        if (new_ids.length > 0) {
+            return get_objects(new_ids).then(assets => {
+                assets.forEach(asset => {
+                    if (asset.symbol === 'LVCOIN') {
+                        asset.symbol = 'LV';
+                    }
+                    assetsMap[asset.id] = asset;
+                });
+                resolve(ids.map(id => {
+                    return assetsMap[id];
+                }));
+            }).catch(reject);
+        } else {
+            resolve(ids.map(id => {
+                return assetsMap[id];
+            }));
+        }
+    });
+};
+
+export const fetch_asset_by_id = (asset_id, amount) => {
+    return new Promise(function (resolve, reject) {
+        get_assets_by_ids([asset_id]).then(assets => {
+            resolve(filters.number((amount / 100000).toFixed(assets[0].precision), assets[0].precision) + ' ' + assets[0].symbol);
+        }).catch(ex => {
+            reject(ex);
+        });
+    });
 };
 
 export const calc_block_time = (block_number, block_interval, head_block, head_block_time) => {

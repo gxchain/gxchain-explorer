@@ -89,13 +89,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>GXC</th>
-                                <td align="right">{{account_info.balances['1.3.0']}}</td>
-                            </tr>
-                            <tr>
-                                <th>GXS</th>
-                                <td align="right">{{account_info.balances['1.3.1']}}</td>
+                            <tr v-for="asset in account_info.balances" :key="asset.symbol">
+                                <th>{{asset.symbol}}</th>
+                                <td align="right">{{asset.amount}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -110,7 +106,8 @@
                            v-if="latestTransactions.length > 9">{{$t('account.basic.more')}}</a>
                     </div>
                     <div class="panel-body no-padding">
-                        <table class="table table-striped table-bordered no-margin">
+                        <Loading v-show="history_loading"></Loading>
+                        <table class="table table-striped table-bordered no-margin" v-show="!history_loading">
                             <thead>
                             <tr>
                                 <th>{{$t('index.transactions.type')}}</th>
@@ -134,7 +131,7 @@
 <script>
     import { mapGetters, mapActions } from 'vuex';
     import { ChainStore } from 'gxbjs';
-    import { formatted_asset, calc_block_time } from '@/services/CommonService';
+    import { get_assets_by_ids, calc_block_time } from '@/services/CommonService';
     import filters from '@/filters';
     import History_Op from './partial/History_Op.vue';
 
@@ -142,6 +139,7 @@
         data () {
             return {
                 loading: true,
+                history_loading: true,
                 account_info: null,
                 latestTransactions: [],
                 history_length: 100,
@@ -167,9 +165,20 @@
                     this.loading = false;
                 }
                 this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
-                this.account_info.balances['1.3.0'] = this.account_info.balances['1.3.0'] ? this.formatted_number('1.3.0', ChainStore.getObject(this.account_info.balances['1.3.0']).get('balance'), 5) : this.formatted_number('1.3.0', 0, 5);
-                this.account_info.balances['1.3.1'] = this.account_info.balances['1.3.1'] ? this.formatted_number('1.3.1', ChainStore.getObject(this.account_info.balances['1.3.1']).get('balance'), 5) : this.formatted_number('1.3.1', 0, 5);
-
+                let ids = Object.keys(this.account_info.balances);
+                get_assets_by_ids(ids).then(assets => {
+                    let assetMap = {};
+                    assets.forEach(asset => {
+                        assetMap[asset.id] = asset;
+                    });
+                    for (let i = 0; i < ids.length; i++) {
+                        let obj = {
+                            symbol: assetMap[ids[i]].symbol,
+                            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(assetMap[ids[i]].precision), assetMap[ids[i]].precision)
+                        };
+                        this.account_info.balances[ids[i]] = obj;
+                    }
+                });
                 if (this.account_info.history) {
                     let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
                     for (let i = length - 1; i >= 0; i--) {
@@ -187,12 +196,9 @@
                             this.latestTransactions.pop();
                         }
                     }
-                    this.loading = false;
+                    this.history_loading = false;
                 }
-            },
-
-            formatted_number (asset_id, amount, decimalOffset) {
-                return formatted_asset(asset_id, amount, decimalOffset);
+                this.loading = false;
             }
         },
         watch: {
@@ -241,6 +247,7 @@
                 this.setKeywords({keywords: this.$route.params.id_or_name});
             }
             ChainStore.subscribe(this.onUpdate);
+            this.onUpdate();
         },
         destroyed () {
             ChainStore.unsubscribe(this.onUpdate);

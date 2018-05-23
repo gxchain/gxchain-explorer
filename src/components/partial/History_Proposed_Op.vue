@@ -8,7 +8,7 @@
                 <router-link place="from" :to="{path: '/account/' + formatted_account(op[1].from)}">
                     {{ formatted_account(op[1].from) }}
                 </router-link>
-                <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
                 <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].to)}">
                     {{ formatted_account(op[1].to) }}
                 </router-link>
@@ -115,7 +115,7 @@
                 <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].issuer)}">
                     {{ formatted_account(op[1].issuer) }}
                 </router-link>
-                <span place="amount">{{ formatted_number(op[1].asset_to_issue.asset_id, op[1].asset_to_issue.amount, 5)
+                <span place="amount">{{ formatted_asset(op[1].asset_to_issue.asset_id, op[1].asset_to_issue.amount)
                     }}</span>
                 <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].issue_to_account)}">
                     {{ formatted_account(op[1].issue_to_account) }}
@@ -161,7 +161,7 @@
                 <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].owner)}">
                     {{ formatted_account(op[1].owner) }}
                 </router-link>
-                <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
             </i18n>
         </td>
         <!-- 34:worker_create -->
@@ -184,7 +184,7 @@
                 <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].to)}">
                     {{ formatted_account(op[1].to) }}
                 </router-link>
-                <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
             </i18n>
         </td>
         <!-- 39:transfer_to_blind -->
@@ -311,7 +311,7 @@
                 <router-link place="from" :to="{path: '/account/' + formatted_account(op[1].from)}">
                     {{ formatted_account(op[1].from) }}
                 </router-link>
-                <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
                 <router-link place="to" :to="{path: '/account/' + formatted_account(op[1].to)}">
                     {{ formatted_account(op[1].to) }}
                 </router-link>
@@ -423,7 +423,7 @@
                 <router-link place="account" :to="{path: '/account/' + formatted_account(op[1]['account'])}">
                     {{ formatted_account(op[1]['account']) }}
                 </router-link>
-                <span place="amount">{{ formatted_number(op[1].amount.asset_id, op[1].amount.amount, 5) }}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
             </i18n>
         </td>
         <!-- 72:balance_unlock -->
@@ -440,7 +440,7 @@
 
 <script>
     import { ChainTypes } from 'gxbjs/es';
-    import { fetch_account_by_chain, formatted_asset } from '@/services/CommonService';
+    import { fetch_account_by_chain, fetch_asset_by_id } from '@/services/CommonService';
 
     let ops = Object.keys(ChainTypes.operations);
     let account_listing = {
@@ -459,6 +459,7 @@
                 listings,
                 items: {},
                 account: {},
+                asset: {},
                 ops: ops
             };
         },
@@ -477,8 +478,19 @@
                 });
                 return this.account[id];
             },
-            formatted_number (asset_id, amount, decimalOffset) {
-                return formatted_asset(asset_id, amount, decimalOffset);
+            formatted_asset (asset_id, amount) {
+                let self = this;
+                if (this.items[asset_id + amount]) {
+                    return this.assets[asset_id + amount];
+                }
+                this.items[asset_id + amount] = true;
+                fetch_asset_by_id(asset_id, amount).then((asset) => {
+                    self.$set(self.assets, asset_id + amount, asset);
+                }).catch(ex => {
+                    self.items[asset_id + amount] = false;
+                    console.error(ex);
+                });
+                return this.assets[asset_id + amount];
             }
         }
     };

@@ -37,7 +37,7 @@
                 <div class="alert alert-info" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p>
-                        <span>{{$t('holdrank.locknum')}}: {{formatted_number('1.3.1',locknum,5)}}</span>
+                        <span>{{$t('holdrank.locknum')}}: {{formatted_asset('1.3.1',locknum)}}</span>
                         <span>（{{$t('holdrank.last_updated_at',{datetime:uptime})}}）</span>
                     </p>
                 </div>
@@ -66,15 +66,15 @@
                                 <td>1.2.{{r.userid}}</td>
                                 <td><a :href="r.accountlink" target="_blank">{{r.username}}</a></td>
                                 <template v-if="typeid == 2">
-                                <td class="text-right">{{formatted_number('1.3.1',r.lockgxs,5)}}</td>
+                                <td class="text-right">{{formatted_asset('1.3.1',r.lockgxs)}}</td>
                                 <td class="text-right">{{r.perlock}}%</td>
                                 </template>
                                 <template v-else-if="typeid == 3">
-                                <td class="text-right">{{formatted_number('1.3.1',r.allgxs,5)}}</td>
+                                <td class="text-right">{{formatted_asset('1.3.1',r.allgxs)}}</td>
                                 <td class="text-right">{{r.perall}}%</td>
                                 </template>
                                 <template v-else>
-                                <td class="text-right">{{formatted_number('1.3.1',r.activegxs,5)}}</td>
+                                <td class="text-right">{{formatted_asset('1.3.1',r.activegxs)}}</td>
                                 <td class="text-right">{{r.peractive}}%</td>
                                 </template>
                             </tr>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import {formatted_asset, get_rank} from '@/services/CommonService';
+import {fetch_asset_by_id, get_rank} from '@/services/CommonService';
 
 export default {
     data () {
@@ -96,7 +96,9 @@ export default {
             holdrank: [],
             locknum: 0,
             uptime: '',
-            typeid: 1
+            typeid: 1,
+            item: {},
+            asset: {}
         };
     },
     computed: {},
@@ -120,8 +122,19 @@ export default {
                 console.error(ex);
             });
         },
-        formatted_number (asset_id, amount, decimalOffset) {
-            return formatted_asset(asset_id, amount, decimalOffset);
+        formatted_asset (asset_id, amount) {
+            let self = this;
+            if (this.items[asset_id + amount]) {
+                return this.assets[asset_id + amount];
+            }
+            this.items[asset_id + amount] = true;
+            fetch_asset_by_id(asset_id, amount).then((asset) => {
+                self.$set(self.assets, asset_id + amount, asset);
+            }).catch(ex => {
+                self.items[asset_id + amount] = false;
+                console.error(ex);
+            });
+            return this.assets[asset_id + amount];
         }
     }
 };

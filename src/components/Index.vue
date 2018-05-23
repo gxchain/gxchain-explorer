@@ -123,7 +123,8 @@
                         <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
                     </div>
                     <div class="panel-body no-padding">
-                        <table class="table table-striped table-bordered no-margin">
+                        <Loading v-show="history_loading"></Loading>
+                        <table class="table table-striped table-bordered no-margin" v-show="!history_loading">
                             <thead>
                             <tr>
                                 <th>{{$t('index.transactions.type')}}</th>
@@ -153,6 +154,7 @@
         data () {
             return {
                 loading: true,
+                history_loading: true,
                 timer: 0,
                 last_updated_at: 0,
                 block_info: null,
@@ -237,6 +239,7 @@
                                             op.timestamp = calc_block_time(result.id, block_interval, head_block_number, head_block_time);
                                         }
                                         this.latestTransactions.unshift(op);
+                                        this.history_loading = false;
                                         if (this.latestTransactions.length > this.history_length) {
                                             this.latestTransactions.pop();
                                         }
@@ -246,10 +249,12 @@
 
                             if (i === 0) {
                                 this.loading = false;
+                                this.history_loading = false;
                             }
                         }).catch((error) => {
                             console.log('Error in Index.getBlocks: ', error);
                             this.loading = false;
+                            this.history_loading = false;
                         });
                 }
             },
