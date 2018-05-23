@@ -149,6 +149,7 @@
     import filters from '../filters';
     import History_Op from './partial/History_Op.vue';
     import { calc_block_time } from '@/services/CommonService';
+    import { mapActions } from 'vuex';
 
     export default {
         data () {
@@ -174,6 +175,7 @@
         },
 
         mounted () {
+            this.setKeywords({keywords: ''});
             ChainStore.subscribe(this.onUpdate);
             Apis.instance().db_api().exec('get_objects', [['2.0.0', '2.1.0', '2.3.1']]).then(() => {
                 this.onUpdate();
@@ -187,7 +189,9 @@
         },
 
         methods: {
-
+            ...mapActions({
+                setKeywords: 'setKeywords'
+            }),
             getCommitteeAccountName (member) {
                 if (ChainStore.getObject(member) && ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account'))) {
                     return ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account')).get('name');
