@@ -112,9 +112,6 @@ export const get_assets_by_ids = (ids) => {
         if (new_ids.length > 0) {
             return get_objects(new_ids).then(assets => {
                 assets.forEach(asset => {
-                    if (asset.symbol === 'LVCOIN') {
-                        asset.symbol = 'LV';
-                    }
                     assetsMap[asset.id] = asset;
                 });
                 resolve(ids.map(id => {
