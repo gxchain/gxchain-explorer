@@ -316,7 +316,7 @@ const locale = {
                 lock_id: '锁定ID'
             },
             'proxy_transfer': {
-                name: '代理记账',
+                name: '代理转账',
                 from: '来自',
                 to: '发往',
                 amount: '金额',
