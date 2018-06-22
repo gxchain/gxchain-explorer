@@ -174,7 +174,12 @@ const locale = {
                 fee: 'Fee'
             },
             'worker_create': 'Create budget item',
-            'custom': 'Custom',
+            'custom': {
+                name: 'Custom',
+                payer: 'Payer',
+                fee: 'Fee',
+                data: 'Data'
+            },
             'assert': 'Assert operation',
             'balance_claim': 'Claim balance',
             'override_transfer': {
@@ -389,7 +394,8 @@ const locale = {
             'data_transaction_datasource_validate_error': '{account} returned an error when processing the data upload',
             'balance_lock': '{account} locked {amount} for loyalty program',
             'balance_unlock': '{account} complete a loyalty program',
-            'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}'
+            'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
+            'custom': '{account} created a custom operation'
         }
     },
     // account

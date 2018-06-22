@@ -407,10 +407,16 @@
         <th v-if="ops[op[0]] == 'custom'">
             <router-link :to="{path: '/block/' + op['block_id']}">
         <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
-              class="label label-primary">{{$t('transaction.trxTypes.custom')}}</span>
+              class="label label-primary">{{$t('transaction.trxTypes.custom.name')}}</span>
             </router-link>
         </th>
-        <td align="right" v-if="ops[op[0]] == 'custom'">-</td>
+        <td align="right" v-if="ops[op[0]] == 'custom'">
+            <i18n path="transaction.operation.custom">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].payer)}">
+                    {{ formatted_account(op[1].payer) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 36:assert -->
         <th v-if="ops[op[0]] == 'assert'">
             <router-link :to="{path: '/block/' + op['block_id']}">

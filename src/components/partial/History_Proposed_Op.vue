@@ -167,7 +167,13 @@
         <!-- 34:worker_create -->
         <td align="right" v-if="ops[op[0]] == 'worker_create'">-</td>
         <!-- 35:custom -->
-        <td align="right" v-if="ops[op[0]] == 'custom'">-</td>
+        <td align="right" v-if="ops[op[0]] == 'custom'">
+            <i18n path="transaction.operation.custom">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].payer)}">
+                    {{ formatted_account(op[1].payer) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 36:assert -->
         <td align="right" v-if="ops[op[0]] == 'assert'">-</td>
         <!-- 37:balance_claim -->

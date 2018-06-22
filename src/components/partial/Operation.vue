@@ -610,7 +610,23 @@
                         <tr>
                             <th>{{$t('transaction.trx_type')}}</th>
                             <td align="right"><span
-                                    class="label label-primary">{{$t('transaction.trxTypes.custom')}}</span></td>
+                                    class="label label-primary">{{$t('transaction.trxTypes.custom.name')}}</span></td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.custom.payer')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].payer}">
+                                    {{formatted_account(op[1].payer, 'payer')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.custom.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.custom.data')}}</th>
+                            <td align="right">{{op[1].data}}</td>
                         </tr>
                         </tbody>
                         <!-- 36:assert -->

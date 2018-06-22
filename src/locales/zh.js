@@ -172,7 +172,12 @@ const locale = {
                 fee: '手续费'
             },
             'worker_create': '创建雇员',
-            'custom': '自定义',
+            'custom': {
+                name: '自定义',
+                payer: '付费人',
+                fee: '手续费',
+                data: '数据'
+            },
             'assert': '断言操作',
             'balance_claim': '领取余额',
             'override_transfer': {
@@ -390,7 +395,8 @@ const locale = {
             'data_transaction_datasource_validate_error': '{account} 数据返回验证失败',
             'balance_lock': '{account} 参与忠诚计划，冻结了 {amount}',
             'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
-            'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}'
+            'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
+            'custom': '{account} 创建了一笔自定义操作'
         }
     },
     // account
