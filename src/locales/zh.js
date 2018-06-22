@@ -321,8 +321,8 @@ const locale = {
                 to: '发往',
                 amount: '金额',
                 memo: '备注(memo)',
-                proxy_memo: '记账备注(proxy memo)',
-                proxy_account: '代理记账人',
+                proxy_memo: '代理备注(proxy memo)',
+                proxy_account: '代理转账人',
                 fee: '手续费'
             },
             'status_states': {
@@ -390,7 +390,7 @@ const locale = {
             'data_transaction_datasource_validate_error': '{account} 数据返回验证失败',
             'balance_lock': '{account} 参与忠诚计划，冻结了 {amount}',
             'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
-            'proxy_transfer': '{account} 发起了一笔代理记账交易: {from} 发送 {amount} 到 {to}'
+            'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}'
         }
     },
     // account
