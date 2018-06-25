@@ -506,7 +506,14 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.custom.data')}}</th>
-                        <td align="right" style="word-break: break-all">{{utf8HexToStr(op[1].data)}}</td>
+                        <td align="right" style="width: 90%;word-break: break-all">{{utf8HexToStr(op[1].data)}}</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td align="right">
+                            <button @click="utf8HexToStr(op[1].data)" v-if="!op[1].isString" class="btn btn-default pull-right" style="margin-left: 10px">{{$t('transaction.trxTypes.custom.toString')}}</button>
+                            <button @click="toUTF8Hex(op[1].data)" v-else class="btn btn-default pull-right">{{$t('transaction.trxTypes.custom.toHex')}}</button>
+                        </td>
                     </tr>
                     </tbody>
                     <!-- 36:assert -->
@@ -1413,6 +1420,38 @@
                     }
                 }
             },
+            writeUTF (str, isGetBytes) {
+                let back = [];
+                let byteSize = 0;
+                for (let i = 0; i < str.length; i++) {
+                    let code = str.charCodeAt(i);
+                    /* eslint-disable */
+                    if (0x00 <= code && code <= 0x7f) {
+                        byteSize += 1;
+                        back.push(code);
+                    } else if (0x80 <= code && code <= 0x7ff) {
+                        byteSize += 2;
+                        back.push((192 | (31 & (code >> 6))));
+                        back.push((128 | (63 & code)));
+                    } else if ((0x800 <= code && code <= 0xd7ff) || (0xe000 <= code && code <= 0xffff)) {
+                        byteSize += 3;
+                        back.push((224 | (15 & (code >> 12))));
+                        back.push((128 | (63 & (code >> 6))));
+                        back.push((128 | (63 & code)));
+                    }
+                }
+                for (let i = 0; i < back.length; i++) {
+                    back[i] &= 0xff;
+                }
+                if (isGetBytes) {
+                    return back;
+                }
+                if (byteSize <= 0xff) {
+                    return [0, byteSize].concat(back);
+                } else {
+                    return [byteSize >> 8, byteSize & 0xff].concat(back);
+                }
+            },
             readUTF (arr) {
                 if (typeof arr === 'string') {
                     return arr;
@@ -1436,12 +1475,28 @@
                 }
                 return UTF;
             },
+            toUTF8Hex (str) {
+                let charBuf = this.writeUTF(str, true);
+                let re = '';
+                for (let i = 0; i < charBuf.length; i++) {
+                    let x = (charBuf[i] & 0xFF).toString(16);
+                    if (x.length === 1) {
+                        x = '0' + x;
+                    }
+                    re += x;
+                }
+                this.op[1].data = re;
+                let self = this;
+                this.$set(self.op[1], 'isString', false);
+            },
             utf8HexToStr (str) {
                 let buf = [];
                 for (let i = 0; i < str.length; i += 2) {
                     buf.push(parseInt(str.substring(i, i + 2), 16));
                 }
-                return this.readUTF(buf);
+                this.op[1].data = this.readUTF(buf);
+                let self = this;
+                this.$set(self.op[1], 'isString', true);
             }
         }
     };

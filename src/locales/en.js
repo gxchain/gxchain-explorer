@@ -178,7 +178,9 @@ const locale = {
                 name: 'Custom',
                 payer: 'Payer',
                 fee: 'Fee',
-                data: 'Data'
+                data: 'Data',
+                toHex: 'StrToUtf8Hex',
+                toString: 'Utf8HexToStr'
             },
             'assert': 'Assert operation',
             'balance_claim': 'Claim balance',

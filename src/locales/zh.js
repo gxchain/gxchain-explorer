@@ -176,7 +176,9 @@ const locale = {
                 name: '自定义',
                 payer: '付费人',
                 fee: '手续费',
-                data: '数据'
+                data: '数据',
+                toHex: '字符转16进制',
+                toString: '16进制转字符'
             },
             'assert': '断言操作',
             'balance_claim': '领取余额',
