@@ -626,7 +626,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.custom.data')}}</th>
-                            <td align="right"><pre style="white-space: pre-wrap;text-align: left;">{{op[1].data}}</pre></td>
+                            <td align="right" style="width: 90%"><pre style="white-space: pre-wrap;text-align: left;">{{op[1].data}}</pre></td>
                         </tr>
                         <tr>
                             <th></th>

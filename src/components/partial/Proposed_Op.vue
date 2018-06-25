@@ -506,7 +506,7 @@
                     </tr>
                     <tr>
                         <th>{{$t('transaction.trxTypes.custom.data')}}</th>
-                        <td align="right" style="width: 90%;word-break: break-all">{{utf8HexToStr(op[1].data)}}</td>
+                        <td align="right" style="width: 90%"><pre style="white-space: pre-wrap;text-align: left;">{{op[1].data}}</pre></td>
                     </tr>
                     <tr>
                         <th></th>
