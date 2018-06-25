@@ -626,7 +626,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.custom.data')}}</th>
-                            <td align="right">{{op[1].data}}</td>
+                            <td align="right" style="word-break: break-all">{{utf8HexToStr(op[1].data)}}</td>
                         </tr>
                         </tbody>
                         <!-- 36:assert -->
@@ -1607,6 +1607,36 @@
                         return 'transaction.trxTypes.account_whitelist.whitelist_states.' + listings[i];
                     }
                 }
+            },
+            readUTF (arr) {
+                if (typeof arr === 'string') {
+                    return arr;
+                }
+                let UTF = '';
+                let _arr = arr;
+                for (let i = 0; i < _arr.length; i++) {
+                    let one = _arr[i].toString(2);
+                    let v = one.match(/^1+?(?=0)/);
+                    if (v && one.length === 8) {
+                        let bytesLength = v[0].length;
+                        let store = _arr[i].toString(2).slice(7 - bytesLength);
+                        for (let st = 1; st < bytesLength; st++) {
+                            store += _arr[st + i].toString(2).slice(2);
+                        }
+                        UTF += String.fromCharCode(parseInt(store, 2));
+                        i += bytesLength - 1;
+                    } else {
+                        UTF += String.fromCharCode(_arr[i]);
+                    }
+                }
+                return UTF;
+            },
+            utf8HexToStr (str) {
+                let buf = [];
+                for (let i = 0; i < str.length; i += 2) {
+                    buf.push(parseInt(str.substring(i, i + 2), 16));
+                }
+                return this.readUTF(buf);
             }
         },
         components: {
