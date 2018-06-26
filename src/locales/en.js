@@ -7,7 +7,7 @@ const locale = {
         about: 'About',
         language: 'Language: English',
         flag: 'en',
-        title: 'GXChain Block Explorer',
+        title: 'GXChain Explorer',
         subtitle: 'Find Block, Transaction and Account',
         search: 'Enter block number, txid, account name or id here'
     },

@@ -194,7 +194,7 @@ let startServer = function () {
         if (err) {
             console.error(err);
         }
-        console.log(colors.rainbow('\n=*=*=*=*=*=*=*=*=*==*=*=公信宝区块链浏览器已启动=*=*=*==*=*=*=*=*=*=*=\n'));
+        console.log(colors.rainbow('\n=*=*=*=*=*=*=*=*=*==*=*=GXChain区块浏览器已启动=*=*=*==*=*=*=*=*=*=*=\n'));
         console.log(colors.cyan(`${(text || '').split('\n').map(function (line) {
             return `${line}`;
         }).join('\n')}`));

@@ -12,7 +12,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <router-link :to="{path:'/'}" class="navbar-brand">
-                        <img height="47px" src="/static/exploer-logo.png" v-on:click="clearInput"/>
+                        <img height="35px" src="/static/exploer-logo.png" v-on:click="clearInput"/>
                     </router-link>
                 </div>
                 <nav id="bs-navbar" class="collapse navbar-collapse">
