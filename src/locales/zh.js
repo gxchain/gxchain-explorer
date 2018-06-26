@@ -7,7 +7,7 @@ const locale = {
         about: '关于',
         language: '语言: 中文',
         flag: 'zh',
-        title: '公信宝区块链浏览器',
+        title: 'GXChain区块链浏览器',
         subtitle: '提供区块、交易、账户等查询功能',
         search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询'
     },
