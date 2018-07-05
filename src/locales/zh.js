@@ -4,6 +4,7 @@ const locale = {
         block: '区块',
         transaction: '交易',
         account: '账户',
+        asset: '资产',
         about: '关于',
         language: '语言: 中文',
         flag: 'zh',
@@ -432,6 +433,13 @@ const locale = {
             balance: '余额'
         }
     },
+    // asset
+    asset: {
+        issuer: '发行人',
+        precision: '精度',
+        max_supply: '发行总量',
+        current_supply: '流通量'
+    },
     // about
     about: {
         title: '关于GXChain区块浏览器',
@@ -454,7 +462,8 @@ const locale = {
         query_transaction: '交易查询',
         query_account: '账户查询',
         query_account_balance: '余额查询',
-        get_account_header: '账户头像'
+        get_account_header: '账户头像',
+        asset_info: '资产信息:'
     },
     holdrank: {
         locknum: '目前冻结的GXS总量',

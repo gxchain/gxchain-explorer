@@ -4,6 +4,7 @@ const locale = {
         block: 'Block',
         transaction: 'Transaction',
         account: 'Account',
+        asset: 'Asset',
         about: 'About',
         language: 'Language: English',
         flag: 'en',
@@ -431,6 +432,13 @@ const locale = {
             balance: 'Balance'
         }
     },
+    // asset
+    asset: {
+        issuer: 'Issuer',
+        precision: 'Precision',
+        max_supply: 'Max Supply',
+        current_supply: 'Current Supply'
+    },
     // about
     about: {
         title: 'About GXS Blockchain Explorer',
@@ -453,7 +461,8 @@ const locale = {
         query_transaction: 'Query Transaction:',
         query_account: 'Query Account:',
         query_account_balance: 'Query Account Balance:',
-        get_account_header: 'Get Account Header:'
+        get_account_header: 'Get Account Header:',
+        asset_info: 'Asset Info:'
     },
     holdrank: {
         locknum: 'Total Frozen',

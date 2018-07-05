@@ -78,7 +78,8 @@
                                         </router-link>
                                     </td>
                                     <td>
-                                        {{ChainStore.getObject(witness) && ChainStore.getObject(witness).get('total_votes') / 100000 | number(2)}}
+                                        {{ChainStore.getObject(witness) &&
+                                        ChainStore.getObject(witness).get('total_votes') / 100000 | number(2)}}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -107,7 +108,8 @@
                                     </router-link>
                                 </td>
                                 <td>
-                                    {{ChainStore.getObject(member) && ChainStore.getObject(member).get('total_votes') / 100000 | number(2)}}
+                                    {{ChainStore.getObject(member) && ChainStore.getObject(member).get('total_votes') /
+                                    100000 | number(2)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -222,44 +224,44 @@
                     Apis.instance().db_api().exec('get_block', [
                         height
                     ])
-                        .then((result) => {
-                            if (!result) {
-                                return false;
-                            }
+                    .then((result) => {
+                        if (!result) {
+                            return false;
+                        }
 
-                            result.id = height; // The returned object for some reason does not include the block height..
-                            this.latestBlocks.unshift(result);
-                            if (this.latestBlocks.length > 20) {
-                                this.latestBlocks.pop();
-                            }
-                            if (result.transactions.length > 0) {
-                                result.transactions.forEach(trx => {
-                                    trx.operations.forEach(op => {
-                                        op.block_id = result.id;
-                                        if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-                                            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
-                                            let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
-                                            let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
-                                            op.timestamp = calc_block_time(result.id, block_interval, head_block_number, head_block_time);
-                                        }
-                                        this.latestTransactions.unshift(op);
-                                        this.history_loading = false;
-                                        if (this.latestTransactions.length > this.history_length) {
-                                            this.latestTransactions.pop();
-                                        }
-                                    });
+                        result.id = height; // The returned object for some reason does not include the block height..
+                        this.latestBlocks.unshift(result);
+                        if (this.latestBlocks.length > 20) {
+                            this.latestBlocks.pop();
+                        }
+                        if (result.transactions.length > 0) {
+                            result.transactions.forEach(trx => {
+                                trx.operations.forEach(op => {
+                                    op.block_id = result.id;
+                                    if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
+                                        let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
+                                        let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
+                                        let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
+                                        op.timestamp = calc_block_time(result.id, block_interval, head_block_number, head_block_time);
+                                    }
+                                    this.latestTransactions.unshift(op);
+                                    this.history_loading = false;
+                                    if (this.latestTransactions.length > this.history_length) {
+                                        this.latestTransactions.pop();
+                                    }
                                 });
-                            }
+                            });
+                        }
 
-                            if (i === 0) {
-                                this.loading = false;
-                                this.history_loading = false;
-                            }
-                        }).catch((error) => {
-                            console.log('Error in Index.getBlocks: ', error);
+                        if (i === 0) {
                             this.loading = false;
                             this.history_loading = false;
-                        });
+                        }
+                    }).catch((error) => {
+                        console.log('Error in Index.getBlocks: ', error);
+                        this.loading = false;
+                        this.history_loading = false;
+                    });
                 }
             },
 

@@ -26,7 +26,7 @@ const fetch_account_balance = (account_name) => {
             return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
                 return balances;
             });
-        }).catch((ex) => { reject(ex) }));
+        }).catch((ex) => { reject(ex); }));
     });
 };
 
@@ -41,6 +41,30 @@ const fetch_block = function (block_height) {
                 resolve(null);
             } else {
                 resolve(block);
+            }
+        }).catch(function (ex) {
+            reject(ex);
+        });
+    });
+};
+
+/**
+ * 资产信息
+ * @param asset_name
+ */
+const fetch_asset = function (asset_name) {
+    return new Promise(function (resolve, reject) {
+        return Apis.instance().db_api().exec('lookup_asset_symbols', [[asset_name]]).then(function (assets) {
+            let asset = assets && assets.length > 0 ? assets[0] : {};
+            console.log(asset);
+            if (asset.id) {
+                Apis.instance().db_api().exec('get_objects', [[asset.dynamic_asset_data_id, asset.issuer]]).then(objs => {
+                    asset.detail = objs[0];
+                    asset.issuer = objs[1];
+                    resolve(asset);
+                });
+            } else {
+                resolve(asset);
             }
         }).catch(function (ex) {
             reject(ex);
@@ -102,6 +126,7 @@ const fetch_product = function (prod_id) {
 export default {
     gxs_supply,
     fetch_block,
+    fetch_asset,
     fetch_account,
     fetch_full_account,
     fetch_account_balance,

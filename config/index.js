@@ -1,6 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+let isTest = process.env.test;
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -9,7 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     productionSourceMap: false,
-    witnesses: [
+    witnesses: isTest?['ws://47.96.164.78:28090']:[
         // 'ws://172.19.19.148:28090',
         // 'ws://172.19.19.149:28090'
       // "wss://node1.gxb.io",

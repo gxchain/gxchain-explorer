@@ -51,6 +51,11 @@
                         name: this.$t('api.get_account_header'),
                         api: '/api/header/:account_name',
                         example: `http://${location.host}/api/header/paul`
+                    },
+                    {
+                        name: this.$t('api.asset_info'),
+                        api: '/api/asset/:asset_name',
+                        example: `http://${location.host}/api/asset/GXS`
                     }
                 ];
             }

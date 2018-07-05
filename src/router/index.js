@@ -4,6 +4,7 @@ import Index from '@/components/Index';
 import Block from '@/components/Block';
 import Transaction from '@/components/Transaction';
 import Account from '@/components/Account';
+import Asset from '@/components/Asset';
 import connect from '@/common/connect';
 import Holdrank from '@/components/Holdrank';
 
@@ -31,6 +32,11 @@ const router = new Router({
             path: '/account/:id_or_name',
             name: 'Account',
             component: Account
+        },
+        {
+            path: '/asset/:asset_name',
+            name: 'Asset',
+            component: Asset
         },
         {
             path: '/holdrank/:type',

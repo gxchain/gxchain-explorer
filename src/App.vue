@@ -11,6 +11,8 @@
                     </router-link>
                     <router-link :to="{path:'/account/'+keywords}" class="btn btn-default">{{$t('header.account')}}
                     </router-link>
+                    <router-link :to="{path:'/asset/'+keywords}" class="btn btn-default">{{$t('header.asset')}}
+                    </router-link>
                 </div>
             </div>
             <router-view></router-view>

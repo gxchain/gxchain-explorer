@@ -27,7 +27,15 @@ router.get('/supply', function (req, res) {
 router.get('/block/:block_height', function (req, res) {
     GXChainService.fetch_block(req.params.block_height).then((block) => {
         res.send(block);
-    }).catch(() => {
+    }).catch((ex) => {
+        res.send({});
+    });
+});
+
+router.get('/asset/:asset_name', function (req, res) {
+    GXChainService.fetch_asset(req.params.asset_name).then((asset) => {
+        res.send(asset);
+    }).catch(ex => {
         res.send({});
     });
 });
