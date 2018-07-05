@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var fs = require('fs');
 var path = require('path');
+var config = require('../config')
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -54,6 +55,9 @@ module.exports = {
         extensions: ['.js', '.json']
     },
     plugins: [
+        new webpack.DefinePlugin({
+            '__witnesses__':JSON.stringify(config.build.witnesses)
+        }),
         new webpack.optimize.UglifyJsPlugin({
             exclude: /\.min\.js$/,
             mangle: true,
