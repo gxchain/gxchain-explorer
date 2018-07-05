@@ -92,7 +92,6 @@ const fetch_assets = function () {
                 });
                 resolve(assets);
             });
-
         }).catch(function (ex) {
             reject(ex);
         });
