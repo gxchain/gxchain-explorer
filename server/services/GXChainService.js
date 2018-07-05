@@ -26,7 +26,9 @@ const fetch_account_balance = (account_name) => {
             return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
                 return balances;
             });
-        }).catch((ex) => { reject(ex); }));
+        }).catch((ex) => {
+            reject(ex);
+        }));
     });
 };
 
@@ -65,6 +67,32 @@ const fetch_asset = function (asset_name) {
             } else {
                 resolve(asset);
             }
+        }).catch(function (ex) {
+            reject(ex);
+        });
+    });
+};
+
+/**
+ * 链上资产列表
+ */
+const fetch_assets = function () {
+    return new Promise(function (resolve, reject) {
+        return Apis.instance().db_api().exec('list_assets', ['A', 100]).then(function (assets) {
+            console.log(assets);
+            let ids = [];
+            assets.forEach(asset => {
+                ids.push(asset.dynamic_asset_data_id);
+                ids.push(asset.issuer);
+            });
+            Apis.instance().db_api().exec('get_objects', [ids]).then(objs => {
+                assets.forEach((asset, i) => {
+                    asset.detail = objs[2 * i];
+                    asset.issuer = objs[2 * i + 1];
+                });
+                resolve(assets);
+            });
+
         }).catch(function (ex) {
             reject(ex);
         });
@@ -126,6 +154,7 @@ export default {
     gxs_supply,
     fetch_block,
     fetch_asset,
+    fetch_assets,
     fetch_account,
     fetch_full_account,
     fetch_account_balance,

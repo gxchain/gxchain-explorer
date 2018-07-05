@@ -54,6 +54,8 @@
                     this.$router.push(`/block/${this.keywords}`);
                 } else if (this.keywords.length === 40) { // transaction
                     this.$router.push(`/transaction/${this.keywords}`);
+                } else if (/^1.3.\d+$/.test(this.keywords) || (this.keywords.charCodeAt(0) < 'Z'.charCodeAt(0) && this.keywords.charCodeAt(0) > 'A'.charCodeAt(0))) { // account
+                    this.$router.push(`/asset/${this.keywords}`);
                 } else { // account
                     this.$router.push(`/account/${this.keywords}`);
                 }

@@ -41,6 +41,12 @@ const locale = {
             type: 'Type',
             content: 'Content',
             time: 'Time'
+        },
+        asset: {
+            title: 'Assets on GXChain',
+            symbol: 'Symbol',
+            issuer: 'Issuer',
+            supply: 'Current Supply'
         }
     },
     // block
@@ -462,6 +468,7 @@ const locale = {
         query_account: 'Query Account:',
         query_account_balance: 'Query Account Balance:',
         get_account_header: 'Get Account Header:',
+        assets: 'Assets:',
         asset_info: 'Asset Info:'
     },
     holdrank: {

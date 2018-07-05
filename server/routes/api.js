@@ -32,6 +32,20 @@ router.get('/block/:block_height', function (req, res) {
     });
 });
 
+/**
+ * 资产列表
+ */
+router.get('/assets', function (req, res) {
+    GXChainService.fetch_assets().then((assets) => {
+        res.send(assets);
+    }).catch(ex => {
+        res.send([]);
+    });
+});
+
+/**
+ * 资产查询
+ */
 router.get('/asset/:asset_name', function (req, res) {
     GXChainService.fetch_asset(req.params.asset_name).then((asset) => {
         res.send(asset);

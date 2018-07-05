@@ -41,6 +41,12 @@ const locale = {
             type: '类型',
             content: '内容',
             time: '时间'
+        },
+        asset: {
+            title: 'GXChain资产',
+            symbol: '资产',
+            issuer: '发行人',
+            supply: '当前供给'
         }
     },
     // block
@@ -463,6 +469,7 @@ const locale = {
         query_account: '账户查询',
         query_account_balance: '余额查询',
         get_account_header: '账户头像',
+        assets: '资产列表:',
         asset_info: '资产信息:'
     },
     holdrank: {

@@ -120,6 +120,36 @@
 
             <!--历史交易记录-->
             <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="fa fa-bars"></span> {{$t('index.asset.title')}}
+                    </div>
+                    <div class="panel-body no-padding">
+                        <Loading v-show="assets_loading"></Loading>
+                        <table class="table table-striped table-bordered no-margin" v-show="!assets_loading">
+                            <thead>
+                            <tr>
+                                <th>{{$t('index.asset.symbol')}}</th>
+                                <th>{{$t('index.asset.issuer')}}</th>
+                                <th class="right">{{$t('index.asset.supply')}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="asset in assets" :key="asset.id">
+                                <td>
+                                    <router-link :to="{path:`/asset/${asset.symbol}`}">{{asset.symbol}}</router-link>
+                                </td>
+                                <td>
+                                    <router-link :to="{path:`/account/${asset.issuer.name}`}">{{asset.issuer.name}}</router-link>
+                                </td>
+                                <td class="right">
+                                    {{asset.detail.current_supply/Math.pow(10,asset.precision)|number(asset.precision)}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div v-if="latestBlocks" class="panel panel-default">
                     <div class="panel-heading">
                         <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
@@ -158,6 +188,8 @@
             return {
                 loading: true,
                 history_loading: true,
+                assets_loading: true,
+                assets: [],
                 timer: 0,
                 last_updated_at: 0,
                 block_info: null,
@@ -183,6 +215,7 @@
                 this.onUpdate();
                 this.getInitialBlocks(ChainStore.getObject('2.1.0').toJS().head_block_number);
             });
+            this.loadAssets();
         },
 
         destroyed () {
@@ -194,6 +227,12 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
+            loadAssets () {
+                this.$http.get('/api/assets').then(resp => {
+                    this.assets = resp.body;
+                    this.assets_loading = false;
+                });
+            },
             getCommitteeAccountName (member) {
                 if (ChainStore.getObject(member) && ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account'))) {
                     return ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account')).get('name');
