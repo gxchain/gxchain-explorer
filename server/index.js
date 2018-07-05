@@ -126,7 +126,7 @@ const filterAndSortURLs = (latencies, witnesses) => {
     return us;
 };
 
-let witnesses = '__witnesses__' in global ? __witnesses__ : config.dev.witnesses; // eslint-disable-line
+let witnesses = process.env.NODE_ENV === 'production' ? config.build.witnesses : config.dev.witnesses;
 
 if (witnesses.length === 0) {
     console.error('未配置启动节点,请先在config.json文件中配置common.witnesses');
