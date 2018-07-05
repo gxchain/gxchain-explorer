@@ -3,7 +3,7 @@
         <Loading v-show="loading"></Loading>
         <div class="row" v-if="asset&&asset.id" v-show="!loading">
             <h3 class="page-header">{{asset.symbol}}-{{asset.id}}</h3>
-            <p>{{JSON.parse(asset.options.description).main}}</p>
+            <p>{{asset.options.description&&JSON.parse(asset.options.description).main}}</p>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered no-margin">
