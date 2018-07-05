@@ -56,7 +56,6 @@ const fetch_asset = function (asset_name) {
     return new Promise(function (resolve, reject) {
         return Apis.instance().db_api().exec('lookup_asset_symbols', [[asset_name]]).then(function (assets) {
             let asset = assets && assets.length > 0 ? assets[0] : {};
-            console.log(asset);
             if (asset.id) {
                 Apis.instance().db_api().exec('get_objects', [[asset.dynamic_asset_data_id, asset.issuer]]).then(objs => {
                     asset.detail = objs[0];
