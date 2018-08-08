@@ -147,6 +147,7 @@ let connect = function (callback) {
                 connect(callback);
             }, 3000);
         } else {
+            connectionManager.url = urls[0];
             connectionManager.urls = urls;
             connectionManager.connectWithFallback(true).then(() => {
                 console.log('已连接');
@@ -200,6 +201,7 @@ let startServer = function () {
         }).join('\n')}`));
         console.log(colors.rainbow('=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=**=*=*=*=*=*=*=\n'));
     });
+    HoldrankTask.init();
 };
 
 /**
