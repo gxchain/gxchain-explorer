@@ -10,10 +10,15 @@ module.exports = {
     assetsPublicPath: '/',
     productionSourceMap: false,
     witnesses: [
+        // 'ws://172.19.19.148:28090',
+        // 'ws://172.19.19.149:28090'
       // "wss://node1.gxb.io",
       "wss://node5.gxb.io",
       "wss://node8.gxb.io",
-      "wss://node11.gxb.io"
+      "wss://node11.gxb.io",
+      "wss://node15.gxb.io",
+      "wss://node16.gxb.io",
+      "wss://node17.gxb.io"
     ],
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

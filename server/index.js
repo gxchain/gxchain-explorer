@@ -8,7 +8,7 @@ import Promise from 'bluebird';
 import { Apis, Manager } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
 import BlockSyncTask from './tasks/BlockSyncTask';
-import HoldrankTask from './tasks/HoldrankTask';
+// import HoldrankTask from './tasks/HoldrankTask';
 import LevelDBService from './services/LevelDBService';
 import figlet from 'figlet';
 import colors from 'colors/safe';
@@ -116,13 +116,13 @@ app.use(function (err, req, res) {
  */
 const filterAndSortURLs = (latencies, witnesses) => {
     let us = witnesses
-        .filter(a => {
-            /* Only keep the nodes we were able to connect to */
-            return !!latencies[a];
-        })
-        .sort((a, b) => {
-            return latencies[a] - latencies[b];
-        });
+    .filter(a => {
+        /* Only keep the nodes we were able to connect to */
+        return !!latencies[a];
+    })
+    .sort((a, b) => {
+        return latencies[a] - latencies[b];
+    });
     return us;
 };
 
@@ -216,6 +216,7 @@ let startSubScribe = function () {
     subscribed = true;
     ChainStore.subscribe(function () {
         let dynamicGlobal = ChainStore.getObject('2.1.0').toJS();
+        // console.log('latest block:', dynamicGlobal.last_irreversible_block_num);
         BlockSyncTask.sync_to_block(dynamicGlobal.last_irreversible_block_num);
     });
     Apis.instance().db_api().exec('get_objects', [['2.1.0']]);
@@ -229,8 +230,10 @@ let initConnection = function () {
     let promises = [
         ChainStore.init(),
         BlockSyncTask.init()
+        // HoldrankTask.init()
     ];
     Promise.all(promises).then(function () {
+        console.log('初始化成功');
         startSubScribe();
         startServer();
     }).catch((ex) => {

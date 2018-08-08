@@ -50,7 +50,7 @@ export default {
                         let tx_id = block.transaction_ids[j]; // GXChain based api will return transaction_ids as an array
 
                         // Logic for Graphene based chain, we should calculate tx_id ourself
-                        // Please do know that this will not work in browser at this time, so do the calc in node
+                        // Please notice that this will not work in browser at this time, so do the calc in node
                         // let tr_buffer = ops.transaction.toBuffer(transaction)
                         // let tx_id = hash.sha256(tr_buffer).toString('hex').substr(0, 40);
 
@@ -59,10 +59,12 @@ export default {
                     });
                 });
                 current_block_height = parseInt(current_block_height) + length;
-                console.log(`${current_block_height}/${max_block_height}已同步,同步区块数:`, blocks.length);
+                // console.log(`${current_block_height}/${max_block_height}已同步,同步区块数:`, blocks.length);
                 syncing = false;
                 if (current_block_height < max_block_height) {
-                    self.sync_to_block(max_block_height);
+                    process.nextTick(function () {
+                        self.sync_to_block(max_block_height);
+                    });
                 }
             }).catch(ex => {
                 console.error('同步区块失败', block_height, ex);
