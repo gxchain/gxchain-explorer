@@ -8,8 +8,6 @@ const locale = {
         about: '关于',
         language: '语言: 中文',
         flag: 'zh',
-        title: 'GXChain区块浏览器',
-        subtitle: '提供区块、交易、账户等查询功能',
         search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询'
     },
     // index
@@ -21,9 +19,7 @@ const locale = {
             head_block_number: '最新区块',
             last_irreversible_block_num: '最新不可逆区块',
             block_interval: '出块时间(秒)',
-            recently_missed_count: '最近缺失',
-            total_supply: '总发行',
-            circulating_supply: '当前供给'
+            recently_missed_count: '最近缺失'
         },
         witness: {
             title: '活跃见证人',

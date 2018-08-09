@@ -79,7 +79,6 @@ const fetch_asset = function (asset_name) {
 const fetch_assets = function () {
     return new Promise(function (resolve, reject) {
         return Apis.instance().db_api().exec('list_assets', ['A', 100]).then(function (assets) {
-            console.log(assets);
             let ids = [];
             assets.forEach(asset => {
                 ids.push(asset.dynamic_asset_data_id);

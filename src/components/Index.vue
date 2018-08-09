@@ -7,11 +7,40 @@
         </h4>
 
         <div class="row" v-show="!loading">
-            <!--区块信息-->
+
+            <!--Overview-->
+            <div class="col-md-12 no-padding" v-if="block_info">
+                <div class="col-md-5">
+                    <div class="section-summary">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">总交易数</div>
+                                <digital-roll :number="block_info.head_block_number"></digital-roll>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="title">链上账户数</p>
+                                <div class="">{{account_number|number(0)}}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="title">运行时间</p>
+                                <div>375D 23H 15M 23'</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <Chart :style="{height:'250px',width:'100%'}" :options="statistics" ref="sta" theme="light" auto-resize></Chart>
+                </div>
+            </div>
+
+            <!--Blocks-->
             <div class="col-md-12">
                 <div v-if="block_info&&global_params&&supply_info" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="fa fa-chain"></span>&nbsp;{{$t('index.summary.title')}}
+                        <span class="gxicon gxicon-block"></span>&nbsp;{{$t('index.summary.title')}}
                     </div>
                     <div class="panel-body no-padding table-responsive">
                         <table class="table table-striped table-bordered no-margin">
@@ -36,27 +65,21 @@
                                 <th>{{$t('index.summary.recently_missed_count')}}</th>
                                 <td>{{block_info.recently_missed_count}}</td>
                             </tr>
-                            <tr>
-                                <th>{{$t('index.summary.total_supply')}}</th>
-                                <td>{{supply_info.current_supply / 100000 | number(2)}}&nbsp;GXS</td>
-                                <th>{{$t('index.summary.circulating_supply')}}</th>
-                                <td>{{60000000 | number(2)}}&nbsp;GXS</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!--见证人-->
+            <!--Witnesses-->
             <div class="col-md-4">
                 <div v-if="global_params" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="fa fa-eye"></span>&nbsp;{{$t('index.witness.title')}}
+                        <span class="gxicon gxicon-witness"></span>&nbsp;{{$t('index.witness.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered no-margin">
+                            <table class="table table-striped no-margin">
                                 <thead>
                                 <tr>
                                     <th>{{$t('index.witness.witness')}}</th>
@@ -68,6 +91,9 @@
                                 <tr v-for="witness in global_params.active_witnesses"
                                     :class="{info:getLastConfirmedBlock(witness)==block_info.head_block_number}">
                                     <td>
+                                        <account-image :size="8"
+                                                       :account="getWitnessAccountName(witness)"></account-image>
+                                        &nbsp;
                                         <router-link :to="{path:'/account/'+getWitnessAccountName(witness)}">
                                             {{getWitnessAccountName(witness)}}
                                         </router-link>
@@ -90,10 +116,10 @@
                 <!--理事会成员-->
                 <div v-if="global_params" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="fa fa-users"></span>&nbsp;{{$t('index.committee.title')}}
+                        <span class="gxicon gxicon-commitee"></span>&nbsp;{{$t('index.committee.title')}}
                     </div>
                     <div class="panel-body no-padding">
-                        <table class="table table-striped table-bordered no-margin">
+                        <table class="table table-striped no-margin">
                             <thead>
                             <tr>
                                 <th>{{$t('index.committee.account')}}</th>
@@ -103,6 +129,8 @@
                             <tbody>
                             <tr v-for="member in global_params.active_committee_members">
                                 <td>
+                                    <account-image :size="8" :account="getCommitteeAccountName(member)"></account-image>
+                                    &nbsp;
                                     <router-link :to="{path:'/account/'+getCommitteeAccountName(member)}">
                                         {{getCommitteeAccountName(member)}}
                                     </router-link>
@@ -118,15 +146,15 @@
                 </div>
             </div>
 
-            <!--历史交易记录-->
+            <!--Assets-->
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="fa fa-bars"></span> {{$t('index.asset.title')}}
+                        <span class="gxicon gxicon-asset"></span> {{$t('index.asset.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <Loading v-show="assets_loading"></Loading>
-                        <table class="table table-striped table-bordered no-margin" v-show="!assets_loading">
+                        <table class="table table-striped no-margin" v-show="!assets_loading">
                             <thead>
                             <tr>
                                 <th>{{$t('index.asset.symbol')}}</th>
@@ -137,10 +165,15 @@
                             <tbody>
                             <tr v-for="asset in assets" :key="asset.id">
                                 <td>
+                                    <account-image :size="8" :account="asset.symbol"></account-image>
+                                    &nbsp
                                     <router-link :to="{path:`/asset/${asset.symbol}`}">{{asset.symbol}}</router-link>
                                 </td>
                                 <td>
-                                    <router-link :to="{path:`/account/${asset.issuer.name}`}">{{asset.issuer.name}}</router-link>
+                                    <account-image :size="8" :account="asset.issuer.name"></account-image>
+                                    &nbsp
+                                    <router-link :to="{path:`/account/${asset.issuer.name}`}">{{asset.issuer.name}}
+                                    </router-link>
                                 </td>
                                 <td class="right">
                                     {{asset.detail.current_supply/Math.pow(10,asset.precision)|number(asset.precision)}}
@@ -150,13 +183,15 @@
                         </table>
                     </div>
                 </div>
+
+                <!--Histories-->
                 <div v-if="latestBlocks" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="fa fa-history"></span>&nbsp;{{$t('index.transactions.title')}}
+                        <span class="gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <Loading v-show="history_loading"></Loading>
-                        <table class="table table-striped table-bordered no-margin" v-show="!history_loading">
+                        <table class="table table-striped no-margin" v-show="!history_loading">
                             <thead>
                             <tr>
                                 <th>{{$t('index.transactions.type')}}</th>
@@ -182,11 +217,15 @@
     import History_Op from './partial/History_Op.vue';
     import { calc_block_time } from '@/services/CommonService';
     import { mapActions } from 'vuex';
+    import DigitalRoll from './partial/DigitalRoll';
+    import AccountImage from './partial/AccountImage';
+    import echarts from 'echarts/lib/echarts';
 
     export default {
         data () {
             return {
                 loading: true,
+                account_number: 0,
                 history_loading: true,
                 assets_loading: true,
                 assets: [],
@@ -198,6 +237,43 @@
                 latestBlocks: [],
                 latestTransactions: [],
                 history_length: 35,
+                statistics: {
+                    title: {
+                        text: '近15日交易数'
+                    },
+                    grid: {
+                        left: '1%',
+                        right: '2%',
+                        bottom: '5%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: [820, 932, 901, 934, 1290, 1330, 1320],
+                        type: 'line',
+                        areaStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                    offset: 0,
+                                    color: '#6699ff'
+                                }, {
+                                    offset: 1,
+                                    color: '#e5eaff'
+                                }])
+                            }
+                        }
+                    }]
+                },
                 ChainStore
             };
         },
@@ -216,6 +292,10 @@
                 this.getInitialBlocks(ChainStore.getObject('2.1.0').toJS().head_block_number);
             });
             this.loadAssets();
+            this.loadAccountNumber();
+            setInterval(() => {
+                this.loadAccountNumber();
+            }, 30000);
         },
 
         destroyed () {
@@ -227,6 +307,11 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
+            loadAccountNumber () {
+                this.$http.get('/api/account/number').then(resp => {
+                    this.account_number = resp.body.number;
+                });
+            },
             loadAssets () {
                 this.$http.get('/api/assets').then(resp => {
                     this.assets = resp.body;
@@ -333,7 +418,9 @@
             }
         },
         components: {
-            History_Op: History_Op
+            History_Op: History_Op,
+            DigitalRoll: DigitalRoll,
+            AccountImage
         }
     };
 </script>
@@ -352,12 +439,39 @@
     }
 
     #search-result .btn-group .btn.active {
-        background-color: #1d8eca;
-        border-color: #1d8eca;
+        background-color: #3c4463;
+        border-color: #3c4463;
         color: #fff;
     }
 
     #search-result .null-tip {
         color: #999;
+    }
+
+    .section-summary {
+        background: #f2f2f2;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        transition-duration: .3s;
+    }
+
+    .section-summary:hover {
+        box-shadow: 0 0 15px #ccc;
+    }
+
+    .section-summary .top, .section-summary .bottom {
+        padding: 20px;
+    }
+
+    .section-summary .title {
+        color: #9d9faf;
+        font-size: 15px;
+        margin-bottom: 15px;
+    }
+
+    .section-summary hr {
+        border-color: #e0e0e0;
+        margin: 20px -20px;
     }
 </style>

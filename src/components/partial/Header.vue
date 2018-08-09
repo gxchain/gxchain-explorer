@@ -11,27 +11,29 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <router-link :to="{path:'/'}" class="navbar-brand">
-                        <img height="28.5px" src="/static/exploer-logo.png" v-on:click="clearInput"/>
-                    </router-link>
+                    <!--<router-link :to="{path:'/'}" class="navbar-brand">-->
+                        <!--<img height="28.5px" src="/static/exploer-logo.png" v-on:click="clearInput"/>-->
+                    <!--</router-link>-->
                 </div>
                 <nav id="bs-navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
                         <!--<li><router-link :to="{path:'/holdrank/1'}" @click.native="clearInput">排行</router-link></li>-->
-                        <li><a href="#modal-about" data-toggle="modal">{{$t("header.about")}}</a></li>
+                        <li><a href="#modal-about" data-toggle="modal">{{$t('header.about')}}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
                                aria-expanded="false"><img class="flagimg" :src="flagImg[$t('header.flag')]"><span
                                     class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li @click="switchLanguage('zh')"><a href="javascript:;"><img class="flagimg"
-                                                                                              :src="flagImg['zh']">中文</a>
+                                <li @click="switchLanguage('zh')"><a href="javascript:;">
+                                    <img class="flagimg"
+                                         :src="flagImg['zh']">中文</a>
                                 </li>
                                 <li role="separator" class="divider"></li>
-                                <li @click="switchLanguage('en')"><a href="javascript:;"><img class="flagimg"
-                                                                                              :src="flagImg['en']">English</a>
+                                <li @click="switchLanguage('en')"><a href="javascript:;">
+                                    <img class="flagimg"
+                                         :src="flagImg['en']">English</a>
                                 </li>
                             </ul>
                         </li>
@@ -41,14 +43,18 @@
         </nav>
         <div class="container jumbotron">
             <div class="row">
-                <div class="col-xs-12"><h1>{{$t('header.title')}}</h1>
-                    <p>{{$t('header.subtitle')}}</p>
+                <div class="col-xs-12">
+                    <p class="text-center">
+                        <router-link :to="{path:'/'}">
+                            <img height="40px" alt="logo-gxchain" src="/static/exploer-logo.png" v-on:click="clearInput"/>
+                        </router-link>
+                    </p>
                     <div class="search-wraper" role="search">
                         <div class="form-group">
                             <input @change="eventChanged" v-model="search" class="form-control search clearable"
                                    :placeholder="$t('header.search')" autocomplete="off" autofocus=""
                                    tabindex="0" autocorrect="off" autocapitalize="off" spellcheck="false">
-                            <i class="fa fa-search"></i>
+                            <i class="gxicon gxicon-search"></i>
                         </div>
                     </div>
                 </div>
@@ -59,7 +65,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
     import { set_item } from '@/services/CommonService';
 
     export default {
@@ -107,7 +113,10 @@
     .site-header {
         position: relative;
         text-align: center;
-        background-color: #1d8fcb;
+        background-color: #3c4463;
+        background-image: url("../../../static/banner.png");
+        background-position: 0 0;
+        background-size: 100%;
         color: #fff;
         margin-bottom: 0
     }
@@ -152,7 +161,8 @@
     }
 
     .jumbotron {
-        background-color: transparent
+        background-color: transparent;
+        padding-bottom: 25px;
     }
 
     .site-header h1 {
@@ -166,8 +176,6 @@
 
     @media screen and (min-width: 768px) {
         .site-header {
-            padding-bottom: 50px;
-            padding-top: 20px
         }
 
         .site-header .jumbotron {
@@ -189,35 +197,37 @@
         }
     }
 
-    .site-header .fa {
+    .site-header .fa, .site-header .gxicon {
         color: #a3a3a4;
         font-size: 16px
     }
 
-    .site-header .fa-close, .site-header .fa-search {
+    .site-header .fa-close, .site-header .gxicon-search {
         position: absolute;
-        right: 10px;
-        top: 18px
+        right: 14px;
+        top: 14px
     }
 
     .site-header .form-group {
-        position: relative
+        position: relative;
+        margin:0;
     }
 
     .site-header .search-wraper {
         max-width: 680px;
-        margin: 30px auto 20px;
+        margin: 25px auto 0;
     }
 
     .site-header .search {
         -webkit-box-shadow: none;
         box-shadow: none;
-        font-size: 16px;
-        padding: 13px 30px;
+        font-size: 14px;
+        padding: 10px 30px;
         border-radius: 0;
         height: auto;
         text-align: center;
-        border-color: transparent
+        border-color: transparent;
+        border-radius: 25px;
     }
 
     .site-header .search::-ms-clear {

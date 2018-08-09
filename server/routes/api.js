@@ -77,6 +77,19 @@ router.get('/account/:account_id_or_name', function (req, res) {
 });
 
 /**
+ * 账户数查询
+ */
+router.get('/account/number', function (req, res) {
+    LevelDBService.get('account_number', (number) => {
+        res.send({
+            number
+        });
+    }).catch(ex => {
+        res.send({number: 0});
+    });
+});
+
+/**
  * 账户余额查询
  */
 router.get('/account_balance/:account_id_or_name', function (req, res) {

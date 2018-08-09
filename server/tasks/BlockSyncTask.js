@@ -53,6 +53,13 @@ export default {
                         // Please notice that this will not work in browser at this time, so do the calc in node
                         // let tr_buffer = ops.transaction.toBuffer(transaction)
                         // let tx_id = hash.sha256(tr_buffer).toString('hex').substr(0, 40);
+                        transaction.operations.forEach((op, k) => {
+                            let opId = op[0];
+                            if (opId === 5) { // account_create
+                                let account_id = transaction.operation_results[k][1].split('.')[2];
+                                LevelDBService.put('account_number', account_id);
+                            }
+                        });
 
                         transaction.current_block_number = current_block_height + i;
                         LevelDBService.put(tx_id, JSON.stringify(transaction));
