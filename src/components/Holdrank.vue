@@ -61,7 +61,7 @@
                                 <td class="text-right">{{$t('holdrank.table.peractive')}}</td>
                                 </template>
                             </tr>
-                            <tr v-for="r in holdrank">
+                            <tr v-for="r in holdrank" :key="r.ranknum">
                                 <td>{{r.ranknum}}</td>
                                 <td>1.2.{{r.userid}}</td>
                                 <td><a :href="r.accountlink" target="_blank">{{r.username}}</a></td>

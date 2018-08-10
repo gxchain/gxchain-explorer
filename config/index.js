@@ -41,10 +41,7 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         witnesses: [
-            // "wss://node1.gxb.io",
-            'wss://node5.gxb.io',
-            'wss://node8.gxb.io',
-            'wss://node11.gxb.io'
+            'ws://47.96.164.78:28090'
         ],
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README

@@ -6,33 +6,89 @@
             <small>{{$t('index.last_updated_at', {seconds: delta})}}</small>
         </h4>
 
-        <div class="row" v-show="!loading">
-
+        <div class="row">
             <!--Overview-->
-            <div class="col-md-12 no-padding" v-if="block_info">
+            <div class="col-md-12 no-padding">
                 <div class="col-md-5">
                     <div class="section-summary">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="title">总交易数</div>
-                                <digital-roll :number="block_info.head_block_number"></digital-roll>
+                                <digital-roll :number="transaction_num"></digital-roll>
                             </div>
                         </div>
                         <hr/>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                                 <p class="title">链上账户数</p>
-                                <div class="">{{account_number|number(0)}}</div>
+                                <div class="font-bebas">{{account_number|number(0)}}</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                                 <p class="title">运行时间</p>
-                                <div>375D 23H 15M 23'</div>
+                                <div class="font-bebas">{{blockchain_run_duration}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <Chart :style="{height:'250px',width:'100%'}" :options="statistics" ref="sta" theme="light" auto-resize></Chart>
+                    <Chart ref="sta"
+                           style="width:100%;height:250px;"
+                           :options="statistics"
+                           theme="light"
+                           auto-resize>
+                    </Chart>
+                </div>
+            </div>
+
+            <!--Asset Ranking-->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;持仓排名
+                        <span>
+                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='GXS'}"
+                                    @click="currentAsset='GXS'">GXS
+                            </button>
+                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='PPS'}"
+                                    @click="currentAsset='PPS'">PPS
+                            </button>
+                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='LVCoin'}"
+                                    @click="currentAsset='LVCoin'">LVCoin
+                            </button>
+                        </span>
+                    </div>
+                    <div class="panel-body no-padding table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>账户</th>
+                                <th>冻结资产</th>
+                                <th>流通资产</th>
+                                <th>总资产</th>
+                                <th>流通占比</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in rankings">
+                                <td>
+                                    <account-image :size="8"
+                                                   :account="item.accountName"></account-image>
+                                    &nbsp;
+                                    <router-link :to="{path:'/account/'+item.accountName}">
+                                        {{item.accountName}}
+                                    </router-link>
+                                </td>
+                                <td>{{item.locked_balance}}</td>
+                                <td>{{item.balance}}</td>
+                                <td>{{item.locked_balance+item.balance}}</td>
+                                <td>{{(item.percent*100).toFixed(2)}}%</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            <i class="fa fa-arrow-down"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -40,7 +96,7 @@
             <div class="col-md-12">
                 <div v-if="block_info&&global_params&&supply_info" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="gxicon gxicon-block"></span>&nbsp;{{$t('index.summary.title')}}
+                        <span class="fa fa-fw gxicon gxicon-block"></span>&nbsp;{{$t('index.summary.title')}}
                     </div>
                     <div class="panel-body no-padding table-responsive">
                         <table class="table table-striped table-bordered no-margin">
@@ -75,7 +131,7 @@
             <div class="col-md-4">
                 <div v-if="global_params" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="gxicon gxicon-witness"></span>&nbsp;{{$t('index.witness.title')}}
+                        <span class="fa fa-fw gxicon gxicon-witness"></span>&nbsp;{{$t('index.witness.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <div class="table-responsive">
@@ -89,6 +145,7 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="witness in global_params.active_witnesses"
+                                    :key="witness"
                                     :class="{info:getLastConfirmedBlock(witness)==block_info.head_block_number}">
                                     <td>
                                         <account-image :size="8"
@@ -116,7 +173,7 @@
                 <!--理事会成员-->
                 <div v-if="global_params" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="gxicon gxicon-commitee"></span>&nbsp;{{$t('index.committee.title')}}
+                        <span class="fa fa-fw gxicon gxicon-commitee"></span>&nbsp;{{$t('index.committee.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <table class="table table-striped no-margin">
@@ -127,7 +184,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="member in global_params.active_committee_members">
+                            <tr v-for="member in global_params.active_committee_members" :key="member">
                                 <td>
                                     <account-image :size="8" :account="getCommitteeAccountName(member)"></account-image>
                                     &nbsp;
@@ -150,7 +207,7 @@
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="gxicon gxicon-asset"></span> {{$t('index.asset.title')}}
+                        <span class="fa fa-fw gxicon gxicon-asset"></span> {{$t('index.asset.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <Loading v-show="assets_loading"></Loading>
@@ -166,12 +223,12 @@
                             <tr v-for="asset in assets" :key="asset.id">
                                 <td>
                                     <account-image :size="8" :account="asset.symbol"></account-image>
-                                    &nbsp
+                                    &nbsp;
                                     <router-link :to="{path:`/asset/${asset.symbol}`}">{{asset.symbol}}</router-link>
                                 </td>
                                 <td>
                                     <account-image :size="8" :account="asset.issuer.name"></account-image>
-                                    &nbsp
+                                    &nbsp;
                                     <router-link :to="{path:`/account/${asset.issuer.name}`}">{{asset.issuer.name}}
                                     </router-link>
                                 </td>
@@ -187,7 +244,7 @@
                 <!--Histories-->
                 <div v-if="latestBlocks" class="panel panel-default">
                     <div class="panel-heading">
-                        <span class="gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
+                        <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
                     </div>
                     <div class="panel-body no-padding">
                         <Loading v-show="history_loading"></Loading>
@@ -204,9 +261,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 </template>
 
@@ -220,6 +275,8 @@
     import DigitalRoll from './partial/DigitalRoll';
     import AccountImage from './partial/AccountImage';
     import echarts from 'echarts/lib/echarts';
+    import 'echarts/lib/component/title';
+    import 'echarts/lib/component/axis';
 
     export default {
         data () {
@@ -228,6 +285,8 @@
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
+                currentAsset: 'GXS',
+                rankings: [],
                 assets: [],
                 timer: 0,
                 last_updated_at: 0,
@@ -237,42 +296,63 @@
                 latestBlocks: [],
                 latestTransactions: [],
                 history_length: 35,
+                blockchain_run_duration: '',
+                transaction_num: 0,
                 statistics: {
                     title: {
-                        text: '近15日交易数'
+                        text: '近10日交易统计',
+                        left: 'left',
+                        textStyle: {
+                            color: '#9d9faf'
+                        }
                     },
                     grid: {
-                        left: '1%',
-                        right: '2%',
-                        bottom: '5%',
+                        bottom: 20,
+                        left: 10,
+                        right: 20,
                         containLabel: true
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        data: [820, 932, 901, 934, 1290, 1330, 1320],
-                        type: 'line',
-                        areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                    offset: 0,
-                                    color: '#6699ff'
-                                }, {
-                                    offset: 1,
-                                    color: '#e5eaff'
-                                }])
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: [],
+                        axisLine: {
+                            lineStyle: {
+                                color: '#919191'
                             }
                         }
-                    }]
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: {
+                            lineStyle: {
+                                color: '#b9bac5'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            data: [],
+                            type: 'line',
+                            areaStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                        {
+                                            offset: 0,
+                                            color: '#6699ff'
+                                        },
+                                        {
+                                            offset: 1,
+                                            color: '#e5eaff'
+                                        }
+                                    ])
+                                }
+                            }
+                        }
+                    ]
                 },
                 ChainStore
             };
@@ -287,19 +367,55 @@
         mounted () {
             this.setKeywords({keywords: ''});
             ChainStore.subscribe(this.onUpdate);
-            Apis.instance().db_api().exec('get_objects', [['2.0.0', '2.1.0', '2.3.1']]).then(() => {
+            Apis.instance()
+            .db_api()
+            .exec('get_objects', [['2.0.0', '2.1.0', '2.3.1']])
+            .then(() => {
                 this.onUpdate();
-                this.getInitialBlocks(ChainStore.getObject('2.1.0').toJS().head_block_number);
+                this.getInitialBlocks(
+                    ChainStore.getObject('2.1.0').toJS().head_block_number
+                );
             });
             this.loadAssets();
             this.loadAccountNumber();
-            setInterval(() => {
+            this.accountNumberInterval = setInterval(() => {
                 this.loadAccountNumber();
-            }, 30000);
+            }, 10000);
+            this.runDurationInterval = setInterval(() => {
+                let duration = new Date() - new Date('2017-06-10T13:52:26Z');
+                const MS_PER_DAY = 24 * 60 * 60 * 1000;
+                const MS_PER_HOUR = 60 * 60 * 1000;
+                const MS_PER_MINUTES = 60 * 1000;
+
+                let days = parseInt(duration / MS_PER_DAY);
+                let hours = parseInt((duration - days * MS_PER_DAY) / MS_PER_HOUR);
+                let minutes = parseInt(
+                    (duration - days * MS_PER_DAY - hours * MS_PER_HOUR) / MS_PER_MINUTES
+                );
+                let seconds = parseInt(
+                    (duration -
+                        days * MS_PER_DAY -
+                        hours * MS_PER_HOUR -
+                        minutes * MS_PER_MINUTES) /
+                    1000
+                );
+                this.blockchain_run_duration = `${days}D ${hours}H ${minutes}M ${
+                    seconds < 9 ? '0' + seconds : seconds
+                    }'`;
+            }, 500);
+            this.loadTotalTransactionNum();
+            this.transactionNumInterval = setInterval(() => {
+                this.loadTotalTransactionNum();
+            }, 3000);
+            this.loadStatistics();
+            this.loadRankings();
         },
 
         destroyed () {
             clearInterval(this.intervalHandler);
+            clearInterval(this.accountNumberInterval);
+            clearInterval(this.runDurationInterval);
+            clearInterval(this.transactionNumInterval);
             ChainStore.unsubscribe(this.onUpdate);
         },
 
@@ -307,9 +423,62 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
+            loadRankings () {
+                this.$http
+                .get(`${process.env.STA_SERVICE}/account/assetRankList`, {
+                    params: {
+                        symbol: 'GXS',
+                        pageNo: 1,
+                        pageSize: 20
+                    }
+                })
+                .then(resp => {
+                    this.rankings = resp.body;
+                });
+            },
+            loadTotalTransactionNum () {
+                this.$http
+                .get(`${process.env.STA_SERVICE}/transaction/num`)
+                .then(resp => {
+                    this.transaction_num = resp.body.num;
+                });
+            },
+            loadStatistics () {
+                // debugger; // eslint-disable-line
+                this.$http
+                .get(`${process.env.STA_SERVICE}/transactionNum`, {
+                    params: {
+                        timestamp: new Date().getTime(),
+                        days: 10
+                    }
+                })
+                .then(resp => {
+                    let xAxisData = resp.body.map(item => {
+                        return item.date
+                        .split('-')
+                        .slice(1)
+                        .join('/');
+                    });
+                    let data = resp.body.map(item => {
+                        return item.num;
+                    });
+                    this.$refs.sta.mergeOptions({
+                        xAxis: {
+                            data: xAxisData
+                        },
+                        series: {
+                            data: data
+                        }
+                    });
+                    this.$refs.sta.hideLoading();
+                });
+            },
             loadAccountNumber () {
-                this.$http.get('/api/account/number').then(resp => {
-                    this.account_number = resp.body.number;
+                Apis.instance()
+                .db_api()
+                .exec('get_account_count', [])
+                .then(resp => {
+                    this.account_number = resp;
                 });
             },
             loadAssets () {
@@ -319,21 +488,38 @@
                 });
             },
             getCommitteeAccountName (member) {
-                if (ChainStore.getObject(member) && ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account'))) {
-                    return ChainStore.getObject(ChainStore.getObject(member).get('committee_member_account')).get('name');
+                if (
+                    ChainStore.getObject(member) &&
+                    ChainStore.getObject(
+                        ChainStore.getObject(member).get('committee_member_account')
+                    )
+                ) {
+                    return ChainStore.getObject(
+                        ChainStore.getObject(member).get('committee_member_account')
+                    ).get('name');
                 }
                 return null;
             },
 
             getWitnessAccountName (witness) {
-                if (ChainStore.getObject(witness) && ChainStore.getObject(ChainStore.getObject(witness).get('witness_account'))) {
-                    return ChainStore.getObject(ChainStore.getObject(witness).get('witness_account')).get('name');
+                if (
+                    ChainStore.getObject(witness) &&
+                    ChainStore.getObject(
+                        ChainStore.getObject(witness).get('witness_account')
+                    )
+                ) {
+                    return ChainStore.getObject(
+                        ChainStore.getObject(witness).get('witness_account')
+                    ).get('name');
                 }
                 return null;
             },
 
             getLastConfirmedBlock (witness) {
-                return ChainStore.getObject(witness) && ChainStore.getObject(witness).get('last_confirmed_block_num');
+                return (
+                    ChainStore.getObject(witness) &&
+                    ChainStore.getObject(witness).get('last_confirmed_block_num')
+                );
             },
 
             getInitialBlocks (maxBlock) {
@@ -345,10 +531,10 @@
             getBlocks (maxBlock, length) {
                 for (let i = length - 1; i >= 0; i--) {
                     let height = maxBlock - i;
-                    Apis.instance().db_api().exec('get_block', [
-                        height
-                    ])
-                    .then((result) => {
+                    Apis.instance()
+                    .db_api()
+                    .exec('get_block', [height])
+                    .then(result => {
                         if (!result) {
                             return false;
                         }
@@ -362,11 +548,25 @@
                             result.transactions.forEach(trx => {
                                 trx.operations.forEach(op => {
                                     op.block_id = result.id;
-                                    if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-                                        let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
-                                        let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
-                                        let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
-                                        op.timestamp = calc_block_time(result.id, block_interval, head_block_number, head_block_time);
+                                    if (
+                                        ChainStore.getObject('2.0.0') &&
+                                        ChainStore.getObject('2.1.0')
+                                    ) {
+                                        let block_interval = ChainStore.getObject('2.0.0')
+                                        .get('parameters')
+                                        .get('block_interval');
+                                        let head_block_number = ChainStore.getObject('2.1.0').get(
+                                            'head_block_number'
+                                        );
+                                        let head_block_time = new Date(
+                                            ChainStore.getObject('2.1.0').get('time') + '+00:00'
+                                        );
+                                        op.timestamp = calc_block_time(
+                                            result.id,
+                                            block_interval,
+                                            head_block_number,
+                                            head_block_time
+                                        );
                                     }
                                     this.latestTransactions.unshift(op);
                                     this.history_loading = false;
@@ -381,7 +581,8 @@
                             this.loading = false;
                             this.history_loading = false;
                         }
-                    }).catch((error) => {
+                    })
+                    .catch(error => {
                         console.log('Error in Index.getBlocks: ', error);
                         this.loading = false;
                         this.history_loading = false;
@@ -401,7 +602,11 @@
                     this.runTimer();
                 }
                 this.last_updated_at = new Date();
-                if (!ChainStore.getObject('2.0.0') || !ChainStore.getObject('2.1.0') || !ChainStore.getObject('2.3.1')) {
+                if (
+                    !ChainStore.getObject('2.0.0') ||
+                    !ChainStore.getObject('2.1.0') ||
+                    !ChainStore.getObject('2.3.1')
+                ) {
                     return;
                 }
 
@@ -411,7 +616,8 @@
 
                 if (this.latestBlocks[0]) {
                     if (this.block_info.head_block_number > this.latestBlocks[0].id) {
-                        let length = this.block_info.head_block_number - this.latestBlocks[0].id;
+                        let length =
+                            this.block_info.head_block_number - this.latestBlocks[0].id;
                         this.getBlocks(this.block_info.head_block_number, length);
                     }
                 }
@@ -453,14 +659,15 @@
         padding: 20px;
         margin-bottom: 20px;
         border-radius: 10px;
-        transition-duration: .3s;
+        transition-duration: 0.3s;
     }
 
     .section-summary:hover {
         box-shadow: 0 0 15px #ccc;
     }
 
-    .section-summary .top, .section-summary .bottom {
+    .section-summary .top,
+    .section-summary .bottom {
         padding: 20px;
     }
 
@@ -470,8 +677,24 @@
         margin-bottom: 15px;
     }
 
+    .font-bebas {
+        font-family: bebas;
+        font-size: 20px;
+        color: #3c4463;
+    }
+
     .section-summary hr {
         border-color: #e0e0e0;
         margin: 20px -20px;
+    }
+    .btn-ranking.active,.btn-ranking:active{
+        background: #eaf2ff;
+        color:#7095e1;
+        border:transparent;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+    .btn-ranking:focus{
+        outline:none;
     }
 </style>

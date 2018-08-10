@@ -26,6 +26,7 @@
 <script>
     import 'bootstrap';
     import 'bootstrap/dist/css/bootstrap.css';
+    import './global.css';
     import modalApi from './components/modals/modal-api.vue';
     import modalAbout from './components/modals/modal-about.vue';
     import header from './components/partial/Header.vue';
@@ -79,42 +80,5 @@
         border-color: #3c4463 !important;
         background: #3c4463 !important;;
         color: #fff !important;;
-    }
-</style>
-
-<style>
-    a{
-        color:#6699ff;
-    }
-    a:hover{
-        color: #5293ff;
-    }
-    .panel-default{
-        border-radius: 0;
-        transition-duration:.3s;
-    }
-    .panel-default > .panel-heading{
-        border-bottom: none;
-        font-color:#3b4361;
-        font-size: 18px;
-        font-weight: 500;
-        background: transparent;
-        padding:15px;
-    }
-    .panel-default:hover{
-        box-shadow:0px 0px 15px #ccc;
-    }
-    .panel-default .table{
-        border-top:1px solid #ddd;
-    }
-    .panel-default .table thead > tr >th{
-        border-bottom:1px solid #ddd;
-    }
-    .no-padding {
-        padding: 0 !important;
-    }
-
-    .no-margin {
-        margin: 0 !important;
     }
 </style>
