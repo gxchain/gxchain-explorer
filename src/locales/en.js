@@ -45,6 +45,23 @@ const locale = {
             symbol: 'Symbol',
             issuer: 'Issuer',
             supply: 'Current Supply'
+        },
+        ranking: {
+            title: 'Holder Ranking',
+            number: 'No.',
+            account: 'Account',
+            locked_balance: 'Locked Balance',
+            balance: 'Balance',
+            total_balance: 'Total Balance',
+            percent: 'Percentage'
+        },
+        statistics: {
+            title: '10 day GXChain Transaction History'
+        },
+        overview: {
+            transactions: 'Total Transactions',
+            accounts: 'Total Accounts',
+            duration: 'Running Duration'
         }
     },
     // block

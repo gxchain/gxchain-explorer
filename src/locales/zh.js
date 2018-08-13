@@ -43,6 +43,23 @@ const locale = {
             symbol: '资产',
             issuer: '发行人',
             supply: '当前供给'
+        },
+        ranking: {
+            title: '持仓排名',
+            number: '序号',
+            account: '账户',
+            locked_balance: '锁仓资产',
+            balance: '流通资产',
+            total_balance: '总资产',
+            percent: '流通占比'
+        },
+        statistics: {
+            title: '10日交易统计'
+        },
+        overview: {
+            transactions: '总交易数',
+            accounts: '账户数',
+            duration: '运行时间'
         }
     },
     // block

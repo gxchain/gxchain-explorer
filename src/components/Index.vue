@@ -13,18 +13,18 @@
                     <div class="section-summary">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="title">总交易数</div>
+                                <div class="title">{{$t('index.overview.transactions')}}</div>
                                 <digital-roll :number="transaction_num"></digital-roll>
                             </div>
                         </div>
                         <hr/>
                         <div class="row">
                             <div class="col-sm-6">
-                                <p class="title">链上账户数</p>
+                                <p class="title">{{$t('index.overview.accounts')}}</p>
                                 <div class="font-bebas">{{account_number|number(0)}}</div>
                             </div>
                             <div class="col-sm-6">
-                                <p class="title">运行时间</p>
+                                <p class="title">{{$t('index.overview.duration')}}</p>
                                 <div class="font-bebas">{{blockchain_run_duration}}</div>
                             </div>
                         </div>
@@ -42,9 +42,9 @@
 
             <!--Asset Ranking-->
             <div class="col-md-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default panel-ranking">
                     <div class="panel-heading">
-                        <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;持仓排名
+                        <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{$t('index.ranking.title')}}
                         <span>
                             <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='GXS'}"
                                     @click="currentAsset='GXS'">GXS
@@ -52,8 +52,8 @@
                             <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='PPS'}"
                                     @click="currentAsset='PPS'">PPS
                             </button>
-                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='LVCoin'}"
-                                    @click="currentAsset='LVCoin'">LVCoin
+                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='LVCOIN'}"
+                                    @click="currentAsset='LVCOIN'">LVCOIN
                             </button>
                         </span>
                     </div>
@@ -61,15 +61,17 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>账户</th>
-                                <th>冻结资产</th>
-                                <th>流通资产</th>
-                                <th>总资产</th>
-                                <th>流通占比</th>
+                                <th width="100">{{$t('index.ranking.number')}}</th>
+                                <th>{{$t('index.ranking.account')}}</th>
+                                <th class="text-right">{{$t('index.ranking.locked_balance')}}</th>
+                                <th class="text-right">{{$t('index.ranking.balance')}}</th>
+                                <th class="text-right">{{$t('index.ranking.total_balance')}}</th>
+                                <th class="text-right">{{$t('index.ranking.percent')}}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item in rankings">
+                            <tr v-for="(item,i) in rankings">
+                                <td>{{i+1}}</td>
                                 <td>
                                     <account-image :size="8"
                                                    :account="item.accountName"></account-image>
@@ -78,15 +80,23 @@
                                         {{item.accountName}}
                                     </router-link>
                                 </td>
-                                <td>{{item.locked_balance}}</td>
-                                <td>{{item.balance}}</td>
-                                <td>{{item.locked_balance+item.balance}}</td>
-                                <td>{{(item.percent*100).toFixed(2)}}%</td>
+                                <td align="right">
+                                    {{item.freezeAmount}}
+                                </td>
+                                <td align="right">
+                                    {{item.amount}}
+                                </td>
+                                <td align="right">
+                                    {{item.totalAmount}}
+                                </td>
+                                <td align="right">{{(item.percent*100).toFixed(2)}}%</td>
                             </tr>
                             </tbody>
                         </table>
-                        <div class="text-center">
-                            <i class="fa fa-arrow-down"></i>
+                        <div class="footer">
+                            <router-link :to="{path:`/asset/${currentAsset}`}">
+                                <i class="fa fa-angle-double-down"></i>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -300,7 +310,7 @@
                 transaction_num: 0,
                 statistics: {
                     title: {
-                        text: '近10日交易统计',
+                        text: this.$t('index.statistics.title'),
                         left: 'left',
                         textStyle: {
                             color: '#9d9faf'
@@ -361,6 +371,13 @@
         computed: {
             delta () {
                 return parseInt((this.timer - this.last_updated_at) / 1000);
+            },
+            assets_info () {
+                let result = {};
+                this.assets.forEach(asset => {
+                    result[asset.symbol] = asset;
+                });
+                return result;
             }
         },
 
@@ -408,7 +425,6 @@
                 this.loadTotalTransactionNum();
             }, 3000);
             this.loadStatistics();
-            this.loadRankings();
         },
 
         destroyed () {
@@ -419,21 +435,38 @@
             ChainStore.unsubscribe(this.onUpdate);
         },
 
+        watch: {
+            currentAsset () {
+                this.loadRankings();
+            }
+        },
+
         methods: {
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
             loadRankings () {
+                let asset = this.currentAsset;
                 this.$http
                 .get(`${process.env.STA_SERVICE}/account/assetRankList`, {
                     params: {
-                        symbol: 'GXS',
+                        symbol: asset,
                         pageNo: 1,
                         pageSize: 20
                     }
                 })
                 .then(resp => {
-                    this.rankings = resp.body;
+                    let assetInfo = this.assets_info[asset];
+                    let currentSupply = assetInfo.detail.current_supply / Math.pow(10, assetInfo.precision);
+                    this.rankings = resp.body.map(item => {
+                        return {
+                            accountName: item.accountName,
+                            amount: filters.number(item.amount, assetInfo.precision),
+                            freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
+                            totalAmount: filters.number(item.totalAmount, assetInfo.precision),
+                            percent: filters.number((item.amount + item.freezeAmount) / currentSupply, assetInfo.precision)
+                        };
+                    });
                 });
             },
             loadTotalTransactionNum () {
@@ -485,6 +518,7 @@
                 this.$http.get('/api/assets').then(resp => {
                     this.assets = resp.body;
                     this.assets_loading = false;
+                    this.loadRankings();
                 });
             },
             getCommitteeAccountName (member) {
@@ -687,14 +721,31 @@
         border-color: #e0e0e0;
         margin: 20px -20px;
     }
-    .btn-ranking.active,.btn-ranking:active{
+
+    .btn-ranking {
+        border: transparent;
+    }
+
+    .btn-ranking.active, .btn-ranking:active {
         background: #eaf2ff;
-        color:#7095e1;
-        border:transparent;
+        color: #7095e1;
+        border: transparent;
         border-radius: 10px;
         box-shadow: none;
     }
-    .btn-ranking:focus{
-        outline:none;
+
+    .btn-ranking:focus {
+        outline: none;
+    }
+
+    .panel-ranking .footer {
+        text-align: center;
+        padding: 10px 0;
+        border-top: 1px solid #eee;
+        font-size: 20px;
+    }
+
+    .panel-ranking .footer a {
+        color: #999;
     }
 </style>
