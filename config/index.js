@@ -11,7 +11,7 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         productionSourceMap: false,
-        witnesses: isTest ? ['ws://47.96.164.78:28090'] : [
+        witnesses: isTest ? ['wss://testnet.gxchain.org'] : [
             // 'ws://172.19.19.148:28090',
             // 'ws://172.19.19.149:28090'
             // "wss://node1.gxb.io",

@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default panel-ranking">
+                <div class="panel panel-default panel-ranking" v-if="rankings&&rankings.length>0">
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{$t('index.ranking.title')}}
                     </div>

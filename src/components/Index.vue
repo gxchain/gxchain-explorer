@@ -46,14 +46,9 @@
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{$t('index.ranking.title')}}
                         <span>
-                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='GXS'}"
-                                    @click="currentAsset='GXS'">GXS
-                            </button>
-                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='PPS'}"
-                                    @click="currentAsset='PPS'">PPS
-                            </button>
-                            <button class="btn btn-xs btn-ranking" :class="{active:currentAsset==='LVCOIN'}"
-                                    @click="currentAsset='LVCOIN'">LVCOIN
+                            <button class="btn btn-xs btn-ranking" v-for="asset in supporttedAssets"
+                                    :class="{active:currentAsset===asset}"
+                                    @click="currentAsset=asset">{{asset}}
                             </button>
                         </span>
                     </div>
@@ -295,6 +290,7 @@
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
+                supporttedAssets: ['GXS', 'PPS'],
                 currentAsset: 'GXS',
                 rankings: [],
                 assets: [],
