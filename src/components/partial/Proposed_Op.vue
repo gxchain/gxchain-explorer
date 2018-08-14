@@ -1363,6 +1363,11 @@
                 op: this.operation
             };
         },
+        mounted () {
+            if (ops[this.op[0]] === 'custom') {
+                this.utf8HexToStr(this.op[1].data);
+            }
+        },
         methods: {
             formatted_account (id, key) {
                 let self = this;
