@@ -14,7 +14,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="title">{{$t('index.overview.transactions')}}</div>
-                                <digital-roll :number="transaction_num"></digital-roll>
+                                <digital-roll :number="transaction_num"
+                                              :font-size="digital_roll_font_size"></digital-roll>
                             </div>
                         </div>
                         <hr/>
@@ -374,6 +375,9 @@
                     result[asset.symbol] = asset;
                 });
                 return result;
+            },
+            digital_roll_font_size () {
+                return window.screen.width > 1000 ? 40 : 25;
             }
         },
 
