@@ -54,7 +54,8 @@ const locale = {
             percent: '流通占比'
         },
         statistics: {
-            title: '10日交易统计'
+            title: '10日交易统计',
+            blockchain_run_duration: '{days}天 {hours}时 {minutes}分 {seconds}秒'
         },
         overview: {
             transactions: '总交易数',

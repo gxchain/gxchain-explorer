@@ -416,9 +416,13 @@
                         minutes * MS_PER_MINUTES) /
                     1000
                 );
-                this.blockchain_run_duration = `${days}D ${hours}H ${minutes}M ${
-                    seconds < 9 ? '0' + seconds : seconds
-                    }'`;
+                seconds = seconds < 9 ? '0' + seconds : seconds;
+                this.blockchain_run_duration = this.$t('index.statistics.blockchain_run_duration', {
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                });
             }, 500);
             this.loadTotalTransactionNum();
             this.transactionNumInterval = setInterval(() => {

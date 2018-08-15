@@ -56,7 +56,8 @@ const locale = {
             percent: 'Percentage'
         },
         statistics: {
-            title: '10 day GXChain Transaction History'
+            title: '10 day GXChain Transaction History',
+            blockchain_run_duration: '{days}D {hours}H {minutes}M {seconds}\''
         },
         overview: {
             transactions: 'Total Transactions',
