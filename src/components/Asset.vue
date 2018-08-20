@@ -121,7 +121,7 @@
                 });
             },
             loadRankings (page) {
-                const pageSize = 20;
+                const pageSize = 40;
                 this.$http
                 .get(`${process.env.STA_SERVICE}/account/assetRankList`, {
                     params: {
@@ -139,6 +139,9 @@
                     }
                     this.rankings = this.rankings.slice(0, (page - 1) * pageSize);
                     this.rankings = this.rankings.concat(resp.body.map(item => {
+                        if (item.accountName === 'jwj168') {
+                            debugger; // eslint-disable-line
+                        }
                         return {
                             accountName: item.accountName,
                             amount: filters.number(item.amount, assetInfo.precision),
