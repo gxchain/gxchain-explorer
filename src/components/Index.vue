@@ -47,7 +47,7 @@
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{$t('index.ranking.title')}}
                         <span>
-                            <button class="btn btn-xs btn-ranking" v-for="asset in supporttedAssets"
+                            <button class="btn btn-xs btn-ranking" v-for="asset in supportedAssets"
                                     :class="{active:currentAsset===asset}"
                                     @click="currentAsset=asset">{{asset}}
                             </button>
@@ -291,7 +291,7 @@
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
-                supporttedAssets: ['GXS', 'PPS'],
+                supportedAssets: ['GXS', 'PPS'],
                 currentAsset: 'GXS',
                 rankings: [],
                 assets: [],
@@ -496,12 +496,17 @@
                         .slice(1)
                         .join('/');
                     });
+                    let min = Infinity;
                     let data = resp.body.map(item => {
+                        min = Math.min(item.num);
                         return item.num;
                     });
                     this.$refs.sta.mergeOptions({
                         xAxis: {
                             data: xAxisData
+                        },
+                        yAxis: {
+                            min: parseInt(min * 0.8)
                         },
                         series: {
                             data: data
