@@ -353,6 +353,19 @@ const locale = {
                 proxy_account: '代理转账人',
                 fee: '手续费'
             },
+            'create_contract': {
+                name: '创建合约',
+                account: '账户',
+                contract_name: '合约名称',
+                fee: '手续费'
+            },
+            'call_contract': {
+                name: '调用合约',
+                account: '账户',
+                contract_name: '合约名称',
+                method_name: '合约方法',
+                fee: '手续费'
+            },
             'status_states': {
                 0: '未发布',
                 1: '已发布',
@@ -419,6 +432,8 @@ const locale = {
             'balance_lock': '{account} 参与忠诚计划，冻结了 {amount}',
             'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
             'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
+            'create_contract': '{account} 创建了智能合约 {contract_name}',
+            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
             'custom': '{account} 创建了一笔自定义操作'
         }
     },

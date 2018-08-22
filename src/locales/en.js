@@ -354,6 +354,19 @@ const locale = {
                 proxy_account: 'Proxy Account',
                 fee: 'Fee'
             },
+            'create_contract': {
+                name: 'Create Contract',
+                account: 'Account',
+                contract_name: 'Contract Name',
+                fee: 'Fee'
+            },
+            'call_contract': {
+                name: 'Call Contract',
+                account: 'Account',
+                contract_name: 'Contract Name',
+                method_name: 'Method Name',
+                fee: 'Fee'
+            },
             'status_states': {
                 0: 'Unpublished',
                 1: 'Published',
@@ -420,6 +433,8 @@ const locale = {
             'balance_lock': '{account} locked {amount} for loyalty program',
             'balance_unlock': '{account} complete a loyalty program',
             'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
+            'create_contract': '{account} created the contract {contract_name}',
+            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method',
             'custom': '{account} created a custom operation'
         }
     },

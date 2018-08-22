@@ -1524,6 +1524,64 @@
                             <td align="right" v-else>{{op[1].proxy_memo}}</td>
                         </tr>
                         </tbody>
+                        <!-- 74:create_contract -->
+                        <tbody v-if="ops[op[0]] == 'create_contract'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-primary">{{$t('transaction.trxTypes.create_contract.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.create_contract.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].account}">
+                                    {{formatted_account(op[1].account, 'account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.create_contract.contract_name')}}</th>
+                            <td align="right">{{op[1].name}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.create_contract.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 75:call_contract -->
+                        <tbody v-if="ops[op[0]] == 'call_contract'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-success">{{$t('transaction.trxTypes.call_contract.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.call_contract.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].account}">
+                                    {{formatted_account(op[1].account, 'account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.call_contract.contract_name')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].contract_id}">
+                                    {{formatted_account(op[1].contract_id, 'contract_id')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.call_contract.method_name')}}</th>
+                            <td align="right">{{op[1].method_name}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.call_contract.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

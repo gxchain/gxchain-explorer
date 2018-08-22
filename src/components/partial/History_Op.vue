@@ -915,6 +915,39 @@
                 </router-link>
             </i18n>
         </td>
+        <!-- 74:create_contract -->
+        <th v-if="ops[op[0]] == 'create_contract'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-primary">{{$t('transaction.trxTypes.create_contract.name')}}</span>
+            </router-link>
+        </th>
+        <td align="right" v-if="ops[op[0]] == 'create_contract'">
+            <i18n path="transaction.operation.create_contract">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].account)}">
+                    {{ formatted_account(op[1].account) }}
+                </router-link>
+                <span place="contract_name">{{op[1].name}}</span>
+            </i18n>
+        </td>
+        <!-- 75:call_contract -->
+        <th v-if="ops[op[0]] == 'call_contract'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-success">{{$t('transaction.trxTypes.call_contract.name')}}</span>
+            </router-link>
+        </th>
+        <td align="right" v-if="ops[op[0]] == 'call_contract'">
+            <i18n path="transaction.operation.call_contract">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].account)}">
+                    {{ formatted_account(op[1].account) }}
+                </router-link>
+                <router-link place="contract_name" :to="{path: '/account/' + formatted_account(op[1].contract_id)}">
+                    {{ formatted_account(op[1].contract_id) }}
+                </router-link>
+                <span place="method_name">{{op[1].method_name}}</span>
+            </i18n>
+        </td>
 
         <td align="right">
             <timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago>

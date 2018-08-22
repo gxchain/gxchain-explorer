@@ -39,7 +39,7 @@
     "echarts": "^4.1.0",
     "express": "~4.13.1",
     "figlet": "^1.2.0",
-    "gxbjs": "^1.2.77",
+    "gxbjs": "^1.2.89",
     "hashjs": "^1.2.0",
     "ipfs-api": "^20.0.1",
     "jdenticon": "^1.8.0",
