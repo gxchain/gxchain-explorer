@@ -291,7 +291,7 @@
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
-                supportedAssets: ['GXS', 'PPS'],
+                supportedAssets: ['GXS', 'PPS', 'LVCOIN'],
                 currentAsset: 'GXS',
                 rankings: [],
                 assets: [],
