@@ -344,6 +344,7 @@
                         {
                             data: [],
                             type: 'line',
+                            smooth: true,
                             areaStyle: {
                                 normal: {
                                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -496,9 +497,9 @@
                         .slice(1)
                         .join('/');
                     });
-                    let min = Infinity;
+                    let min = Number.MAX_VALUE;
                     let data = resp.body.map(item => {
-                        min = Math.min(item.num);
+                        min = Math.min(item.num, min);
                         return item.num;
                     });
                     this.$refs.sta.mergeOptions({
