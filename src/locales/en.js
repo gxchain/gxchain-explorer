@@ -483,12 +483,12 @@ const locale = {
         version_intro_title: 'About this version',
         version_intro: 'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
         project_intro_title: 'About this project',
-        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXS Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXS for your good job.',
+        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXS for your good job.',
         github: 'Github',
-        about_company: 'About GXB',
-        company_intro1: 'GXB was founded in 2016, working on a blockchain based decentralized data transaction project.',
+        about_company: 'About GXChain',
+        company_intro1: 'GXChain was founded in 2016, working on a blockchain based decentralized data exchange project.',
         company_intro2: 'With blockchain technology, GXB brings a sort of great features such like: No data caching, Privacy protection, Copyright protection, High freshness of data, Anonymous transactions etc.',
-        company_intro3: 'GXB data exchange serves for FinTech Companies, Governments, Insurance, Medical, Logistics and any other industries which require data exchange.'
+        company_intro3: 'GXChain data exchange serves for FinTech Companies, Governments, Insurance, Medical, Logistics and any other industries which require data exchange.'
     },
     // api
     api: {
