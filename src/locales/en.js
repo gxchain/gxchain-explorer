@@ -478,7 +478,7 @@ const locale = {
     },
     // about
     about: {
-        title: 'About GXS Blockchain Explorer',
+        title: 'About GXChain Blockchain Explorer',
         version: 'Version',
         version_intro_title: 'About this version',
         version_intro: 'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
