@@ -483,12 +483,12 @@ const locale = {
         version_intro_title: 'About this version',
         version_intro: 'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
         project_intro_title: 'About this project',
-        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXS for your good job.',
+        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXC for your good job.',
         github: 'Github',
         about_company: 'About GXChain',
-        company_intro1: 'GXChain was founded in 2016, working on a blockchain based decentralized data exchange project.',
-        company_intro2: 'With blockchain technology, GXB brings a sort of great features such like: No data caching, Privacy protection, Copyright protection, High freshness of data, Anonymous transactions etc.',
-        company_intro3: 'GXChain data exchange serves for FinTech Companies, Governments, Insurance, Medical, Logistics and any other industries which require data exchange.'
+        company_intro1: 'GXChain is a fundamental blockchain for the global data economy, designed to build a trusted data internet of value.',
+        company_intro2: 'Benefiting from DPoS based Graphene underlying architecture, GXChain possesses functions including G-ID, GVM, BaaS and Blockcity, which are convenient for application development. ',
+        company_intro3: 'GXChain based DApp-Blockcity has more than two million verified users and provides abundant data for other DApps and strategic partners. GXChain launched decentralized data marketplace as well which is serving hundreds of Chinese enterprises. GXChain team independently developed its main net and launched it in June 2017. Based on decentralization, cryptography, and smart token design, GXChain provides a leading solution for the data economy by developing multiple trusted data modules. Data uploading, storage, computation, and exchange has been gradually realized with many commercialized applications.'
     },
     // api
     api: {
@@ -513,11 +513,11 @@ const locale = {
         table: {
             userid: 'Account ID',
             username: 'Account Name',
-            activegxs: 'Holding GXS',
+            activegxs: 'Holding GXC',
             peractive: 'Holding Percent',
-            lockgxs: 'Frozen GXS',
+            lockgxs: 'Frozen GXC',
             perlock: 'Frozen Percent',
-            allgxs: 'Total GXS',
+            allgxs: 'Total GXC',
             perall: 'Total Percent'
         }
     }

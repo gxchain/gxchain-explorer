@@ -482,12 +482,12 @@ const locale = {
         version_intro_title: '版本介绍',
         version_intro: '本版本实现了区块、交易记录和账户信息的功能,同时提供了网页和API两个两种方式进行查询, 不同的用户可以根据不同的需求进行选择',
         project_intro_title: '项目介绍',
-        project_intro: '本项目是公信链（GXChain）的浏览器，GXChain基于Graphene底层进行开发，因此本项目也可支持所有基于Graphene的链，任何的项目可以无偿使用和任意修改，并且欢迎对此项目有兴趣的小伙伴来提交Pull Request，你的贡献将有可能获得GXS(公信股)作为奖励',
+        project_intro: '本项目是公信链（GXChain）的浏览器，GXChain基于Graphene底层进行开发，因此本项目也可支持所有基于Graphene的链，任何的项目可以无偿使用和任意修改，并且欢迎对此项目有兴趣的小伙伴来提交Pull Request，你的贡献将有可能获得GXC作为奖励',
         github: '开源地址',
-        about_company: '关于公信宝',
-        company_intro1: '公信宝（杭州存信数据科技有限公司）成立于2016年，是一家基于区块链技术的去中心化数据交易所，适用于各行各业的数据交换。',
-        company_intro2: '公信宝数据交易所具有不缓存数据、保护个人隐私、数据版权保护、数据新鲜度高、打击造假以及可以设置匿名交易等特点。',
-        company_intro3: '面向的典型客户为互联网金融领域的网络贷款、汽车金融、消费金融、银行等企业以及有数据交换需求的政府部门、保险、医疗、物流等政企部门，以去中心化思维解决了各个行业的共享数据交换问题, 并可以为全社会所用，广泛使用于公民的学习、工作、生活等各种应用场景，最终实现公民的个人数据由公民自己来管理。'
+        about_company: '关于GXChain',
+        company_intro1: '公信链（GXChain）是一条为全球数据经济服务的基础链，旨在打造可信数据的价值网络。',
+        company_intro2: '公信链具有基于DPoS共识机制的石墨烯底层架构的性能优势，同时具备G-ID、GVM、BaaS、Blockcity pay等链上配套功能，方便各类应用开发。',
+        company_intro3: '基于公信链的Dapp布洛克城已经拥有百万级实名用户，为链上应用和合作伙伴提供丰富的数据资源；面向企业服务的公信宝数据交易所也已上线，服务企业数量超过数百家。公信链基于区块链的分布式特性、密码学等技术手段和通证设计，为数据经济的发展提供了全新的区块链解决思路，引领了数据服务的新变革。公信链开发了丰富的可信数据组件，逐渐打通数据上链、数据储存、数据计算、数据交换的各个环节，并且已经有了众多落地的应用和实践。'
     },
     // api
     api: {
@@ -502,7 +502,7 @@ const locale = {
         asset_info: '资产信息:'
     },
     holdrank: {
-        locknum: '目前冻结的GXS总量',
+        locknum: '目前冻结的GXC总量',
         last_updated_at: '本次更新日期: {datetime}',
         rank: {
             active: '激活排行',
@@ -512,11 +512,11 @@ const locale = {
         table: {
             userid: '账户id',
             username: '账户名',
-            activegxs: '激活中的GXS',
+            activegxs: '激活中的GXC',
             peractive: '占激活百分比',
-            lockgxs: '冻结中的GXS',
+            lockgxs: '冻结中的GXC',
             perlock: '占冻结百分比',
-            allgxs: '总量GXS(激活+冻结)',
+            allgxs: '总量GXC(激活+冻结)',
             perall: '占总量百分比'
         }
     }
