@@ -507,7 +507,7 @@
                             data: xAxisData
                         },
                         yAxis: {
-                            min: parseInt(min * 0.8)
+                            min: Math.max(0, min - 100)
                         },
                         series: {
                             data: data
@@ -557,6 +557,14 @@
                     ).get('name');
                 }
                 return null;
+            },
+
+            fetchAllTrustedNodes () {
+                Apis.instance().db_api().exec('get_trust_nodes', []).then(nodes => {
+                    this.trust_nodes = nodes;
+                }).catch(ex => {
+                    console.error('Error fetching trusted nodes: ', ex);
+                });
             },
 
             getLastConfirmedBlock (witness) {

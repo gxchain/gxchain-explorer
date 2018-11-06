@@ -10,7 +10,7 @@
     import sha256 from 'js-sha256';
 
     const IMAGE_MAP = {
-        GXC: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/gxc.png',
+        GXC: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/gxs.png',
         GXS: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/gxs.png',
         BDB: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/bdb.png',
         PPS: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/pps.png',
