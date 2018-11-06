@@ -60,7 +60,7 @@
                     {
                         name: this.$t('api.asset_info'),
                         api: '/api/asset/:asset_name',
-                        example: `http://${location.host}/api/asset/GXS`
+                        example: `http://${location.host}/api/asset/GXC`
                     }
                 ];
             }
