@@ -41,13 +41,13 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         witnesses: [
-            // 'ws://47.96.164.78:28090'
-            'wss://node5.gxb.io',
-            'wss://node8.gxb.io',
-            'wss://node11.gxb.io',
-            'wss://node15.gxb.io',
-            'wss://node16.gxb.io',
-            'wss://node17.gxb.io'
+            'ws://192.168.1.118:28090'
+            // 'wss://node5.gxb.io',
+            // 'wss://node8.gxb.io',
+            // 'wss://node11.gxb.io',
+            // 'wss://node15.gxb.io',
+            // 'wss://node16.gxb.io',
+            // 'wss://node17.gxb.io'
         ],
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README

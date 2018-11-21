@@ -366,6 +366,13 @@ const locale = {
                 method_name: '合约方法',
                 fee: '手续费'
             },
+            'update_contract': {
+                name: '更新合约',
+                owner: '权限账户',
+                new_owner: '新权限账户',
+                contract_name: '合约名称',
+                fee: '手续费'
+            },
             'status_states': {
                 0: '未发布',
                 1: '已发布',
@@ -434,6 +441,7 @@ const locale = {
             'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
             'create_contract': '{account} 创建了智能合约 {contract_name}',
             'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
+            'update_contract': '{account} 更新了智能合约 {contract_name}',
             'custom': '{account} 创建了一笔自定义操作'
         }
     },

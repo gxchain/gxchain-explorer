@@ -367,6 +367,13 @@ const locale = {
                 method_name: 'Method Name',
                 fee: 'Fee'
             },
+            'update_contract': {
+                name: 'Create Contract',
+                owner: 'Onwer',
+                new_owner: 'New Onwer',
+                contract_name: 'Contract Name',
+                fee: 'Fee'
+            },
             'status_states': {
                 0: 'Unpublished',
                 1: 'Published',
@@ -435,6 +442,7 @@ const locale = {
             'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
             'create_contract': '{account} created the contract {contract_name}',
             'call_contract': '{account} call the contract {contract_name} \'s {method_name} method',
+            'update_contract': '{account} updated the contract {contract_name}',
             'custom': '{account} created a custom operation'
         }
     },

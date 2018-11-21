@@ -1582,6 +1582,39 @@
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
+                        <!-- 76:update_contract -->
+                        <tbody v-if="ops[op[0]] == 'update_contract'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-warning">{{$t('transaction.trxTypes.update_contract.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.update_contract.owner')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].owner}">
+                                    {{formatted_account(op[1].owner, 'owner')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.update_contract.new_owner')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].new_owner}">
+                                    {{formatted_account(op[1].new_owner, 'new_owner')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.create_contract.contract_name')}}</th>
+                            <td align="right">{{formatted_account(op[1].contract, 'contract')}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.create_contract.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

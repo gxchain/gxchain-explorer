@@ -948,7 +948,21 @@
                 <span place="method_name">{{op[1].method_name}}</span>
             </i18n>
         </td>
-
+        <!-- 76:update_contract -->
+        <th v-if="ops[op[0]] == 'update_contract'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-warning">{{$t('transaction.trxTypes.update_contract.name')}}</span>
+            </router-link>
+        </th>
+        <td align="right" v-if="ops[op[0]] == 'update_contract'">
+            <i18n path="transaction.operation.update_contract">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].owner)}">
+                    {{ formatted_account(op[1].owner) }}
+                </router-link>
+                <span place="contract_name">{{ formatted_account(op[1].contract) }}</span>
+            </i18n>
+        </td>
         <td align="right">
             <timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago>
         </td>
