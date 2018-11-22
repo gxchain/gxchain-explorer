@@ -42,7 +42,7 @@ module.exports = {
                 ],
                 query: {
                     plugins: ['transform-runtime'],
-                    presets: ['es2015', 'stage-2'],
+                    presets: ['env', 'stage-2'],
                 }
             },
             {
