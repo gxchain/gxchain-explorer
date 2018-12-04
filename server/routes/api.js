@@ -6,6 +6,8 @@ import jdenticon from 'jdenticon';
 import crypto from 'crypto';
 import IPFSService from '../services/IPFSService';
 
+var wabt = require('wabt')();
+
 let router = express.Router();
 
 /**
@@ -114,6 +116,20 @@ router.get('/holdrank/:typeid', function (req, res) {
     try {
         res.send(JSON.stringify(HoldrankService.get_rank(req.params.typeid)));
     } catch (err) {
+        res.send({});
+    }
+});
+
+router.post('/wasm2wast', function (req, res) {
+    try {
+        let wasm = req.body.wasm;
+        var myModule = wabt.readWasm(Buffer.from(wasm, 'hex'), {readDebugNames: true});
+        myModule.generateNames();
+        myModule.applyNames();
+        var wast = myModule.toText({foldExprs: false, inlineExport: false});
+        res.send({wast});
+    } catch (ex) {
+        console.error(ex);
         res.send({});
     }
 });

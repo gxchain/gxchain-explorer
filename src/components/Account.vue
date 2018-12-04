@@ -41,8 +41,98 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6" v-if="is_contract_account">
+                <div class="panel panel-default panel-abi">
+                    <div class="panel-heading">
+                        <span class="fa fa-legal"></span>&nbsp;{{$t('account.contract.abi.title')}}
+                    </div>
+                    <div class="panel-body no-padding">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li :class="{active:abi.type=='raw'}" @click="abi.type='raw'">
+                                <a role="tab" href="javascriprt:;">ABI Raw</a>
+                            </li>
+                            <li :class="{active:abi.type=='action'}" @click="abi.type='action'">
+                                <a role="tab" href="javascriprt:;">Actions</a>
+                            </li>
+                            <li :class="{active:abi.type=='table'}" @click="abi.type='table'">
+                                <a role="tab" href="javascriprt:;">Tables</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='raw'}">
+                                <pre>{{JSON.stringify(account_info.abi,null,'  ')}}</pre>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='action'}">
+                                <div class="table-responsive no-padding no-margin" style="border:none">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Payable</th>
+                                            <th>Define</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="action in account_info.abi.actions" :key="action.name">
+                                            <td>{{action.payable}}</td>
+                                            <td>{{getActionDefine(action.name)}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='table'}">
+
+                                <div class="panel panel-default panel-tables" v-for="table in getTableDefine(account_info.abi.tables)">
+                                    <div class="panel-heading"><span class="fa fa-list"></span> {{table.name}}</div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th width="150">field</th>
+                                                <th>type</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="field in table.fields" :key="field.name">
+                                                <td>{{field.type}}</td>
+                                                <td>{{field.name}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" v-if="is_contract_account">
+                <div class="panel panel-default panel-code">
+                    <div class="panel-heading">
+                        <span class="fa fa-legal"></span>&nbsp;{{$t('account.contract.code.title')}}
+                    </div>
+                    <div class="panel-body no-padding">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li :class="{active:code.type=='wast'}" @click="code.type='wast'">
+                                <a role="tab" href="javascriprt:;">WAST</a>
+                            </li>
+                            <li :class="{active:code.type=='wasm'}" @click="code.type='wasm'">
+                                <a role="tab" href="javascriprt:;">WASM</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane" :class="{active:code.type=='wast'}">
+                                <pre>{{this.code.wast}}</pre>
+                            </div>
+                            <div role="tabpanel" class="tab-pane wasm" :class="{active:code.type=='wasm'}">
+                                <pre>{{account_info.code}}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-4">
-                <div class="panel panel-default">
+                <div class="panel panel-default" v-if="!is_contract_account">
                     <div class="panel-heading">
                         <span class="fa fa-legal"></span>&nbsp;{{$t('account.permissions.title')}}
                     </div>
@@ -53,7 +143,9 @@
                                 <tr class="active">
                                     <th width="80%"><span
                                             class="fa fa-lock">&nbsp;{{$t('account.permissions.active')}}</span></th>
-                                    <th>{{$t('account.permissions.threshold')}}({{account_info.active.weight_threshold}})</th>
+                                    <th>
+                                        {{$t('account.permissions.threshold')}}({{account_info.active.weight_threshold}})
+                                    </th>
                                 </tr>
                                 <tr v-for="auth in account_info.active.key_auths">
                                     <td class="overflow-wrap">{{auth[0]}}</td>
@@ -93,6 +185,13 @@
                                 <th>{{asset.symbol}}</th>
                                 <td align="right">{{asset.amount}}</td>
                             </tr>
+                            <tr v-if="Object.keys(account_info.balances).length==0">
+                                <td colspan="2">
+                                    <div class="gray text-center">
+                                        <small>{{$t('account.balances.empty')}}</small>
+                                    </div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -129,9 +228,9 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
     import { ChainStore } from 'gxbjs';
-    import { get_assets_by_ids, calc_block_time } from '@/services/CommonService';
+    import { calc_block_time, get_assets_by_ids } from '@/services/CommonService';
     import filters from '@/filters';
     import History_Op from './partial/History_Op.vue';
 
@@ -140,6 +239,13 @@
             return {
                 loading: true,
                 history_loading: true,
+                abi: {
+                    type: 'raw'
+                },
+                code: {
+                    type: 'wast',
+                    wast: ''
+                },
                 account_info: null,
                 latestTransactions: [],
                 history_length: 100,
@@ -155,6 +261,18 @@
             collapse () {
                 $('.collapse').collapse('toggle');
             },
+            getWAST () {
+                this.$http.post('/api/wasm2wast', {wasm: this.account_info.code}).then(resp => {
+                    this.code.wast = resp.body.wast;
+                }).catch(console.error);
+            },
+            getActionDefine (action_name) {
+                let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
+                return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
+            },
+            getTableDefine (tables) {
+                return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
+            },
             onUpdate () {
                 try {
                     if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
@@ -165,6 +283,9 @@
                     this.loading = false;
                 }
                 this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
+                if (this.account_info && this.account_info.code && !this.code.wast) {
+                    this.getWAST();
+                }
                 let ids = Object.keys(this.account_info.balances);
                 get_assets_by_ids(ids).then(assets => {
                     let assetMap = {};
@@ -223,21 +344,19 @@
                 keywords: 'keywords'
             }),
 
+            is_contract_account () {
+                return this.account_info && !!this.account_info.code;
+            },
+
             account_type () {
                 let result = [];
+                if (this.account_info.code) {
+                    return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
+                }
                 if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
                     result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
                 } else {
                     result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
-                }
-                if (this.account_info.merchant_expiration_date !== '1970-01-01T00:00:00') {
-                    result.push(`<span class="label label-info">${this.$t('account.membership.merchant')}</span>`);
-                }
-                if (this.account_info.datasource_expiration_date !== '1970-01-01T00:00:00') {
-                    result.push(`<span class="label label-warning">${this.$t('account.membership.datasource')}</span>`);
-                }
-                if (this.account_info.data_transaction_member_expiration_date !== '1970-01-01T00:00:00') {
-                    result.push(`<span class="label label-warning">${this.$t('account.membership.data_transaction_member')}</span>`);
                 }
                 return result.join('&nbsp;');
             }
@@ -273,5 +392,33 @@
 
     .overflow-wrap {
         word-break: break-all;
+    }
+
+    .panel-abi pre, .panel-code pre {
+        border: none;
+        border-top: 1px solid #eee;
+        border-radius: 0;
+        margin: 0;
+        max-height: 500px;
+    }
+
+    .panel-code .wasm pre {
+        white-space: normal
+    }
+
+    .panel-code .panel-heading, .panel-abi .panel-heading {
+        border-bottom: 1px solid #eee;
+    }
+
+    .panel-code .panel-body, .panel-abi .panel-body {
+        padding-top: 10px !important;
+    }
+    .panel-tables{
+        margin:10px;
+    }
+    .panel-tables .panel-heading{
+        font-size:15px;
+        background: #eee;
+        padding:5px;
     }
 </style>

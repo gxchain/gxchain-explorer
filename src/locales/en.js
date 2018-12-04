@@ -14,6 +14,10 @@ const locale = {
     index: {
         latest_status: 'Latest Status',
         last_updated_at: 'Updated at: {seconds}s ago',
+        voting: {
+            title: 'TrustNodes Voting Progress',
+            participants: '{accounts} Participants'
+        },
         summary: {
             title: 'Summary',
             head_block_number: 'Head Block',
@@ -453,9 +457,7 @@ const locale = {
         membership: {
             lifetime: 'Lifetime',
             normal: 'Basic',
-            merchant: 'Merchant',
-            datasource: 'Datasource',
-            data_transaction_member: 'Data Transaction Witness'
+            contract: 'Contract Account'
         },
         basic: {
             title: 'Basic Information',
@@ -464,6 +466,14 @@ const locale = {
             account_id: 'Account ID',
             membership: 'Membership',
             referrer_name: 'Register Referrer'
+        },
+        contract: {
+            abi: {
+                title: 'Contract ABI'
+            },
+            code: {
+                title: 'Code'
+            }
         },
         permissions: {
             title: 'Account Permissions',
@@ -474,7 +484,8 @@ const locale = {
         balances: {
             title: 'Account Balances',
             asset: 'Asset',
-            balance: 'Balance'
+            balance: 'Balance',
+            empty: 'No Assets'
         }
     },
     // asset

@@ -14,6 +14,10 @@ const locale = {
     index: {
         latest_status: '最新状态',
         last_updated_at: '上次更新时间: {seconds}秒前',
+        voting: {
+            title: '公信节点投票进度',
+            participants: '参与人数: {accounts}人'
+        },
         summary: {
             title: '区块信息',
             head_block_number: '最新区块',
@@ -452,9 +456,7 @@ const locale = {
         membership: {
             lifetime: '终身会员',
             normal: '普通会员',
-            merchant: '认证商户',
-            datasource: '认证数据源',
-            data_transaction_member: '交易认证节点'
+            contract: '合约账户'
         },
         basic: {
             title: '基本信息',
@@ -463,6 +465,14 @@ const locale = {
             account_id: '账户ID',
             membership: '账户类型',
             referrer_name: '推荐人'
+        },
+        contract: {
+            abi: {
+                title: '合约ABI'
+            },
+            code: {
+                title: '合约代码'
+            }
         },
         permissions: {
             title: '权限',
@@ -473,7 +483,8 @@ const locale = {
         balances: {
             title: '账户余额',
             asset: '资产',
-            balance: '余额'
+            balance: '余额',
+            empty: '无资产'
         }
     },
     // asset
