@@ -2,11 +2,40 @@
     <div class="container">
         <Loading v-show="loading"></Loading>
 
+        <div class="row">
+            <!--TrustNodes Voting Progress-->
+            <div class="col-md-12">
+                <div class="panel panel-default panel-progress">
+                    <div class="panel-heading">
+                        <span class="fa fa-fw fa-tasks"></span> {{$t('index.voting.title')}}
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            {{$t('index.voting.participants',{accounts:vote.accounts})}}
+                            <span class="pull-right">{{vote.num|number(2)}} / 16,000,000.00</span>
+                        </p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info progress-bar-striped active"
+                                 role="progressbar"
+                                 :aria-valuenow="voting_progress"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100"
+                                 style="min-width: 2em;"
+                                 :style="{width:voting_progress.toFixed(2)+'%'}">
+                                {{voting_progress.toFixed(0)}}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <h4 class="page-header" v-show="!loading">{{$t('index.latest_status')}}:
             <small>{{$t('index.last_updated_at', {seconds: delta})}}</small>
         </h4>
 
         <div class="row">
+
             <!--Overview-->
             <div class="col-md-12 no-padding">
                 <div class="col-md-5">
@@ -288,6 +317,10 @@
         data () {
             return {
                 loading: true,
+                vote: {
+                    num: 0,
+                    accounts: 0
+                },
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
@@ -378,7 +411,10 @@
                 return result;
             },
             digital_roll_font_size () {
-                return window.screen.width > 1000 ? 40 : 25;
+                return window.screen.width > 1000 ? 40 : 20;
+            },
+            voting_progress () {
+                return Math.min(this.vote.num / 16000000, 1) * 100;
             }
         },
 
@@ -394,6 +430,7 @@
                     ChainStore.getObject('2.1.0').toJS().head_block_number
                 );
             });
+            this.loadVoteNumbers();
             this.loadAssets();
             this.loadAccountNumber();
             this.accountNumberInterval = setInterval(() => {
@@ -450,6 +487,14 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
+            loadVoteNumbers () {
+                this.$http
+                .get(`${process.env.STA_SERVICE}/vote/statistics`)
+                .then(resp => {
+                    this.vote.num = Math.max((resp.body.voteSum - 398372521722), 0) / 100000;
+                    this.vote.accounts = resp.body.accountSum || 0;
+                }).catch(console.error);
+            },
             loadRankings () {
                 let asset = this.currentAsset;
                 this.$http
@@ -684,6 +729,10 @@
 </script>
 
 <style scoped>
+    .page-header {
+        margin: 0 0 20px;
+    }
+
     .right {
         text-align: right;
     }
@@ -765,5 +814,13 @@
 
     .panel-ranking .footer a {
         color: #999;
+    }
+
+    .panel-progress .panel-body {
+        border-top: 1px solid #eee;
+    }
+
+    .progress-bar-info {
+        background-color: #3d4463;
     }
 </style>
