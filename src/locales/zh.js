@@ -16,7 +16,7 @@ const locale = {
         last_updated_at: '上次更新时间: {seconds}秒前',
         voting: {
             title: '公信节点投票进度',
-            participants: '参与人数: {accounts}人'
+            participants: '投票账户数: {accounts}人'
         },
         summary: {
             title: '区块信息',
