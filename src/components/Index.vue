@@ -10,10 +10,7 @@
                         <span class="fa fa-fw fa-tasks"></span> {{$t('index.voting.title')}}
                     </div>
                     <div class="panel-body">
-                        <p>
-                            {{$t('index.voting.participants',{accounts:vote.accounts})}}
-                            <span class="pull-right">{{vote.num|number(2)}} / 16,000,000.00</span>
-                        </p>
+                        <p class="text-right">{{vote.num|number(2)}} / 16,000,000.00</p>
                         <div class="progress">
                             <div class="progress-bar progress-bar-info progress-bar-striped active"
                                  role="progressbar"
