@@ -26,8 +26,8 @@ const locale = {
             recently_missed_count: '最近缺失'
         },
         witness: {
-            title: '活跃见证人',
-            witness: '见证人',
+            title: '活跃公信节点',
+            witness: '公信节点',
             last_confirmed_block: '最近确认',
             votes: '总票数'
         },
@@ -73,7 +73,7 @@ const locale = {
         title: '区块信息',
         more: '更多',
         timestamp: '区块生成时间',
-        witness: '见证人',
+        witness: '公信节点',
         previous: '上一区块',
         transactions: '交易数量',
         empty: '未查到区块信息',
@@ -163,8 +163,8 @@ const locale = {
             'asset_global_settle': '全局资产清算',
             'asset_publish_feed': '发布资产喂价',
             'committee_member_create': '创建理事会成员',
-            'witness_create': '创建见证人',
-            'witness_withdraw_pay': '见证人取回报酬',
+            'witness_create': '创建公信节点',
+            'witness_withdraw_pay': '公信节点取回报酬',
             'proposal': {
                 proposal_create: '创建提案',
                 proposal_update: '更新提案',
@@ -215,7 +215,7 @@ const locale = {
                 to: '发往',
                 amount: '金额'
             },
-            'witness_update': '更新见证人',
+            'witness_update': '更新公信节点',
             'committee_member_update_global_parameters': '全局参数更新',
             'transfer_to_blind': '向隐私账户转账',
             'blind_transfer': '隐私转账',
@@ -417,9 +417,9 @@ const locale = {
             'asset_fund_fee_pool': '{account} 向 {asset} 手续费池注入 {amount}',
             'asset_settle': '{account} 请求清算 {amount}',
             'asset_global_settle': '{account} 请求以 {price} 的价格进行全局清算 {asset}',
-            'witness_create': '{account} 升级到见证人',
-            'witness_update': '{account} 更新了见证人信息',
-            'witness_pay': '提取见证人收入到账户',
+            'witness_create': '{account} 升级到公信节点候选人',
+            'witness_update': '{account} 更新了候选人信息',
+            'witness_pay': '提取候选人收入到账户',
             'witness_receive': 'Received witness from witness',
             'worker_create': '{account} 创建了预算提案，请求每日支付 {pay}',
             'committee_member_update_global_parameters': '{account} 更新了全局理事会参数',
