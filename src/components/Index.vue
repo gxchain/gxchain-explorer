@@ -191,7 +191,7 @@
                                             <small>{{c.comments}}</small>
                                         </div>
                                     </td>
-                                    <td>{{c.votes|number(0)}}</td>
+                                    <td>{{c.votes/100000|number(0)}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -236,7 +236,7 @@
                                     </td>
                                     <td>
                                         {{ChainStore.getObject(witness) &&
-                                        ChainStore.getObject(witness).get('total_votes') / 100000 | number(2)}}
+                                        ChainStore.getObject(witness).get('total_votes') / 100000 | number(0)}}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -268,7 +268,7 @@
                                 </td>
                                 <td>
                                     {{ChainStore.getObject(member) && ChainStore.getObject(member).get('total_votes') /
-                                    100000 | number(2)}}
+                                    100000 | number(0)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -923,16 +923,17 @@
         background-color: #3d4463;
     }
 
-    .panel-trust-nodes .table-responsive{
+    .panel-trust-nodes .table-responsive {
         margin-bottom: 0;
     }
+
     .panel-trust-nodes pre {
         border: none;
         border-radius: 0;
         margin: 0;
         padding: 10px;
-        font-size:.3rem;
-        line-height:8px;
-        color:#666;
+        font-size: .3rem;
+        line-height: 8px;
+        color: #666;
     }
 </style>
