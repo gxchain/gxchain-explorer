@@ -159,8 +159,50 @@
                 </div>
             </div>
 
-            <!--Witnesses-->
+            <!--TrustNodes-->
             <div class="col-md-4">
+                <!--Candidates-->
+                <div v-if="global_params" class="panel panel-default panel-trust-nodes">
+                    <div class="panel-heading">
+                        <span class="fa fa-fw fa-users"></span>&nbsp;{{$t('index.candidate.title')}}
+                    </div>
+                    <div class="panel-body no-padding">
+                        <div class="table-responsive">
+                            <table class="table table-striped no-margin">
+                                <thead>
+                                <tr>
+                                    <th>{{$t('index.candidate.account')}}</th>
+                                    <th>{{$t('index.witness.votes')}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="c in candidates" :key="c.account">
+                                    <td>
+                                        <div>
+                                            <img v-if="c.logo" :src="c.logo" width="16px"/>
+                                            <account-image v-if="!c.logo" :size="8"
+                                                           :account="c.account"></account-image>
+                                            <router-link :to="{path:'/account/'+c.account}">
+                                                {{c.account}}
+                                            </router-link>
+                                        </div>
+
+                                        <div>
+                                            <small>{{c.comments}}</small>
+                                        </div>
+                                    </td>
+                                    <td>{{c.votes|number(0)}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre>
+                            <div>{{$t('index.candidate.pre')}}:</div>
+                            <div>github.com/gxchain/TrustNodes</div>
+                        </pre>
+                    </div>
+                </div>
+                <!--Witnesses-->
                 <div v-if="global_params" class="panel panel-default">
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-witness"></span>&nbsp;{{$t('index.witness.title')}}
@@ -202,7 +244,7 @@
                         </div>
                     </div>
                 </div>
-                <!--理事会成员-->
+                <!--Committee-->
                 <div v-if="global_params" class="panel panel-default">
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-commitee"></span>&nbsp;{{$t('index.committee.title')}}
@@ -318,6 +360,7 @@
                     num: 0,
                     accounts: 0
                 },
+                candidates: [],
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
@@ -430,6 +473,7 @@
             this.loadVoteNumbers();
             this.loadAssets();
             this.loadAccountNumber();
+            this.loadTrustNodeCandidates();
             this.accountNumberInterval = setInterval(() => {
                 this.loadAccountNumber();
             }, 10000);
@@ -484,11 +528,77 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
+            loadTrustNodeCandidates () {
+                let filtered_nodes = [
+                    'aaron',
+                    'caitlin',
+                    'kairos',
+                    'sakura',
+                    'taffy',
+                    'miner1',
+                    'miner2',
+                    'miner3',
+                    'miner4',
+                    'miner5',
+                    'miner6',
+                    'miner7',
+                    'miner8',
+                    'miner9',
+                    'miner10',
+                    'miner11',
+                    'hrrs',
+                    'dennis1',
+                    'david12',
+                    'marks-lee',
+                    'robin-green'
+                ];
+                Apis.instance()
+                .db_api()
+                .exec('get_trust_nodes', []).then(nodes => {
+                    return Promise.all([
+                        Apis.instance().db_api().exec('get_objects', [nodes]),
+                        this.$http.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
+                    ]).then(results => {
+                        let accounts = results[0];
+                        let trustNodeOffChainInfo = results[1].data.list;
+                        let candidates = accounts.map(a => {
+                            let info = trustNodeOffChainInfo.find(t => t.accountName === a.name);
+                            return {
+                                id: a.id,
+                                account: a.name,
+                                comments: info && info.nodeName,
+                                logo: info && info.logo,
+                                votes: 0
+                            };
+                        });
+                        this.candidates = candidates.filter(c => {
+                            return filtered_nodes.indexOf(c.account) === -1;
+                        });
+                        this.loadCandidateVotes();
+                    });
+                }).catch(ex => {
+                    console.error(ex);
+                });
+            },
+            loadCandidateVotes () {
+                let promises = this.candidates.map(c => {
+                    return Apis.instance().db_api().exec('get_witness_by_account', [c.id]);
+                });
+                Promise.all(promises).then(witnesses => {
+                    let candidates = this.candidates.map((c, i) => {
+                        c.votes = witnesses[i].total_votes;
+                        return c;
+                    }).sort((a, b) => {
+                        return b.votes - a.votes;
+                    });
+                    this.candidates = candidates;
+                });
+            },
             loadVoteNumbers () {
                 this.$http
                 .get(`${process.env.STA_SERVICE}/vote/statistics`)
                 .then(resp => {
-                    this.vote.num = Math.max(resp.body.voteSum, 0) / 100000;
+                    this.vote.num = Math.max(resp.body.voteSum, 0);
                     this.vote.accounts = resp.body.accountSum || 0;
                 }).catch(console.error);
             },
@@ -599,14 +709,6 @@
                     ).get('name');
                 }
                 return null;
-            },
-
-            fetchAllTrustedNodes () {
-                Apis.instance().db_api().exec('get_trust_nodes', []).then(nodes => {
-                    this.trust_nodes = nodes;
-                }).catch(ex => {
-                    console.error('Error fetching trusted nodes: ', ex);
-                });
             },
 
             getLastConfirmedBlock (witness) {
@@ -819,5 +921,18 @@
 
     .progress-bar-info {
         background-color: #3d4463;
+    }
+
+    .panel-trust-nodes .table-responsive{
+        margin-bottom: 0;
+    }
+    .panel-trust-nodes pre {
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        padding: 10px;
+        font-size:.3rem;
+        line-height:8px;
+        color:#666;
     }
 </style>

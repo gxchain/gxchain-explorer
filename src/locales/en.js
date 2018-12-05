@@ -38,6 +38,13 @@ const locale = {
             account: 'Account',
             votes: 'Votes'
         },
+        candidate: {
+            title: 'TrustNode Candidates',
+            account: 'Account',
+            comments: 'Comment',
+            votes: 'Votes',
+            pre: 'Comments by'
+        },
         transactions: {
             title: 'Recent Transaction Records',
             type: 'Type',

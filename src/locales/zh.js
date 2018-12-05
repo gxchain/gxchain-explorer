@@ -29,12 +29,19 @@ const locale = {
             title: '活跃公信节点',
             witness: '公信节点',
             last_confirmed_block: '最近确认',
-            votes: '总票数'
+            votes: '得票数'
         },
         committee: {
             title: '活跃理事会成员',
             account: '账户',
-            votes: '总票数'
+            votes: '得票数'
+        },
+        candidate: {
+            title: '公信节点候选人',
+            account: '账号',
+            comments: '备注',
+            votes: '得票数',
+            pre: '备注信息来源'
         },
         transactions: {
             title: '最近交易记录',
