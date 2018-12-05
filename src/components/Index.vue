@@ -488,7 +488,7 @@
                 this.$http
                 .get(`${process.env.STA_SERVICE}/vote/statistics`)
                 .then(resp => {
-                    this.vote.num = Math.max((resp.body.voteSum - 398372521722), 0) / 100000;
+                    this.vote.num = Math.max(resp.body.voteSum, 0) / 100000;
                     this.vote.accounts = resp.body.accountSum || 0;
                 }).catch(console.error);
             },
