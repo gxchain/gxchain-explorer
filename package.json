@@ -47,6 +47,7 @@
     "level": "^4.0.0",
     "morgan": "^1.9.1",
     "prismjs": "^1.6.0",
+    "superagent": "^4.0.0",
     "vue": "^2.3.3",
     "vue-echarts": "^3.0.9",
     "vue-i18n": "^7.3.2",

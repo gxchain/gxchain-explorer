@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import { Apis } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
 import Immutable from 'immutable';
+import superagent from 'superagent';
 
 /**
  * get account information by name
@@ -148,6 +149,70 @@ const fetch_product = function (prod_id) {
     });
 };
 
+const fetch_candidates = function () {
+    let filtered_nodes = [
+        'aaron',
+        'caitlin',
+        'kairos',
+        'sakura',
+        'taffy',
+        'miner1',
+        'miner2',
+        'miner3',
+        'miner4',
+        'miner5',
+        'miner6',
+        'miner7',
+        'miner8',
+        'miner9',
+        'miner10',
+        'miner11',
+        'hrrs',
+        'dennis1',
+        'david12',
+        'marks-lee',
+        'robin-green'
+    ];
+    return Apis.instance()
+    .db_api()
+    .exec('get_trust_nodes', []).then(nodes => {
+        return Promise.all([
+            Apis.instance().db_api().exec('get_objects', [nodes]),
+            superagent.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
+        ]).then(results => {
+            let accounts = results[0];
+            let trustNodeOffChainInfo = JSON.parse(results[1].text).list;
+            let candidates = accounts.map(a => {
+                let info = trustNodeOffChainInfo.find(t => t.accountName === a.name);
+                return {
+                    id: a.id,
+                    account: a.name,
+                    comments: info && info.nodeName || null,
+                    logo: info && info.logo || null,
+                    votes: 0
+                };
+            });
+            candidates = candidates.filter(c => {
+                return filtered_nodes.indexOf(c.account) === -1;
+            });
+            let promises = candidates.map(c => {
+                return Apis.instance().db_api().exec('get_witness_by_account', [c.id]);
+            });
+            return Promise.all(promises).then(witnesses => {
+                candidates = candidates.map((c, i) => {
+                    c.votes = witnesses[i].total_votes;
+                    return c;
+                }).sort((a, b) => {
+                    return b.votes - a.votes;
+                });
+                return candidates;
+            });
+        });
+    }).catch(ex => {
+        console.error(ex);
+    });
+};
+
 export default {
     gxs_supply,
     fetch_block,
@@ -156,5 +221,6 @@ export default {
     fetch_account,
     fetch_full_account,
     fetch_account_balance,
-    fetch_product
+    fetch_product,
+    fetch_candidates
 };

@@ -1,10 +1,11 @@
 import express from 'express';
 import GXChainService from '../services/GXChainService';
-import LevelDBService from '../services/LevelDBService';
+// import LevelDBService from '../services/LevelDBService';
 import HoldrankService from '../services/HoldrankService';
 import jdenticon from 'jdenticon';
 import crypto from 'crypto';
 import IPFSService from '../services/IPFSService';
+import superagent from 'superagent';
 
 var wabt = require('wabt')();
 
@@ -60,10 +61,47 @@ router.get('/asset/:asset_name', function (req, res) {
  * 交易记录查询
  */
 router.get('/transaction/:tx_id', function (req, res) {
-    LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction) => {
-        res.send(JSON.parse(transaction));
-    }).catch(() => {
-        res.send({});
+    let txid = req.params.tx_id.toLowerCase();
+    superagent.get('https://wallet.gxb.io/statistics/gxchain/blockInfo/getBlockNumByTxid').query({
+        txid: txid
+    }).end((err, resp) => {
+        if (err) {
+            return res.send({});
+        }
+        let blockInfo = JSON.parse(resp.text || '{}');
+        GXChainService.fetch_block(blockInfo.blockNum).then(block => {
+            if (!block) {
+                console.log('block not found:', blockInfo.blockNum);
+                return res.send({});
+            }
+            let index = -1;
+            block.transaction_ids.forEach((id, i) => {
+                if (id === txid) {
+                    index = i;
+                }
+            });
+            if (index >= 0) {
+                let tx = block.transactions[index];
+                tx.current_block_number = blockInfo.blockNum;
+                res.send(block.transactions[index]);
+            } else {
+                res.send({});
+            }
+        });
+    });
+    // LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction) => {
+    //     res.send(JSON.parse(transaction));
+    // }).catch(() => {
+    //     res.send({});
+    // });
+});
+
+router.get('/trustnode/candidates', function (req, res) {
+    GXChainService.fetch_candidates().then(candidates => {
+        res.send(candidates);
+    }).catch(ex => {
+        console.error(ex);
+        res.send([]);
     });
 });
 

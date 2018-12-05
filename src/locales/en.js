@@ -526,7 +526,8 @@ const locale = {
         query_account_balance: 'Query Account Balance:',
         get_account_header: 'Get Account Header:',
         assets: 'Assets:',
-        asset_info: 'Asset Info:'
+        asset_info: 'Asset Info:',
+        candidates: 'TrustNode Candidates:'
     },
     holdrank: {
         locknum: 'Total Frozen',

@@ -525,7 +525,8 @@ const locale = {
         query_account_balance: '余额查询',
         get_account_header: '账户头像',
         assets: '资产列表:',
-        asset_info: '资产信息:'
+        asset_info: '资产信息:',
+        candidates: '候选公信节点:'
     },
     holdrank: {
         locknum: '目前冻结的GXC总量',
