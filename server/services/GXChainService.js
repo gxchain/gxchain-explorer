@@ -187,9 +187,8 @@ const fetch_candidates = function () {
                 return {
                     id: a.id,
                     account: a.name,
-                    comments: info && info.nodeName || null,
-                    logo: info && info.logo || null,
-                    votes: 0
+                    votes: 0,
+                    extra: info || null
                 };
             });
             candidates = candidates.filter(c => {
