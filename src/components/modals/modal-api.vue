@@ -25,47 +25,47 @@
                     {
                         name: this.$t('api.query_supply'),
                         api: '/api/supply',
-                        example: `https://${location.host}/api/supply`
+                        example: `http://${location.host}/api/supply`
                     },
                     {
                         name: this.$t('api.query_block'),
                         api: '/api/block/:block_height',
-                        example: `https://${location.host}/api/block/1407251`
+                        example: `http://${location.host}/api/block/1407251`
                     },
                     {
                         name: this.$t('api.query_transaction'),
                         api: '/api/transaction/:tx_id',
-                        example: `https://${location.host}/api/transaction/69ce90cdb52189dee863d2bcf6ce153d89657295`
+                        example: `http://${location.host}/api/transaction/69ce90cdb52189dee863d2bcf6ce153d89657295`
                     },
                     {
                         name: this.$t('api.query_account'),
                         api: '/api/account/:id_or_name',
-                        example: `https://${location.host}/api/account/paul`
+                        example: `http://${location.host}/api/account/paul`
                     },
                     {
                         name: this.$t('api.query_account_balance'),
                         api: '/api/account_balance/:id_or_name',
-                        example: `https://${location.host}/api/account_balance/paul`
+                        example: `http://${location.host}/api/account_balance/paul`
                     },
                     {
                         name: this.$t('api.get_account_header'),
                         api: '/api/header/:account_name',
-                        example: `https://${location.host}/api/header/paul`
+                        example: `http://${location.host}/api/header/paul`
                     },
                     {
                         name: this.$t('api.assets'),
                         api: '/api/assets',
-                        example: `https://${location.host}/api/assets`
+                        example: `http://${location.host}/api/assets`
                     },
                     {
                         name: this.$t('api.asset_info'),
                         api: '/api/asset/:asset_name',
-                        example: `https://${location.host}/api/asset/GXC`
+                        example: `http://${location.host}/api/asset/GXC`
                     },
                     {
                         name: this.$t('api.candidates'),
                         api: '/api/trustnode/candidates',
-                        example: `https://${location.host}/api/trustnode/candidates`
+                        example: `http://${location.host}/api/trustnode/candidates`
                     }
                 ];
             }
