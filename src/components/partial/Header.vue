@@ -12,7 +12,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!--<router-link :to="{path:'/'}" class="navbar-brand">-->
-                        <!--<img height="28.5px" src="/static/exploer-logo.png" v-on:click="clearInput"/>-->
+                    <!--<img height="28.5px" src="/static/exploer-logo.png" v-on:click="clearInput"/>-->
                     <!--</router-link>-->
                 </div>
                 <nav id="bs-navbar" class="collapse navbar-collapse">
@@ -46,7 +46,8 @@
                 <div class="col-xs-12">
                     <p class="text-center">
                         <router-link :to="{path:'/'}">
-                            <img height="40px" alt="logo-gxchain" src="/static/exploer-logo.png" v-on:click="clearInput"/>
+                            <img height="40px" alt="logo-gxchain" src="/static/exploer-logo.png"
+                                 v-on:click="clearInput"/>
                         </router-link>
                     </p>
                     <div class="search-wraper" role="search">
@@ -59,6 +60,11 @@
                     </div>
                 </div>
             </div>
+            <p class="news">
+                <a href="https://mp.weixin.qq.com/s/GS2EdzEjLBDZQ0O92Vewbw" target="_blank">
+                    <span class="fa fa-fire"></span>{{$t('header.trustnode_election')}}
+                </a>
+            </p>
         </div>
     </header>
 
@@ -210,7 +216,7 @@
 
     .site-header .form-group {
         position: relative;
-        margin:0;
+        margin: 0;
     }
 
     .site-header .search-wraper {
@@ -250,5 +256,20 @@
     .flagimg {
         width: 20px;
         margin-right: 10px;
+    }
+
+    .news {
+        margin-top: 15px;
+        margin-bottom:0;
+    }
+
+    .news a {
+        color: #fff;
+        font-size: 15px;
+    }
+
+    .news .fa-fire {
+        color: #ff4519;
+        margin-right: 5px;
     }
 </style>
