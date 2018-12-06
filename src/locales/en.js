@@ -8,7 +8,8 @@ const locale = {
         about: 'About',
         language: 'Language: English',
         flag: 'en',
-        search: 'Enter block number, txid, account name or id here'
+        search: 'Enter block number, txid, account name or id here',
+        trustnode_election: 'TrustNode Election'
     },
     // index
     index: {
@@ -480,6 +481,10 @@ const locale = {
             },
             code: {
                 title: 'Code'
+            },
+            database: {
+                title: 'Database',
+                no_record: 'No More Record'
             }
         },
         permissions: {

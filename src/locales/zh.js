@@ -8,7 +8,8 @@ const locale = {
         about: '关于',
         language: '语言: 中文',
         flag: 'zh',
-        search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询'
+        search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询',
+        trustnode_election: '公信节点竞选'
     },
     // index
     index: {
@@ -479,6 +480,10 @@ const locale = {
             },
             code: {
                 title: '合约代码'
+            },
+            database: {
+                title: '数据表',
+                no_record: '没有更多数据'
             }
         },
         permissions: {
