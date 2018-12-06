@@ -172,7 +172,7 @@
                                 <thead>
                                 <tr>
                                     <th>{{$t('index.candidate.account')}}</th>
-                                    <th>{{$t('index.witness.votes')}}</th>
+                                    <th class="text-right">{{$t('index.witness.votes')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -188,10 +188,10 @@
                                         </div>
 
                                         <div>
-                                            <small>{{c.comments}}</small>
+                                            <small>{{c.extra?c.extra.nodeName:''}}</small>
                                         </div>
                                     </td>
-                                    <td>{{c.votes/100000|number(0)}}</td>
+                                    <td class="text-right">{{c.votes/100000|number(0)}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -203,7 +203,7 @@
                     </div>
                 </div>
                 <!--Witnesses-->
-                <div v-if="global_params" class="panel panel-default">
+                <div v-if="global_params" class="panel panel-default panel-witness">
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-witness"></span>&nbsp;{{$t('index.witness.title')}}
                     </div>
@@ -214,7 +214,7 @@
                                 <tr>
                                     <th>{{$t('index.witness.witness')}}</th>
                                     <th>{{$t('index.witness.last_confirmed_block')}}</th>
-                                    <th>{{$t('index.witness.votes')}}</th>
+                                    <th class="text-right">{{$t('index.witness.votes')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -234,7 +234,7 @@
                                             {{getLastConfirmedBlock(witness)}}
                                         </router-link>
                                     </td>
-                                    <td>
+                                    <td class="text-right">
                                         {{ChainStore.getObject(witness) &&
                                         ChainStore.getObject(witness).get('total_votes') / 100000 | number(0)}}
                                     </td>
@@ -254,7 +254,7 @@
                             <thead>
                             <tr>
                                 <th>{{$t('index.committee.account')}}</th>
-                                <th>{{$t('index.committee.votes')}}</th>
+                                <th class="text-right">{{$t('index.committee.votes')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -266,7 +266,7 @@
                                         {{getCommitteeAccountName(member)}}
                                     </router-link>
                                 </td>
-                                <td>
+                                <td class="text-right">
                                     {{ChainStore.getObject(member) && ChainStore.getObject(member).get('total_votes') /
                                     100000 | number(0)}}
                                 </td>
@@ -326,7 +326,7 @@
                             <thead>
                             <tr>
                                 <th>{{$t('index.transactions.type')}}</th>
-                                <th class="center">{{$t('index.transactions.content')}}</th>
+                                <th>{{$t('index.transactions.content')}}</th>
                                 <th class="right">{{$t('index.transactions.time')}}</th>
                             </tr>
                             </thead>
@@ -529,69 +529,9 @@
                 setKeywords: 'setKeywords'
             }),
             loadTrustNodeCandidates () {
-                let filtered_nodes = [
-                    'aaron',
-                    'caitlin',
-                    'kairos',
-                    'sakura',
-                    'taffy',
-                    'miner1',
-                    'miner2',
-                    'miner3',
-                    'miner4',
-                    'miner5',
-                    'miner6',
-                    'miner7',
-                    'miner8',
-                    'miner9',
-                    'miner10',
-                    'miner11',
-                    'hrrs',
-                    'dennis1',
-                    'david12',
-                    'marks-lee',
-                    'robin-green'
-                ];
-                Apis.instance()
-                .db_api()
-                .exec('get_trust_nodes', []).then(nodes => {
-                    return Promise.all([
-                        Apis.instance().db_api().exec('get_objects', [nodes]),
-                        this.$http.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
-                    ]).then(results => {
-                        let accounts = results[0];
-                        let trustNodeOffChainInfo = results[1].data.list;
-                        let candidates = accounts.map(a => {
-                            let info = trustNodeOffChainInfo.find(t => t.accountName === a.name);
-                            return {
-                                id: a.id,
-                                account: a.name,
-                                comments: info && info.nodeName,
-                                logo: info && info.logo,
-                                votes: 0
-                            };
-                        });
-                        this.candidates = candidates.filter(c => {
-                            return filtered_nodes.indexOf(c.account) === -1;
-                        });
-                        this.loadCandidateVotes();
-                    });
-                }).catch(ex => {
-                    console.error(ex);
-                });
-            },
-            loadCandidateVotes () {
-                let promises = this.candidates.map(c => {
-                    return Apis.instance().db_api().exec('get_witness_by_account', [c.id]);
-                });
-                Promise.all(promises).then(witnesses => {
-                    let candidates = this.candidates.map((c, i) => {
-                        c.votes = witnesses[i].total_votes;
-                        return c;
-                    }).sort((a, b) => {
-                        return b.votes - a.votes;
-                    });
-                    this.candidates = candidates;
+                this.$http
+                .get('/api/trustnode/candidates').then(resp => {
+                    this.candidates = resp.data;
                 });
             },
             loadVoteNumbers () {
@@ -923,8 +863,9 @@
         background-color: #3d4463;
     }
 
-    .panel-trust-nodes .table-responsive {
+    .panel-witness .table-responsive,.panel-trust-nodes .table-responsive {
         margin-bottom: 0;
+        border:none;
     }
 
     .panel-trust-nodes pre {
@@ -932,7 +873,7 @@
         border-radius: 0;
         margin: 0;
         padding: 10px;
-        font-size: .3rem;
+        font-size: 8px;
         line-height: 8px;
         color: #666;
     }
