@@ -179,8 +179,8 @@
                                 <tr v-for="c in candidates" :key="c.account">
                                     <td>
                                         <div>
-                                            <img v-if="c.logo" :src="c.logo" width="16px"/>
-                                            <account-image v-if="!c.logo" :size="8"
+                                            <img v-if="c.extra&&c.extra.logo" :src="c.extra.logo" width="16px"/>
+                                            <account-image v-if="!(c.extra&&c.extra.logo)" :size="8"
                                                            :account="c.account"></account-image>
                                             <router-link :to="{path:'/account/'+c.account}">
                                                 {{c.account}}
@@ -863,9 +863,9 @@
         background-color: #3d4463;
     }
 
-    .panel-witness .table-responsive,.panel-trust-nodes .table-responsive {
+    .panel-witness .table-responsive, .panel-trust-nodes .table-responsive {
         margin-bottom: 0;
-        border:none;
+        border: none;
     }
 
     .panel-trust-nodes pre {
