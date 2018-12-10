@@ -182,13 +182,14 @@
                                             <img v-if="c.extra&&c.extra.logo" :src="c.extra.logo" width="16px"/>
                                             <account-image v-if="!(c.extra&&c.extra.logo)" :size="8"
                                                            :account="c.account"></account-image>
+                                            &nbsp;
                                             <router-link :to="{path:'/account/'+c.account}">
                                                 {{c.account}}
                                             </router-link>
                                         </div>
 
                                         <div>
-                                            <small>{{c.extra?c.extra.nodeName:''}}</small>
+                                            <small class="tip">{{c.extra?c.extra.nodeName:''}}</small>
                                         </div>
                                     </td>
                                     <td class="text-right">{{c.votes/100000|number(0)}}</td>
@@ -866,6 +867,10 @@
     .panel-witness .table-responsive, .panel-trust-nodes .table-responsive {
         margin-bottom: 0;
         border: none;
+    }
+
+    .panel-trust-nodes .tip {
+        color: #666;
     }
 
     .panel-trust-nodes pre {

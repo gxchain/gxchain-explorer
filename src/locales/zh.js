@@ -9,7 +9,11 @@ const locale = {
         language: '语言: 中文',
         flag: 'zh',
         search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询',
-        trustnode_election: '公信节点竞选'
+        trustnode_election: '公信节点竞选',
+        login: 'GScatter登录',
+        profile: '账户资料',
+        download: '你还没有安装gscatter，是否前往安装？',
+        logout: '退出'
     },
     // index
     index: {

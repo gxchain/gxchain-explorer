@@ -9,7 +9,11 @@ const locale = {
         language: 'Language: English',
         flag: 'en',
         search: 'Enter block number, txid, account name or id here',
-        trustnode_election: 'TrustNode Election'
+        trustnode_election: 'TrustNode Election',
+        login: 'Login',
+        profile: 'Profile',
+        download: 'You haven\'t download extension, confirm to download',
+        logout: 'Logout'
     },
     // index
     index: {

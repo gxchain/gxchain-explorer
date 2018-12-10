@@ -17,14 +17,38 @@
                 </div>
                 <nav id="bs-navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown" v-if="account&&account.name">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">
+                                <account-image :size="8" :account="account.name"></account-image>&nbsp;{{account.name}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <router-link :to="{path:'/account/'+account.name}">
+                                        <i class="fa fa-user"></i>&nbsp;{{$t('header.profile')}}
+                                    </router-link>
+                                </li>
+                                <li @click="logout">
+                                    <a href="#">
+                                        <i class="fa fa-sign-out-alt"></i>&nbsp;{{$t('header.logout')}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li v-if="!(account&&account.name)">
+                            <a href="javascript:;" @click="login">{{$t('header.login')}}</a>
+                        </li>
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
                         <!--<li><router-link :to="{path:'/holdrank/1'}" @click.native="clearInput">排行</router-link></li>-->
                         <li><a href="#modal-about" data-toggle="modal">{{$t('header.about')}}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
-                               aria-expanded="false"><img class="flagimg" :src="flagImg[$t('header.flag')]"><span
-                                    class="caret"></span></a>
+                               aria-expanded="false">
+                                <img class="flagimg" :src="flagImg[$t('header.flag')]">
+                                <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li @click="switchLanguage('zh')"><a href="javascript:;">
                                     <img class="flagimg"
@@ -73,16 +97,37 @@
 <script>
     import { mapActions, mapGetters } from 'vuex';
     import { set_item } from '@/services/CommonService';
+    import AccountImage from './AccountImage';
+    import GScatterJS from 'gscatterjs-core';
 
     export default {
+        components: {AccountImage},
         data () {
             return {
+                account: null,
+                connected: false,
+                gscatter: null,
                 search: '',
                 flagImg: {
                     'zh': require('../../../static/language-dropdown/img/CN.png'),
                     'en': require('../../../static/language-dropdown/img/US.png')
                 }
             };
+        },
+        mounted () {
+            GScatterJS.gscatter.connect(location.host).then((connected) => {
+                if (!connected) return false;
+                this.connected = connected;
+                this.gscatter = GScatterJS.gscatter;
+                // require version, if user's plugin is less than the version, when operate, plugin will prompt a tips
+                // this.gscatter.requireVersion('9.9.9');
+                // when user not login, you could use api which not need identity, like generateKey
+                this.gxc = this.gscatter.gxc(process.env.network);
+                // if identity exist, means user has authorize the website and already unlock, you could display user info then
+                if (this.gscatter.identity) {
+                    this.account = this.gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
+                }
+            });
         },
         computed: {
             ...mapGetters({
@@ -110,6 +155,29 @@
             },
             clearInput () {
                 this.setKeywords({keywords: ''});
+            },
+            login () {
+                if (!GScatterJS.gscatter.isExtension) {
+                    var flag = confirm(this.$t('header.download'));
+                    if (flag) {
+                        window.open('https://gxchain.github.io/GScatter/arch/guide/');
+                    }
+                } else {
+                    this.gscatter.suggestNetwork(process.env.network).then(() => {
+                        console.log(arguments);
+                        this.gscatter.getIdentity({accounts: [process.env.network]}).then(() => {
+                            console.log(arguments);
+                            this.account = this.gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
+                        });
+                    }).catch(ex => {
+                        console.error('login failed:', ex);
+                    });
+                }
+            },
+            logout () {
+                this.gscatter.forgetIdentity().then(() => {
+                    this.account = null;
+                });
             }
         }
     };
@@ -260,7 +328,7 @@
 
     .news {
         margin-top: 15px;
-        margin-bottom:0;
+        margin-bottom: 0;
     }
 
     .news a {

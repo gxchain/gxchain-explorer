@@ -5,7 +5,7 @@ import GXChainService from '../services/GXChainService';
 let current_block_height = 0; // 当前已同步区块高度
 let max_block_height = 0;  // 最新不可逆区块高度
 let syncing = false;  // 是否同步中
-let sync_block_length = 100;  // 并行同步区块数量
+let sync_block_length = 50;  // 并行同步区块数量
 
 export default {
     /**

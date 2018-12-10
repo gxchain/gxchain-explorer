@@ -1,11 +1,12 @@
 import express from 'express';
 import GXChainService from '../services/GXChainService';
-// import LevelDBService from '../services/LevelDBService';
+import LevelDBService from '../services/LevelDBService';
 import HoldrankService from '../services/HoldrankService';
 import jdenticon from 'jdenticon';
 import crypto from 'crypto';
 import IPFSService from '../services/IPFSService';
 import superagent from 'superagent';
+import config from '../../config';
 
 var wabt = require('wabt')();
 
@@ -62,38 +63,47 @@ router.get('/asset/:asset_name', function (req, res) {
  */
 router.get('/transaction/:tx_id', function (req, res) {
     let txid = req.params.tx_id.toLowerCase();
-    superagent.get('https://wallet.gxb.io/statistics/gxchain/blockInfo/getBlockNumByTxid').query({
-        txid: txid
-    }).end((err, resp) => {
-        if (err) {
-            return res.send({});
-        }
-        let blockInfo = JSON.parse(resp.text || '{}');
-        GXChainService.fetch_block(blockInfo.blockNum).then(block => {
-            if (!block) {
-                console.log('block not found:', blockInfo.blockNum);
+    let STA_SERVICE = config.build.env.STA_SERVICE;
+    if (config.build.env.network.indexOf('testnet') === -1) {
+        superagent.get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`).query({
+            txid: txid
+        }).end((err, resp) => {
+            if (err) {
+                console.error('error when get block by txid', err);
                 return res.send({});
             }
-            let index = -1;
-            block.transaction_ids.forEach((id, i) => {
-                if (id === txid) {
-                    index = i;
+            let blockInfo = JSON.parse(resp.text || '{}');
+            GXChainService.fetch_block(blockInfo.blockNum).then(block => {
+                if (!block) {
+                    console.log('block not found:', blockInfo.blockNum);
+                    return res.send({});
                 }
-            });
-            if (index >= 0) {
-                let tx = block.transactions[index];
-                tx.current_block_number = blockInfo.blockNum;
-                res.send(block.transactions[index]);
-            } else {
+                let index = -1;
+                block.transaction_ids.forEach((id, i) => {
+                    if (id === txid) {
+                        index = i;
+                    }
+                });
+                console.log('>>>', index);
+                if (index >= 0) {
+                    let tx = block.transactions[index];
+                    tx.current_block_number = blockInfo.blockNum;
+                    res.send(block.transactions[index]);
+                } else {
+                    res.send({});
+                }
+            }).catch(ex => {
+                console.error('error fetching block', ex);
                 res.send({});
-            }
+            });
         });
-    });
-    // LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction) => {
-    //     res.send(JSON.parse(transaction));
-    // }).catch(() => {
-    //     res.send({});
-    // });
+    } else {
+        LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction) => {
+            res.send(JSON.parse(transaction));
+        }).catch(() => {
+            res.send({});
+        });
+    }
 });
 
 router.get('/trustnode/candidates', function (req, res) {
@@ -127,6 +137,9 @@ router.get('/account_balance/:account_id_or_name', function (req, res) {
     });
 });
 
+/**
+ * 账户头像获取
+ */
 router.get('/header/:account_name', function (req, res) {
     var hash = crypto.createHash('sha256').update(req.params.account_name, 'utf8').digest('hex');
     var size = Number(req.query.size || '80');
