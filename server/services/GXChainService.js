@@ -13,7 +13,7 @@ const fetch_account = (account_name) => {
 };
 
 const fetch_full_account = (account) => {
-    return Apis.instance().db_api().exec('get_full_accounts', [[account], true]);
+    return Apis.instance().db_api().exec('get_full_accounts', [[account], false]);
 };
 
 /**
