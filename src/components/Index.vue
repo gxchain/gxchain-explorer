@@ -2,30 +2,30 @@
     <div class="container">
         <Loading v-show="loading"></Loading>
 
-        <div class="row">
-            <!--TrustNodes Voting Progress-->
-            <div class="col-md-12">
-                <div class="panel panel-default panel-progress">
-                    <div class="panel-heading">
-                        <span class="fa fa-fw fa-tasks"></span> {{$t('index.voting.title')}}
-                    </div>
-                    <div class="panel-body">
-                        <p class="text-right">{{vote.num|number(2)}} / 16,000,000.00</p>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-info progress-bar-striped active"
-                                 role="progressbar"
-                                 :aria-valuenow="voting_progress"
-                                 aria-valuemin="0"
-                                 aria-valuemax="100"
-                                 style="min-width: 2em;"
-                                 :style="{width:voting_progress.toFixed(2)+'%'}">
-                                {{voting_progress.toFixed(0)}}%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="row">-->
+            <!--&lt;!&ndash;TrustNodes Voting Progress&ndash;&gt;-->
+            <!--<div class="col-md-12">-->
+                <!--<div class="panel panel-default panel-progress">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<span class="fa fa-fw fa-tasks"></span> {{$t('index.voting.title')}}-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--<p class="text-right">{{vote.num|number(2)}} / 16,000,000.00</p>-->
+                        <!--<div class="progress">-->
+                            <!--<div class="progress-bar progress-bar-info progress-bar-striped active"-->
+                                 <!--role="progressbar"-->
+                                 <!--:aria-valuenow="voting_progress"-->
+                                 <!--aria-valuemin="0"-->
+                                 <!--aria-valuemax="100"-->
+                                 <!--style="min-width: 2em;"-->
+                                 <!--:style="{width:voting_progress.toFixed(2)+'%'}">-->
+                                <!--{{voting_progress.toFixed(0)}}%-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <h4 class="page-header" v-show="!loading">{{$t('index.latest_status')}}:
             <small>{{$t('index.last_updated_at', {seconds: delta})}}</small>

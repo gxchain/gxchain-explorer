@@ -84,11 +84,11 @@
                     </div>
                 </div>
             </div>
-            <p class="news">
-                <a href="https://mp.weixin.qq.com/s/GS2EdzEjLBDZQ0O92Vewbw" target="_blank">
-                    <span class="fa fa-fire"></span>{{$t('header.trustnode_election')}}
-                </a>
-            </p>
+            <!--<p class="news">-->
+                <!--<a href="https://mp.weixin.qq.com/s/GS2EdzEjLBDZQ0O92Vewbw" target="_blank">-->
+                    <!--<span class="fa fa-fire"></span>{{$t('header.trustnode_election')}}-->
+                <!--</a>-->
+            <!--</p>-->
         </div>
     </header>
 
