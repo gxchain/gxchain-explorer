@@ -103,6 +103,14 @@
                                     <th>{{asset.symbol}}</th>
                                     <td align="right">{{asset.amount}}</td>
                                 </tr>
+                                <tr v-if="account_info&&account_info.locked_balances.length>0" key="locked">
+                                    <th class="color-warning">{{$t('account.locked_balance')}}</th>
+                                    <td align="right">{{account_info.locked_balances[0].amount.amount/100000|number(2)}}</td>
+                                </tr>
+                                <tr v-if="account_info&&account_info.pledge_balances.length>0" key="pledge">
+                                    <th class="color-warning">{{$t('account.pledge_balance')}}</th>
+                                    <td align="right">{{account_info.pledge_balances[0].amount.amount/100000|number(2)}}</td>
+                                </tr>
                                 <tr v-if="Object.keys(account_info.balances).length==0">
                                     <td colspan="2">
                                         <div class="gray text-center">
@@ -320,6 +328,7 @@
                 account_info: null,
                 latestTransactions: [],
                 history_length: 100,
+                isTrustNode: -1,
                 ChainStore
             };
         },
@@ -363,6 +372,18 @@
                     this.current_table.hasMore = resp.rows.length === pageSize;
                 });
             },
+            loadTrustNodeInfo (id) {
+                if (this.trustNodeInfoLoading) {
+                    return;
+                }
+                this.trustNodeInfoLoading = true;
+                Promise.all([
+                    Apis.instance().db_api().exec('get_witness_by_account', [id]),
+                    Apis.instance().db_api().exec('get_committee_member_by_account', [id])
+                ]).then(results => {
+                    this.isTrustNode = results[0] && results[1];
+                });
+            },
             onUpdate () {
                 try {
                     if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
@@ -378,6 +399,9 @@
                         this.current_table.name = this.account_info.abi.tables[0].name;
                     }
                     this.getWAST();
+                }
+                if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
+                    this.loadTrustNodeInfo(this.account_info.id);
                 }
                 let ids = Object.keys(this.account_info.balances);
                 get_assets_by_ids(ids).then(assets => {
@@ -470,6 +494,9 @@
                 } else {
                     result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
                 }
+                if (this.isTrustNode) {
+                    result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
+                }
                 return result.join('&nbsp;');
             }
         },
@@ -490,6 +517,9 @@
 </script>
 
 <style scoped>
+    .color-warning{
+        color: #ffbc10;
+    }
     .right {
         text-align: right;
     }

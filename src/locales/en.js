@@ -469,7 +469,8 @@ const locale = {
         membership: {
             lifetime: 'Lifetime',
             normal: 'Basic',
-            contract: 'Contract Account'
+            contract: 'Contract Account',
+            trustnode: 'TrustNode Candidate'
         },
         basic: {
             title: 'Basic Information',
@@ -502,7 +503,9 @@ const locale = {
             asset: 'Asset',
             balance: 'Balance',
             empty: 'No Assets'
-        }
+        },
+        locked_balance: 'Loyalty Program(GXC)',
+        pledge_balance: 'TrustNode margin balance(GXC)'
     },
     // asset
     asset: {

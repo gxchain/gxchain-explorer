@@ -468,7 +468,8 @@ const locale = {
         membership: {
             lifetime: '终身会员',
             normal: '普通会员',
-            contract: '合约账户'
+            contract: '合约账户',
+            trustnode: '候选公信节点'
         },
         basic: {
             title: '基本信息',
@@ -501,7 +502,9 @@ const locale = {
             asset: '资产',
             balance: '余额',
             empty: '无资产'
-        }
+        },
+        locked_balance: '锁仓余额(GXC)',
+        pledge_balance: '保证金余额(GXC)'
     },
     // asset
     asset: {
