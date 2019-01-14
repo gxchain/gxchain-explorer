@@ -39,7 +39,7 @@
     "express": "^4.16.4",
     "figlet": "^1.2.0",
     "gscatterjs-core": "^0.1.2",
-    "gxbjs": "^1.3.4",
+    "gxbjs": "^1.3.12",
     "hashjs": "^1.2.0",
     "ipfs-api": "^20.0.1",
     "jdenticon": "^1.8.0",

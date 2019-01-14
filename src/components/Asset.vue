@@ -30,7 +30,15 @@
                                         {{asset.options.max_supply/Math.pow(10,asset.precision)|number(2)}}
                                     </td>
                                     <th>{{$t('asset.current_supply')}}</th>
-                                    <td>{{asset.detail.current_supply/Math.pow(10,asset.precision)|number(2)}}</td>
+                                    <td>
+                                        {{asset.detail.current_supply/Math.pow(10,asset.precision)|number(2)}}
+                                        <router-link to="/account/gxb-foundation"
+                                                     v-if="asset.id == '1.3.1' && network.chainId =='4f7d07969c446f8342033acb3ab2ae5044cbe0fde93db02de75bd17fa8fd84b8'"
+                                                     class="fa fa-question-circle"
+                                                     data-toggle="tooltip"
+                                                     :title="$t('asset.gxc')">
+                                        </router-link>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -105,7 +113,8 @@
                 asset: null,
                 page: 1,
                 hasMore: true,
-                rankings: []
+                rankings: [],
+                network: process.env.network
             };
         },
         methods: {
@@ -161,6 +170,9 @@
             }
             this.loadData();
         },
+        updated () {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
         watch: {
             keywords () {
                 this.loading = true;
@@ -176,7 +188,6 @@
             }
         },
         computed: {
-
             ...mapGetters({
                 keywords: 'keywords'
             })

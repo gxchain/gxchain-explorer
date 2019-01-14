@@ -509,7 +509,8 @@ const locale = {
         issuer: 'Issuer',
         precision: 'Precision',
         max_supply: 'Max Supply',
-        current_supply: 'Current Supply'
+        current_supply: 'Current Supply',
+        gxc: 'Actual supply of GXC = Current Supply - GXC managed by the Foundation'
     },
     // about
     about: {

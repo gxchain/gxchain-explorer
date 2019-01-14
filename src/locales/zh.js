@@ -508,7 +508,8 @@ const locale = {
         issuer: '发行人',
         precision: '精度',
         max_supply: '发行总量',
-        current_supply: '流通量'
+        current_supply: '流通量',
+        gxc: 'GXC的实际流通量 = 流通量 - 基金会管理的GXC'
     },
     // about
     about: {
