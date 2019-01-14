@@ -46,7 +46,8 @@ const locale = {
             account: '账号',
             comments: '备注',
             votes: '得票数',
-            pre: '备注信息来源'
+            pre: '备注信息来源',
+            margin: '保证金余额'
         },
         transactions: {
             title: '最近交易记录',

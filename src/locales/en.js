@@ -48,7 +48,8 @@ const locale = {
             account: 'Account',
             comments: 'Comment',
             votes: 'Votes',
-            pre: 'Comments by'
+            pre: 'Comments by',
+            margin: 'Margin'
         },
         transactions: {
             title: 'Recent Transaction Records',

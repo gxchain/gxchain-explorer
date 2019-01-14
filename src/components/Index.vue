@@ -172,6 +172,7 @@
                                 <thead>
                                 <tr>
                                     <th>{{$t('index.candidate.account')}}</th>
+                                    <th class="text-right">{{$t('index.candidate.margin')}}</th>
                                     <th class="text-right">{{$t('index.witness.votes')}}</th>
                                 </tr>
                                 </thead>
@@ -192,6 +193,7 @@
                                             <small class="tip">{{c.extra?c.extra.nodeName:''}}</small>
                                         </div>
                                     </td>
+                                    <td class="text-right">{{c.margin/100000|number(0)}}</td>
                                     <td class="text-right">{{c.votes/100000|number(0)}}</td>
                                 </tr>
                                 </tbody>

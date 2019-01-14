@@ -188,16 +188,18 @@ const fetch_candidates = function () {
     .db_api()
     .exec('get_trust_nodes', []).then(nodes => {
         return Promise.all([
-            Apis.instance().db_api().exec('get_objects', [nodes]),
+            Apis.instance().db_api().exec('get_full_accounts', [nodes, false]),
             superagent.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
         ]).then(results => {
             let accounts = results[0];
+            console.log(accounts);
             let trustNodeOffChainInfo = JSON.parse(results[1].text).list;
             let candidates = accounts.map(a => {
-                let info = trustNodeOffChainInfo.find(t => t.accountName === a.name);
+                let info = trustNodeOffChainInfo.find(t => t.accountName === a[1].account.name);
                 return {
-                    id: a.id,
-                    account: a.name,
+                    id: a[1].account.id,
+                    account: a[1].account.name,
+                    margin: a[1].pledge_balances.length > 0 ? a[1].pledge_balances[0].amount.amount : 0,
                     votes: 0,
                     extra: info || null
                 };
