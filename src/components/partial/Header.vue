@@ -164,9 +164,7 @@
                     }
                 } else {
                     this.gscatter.suggestNetwork(process.env.network).then(() => {
-                        console.log(arguments);
                         this.gscatter.getIdentity({accounts: [process.env.network]}).then(() => {
-                            console.log(arguments);
                             this.account = this.gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
                         });
                     }).catch(ex => {

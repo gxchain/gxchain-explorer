@@ -382,6 +382,7 @@ const locale = {
                 account: 'Account',
                 contract_name: 'Contract Name',
                 method_name: 'Method Name',
+                params: 'Parameters',
                 fee: 'Fee'
             },
             'update_contract': {
@@ -389,6 +390,27 @@ const locale = {
                 owner: 'Onwer',
                 new_owner: 'New Onwer',
                 contract_name: 'Contract Name',
+                fee: 'Fee'
+            },
+            'trust_node_pledge_withdraw': {
+                name: 'TrustNode margin Withdraw',
+                witness_account: 'Account',
+                fee: 'Amount'
+            },
+            'inline_transfer': {
+                name: 'Inline Transfer',
+                from: 'From',
+                amount: 'Amount',
+                to: 'To',
+                memo: 'Memo(Tag)',
+                fee: 'Fee'
+            },
+            'inter_contract_call': {
+                name: 'Inter Contract Call',
+                sender_contract: 'Account',
+                contract_name: 'Contract Name',
+                method_name: 'Method Name',
+                params: 'Parameters',
                 fee: 'Fee'
             },
             'status_states': {
@@ -458,9 +480,12 @@ const locale = {
             'balance_unlock': '{account} complete a loyalty program',
             'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
             'create_contract': '{account} created the contract {contract_name}',
-            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method',
+            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method with params: {params}',
             'update_contract': '{account} updated the contract {contract_name}',
-            'custom': '{account} created a custom operation'
+            'custom': '{account} created a custom operation',
+            'trust_node_pledge_withdraw': '{account} withdrww trustnode margin of {amount}',
+            'inline_transfer': 'contract account {from} sent {amount} to {to} with memo {memo}',
+            'inter_contract_call': 'contract {account} call the contract {contract_name} \'s {method_name} method with params: {params}'
         }
     },
     // account

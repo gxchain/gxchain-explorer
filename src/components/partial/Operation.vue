@@ -626,13 +626,20 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.custom.data')}}</th>
-                            <td align="right" style="width: 90%"><pre style="white-space: pre-wrap;text-align: left;">{{op[1].data}}</pre></td>
+                            <td align="right" style="width: 90%">
+                                <pre style="white-space: pre-wrap;text-align: left;">{{op[1].data}}</pre>
+                            </td>
                         </tr>
                         <tr>
                             <th></th>
                             <td align="right">
-                                <button @click="utf8HexToStr(op[1].data)" v-if="!op[1].isString" class="btn btn-default pull-right" style="margin-left: 10px">{{$t('transaction.trxTypes.custom.toString')}}</button>
-                                <button @click="toUTF8Hex(op[1].data)" v-else class="btn btn-default pull-right">{{$t('transaction.trxTypes.custom.toHex')}}</button>
+                                <button @click="utf8HexToStr(op[1].data)" v-if="!op[1].isString"
+                                        class="btn btn-default pull-right" style="margin-left: 10px">
+                                    {{$t('transaction.trxTypes.custom.toString')}}
+                                </button>
+                                <button @click="toUTF8Hex(op[1].data)" v-else class="btn btn-default pull-right">
+                                    {{$t('transaction.trxTypes.custom.toHex')}}
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -1578,6 +1585,11 @@
                             <td align="right">{{op[1].method_name}}</td>
                         </tr>
                         <tr>
+                            <th>{{$t('transaction.trxTypes.call_contract.params')}}</th>
+                            <td align="right">{{formatted_params(op[1].contract_id, op[1].method_name, op[1].data)}}
+                            </td>
+                        </tr>
+                        <tr>
                             <th>{{$t('transaction.trxTypes.call_contract.fee')}}</th>
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
@@ -1607,11 +1619,107 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>{{$t('transaction.trxTypes.create_contract.contract_name')}}</th>
+                            <th>{{$t('transaction.trxTypes.update_contract.contract_name')}}</th>
                             <td align="right">{{formatted_account(op[1].contract, 'contract')}}</td>
                         </tr>
                         <tr>
-                            <th>{{$t('transaction.trxTypes.create_contract.fee')}}</th>
+                            <th>{{$t('transaction.trxTypes.update_contract.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 77:trust_node_pledge_withdraw -->
+                        <tbody v-if="ops[op[0]] == 'trust_node_pledge_withdraw'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right">
+                                <span class="label label-success">{{$t('transaction.trxTypes.trust_node_pledge_withdraw.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.trust_node_pledge_withdraw.witness_account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].witness_account}">
+                                    {{formatted_account(op[1].witness_account, 'witness_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 78:inline_transfer -->
+                        <tbody v-if="ops[op[0]] == 'inline_transfer'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-success">{{$t('transaction.trxTypes.inline_transfer.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.from')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].from}">
+                                    {{formatted_account(op[1].from, 'from')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.to')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].to}">
+                                    {{formatted_account(op[1].to, 'to')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.amount')}}</th>
+                            <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.memo')}}</th>
+                            <td align="right">{{op[1].memo}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 79:inter_contract_call -->
+                        <tbody v-if="ops[op[0]] == 'inter_contract_call'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-success">{{$t('transaction.trxTypes.inter_contract_call.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inter_contract_call.sender_contract')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].account}">
+                                    {{formatted_account(op[1].account, 'sender_contract')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inter_contract_call.contract_name')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].contract_id}">
+                                    {{formatted_account(op[1].contract_id, 'contract_id')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inter_contract_call.method_name')}}</th>
+                            <td align="right">{{op[1].method_name}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inter_contract_call.params')}}</th>
+                            <td align="right">{{formatted_params(op[1].contract_id, op[1].method_name, op[1].data)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inter_contract_call.fee')}}</th>
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
@@ -1625,7 +1733,10 @@
 <script>
     import { ChainTypes } from 'gxbjs/es';
     import Proposed_Op from './Proposed_Op.vue';
-    import { fetch_account_by_chain, fetch_product_by_chain, fetch_asset_by_id } from '@/services/CommonService';
+    import {
+        deserialize_contract_params, fetch_account_by_chain, fetch_asset_by_id,
+        fetch_product_by_chain
+    } from '@/services/CommonService';
 
     let ops = Object.keys(ChainTypes.operations);
 
@@ -1646,6 +1757,7 @@
                 items: {},
                 ops: ops,
                 account: {},
+                params: {},
                 op: this.operation
             };
         },
@@ -1696,6 +1808,19 @@
                     console.error(ex);
                 });
                 return this.op[1][asset_id + amount];
+            },
+            formatted_params (contract, method, data) {
+                let self = this;
+                if (this.items[`${contract}_${method}_${data}`]) {
+                    return this.params[`${contract}_${method}_${data}`];
+                }
+                this.items[`${contract}_${method}_${data}`] = true;
+                deserialize_contract_params(contract, method, data).then(result => {
+                    self.$set(self.params, `${contract}_${method}_${data}`, JSON.stringify(result));
+                }).catch(ex => {
+                    this.items[`${contract}_${method}_${data}`] = false;
+                    console.error(ex);
+                });
             },
             formatted_listing (new_listing) {
                 let account_listing = {

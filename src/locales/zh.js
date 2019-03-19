@@ -10,7 +10,7 @@ const locale = {
         flag: 'zh',
         search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询',
         trustnode_election: '公信节点竞选',
-        login: 'GScatter登录',
+        login: 'GXC Wallet登录',
         profile: '账户资料',
         download: '你还没有安装gscatter，是否前往安装？',
         logout: '退出'
@@ -381,6 +381,7 @@ const locale = {
                 account: '账户',
                 contract_name: '合约名称',
                 method_name: '合约方法',
+                params: '参数',
                 fee: '手续费'
             },
             'update_contract': {
@@ -388,6 +389,27 @@ const locale = {
                 owner: '权限账户',
                 new_owner: '新权限账户',
                 contract_name: '合约名称',
+                fee: '手续费'
+            },
+            'trust_node_pledge_withdraw': {
+                name: '公信节点保证金赎回',
+                witness_account: '账户',
+                fee: '金额'
+            },
+            'inline_transfer': {
+                name: '合约内转账',
+                from: '来自',
+                amount: '金额',
+                to: '发往',
+                memo: '备注(Memo/Tag)',
+                fee: '手续费'
+            },
+            'inter_contract_call': {
+                name: '跨合约调用',
+                account: '发起合约',
+                contract_name: '接受合约',
+                method_name: '方法名',
+                data: '参数',
                 fee: '手续费'
             },
             'status_states': {
@@ -457,9 +479,12 @@ const locale = {
             'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
             'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
             'create_contract': '{account} 创建了智能合约 {contract_name}',
-            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
+            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 参数: {params}',
             'update_contract': '{account} 更新了智能合约 {contract_name}',
-            'custom': '{account} 创建了一笔自定义操作'
+            'custom': '{account} 创建了一笔自定义操作',
+            'trust_node_pledge_withdraw': '{account} 取回公信节点保证金 {amount}',
+            'inline_transfer': '合约账户 {from} 发送 {amount} 到 {to}, 备注: {memo}',
+            'inter_contract_call': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 参数: {params}'
         }
     },
     // account

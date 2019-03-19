@@ -2,8 +2,11 @@ import Vue from 'vue';
 import filters from '@/filters';
 import Promise from 'bluebird';
 import { Apis } from 'gxbjs-ws';
-import { ChainStore, FetchChain } from 'gxbjs';
+import { ChainStore } from 'gxbjs';
+import { deserializeCallData } from 'gxbjs/es/tx_serializer';
 import Immutable from 'immutable';
+
+let FetchChain = ChainStore.FetchChain;
 
 const baseURL = location.host;
 
@@ -133,6 +136,12 @@ export const fetch_asset_by_id = (asset_id, amount) => {
         }).catch(ex => {
             reject(ex);
         });
+    });
+};
+
+export const deserialize_contract_params = (contract, method, data) => {
+    return get_objects([contract]).then(accs => {
+        return deserializeCallData(method, data, accs[0].abi);
     });
 };
 
