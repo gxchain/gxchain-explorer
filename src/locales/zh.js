@@ -394,7 +394,7 @@ const locale = {
             'trust_node_pledge_withdraw': {
                 name: '公信节点保证金赎回',
                 witness_account: '账户',
-                fee: '金额'
+                fee: '手续费'
             },
             'inline_transfer': {
                 name: '合约内转账',
@@ -482,7 +482,7 @@ const locale = {
             'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 参数: {params}',
             'update_contract': '{account} 更新了智能合约 {contract_name}',
             'custom': '{account} 创建了一笔自定义操作',
-            'trust_node_pledge_withdraw': '{account} 取回公信节点保证金 {amount}',
+            'trust_node_pledge_withdraw': '{account} 取回公信节点保证金',
             'inline_transfer': '合约账户 {from} 发送 {amount} 到 {to}, 备注: {memo}',
             'inter_contract_call': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 参数: {params}'
         }

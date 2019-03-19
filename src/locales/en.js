@@ -395,7 +395,7 @@ const locale = {
             'trust_node_pledge_withdraw': {
                 name: 'TrustNode margin Withdraw',
                 witness_account: 'Account',
-                fee: 'Amount'
+                fee: 'Fee'
             },
             'inline_transfer': {
                 name: 'Inline Transfer',
@@ -483,7 +483,7 @@ const locale = {
             'call_contract': '{account} call the contract {contract_name} \'s {method_name} method with params: {params}',
             'update_contract': '{account} updated the contract {contract_name}',
             'custom': '{account} created a custom operation',
-            'trust_node_pledge_withdraw': '{account} withdrww trustnode margin of {amount}',
+            'trust_node_pledge_withdraw': '{account} withdrww trustnode margin',
             'inline_transfer': 'contract account {from} sent {amount} to {to} with memo {memo}',
             'inter_contract_call': 'contract {account} call the contract {contract_name} \'s {method_name} method with params: {params}'
         }

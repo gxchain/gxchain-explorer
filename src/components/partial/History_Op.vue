@@ -976,11 +976,10 @@
         </th>
         <td v-if="ops[op[0]] == 'trust_node_pledge_withdraw'">
             <i18n path="transaction.operation.trust_node_pledge_withdraw">
-                <router-link place="witness_account"
+                <router-link place="account"
                              :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
                     {{ formatted_account(op[1].witness_account) }}
                 </router-link>
-                <span place="amount">{{ formatted_account(op[1].fee) }}</span>
             </i18n>
         </td>
         <!-- 78:inline_transfer -->
