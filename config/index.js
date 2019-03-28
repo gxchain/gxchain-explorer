@@ -2,6 +2,24 @@
 var path = require('path');
 
 let isTest = process.env.test;
+let isDev = process.env.dev;
+let witnesses = [
+    // 'ws://172.19.19.148:28090',
+    // 'ws://172.19.19.149:28090'
+    // "wss://node1.gxb.io",
+    'wss://node5.gxb.io',
+    'wss://node8.gxb.io',
+    'wss://node11.gxb.io',
+    'wss://node15.gxb.io',
+    'wss://node16.gxb.io',
+    'wss://node17.gxb.io'
+];
+if(isTest){
+    witnesses = ['wss://testnet.gxchain.org'];
+}
+if(isDev){
+    witnesses = ['ws://47.96.164.78:28090'];
+}
 
 module.exports = {
     build: {
@@ -11,17 +29,7 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         productionSourceMap: false,
-        witnesses: isTest ? ['wss://testnet.gxchain.org'] : [
-            // 'ws://172.19.19.148:28090',
-            // 'ws://172.19.19.149:28090'
-            // "wss://node1.gxb.io",
-            'wss://node5.gxb.io',
-            'wss://node8.gxb.io',
-            'wss://node11.gxb.io',
-            'wss://node15.gxb.io',
-            'wss://node16.gxb.io',
-            'wss://node17.gxb.io'
-        ],
+        witnesses: witnesses,
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.
         // Before setting to `true`, make sure to:

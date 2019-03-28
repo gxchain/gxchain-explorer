@@ -64,7 +64,7 @@ router.get('/asset/:asset_name', function (req, res) {
 router.get('/transaction/:tx_id', function (req, res) {
     let txid = req.params.tx_id.toLowerCase();
     let STA_SERVICE = config.build.env.STA_SERVICE;
-    if (config.build.env.network.indexOf('testnet') === -1) {
+    if (config.build.env.network.indexOf('testnet') === -1 && config.build.env.network.indexOf('47.96.164.78') === -1) {
         superagent.get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`).query({
             txid: txid
         }).end((err, resp) => {
