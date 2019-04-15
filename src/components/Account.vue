@@ -105,11 +105,15 @@
                                 </tr>
                                 <tr v-if="account_info&&account_info.locked_balances.length>0" key="locked">
                                     <th class="color-warning">{{$t('account.locked_balance')}}</th>
-                                    <td align="right">{{account_info.locked_balances[0].amount.amount/100000|number(2)}}</td>
+                                    <td align="right">
+                                        {{sumLockedBalance(account_info.locked_balances)/100000|number(2)}}
+                                    </td>
                                 </tr>
                                 <tr v-if="account_info&&account_info.pledge_balances.length>0" key="pledge">
                                     <th class="color-warning">{{$t('account.pledge_balance')}}</th>
-                                    <td align="right">{{account_info.pledge_balances[0].amount.amount/100000|number(2)}}</td>
+                                    <td align="right">
+                                        {{account_info.pledge_balances[0].amount.amount/100000|number(2)}}
+                                    </td>
                                 </tr>
                                 <tr v-if="Object.keys(account_info.balances).length==0">
                                     <td colspan="2">
@@ -346,6 +350,13 @@
                     this.code.wast = resp.body.wast;
                 }).catch(console.error);
             },
+            sumLockedBalance (balances) {
+                var sum = 0;
+                balances.forEach(b => {
+                    sum += Number(b.amount.amount);
+                });
+                return sum;
+            },
             getActionDefine (action_name) {
                 let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
                 return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
@@ -517,9 +528,10 @@
 </script>
 
 <style scoped>
-    .color-warning{
+    .color-warning {
         color: #ffbc10;
     }
+
     .right {
         text-align: right;
     }

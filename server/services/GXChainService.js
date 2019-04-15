@@ -192,7 +192,7 @@ const fetch_candidates = function () {
             superagent.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
         ]).then(results => {
             let accounts = results[0];
-            console.log(accounts);
+            // console.log(accounts);
             let trustNodeOffChainInfo = JSON.parse(results[1].text).list;
             let candidates = accounts.map(a => {
                 let info = trustNodeOffChainInfo.find(t => t.accountName === a[1].account.name);
