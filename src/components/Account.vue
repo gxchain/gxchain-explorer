@@ -326,6 +326,9 @@
                     headers: [],
                     name: '',
                     page: 0,
+                    primary_key: null,
+                    upper_bound: -1,
+                    lower_bound: 0,
                     hasMore: false,
                     data: []
                 },
@@ -366,13 +369,27 @@
             },
             loadTableData (page) {
                 const pageSize = 10;
-                Apis.instance().db_api().exec('get_table_rows', [
+                if (page < this.current_table.page) {
+                    this.current_table.upper_bound = this.current_table.lower_bound;
+                }
+                if (page === 0) {
+                    this.current_table.upper_bound = -1;
+                }
+                Apis.instance().db_api().exec('get_table_rows_ex', [
                     this.account_info.name, // contract_name
                     this.current_table.name, // table_name
-                    pageSize * page, // start
-                    pageSize // limit
+                    {
+                        lower_bound: 0,
+                        upper_bound: this.current_table.upper_bound,
+                        reverse: true,
+                        limit: pageSize
+                    }
                 ]).then(resp => {
                     this.current_table.page = page;
+                    if (resp.rows.length > 0) {
+                        this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
+                        this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
+                    }
                     this.current_table.data = resp.rows.map(row => {
                         let result = [];
                         this.current_table.headers.forEach(h => {
@@ -457,6 +474,9 @@
                 this.current_table = {
                     headers: [],
                     name: '',
+                    primary_key: null,
+                    upper_bound: -1,
+                    lower_bound: 0,
                     page: 0,
                     data: [],
                     hasMore: false
@@ -470,7 +490,13 @@
                     this.account_info.abi.structs.forEach(s => {
                         if (s.name === val) {
                             this.current_table.headers = s.fields.map(f => f.name);
+                            this.current_table.primary_key = null;
+                            if (this.current_table.headers.length > 0) {
+                                this.current_table.primary_key = this.current_table.headers[0];
+                            }
                             this.current_table.page = 0;
+                            this.current_table.upper_bound = -1;
+                            this.current_table.lower_bound = 0;
                             this.loadTableData(0);
                         }
                     });
