@@ -7,9 +7,15 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw fa-address-card"></span> {{$t('account.basic.title')}}
-                            <a class="pull-right"
+                            
+                            <a v-if="network.chainId =='4f7d07969c446f8342033acb3ab2ae5044cbe0fde93db02de75bd17fa8fd84b8'"  class="pull-right"
                                :href="'https://wallet.gxb.io/#/account/'+account_info.name+'/overview'"
                                target="_blank">{{$t('account.basic.more')}}</a>
+
+                            <a v-else class="pull-right"
+                               :href="'https://testnet.wallet.gxchain.org/#/account/'+account_info.name+'/overview'"
+                               target="_blank">{{$t('account.basic.more')}}</a>
+                               
                         </div>
                         <div class="panel-body no-padding">
                             <div class="table-responsive">
@@ -333,6 +339,7 @@
                 latestTransactions: [],
                 history_length: 100,
                 isTrustNode: -1,
+                network: process.env.network,
                 ChainStore
             };
         },
