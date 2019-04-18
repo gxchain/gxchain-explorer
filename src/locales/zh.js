@@ -587,12 +587,19 @@ const locale = {
         }
     },
     fee: {
+        mark: '在公信宝系统中，每一种操作都将花费相应手续费。手续费率可能发生变化。然而，手续费的调整需要获得股东的授权。所以每一位持有公信宝核心资产的股东对费率的构成都有话语权。如果股东确信某种手续费的降低将带来好处，并且达成共识，那么该种手续费则由区块链自动进行调低。区块链参数的改变由理事会成员提出动议。这些成员由全体股东投票选举产生，以提高系统灵活性和响应率。',
         feeGroups: {
-            general: '一般费率',
-            asset: '资产相关',
+            general_row: '一般费率',
+            asset_row: '资产相关',
             market: '市场相关',
-            account: '账户相关',
-            business: '业务管理'
+            account_row: '账户相关',
+            business_row: '业务管理'
+        },
+        title: {
+            action: '操作',
+            type: '手续费类型',
+            fee: '标准手续费',
+            feeltm: '终身会员手续费'
         },
         trxTypes: {
             all: '显示全部',
@@ -677,7 +684,8 @@ const locale = {
             membership_lifetime_fee: '终身会籍',
             symbol3: '资产符号长度3位',
             symbol4: '资产符号长度4位',
-            long_symbol: '更长的资产符号'
+            long_symbol: '更长的资产符号',
+            price_per_output: ''
         }
     }
 };
