@@ -11,6 +11,7 @@ const locale = {
         search: 'Enter block number, txid, account name or id here',
         trustnode_election: 'TrustNode Election',
         login: 'Login',
+        fee: 'Network Fees',
         profile: 'Profile',
         download: 'You haven\'t download extension, confirm to download',
         logout: 'Logout'
