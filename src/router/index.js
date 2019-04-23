@@ -7,6 +7,7 @@ import Account from '@/components/Account';
 import Asset from '@/components/Asset';
 import connect from '@/common/connect';
 import Holdrank from '@/components/Holdrank';
+import Fee from '@/components/Fee';
 
 Vue.use(Router);
 
@@ -42,6 +43,11 @@ const router = new Router({
             path: '/holdrank/:type',
             name: 'Holdrank',
             component: Holdrank
+        },
+        {
+            path: '/fee/',
+            name: 'Fee',
+            component: Fee
         }
 
     ]
