@@ -3,9 +3,9 @@
         <div class="footer-outer">
             <div class="footer-inner">
                 <div class="text-center">
-                    @2017 - 2018 Powered by GXChain &nbsp;<a target='_blank' nofollow
+                    @2017 - {{present}} Powered by GXChain &nbsp;<a target='_blank' nofollow
                                                   href="https://github.com/gxchain/gxb-explorer"><span
-                        class="fa fa-lg fa-github"></span></a>
+                        class="fab fa-lg fa-github"></span></a>
                 </div>
             </div>
         </div>
@@ -13,7 +13,13 @@
 </template>
 
 <script>
-
+export default {
+    data () {
+        return {
+            present: (new Date()).getFullYear()
+        };
+    }
+};
 </script>
 <style scoped>
     .footer {
