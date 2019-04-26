@@ -376,7 +376,7 @@
                 return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
             },
             loadTableData (page) {
-                const pageSize = 2;
+                const pageSize = 10;
                 if (page < this.current_table.page) {
                     this.current_table.upper_bound = this.current_table.lower_bound + 1;
                 }
