@@ -367,7 +367,7 @@
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
-                supportedAssets: ['GXC', 'PPS', 'LVCOIN', 'Block'],
+                supportedAssets: ['GXC', 'PPS', 'LVCOIN', 'BLOCK'],
                 currentAsset: 'GXC',
                 rankings: [],
                 assets: [],
