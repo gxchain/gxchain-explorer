@@ -12,6 +12,7 @@ const locale = {
         trustnode_election: 'TrustNode Election',
         login: 'Login',
         fee: 'Network Fees',
+        more: 'More',
         profile: 'Profile',
         download: 'You haven\'t download extension, confirm to download',
         logout: 'Logout'

@@ -12,6 +12,7 @@ const locale = {
         trustnode_election: '公信节点竞选',
         login: 'GXC Wallet登录',
         fee: '网络费率',
+        more: '更多',
         profile: '账户资料',
         download: '你还没有安装gscatter，是否前往安装？',
         logout: '退出'
