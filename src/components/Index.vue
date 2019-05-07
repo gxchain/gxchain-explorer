@@ -158,130 +158,8 @@
                     </div>
                 </div>
             </div>
-
-            <!--TrustNodes-->
-            <div class="col-md-4">
-                <!--Candidates-->
-                <div v-if="global_params" class="panel panel-default panel-trust-nodes">
-                    <div class="panel-heading">
-                        <span class="fa fa-fw fa-users"></span>&nbsp;{{$t('index.candidate.title')}}
-                    </div>
-                    <div class="panel-body no-padding">
-                        <div class="table-responsive">
-                            <table class="table table-striped no-margin">
-                                <thead>
-                                <tr>
-                                    <th>{{$t('index.candidate.account')}}</th>
-                                    <th class="text-right">{{$t('index.candidate.margin')}}</th>
-                                    <th class="text-right">{{$t('index.witness.votes')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="c in candidates" :key="c.account">
-                                    <td>
-                                        <div>
-                                            <img v-if="c.extra&&c.extra.logo" :src="c.extra.logo" width="16px"/>
-                                            <account-image v-if="!(c.extra&&c.extra.logo)" :size="8"
-                                                           :account="c.account"></account-image>
-                                            &nbsp;
-                                            <router-link :to="{path:'/account/'+c.account}">
-                                                {{c.account}}
-                                            </router-link>
-                                        </div>
-
-                                        <div>
-                                            <small class="tip">{{c.extra?c.extra.nodeName:''}}</small>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">{{c.margin/100000|number(0)}}</td>
-                                    <td class="text-right">{{c.votes/100000|number(0)}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <pre>
-                            <div>{{$t('index.candidate.pre')}}:</div>
-                            <div>github.com/gxchain/TrustNodes</div>
-                        </pre>
-                    </div>
-                </div>
-                <!--Witnesses-->
-                <div v-if="global_params" class="panel panel-default panel-witness">
-                    <div class="panel-heading">
-                        <span class="fa fa-fw gxicon gxicon-witness"></span>&nbsp;{{$t('index.witness.title')}}
-                    </div>
-                    <div class="panel-body no-padding">
-                        <div class="table-responsive">
-                            <table class="table table-striped no-margin">
-                                <thead>
-                                <tr>
-                                    <th>{{$t('index.witness.witness')}}</th>
-                                    <th>{{$t('index.witness.last_confirmed_block')}}</th>
-                                    <th class="text-right">{{$t('index.witness.votes')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="witness in global_params.active_witnesses"
-                                    :key="witness"
-                                    :class="{info:getLastConfirmedBlock(witness)==block_info.head_block_number}">
-                                    <td>
-                                        <account-image :size="8"
-                                                       :account="getWitnessAccountName(witness)"></account-image>
-                                        &nbsp;
-                                        <router-link :to="{path:'/account/'+getWitnessAccountName(witness)}">
-                                            {{getWitnessAccountName(witness)}}
-                                        </router-link>
-                                    </td>
-                                    <td>
-                                        <router-link :to="{path:'/block/'+getLastConfirmedBlock(witness)}">
-                                            {{getLastConfirmedBlock(witness)}}
-                                        </router-link>
-                                    </td>
-                                    <td class="text-right">
-                                        {{ChainStore.getObject(witness) &&
-                                        ChainStore.getObject(witness).get('total_votes') / 100000 | number(0)}}
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--Committee-->
-                <div v-if="global_params" class="panel panel-default">
-                    <div class="panel-heading">
-                        <span class="fa fa-fw gxicon gxicon-commitee"></span>&nbsp;{{$t('index.committee.title')}}
-                    </div>
-                    <div class="panel-body no-padding">
-                        <table class="table table-striped no-margin">
-                            <thead>
-                            <tr>
-                                <th>{{$t('index.committee.account')}}</th>
-                                <th class="text-right">{{$t('index.committee.votes')}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="member in global_params.active_committee_members" :key="member">
-                                <td>
-                                    <account-image :size="8" :account="getCommitteeAccountName(member)"></account-image>
-                                    &nbsp;
-                                    <router-link :to="{path:'/account/'+getCommitteeAccountName(member)}">
-                                        {{getCommitteeAccountName(member)}}
-                                    </router-link>
-                                </td>
-                                <td class="text-right">
-                                    {{ChainStore.getObject(member) && ChainStore.getObject(member).get('total_votes') /
-                                    100000 | number(0)}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
             <!--Assets-->
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-asset"></span> {{$t('index.asset.title')}}
@@ -317,9 +195,10 @@
                         </table>
                     </div>
                 </div>
-
-                <!--Histories-->
-                <div v-if="latestBlocks" class="panel panel-default">
+            </div>
+            <!--Histories-->
+            <div class="col-md-12">
+                <div v-if="latestBlocks" class="panel panel-default panel-histories">
                     <div class="panel-heading">
                         <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
                     </div>
@@ -363,7 +242,6 @@
                     num: 0,
                     accounts: 0
                 },
-                candidates: [],
                 account_number: 0,
                 history_loading: true,
                 assets_loading: true,
@@ -476,7 +354,6 @@
             this.loadVoteNumbers();
             this.loadAssets();
             this.loadAccountNumber();
-            this.loadTrustNodeCandidates();
             this.accountNumberInterval = setInterval(() => {
                 this.loadAccountNumber();
             }, 10000);
@@ -531,12 +408,6 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
-            loadTrustNodeCandidates () {
-                this.$http
-                .get('/api/trustnode/candidates').then(resp => {
-                    this.candidates = resp.data;
-                });
-            },
             loadVoteNumbers () {
                 this.$http
                 .get(`${process.env.STA_SERVICE}/vote/statistics`)
@@ -626,41 +497,6 @@
                     this.loadRankings();
                 });
             },
-            getCommitteeAccountName (member) {
-                if (
-                    ChainStore.getObject(member) &&
-                    ChainStore.getObject(
-                        ChainStore.getObject(member).get('committee_member_account')
-                    )
-                ) {
-                    return ChainStore.getObject(
-                        ChainStore.getObject(member).get('committee_member_account')
-                    ).get('name');
-                }
-                return null;
-            },
-
-            getWitnessAccountName (witness) {
-                if (
-                    ChainStore.getObject(witness) &&
-                    ChainStore.getObject(
-                        ChainStore.getObject(witness).get('witness_account')
-                    )
-                ) {
-                    return ChainStore.getObject(
-                        ChainStore.getObject(witness).get('witness_account')
-                    ).get('name');
-                }
-                return null;
-            },
-
-            getLastConfirmedBlock (witness) {
-                return (
-                    ChainStore.getObject(witness) &&
-                    ChainStore.getObject(witness).get('last_confirmed_block_num')
-                );
-            },
-
             getInitialBlocks (maxBlock) {
                 if (maxBlock) {
                     this.getBlocks(maxBlock, 5);
@@ -865,23 +701,12 @@
     .progress-bar-info {
         background-color: #3d4463;
     }
-
-    .panel-witness .table-responsive, .panel-trust-nodes .table-responsive {
-        margin-bottom: 0;
-        border: none;
+    
+    .panel-histories table {
+        word-break: break-all;
     }
 
-    .panel-trust-nodes .tip {
-        color: #666;
-    }
-
-    .panel-trust-nodes pre {
-        border: none;
-        border-radius: 0;
-        margin: 0;
-        padding: 10px;
-        font-size: 8px;
-        line-height: 8px;
-        color: #666;
+    .panel-histories table tr th:last-child {
+        min-width: 70px;
     }
 </style>

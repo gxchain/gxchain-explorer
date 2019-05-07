@@ -8,6 +8,7 @@ import Asset from '@/components/Asset';
 import connect from '@/common/connect';
 import Holdrank from '@/components/Holdrank';
 import Fee from '@/components/Fee';
+import More from '@/components/More';
 
 Vue.use(Router);
 
@@ -48,6 +49,11 @@ const router = new Router({
             path: '/fee/',
             name: 'Fee',
             component: Fee
+        },
+        {
+            path: '/more/',
+            name: 'More',
+            component: More
         }
 
     ]
