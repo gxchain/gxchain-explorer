@@ -67,6 +67,63 @@
                 </div>
             </div>
 
+            <!--Blocks-->
+            <div class="col-md-12">
+                <div v-if="block_info&&global_params&&supply_info" class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="fa fa-fw gxicon gxicon-block"></span>&nbsp;{{$t('index.summary.title')}}
+                    </div>
+                    <div class="panel-body no-padding table-responsive">
+                        <table class="table table-striped table-bordered no-margin">
+                            <tbody>
+                            <tr>
+                                <th>{{$t('index.summary.head_block_number')}}</th>
+                                <td>
+                                    <router-link :to="{path:'/block/'+block_info.head_block_number}">
+                                        {{block_info.head_block_number}}
+                                    </router-link>
+                                </td>
+                                <th>{{$t('index.summary.last_irreversible_block_num')}}</th>
+                                <td>
+                                    <router-link :to="{path:'/block/'+block_info.last_irreversible_block_num}">
+                                        {{block_info.last_irreversible_block_num}}
+                                    </router-link>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{$t('index.summary.block_interval')}}</th>
+                                <td>{{global_params.parameters.block_interval}}</td>
+                                <th>{{$t('index.summary.recently_missed_count')}}</th>
+                                <td>{{block_info.recently_missed_count}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--Histories-->
+            <div class="col-md-12">
+                <div v-if="latestBlocks" class="panel panel-default panel-histories">
+                    <div class="panel-heading">
+                        <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
+                    </div>
+                    <div class="panel-body no-padding">
+                        <Loading v-show="history_loading"></Loading>
+                        <table class="table table-striped no-margin" v-show="!history_loading">
+                            <thead>
+                            <tr>
+                                <th>{{$t('index.transactions.type')}}</th>
+                                <th>{{$t('index.transactions.content')}}</th>
+                                <th class="right">{{$t('index.transactions.time')}}</th>
+                            </tr>
+                            </thead>
+                            <History_Op :latestTransactions="latestTransactions"></History_Op>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!--Asset Ranking-->
             <div class="col-md-12">
                 <div class="panel panel-default panel-ranking">
@@ -124,40 +181,6 @@
                 </div>
             </div>
 
-            <!--Blocks-->
-            <div class="col-md-12">
-                <div v-if="block_info&&global_params&&supply_info" class="panel panel-default">
-                    <div class="panel-heading">
-                        <span class="fa fa-fw gxicon gxicon-block"></span>&nbsp;{{$t('index.summary.title')}}
-                    </div>
-                    <div class="panel-body no-padding table-responsive">
-                        <table class="table table-striped table-bordered no-margin">
-                            <tbody>
-                            <tr>
-                                <th>{{$t('index.summary.head_block_number')}}</th>
-                                <td>
-                                    <router-link :to="{path:'/block/'+block_info.head_block_number}">
-                                        {{block_info.head_block_number}}
-                                    </router-link>
-                                </td>
-                                <th>{{$t('index.summary.last_irreversible_block_num')}}</th>
-                                <td>
-                                    <router-link :to="{path:'/block/'+block_info.last_irreversible_block_num}">
-                                        {{block_info.last_irreversible_block_num}}
-                                    </router-link>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>{{$t('index.summary.block_interval')}}</th>
-                                <td>{{global_params.parameters.block_interval}}</td>
-                                <th>{{$t('index.summary.recently_missed_count')}}</th>
-                                <td>{{block_info.recently_missed_count}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
             <!--Assets-->
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -196,27 +219,7 @@
                     </div>
                 </div>
             </div>
-            <!--Histories-->
-            <div class="col-md-12">
-                <div v-if="latestBlocks" class="panel panel-default panel-histories">
-                    <div class="panel-heading">
-                        <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
-                    </div>
-                    <div class="panel-body no-padding">
-                        <Loading v-show="history_loading"></Loading>
-                        <table class="table table-striped no-margin" v-show="!history_loading">
-                            <thead>
-                            <tr>
-                                <th>{{$t('index.transactions.type')}}</th>
-                                <th>{{$t('index.transactions.content')}}</th>
-                                <th class="right">{{$t('index.transactions.time')}}</th>
-                            </tr>
-                            </thead>
-                            <History_Op :latestTransactions="latestTransactions"></History_Op>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </template>

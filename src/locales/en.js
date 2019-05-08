@@ -10,9 +10,10 @@ const locale = {
         flag: 'en',
         search: 'Enter block number, txid, account name or id here',
         trustnode_election: 'TrustNode Election',
+        home: 'Home',
         login: 'Login',
         fee: 'Network Fees',
-        more: 'More',
+        node_members: 'Node Members',
         profile: 'Profile',
         download: 'You haven\'t download extension, confirm to download',
         logout: 'Logout'

@@ -10,9 +10,10 @@ const locale = {
         flag: 'zh',
         search: '在此输入区块id、交易id(txid)、账户id或者账户名进行查询',
         trustnode_election: '公信节点竞选',
+        home: '首页',
         login: 'GXC Wallet登录',
         fee: '网络费率',
-        more: '更多',
+        node_members: '节点成员',
         profile: '账户资料',
         download: '你还没有安装gscatter，是否前往安装？',
         logout: '退出'
