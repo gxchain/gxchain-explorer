@@ -610,6 +610,10 @@
 </script>
 
 <style scoped>
+    a {
+        vertical-align: middle;
+    }
+    
     .page-header {
         margin: 0 0 20px;
     }

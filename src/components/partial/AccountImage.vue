@@ -8,15 +8,7 @@
 <script>
     import jdenticon from 'jdenticon';
     import sha256 from 'js-sha256';
-
-    const IMAGE_MAP = {
-        GXC: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/gxs.png',
-        GXS: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/gxs.png',
-        BDB: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/bdb.png',
-        PPS: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/pps.png',
-        LVCOIN: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/lvcoin.png',
-        LUCIA: 'https://gxs-wallet.oss-cn-shanghai.aliyuncs.com/symbols/lucia.png'
-    };
+    import { mapGetters } from 'vuex';
 
     export default {
         props: {
@@ -36,6 +28,9 @@
             };
         },
         computed: {
+            ...mapGetters({
+                symbolsMap: 'symbolsMap'
+            }),
             hash: function () {
                 return this.account ? sha256(this.account) : '';
             }
@@ -50,9 +45,9 @@
         },
         methods: {
             drawCanvas () {
-                if (IMAGE_MAP[this.account]) {
+                if (this.symbolsMap[this.account]) {
                     this.imgShow = true;
-                    this.imgSrc = IMAGE_MAP[this.account];
+                    this.imgSrc = this.symbolsMap[this.account];
                 } else {
                     this.imgShow = false;
                     if (this.account) {

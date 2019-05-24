@@ -31,7 +31,7 @@
     import modalAbout from './components/modals/modal-about.vue';
     import header from './components/partial/Header.vue';
     import footer from './components/partial/Footer.vue';
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
         name: 'app',
@@ -45,7 +45,15 @@
                 this.keywordsChanged();
             }
         },
+        created () {
+            this.$http.get('//static.gxb.io/gxs/symbols/maps.json').then(resp => {
+                this.setSymbolsMap({symbolsMap: resp.body || {}});
+            }).catch(ex => { console.error(ex) });
+        },
         methods: {
+            ...mapActions({
+                setSymbolsMap: 'setSymbolsMap'
+            }),
             keywordsChanged () {
                 if (!this.keywords) {
                     if (this.$route.name !== 'Holdrank') {
