@@ -46,7 +46,7 @@
             }
         },
         created () {
-            this.$http.get('//static.gxb.io/gxs/symbols/maps.json').then(resp => {
+            this.$http.get('//static.gxb.io/gxs/symbols/maps.json?v=' + new Date().getTime()).then(resp => {
                 this.setSymbolsMap({symbolsMap: resp.body || {}});
             }).catch(ex => { console.error(ex) });
         },
