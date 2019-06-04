@@ -3,6 +3,7 @@ import { Apis } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
 import Immutable from 'immutable';
 import superagent from 'superagent';
+import config from '../../config';
 
 /**
  * get account information by name
@@ -14,6 +15,43 @@ const fetch_account = (account_name) => {
 
 const fetch_full_account = (account) => {
     return Apis.instance().db_api().exec('get_full_accounts', [[account], false]);
+};
+
+const fetch_account_history = (account_id, pageNo, pageSize) => {
+    return new Promise(function (resolve, reject) {
+        superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
+        .set('Content-Type', 'application/json')
+        .send({
+            'query': {
+                'bool': {
+                    'must': [{
+                        'term': {
+                            'account_history.account': account_id
+                        }
+                    }]
+                }
+            },
+            'from': (pageNo - 1) * pageSize,
+            'size': pageSize,
+            'sort': [{'block_data.block_time': 'desc'}]
+        })
+        .end((err, res) => {
+            if (err) {
+                reject(err);
+            } else {
+                try {
+                    const respList = res.body.hits.hits;
+                    const list = [];
+                    for (let i = 0; i < respList.length; i++) {
+                        list.push(respList[i]._source);
+                    }
+                    resolve({ list, totalCount: res.body.hits.total, pageNo, pageSize });
+                } catch (ex) {
+                    reject(ex);
+                }
+            }
+        });
+    });
 };
 
 /**
@@ -232,6 +270,7 @@ export default {
     fetch_assets,
     fetch_account,
     fetch_full_account,
+    fetch_account_history,
     fetch_account_balance,
     fetch_product,
     fetch_candidates

@@ -503,6 +503,7 @@ const locale = {
         basic: {
             title: '基本信息',
             more: '更多',
+            no_more: '没有更多了',
             account_name: '账户名',
             account_id: '账户ID',
             membership: '账户类型',
@@ -564,6 +565,7 @@ const locale = {
         query_block: '区块查询',
         query_transaction: '交易查询',
         query_account: '账户查询',
+        query_account_history: '账户历史查询',
         query_account_balance: '余额查询',
         get_account_header: '账户头像',
         assets: '资产列表:',

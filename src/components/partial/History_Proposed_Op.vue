@@ -471,6 +471,7 @@
         },
         methods: {
             formatted_account (id) {
+                if (!id) return;
                 let self = this;
                 if (this.items[id]) {
                     return this.account[id];

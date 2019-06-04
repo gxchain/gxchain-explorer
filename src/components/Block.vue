@@ -106,7 +106,8 @@
             })
         },
         watch: {
-            keywords () {
+            keywords (newVal, oldVal) {
+                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
                 this.loading = true;
                 this.fetch_block();
             }

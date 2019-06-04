@@ -504,6 +504,7 @@ const locale = {
         basic: {
             title: 'Basic Information',
             more: 'More',
+            no_more: 'No More',
             account_name: 'Account Name',
             account_id: 'Account ID',
             membership: 'Membership',
@@ -565,6 +566,7 @@ const locale = {
         query_block: 'Query Block:',
         query_transaction: 'Query Transaction:',
         query_account: 'Query Account:',
+        query_account_history: 'Query Account History',
         query_account_balance: 'Query Account Balance:',
         get_account_header: 'Get Account Header:',
         assets: 'Assets:',

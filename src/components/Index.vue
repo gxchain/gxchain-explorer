@@ -115,7 +115,7 @@
                             <tr>
                                 <th>{{$t('index.transactions.type')}}</th>
                                 <th>{{$t('index.transactions.content')}}</th>
-                                <th class="right">{{$t('index.transactions.time')}}</th>
+                                <th class="right" width="80">{{$t('index.transactions.time')}}</th>
                             </tr>
                             </thead>
                             <History_Op :latestTransactions="latestTransactions"></History_Op>

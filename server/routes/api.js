@@ -126,6 +126,17 @@ router.get('/account/:account_id_or_name', function (req, res) {
 });
 
 /**
+ * 账户历史查询
+ */
+router.get('/account_history/:account_id', function (req, res) {
+    GXChainService.fetch_account_history(req.params.account_id, req.query.pageNo || 1, req.query.pageSize || 10).then((histories) => {
+        res.send(histories);
+    }).catch(() => {
+        res.send({});
+    });
+});
+
+/**
  * 账户余额查询
  */
 router.get('/account_balance/:account_id_or_name', function (req, res) {

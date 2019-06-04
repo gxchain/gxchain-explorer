@@ -280,8 +280,6 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
-                            <a class="pull-right more-btn" v-on:click="collapse"
-                               v-if="latestTransactions.length > 9">{{$t('account.basic.more')}}</a>
                         </div>
                         <div class="panel-body no-padding">
                             <Loading v-show="history_loading"></Loading>
@@ -291,11 +289,15 @@
                                     <tr>
                                         <th>{{$t('index.transactions.type')}}</th>
                                         <th>{{$t('index.transactions.content')}}</th>
-                                        <th class="right">{{$t('index.transactions.time')}}</th>
+                                        <th class="right" width="80">{{$t('index.transactions.time')}}</th>
                                     </tr>
                                     </thead>
                                     <History_Op :latestTransactions="latestTransactions" parent="Account"></History_Op>
                                 </table>
+                            </div>
+                            <div class="load-box" v-if="totalPage > 0">
+                                <span class="more" v-if="pageNo < totalPage" @click="loadMoreHistory">{{$t('account.basic.more')}}</span>
+                                <span class="no-more" v-else>{{$t('account.basic.no_more')}}</span>
                             </div>
                         </div>
                     </div>
@@ -313,7 +315,7 @@
     import { mapActions, mapGetters } from 'vuex';
     import { ChainStore } from 'gxbjs';
     import { Apis } from 'gxbjs-ws';
-    import { calc_block_time, get_assets_by_ids } from '@/services/CommonService';
+    import { get_assets_by_ids, fetch_account_by_chain, fetch_account_history } from '@/services/CommonService';
     import filters from '@/filters';
     import History_Op from './partial/History_Op.vue';
 
@@ -341,10 +343,13 @@
                 },
                 account_info: null,
                 latestTransactions: [],
-                history_length: 100,
                 isTrustNode: -1,
                 network: process.env.network,
-                ChainStore
+                ChainStore,
+                pageNo: 1,
+                pageSize: 10,
+                totalPage: 0,
+                isRefreshPage: false
             };
         },
         filters: filters,
@@ -353,9 +358,6 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
-            collapse () {
-                $('.collapse').collapse('toggle');
-            },
             getWAST () {
                 this.$http.post('/api/wasm2wast', {wasm: this.account_info.code}).then(resp => {
                     this.code.wast = resp.body.wast;
@@ -420,63 +422,71 @@
                     this.isTrustNode = results[0] && results[1];
                 });
             },
-            onUpdate () {
-                try {
-                    if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
-                        this.loading = false;
-                        return;
-                    }
-                } catch (e) {
-                    this.loading = false;
-                }
-                this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
-                if (this.account_info && this.account_info.code && !this.code.wast) {
-                    if (this.account_info.abi.tables.length > 0) {
-                        this.current_table.name = this.account_info.abi.tables[0].name;
-                    }
-                    this.getWAST();
-                }
-                if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
-                    this.loadTrustNodeInfo(this.account_info.id);
-                }
-                let ids = Object.keys(this.account_info.balances);
-                get_assets_by_ids(ids).then(assets => {
-                    let assetMap = {};
-                    assets.forEach(asset => {
-                        assetMap[asset.id] = asset;
-                    });
-                    for (let i = 0; i < ids.length; i++) {
-                        let obj = {
-                            symbol: assetMap[ids[i]].symbol,
-                            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(assetMap[ids[i]].precision), assetMap[ids[i]].precision)
-                        };
-                        this.account_info.balances[ids[i]] = obj;
-                    }
-                });
-                if (this.account_info.history) {
-                    let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
-                    for (let i = length - 1; i >= 0; i--) {
-                        this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
-
-                        if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-                            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
-                            let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
-                            let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
-                            this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
+            loadAccountHistory (id, pageNo, pageSize) {
+                fetch_account_history(this.account_info.id, pageNo, pageSize).then(res => {
+                    const respList = res.body.list;
+                    this.totalPage = Math.ceil(res.body.totalCount / pageSize);
+                    for (let i = 0; i < respList.length; i++) {
+                        const item = [];
+                        item[0] = respList[i].operation_type;
+                        item[1] = respList[i].operation_history.op_object;
+                        if (item[1].hasOwnProperty('amount_')) {
+                            item[1].amount = item[1].amount_;
                         }
-
-                        this.latestTransactions.unshift(this.account_info.history[i].op);
-                        if (this.latestTransactions.length > length) {
-                            this.latestTransactions.pop();
-                        }
+                        item['block_id'] = respList[i].block_data.block_num;
+                        item['timestamp'] = new Date(respList[i].block_data.block_time + 'Z').format('yyyy-MM-dd hh:mm:ss');
+                        this.latestTransactions.push(item);
                     }
                     this.history_loading = false;
-                }
-                this.loading = false;
+                }).catch((ex) => {
+                    console.error(ex);
+                    this.history_loading = false;
+                });
+            },
+            loadMoreHistory () {
+                this.pageNo++;
+                this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize);
+            },
+            onUpdate () {
+                fetch_account_by_chain(this.$route.params.id_or_name).then(res => {
+                    this.account_info = res.toJS();
+                    if (this.account_info && this.account_info.code && !this.code.wast) {
+                        if (this.account_info.abi.tables.length > 0) {
+                            this.current_table.name = this.account_info.abi.tables[0].name;
+                        }
+                        this.getWAST();
+                    }
+                    if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
+                        this.loadTrustNodeInfo(this.account_info.id);
+                        this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize);
+                    }
+                    let ids = Object.keys(this.account_info.balances);
+                    get_assets_by_ids(ids).then(assets => {
+                        let assetMap = {};
+                        assets.forEach(asset => {
+                            assetMap[asset.id] = asset;
+                        });
+                        for (let i = 0; i < ids.length; i++) {
+                            if (typeof this.account_info.balances[ids[i]] !== 'object') {
+                                let obj = {
+                                    symbol: assetMap[ids[i]].symbol,
+                                    amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(assetMap[ids[i]].precision), assetMap[ids[i]].precision)
+                                };
+                                this.account_info.balances[ids[i]] = obj;
+                            }
+                        }
+                    });
+                    this.loading = false;
+                    return null;
+                }).catch((ex) => {
+                    console.error(ex);
+                    this.loading = false;
+                });
             }
         },
         watch: {
-            keywords () {
+            keywords (newVal, oldVal) {
+                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
                 this.loading = true;
                 this.account_info = null;
                 this.current_table = {
@@ -490,6 +500,8 @@
                     hasMore: false
                 };
                 this.code.wast = '';
+                this.isTrustNode = -1;
+                this.pageNo = 1;
                 this.latestTransactions = [];
                 this.onUpdate();
             },
@@ -549,11 +561,9 @@
             if (this.$route.params.id_or_name !== this.keywords) {
                 this.setKeywords({keywords: this.$route.params.id_or_name});
             }
-            ChainStore.subscribe(this.onUpdate);
             this.onUpdate();
         },
         destroyed () {
-            ChainStore.unsubscribe(this.onUpdate);
         },
         components: {
             History_Op: History_Op
@@ -615,5 +625,19 @@
         font-size: 15px;
         background: #eee;
         padding: 5px;
+    }
+    .load-box {
+        padding: 8px;
+        text-align: center;
+    }
+    .load-box .more {
+        color: #6699ff;
+    }
+    .load-box .more:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .load-box .no-more {
+        color: #333333;
     }
 </style>

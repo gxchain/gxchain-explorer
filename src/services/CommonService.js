@@ -28,6 +28,12 @@ export const fetch_account = (id_or_name) => {
     });
 };
 
+export const fetch_account_history = (id, pageNo, pageSize) => {
+    return Vue.http.get(`//${baseURL}/api/account_history/${id}?pageNo=${pageNo}&pageSize=${pageSize}`, {
+        responseType: 'json'
+    });
+};
+
 export const fetch_account_balance = (id_or_name) => {
     return Vue.http.get(`//${baseURL}/api/account_balance/${id_or_name}`, {
         responseType: 'json'
@@ -36,12 +42,6 @@ export const fetch_account_balance = (id_or_name) => {
 
 export const fetch_product = (product_id) => {
     return Vue.http.get(`//${baseURL}/api/product/${product_id}`, {
-        responseType: 'json'
-    });
-};
-
-export const get_rank = (typeid) => {
-    return Vue.http.get(`//${baseURL}/api/holdrank/${typeid}`, {
         responseType: 'json'
     });
 };

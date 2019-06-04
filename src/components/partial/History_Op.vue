@@ -3,8 +3,7 @@
     <tr v-if="latestTransactions.length === 0">
         <td colspan="3" align="center">暂无数据</td>
     </tr>
-    <tr v-else v-for="(op,index) in latestTransactions" :key="index"
-        :class="((index > 8)&&(parent == 'Account')) ? 'collapse' : ''">
+    <tr v-else v-for="(op,index) in latestTransactions" :key="index">
         <!-- 账户相关 -->
         <!-- 0:transfer -->
         <th v-if="ops[op[0]] == 'transfer'">
@@ -1062,6 +1061,7 @@
         },
         methods: {
             formatted_account (id) {
+                if (!id) return;
                 let self = this;
                 if (this.items[id]) {
                     return this.account[id];
