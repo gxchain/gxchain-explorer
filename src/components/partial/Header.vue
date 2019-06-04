@@ -42,7 +42,6 @@
                         </li>
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
                         <li><a href="/#/fee">{{$t('header.fee')}}</a></li>
-                        <!--<li><router-link :to="{path:'/holdrank/1'}" @click.native="clearInput">排行</router-link></li>-->
                         <li><a href="/#/node_members">{{$t('header.node_members')}}</a></li>
                         <li><a href="#modal-about" data-toggle="modal">{{$t('header.about')}}</a></li>
                         <li class="dropdown">

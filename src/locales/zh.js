@@ -570,25 +570,6 @@ const locale = {
         asset_info: '资产信息:',
         candidates: '候选公信节点:'
     },
-    holdrank: {
-        locknum: '目前冻结的GXC总量',
-        last_updated_at: '本次更新日期: {datetime}',
-        rank: {
-            active: '激活排行',
-            lock: '冻结排行',
-            all: '总量排行'
-        },
-        table: {
-            userid: '账户id',
-            username: '账户名',
-            activegxs: '激活中的GXC',
-            peractive: '占激活百分比',
-            lockgxs: '冻结中的GXC',
-            perlock: '占冻结百分比',
-            allgxs: '总量GXC(激活+冻结)',
-            perall: '占总量百分比'
-        }
-    },
     fee: {
         mark: '在GXChain系统中，每一种操作都将花费相应手续费。手续费率可能发生变化。然而，手续费的调整需要获得股东的授权。所以每一位持有GXChain核心资产的股东对费率的构成都有话语权。如果股东确信某种手续费的降低将带来好处，并且达成共识，那么该种手续费则由区块链自动进行调低。区块链参数的改变由理事会成员提出动议。这些成员由全体股东投票选举产生，以提高系统灵活性和响应率。',
         feeGroups: {

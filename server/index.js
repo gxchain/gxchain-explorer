@@ -8,7 +8,6 @@ import Promise from 'bluebird';
 import { Apis, Manager } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
 import BlockSyncTask from './tasks/BlockSyncTask';
-// import HoldrankTask from './tasks/HoldrankTask';
 import LevelDBService from './services/LevelDBService';
 import figlet from 'figlet';
 import colors from 'colors/safe';
@@ -228,7 +227,6 @@ let initConnection = function () {
     let promises = [
         ChainStore.init(),
         BlockSyncTask.init()
-        // HoldrankTask.init()
     ];
     Promise.all(promises).then(function () {
         console.log('初始化成功');

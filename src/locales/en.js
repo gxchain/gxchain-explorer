@@ -571,25 +571,6 @@ const locale = {
         asset_info: 'Asset Info:',
         candidates: 'TrustNode Candidates:'
     },
-    holdrank: {
-        locknum: 'Total Frozen',
-        last_updated_at: 'Updated at: {datetime}',
-        rank: {
-            active: 'Holding Rank',
-            lock: 'Frozen Rank',
-            all: 'Total Rank'
-        },
-        table: {
-            userid: 'Account ID',
-            username: 'Account Name',
-            activegxs: 'Holding GXC',
-            peractive: 'Holding Percent',
-            lockgxs: 'Frozen GXC',
-            perlock: 'Frozen Percent',
-            allgxs: 'Total GXC',
-            perall: 'Total Percent'
-        }
-    },
     fee: {
         mark: 'In the GXChain ecosystem every operation is assigned an individual fee.These fees are subject to change. However, they are defined solely by shareholder approval, thus each and every shareholder of the GXChain core asset has a say as to what the fees should be. If shareholders can be convinced to reduce a certain fee and consensus is reached, the fee will be reduced automatically by the blockchain. Changes of blockchain parameters are proposed by members of the committee. These members are voted by shareholders and improve the flexibility and reaction rate.',
         feeGroups: {

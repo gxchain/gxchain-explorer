@@ -17,7 +17,7 @@ const fetch_full_account = (account) => {
 };
 
 /**
- * fetch account balance of GXS by account name or id
+ * fetch account balance of GXC by account name or id
  * @param account_name
  * @returns {bluebird}
  */
@@ -99,9 +99,9 @@ const fetch_assets = function () {
 };
 
 /**
- * 公信股供应量查询接口
+ * GXC供应量查询接口
  */
-const gxs_supply = function () {
+const gxc_supply = function () {
     return new Promise(function (resolve, reject) {
         return Apis.instance().db_api().exec('get_objects', [['2.3.1']]).then(function (resps) {
             resolve(resps[0]);
@@ -226,7 +226,7 @@ const fetch_candidates = function () {
 };
 
 export default {
-    gxs_supply,
+    gxc_supply,
     fetch_block,
     fetch_asset,
     fetch_assets,

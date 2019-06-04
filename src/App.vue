@@ -56,9 +56,7 @@
             }),
             keywordsChanged () {
                 if (!this.keywords) {
-                    if (this.$route.name !== 'Holdrank') {
-                        this.$router.push('/');
-                    }
+                    this.$router.push('/');
                 } else if (/^\d+$/.test(this.keywords)) { // block
                     this.$router.push(`/block/${this.keywords}`);
                 } else if (this.keywords.length === 40) { // transaction
