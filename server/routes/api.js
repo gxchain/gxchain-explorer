@@ -1,7 +1,6 @@
 import express from 'express';
 import GXChainService from '../services/GXChainService';
 import LevelDBService from '../services/LevelDBService';
-import HoldrankService from '../services/HoldrankService';
 import jdenticon from 'jdenticon';
 import crypto from 'crypto';
 import IPFSService from '../services/IPFSService';
@@ -158,17 +157,6 @@ router.get('/product/:product_id', function (req, res) {
     }).catch(() => {
         res.send({});
     });
-});
-
-/**
- * 持仓
- */
-router.get('/holdrank/:typeid', function (req, res) {
-    try {
-        res.send(JSON.stringify(HoldrankService.get_rank(req.params.typeid)));
-    } catch (err) {
-        res.send({});
-    }
 });
 
 router.post('/wasm2wast', function (req, res) {

@@ -49,16 +49,22 @@
             this.$http.get('//static.gxb.io/gxs/symbols/maps.json?v=' + new Date().getTime()).then(resp => {
                 this.setSymbolsMap({symbolsMap: resp.body || {}});
             }).catch(ex => { console.error(ex) });
+            this.$http.get('/api/assets').then(resp => {
+                const assetList = {};
+                for (let i = 0; i < resp.body.length; i++) {
+                    assetList[resp.body[i].id] = resp.body[i];
+                }
+                this.setAssetList({assetList: assetList || {}});
+            }).catch(ex => { console.error(ex) });
         },
         methods: {
             ...mapActions({
+                setAssetList: 'setAssetList',
                 setSymbolsMap: 'setSymbolsMap'
             }),
             keywordsChanged () {
                 if (!this.keywords) {
-                    if (this.$route.name !== 'Holdrank') {
-                        this.$router.push('/');
-                    }
+                    this.$router.push('/');
                 } else if (/^\d+$/.test(this.keywords)) { // block
                     this.$router.push(`/block/${this.keywords}`);
                 } else if (this.keywords.length === 40) { // transaction

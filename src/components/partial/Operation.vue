@@ -333,7 +333,23 @@
                         <tr>
                             <th>{{$t('transaction.trx_type')}}</th>
                             <td align="right"><span
-                                    class="label label-danger">{{$t('transaction.trxTypes.asset_reserve')}}</span></td>
+                                    class="label label-danger">{{$t('transaction.trxTypes.asset_reserve.name')}}</span></td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.asset_reserve.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].payer}">
+                                    {{formatted_account(op[1].payer, 'payer')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.asset_reserve.amount_to_reserve')}}</th>
+                            <td align="right">{{formatted_asset(op[1].amount_to_reserve.asset_id, op[1].amount_to_reserve.amount)}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.asset_reserve.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
                         <!-- 16:asset_fund_fee_pool -->
@@ -378,8 +394,28 @@
                         <tr>
                             <th>{{$t('transaction.trx_type')}}</th>
                             <td align="right"><span
-                                    class="label label-warning">{{$t('transaction.trxTypes.witness_create')}}</span>
+                                    class="label label-warning">{{$t('transaction.trxTypes.witness_create.name')}}</span>
                             </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_create.witness_account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].witness_account}">
+                                    {{formatted_account(op[1].witness_account, 'witness_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_create.witness_url')}}</th>
+                            <td align="right">{{op[1].url}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_create.signing_key')}}</th>
+                            <td align="right">{{op[1].block_signing_key}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_create.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
                         <!-- 21:witness_update -->
@@ -387,8 +423,28 @@
                         <tr>
                             <th>{{$t('transaction.trx_type')}}</th>
                             <td align="right"><span
-                                    class="label label-primary">{{$t('transaction.trxTypes.witness_update')}}</span>
+                                    class="label label-primary">{{$t('transaction.trxTypes.witness_update.name')}}</span>
                             </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_update.witness_account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].witness_account}">
+                                    {{formatted_account(op[1].witness_account, 'witness_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_update.witness_url')}}</th>
+                            <td align="right">{{op[1].url}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_update.signing_key')}}</th>
+                            <td align="right">{{op[1].block_signing_key}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_update.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
                         <!-- 22:proposal_create -->
@@ -541,8 +597,24 @@
                         <tr>
                             <th>{{$t('transaction.trx_type')}}</th>
                             <td align="right"><span
-                                    class="label label-warning">{{$t('transaction.trxTypes.committee_member_create')}}</span>
+                                    class="label label-warning">{{$t('transaction.trxTypes.committee_member_create.name')}}</span>
                             </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.committee_member_create.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].committee_member_account}">
+                                    {{formatted_account(op[1].committee_member_account, 'committee_member_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.committee_member_create.url')}}</th>
+                            <td align="right">{{op[1].url}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.committee_member_create.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
                         <!-- 30:committee_member_update -->
@@ -550,8 +622,24 @@
                         <tr>
                             <th>{{$t('transaction.trx_type')}}</th>
                             <td align="right"><span
-                                    class="label label-primary">{{$t('transaction.trxTypes.committee_member_update')}}</span>
+                                    class="label label-primary">{{$t('transaction.trxTypes.committee_member_update.name')}}</span>
                             </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.committee_member_update.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].committee_member_account}">
+                                    {{formatted_account(op[1].committee_member_account, 'committee_member_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.committee_member_update.url')}}</th>
+                            <td align="right">{{op[1].url}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.committee_member_update.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
                         <!-- 31:committee_member_update_global_parameters -->
@@ -1734,9 +1822,11 @@
     import { ChainTypes } from 'gxbjs/es';
     import Proposed_Op from './Proposed_Op.vue';
     import {
-        deserialize_contract_params, fetch_account_by_chain, fetch_asset_by_id,
+        deserialize_contract_params, fetch_account_by_chain,
         fetch_product_by_chain
     } from '@/services/CommonService';
+    import filters from '@/filters';
+    import { mapGetters } from 'vuex';
 
     let ops = Object.keys(ChainTypes.operations);
 
@@ -1752,6 +1842,7 @@
                 type: String
             }
         },
+        filters,
         data () {
             return {
                 items: {},
@@ -1761,6 +1852,11 @@
                 op: this.operation
             };
         },
+        computed: {
+            ...mapGetters({
+                assetList: 'assetList'
+            })
+        },
         mounted () {
             if (ops[this.op[0]] === 'custom') {
                 this.utf8HexToStr(this.op[1].data);
@@ -1768,59 +1864,46 @@
         },
         methods: {
             formatted_account (id) {
-                let self = this;
                 if (this.items[id]) {
                     return this.account[id];
                 }
                 this.items[id] = true;
                 fetch_account_by_chain(id).then((account) => {
-                    self.$set(self.account, id, account.toJS().name);
+                    this.$set(this.account, id, account.toJS().name);
                 }).catch(ex => {
-                    self.items[id] = false;
+                    this.items[id] = false;
                     console.error(ex);
                 });
                 return this.account[id];
             },
             formatted_product (id, key) {
-                let self = this;
                 if (this.items[key]) {
                     return this.op[1][key];
                 }
-                self.items[key] = true;
+                this.items[key] = true;
                 fetch_product_by_chain(id).then(function (product) {
-                    self.op[1][key] = product.product_name;
+                    this.$set(this.op[1], key, product.product_name);
                 }).catch(ex => {
-                    self.items[key] = false;
+                    this.items[key] = false;
                     console.error(ex);
                 });
                 return this.op[1][key];
             },
             formatted_asset (asset_id, amount) {
-                let self = this;
-                if (this.items[asset_id + amount]) {
-                    return this.op[1][asset_id + amount];
-                }
-                this.items[asset_id + amount] = true;
-                fetch_asset_by_id(asset_id, amount).then((asset) => {
-                    self.op[1][asset_id + amount] = asset;
-                }).catch(ex => {
-                    self.items[asset_id + amount] = false;
-                    console.error(ex);
-                });
-                return this.op[1][asset_id + amount];
+                return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
             },
             formatted_params (contract, method, data) {
-                let self = this;
                 if (this.items[`${contract}_${method}_${data}`]) {
                     return this.params[`${contract}_${method}_${data}`];
                 }
                 this.items[`${contract}_${method}_${data}`] = true;
                 deserialize_contract_params(contract, method, data).then(result => {
-                    self.$set(self.params, `${contract}_${method}_${data}`, JSON.stringify(result));
+                    this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
                 }).catch(ex => {
                     this.items[`${contract}_${method}_${data}`] = false;
                     console.error(ex);
                 });
+                return this.params[`${contract}_${method}_${data}`];
             },
             formatted_listing (new_listing) {
                 let account_listing = {
@@ -1902,8 +1985,7 @@
                     re += x;
                 }
                 this.op[1].data = re;
-                let self = this;
-                this.$set(self.op[1], 'isString', false);
+                this.$set(this.op[1], 'isString', false);
             },
             utf8HexToStr (str) {
                 let buf = [];
@@ -1911,8 +1993,7 @@
                     buf.push(parseInt(str.substring(i, i + 2), 16));
                 }
                 this.op[1].data = this.readUTF(buf);
-                let self = this;
-                this.$set(self.op[1], 'isString', true);
+                this.$set(this.op[1], 'isString', true);
             }
         },
         components: {

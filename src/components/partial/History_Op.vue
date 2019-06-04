@@ -224,7 +224,15 @@
               class="label label-danger">{{$t('transaction.trxTypes.asset_reserve')}}</span>
             </router-link>
         </th>
-        <td v-if="ops[op[0]] == 'asset_reserve'">-</td>
+        <td v-if="ops[op[0]] == 'asset_reserve'">
+             <i18n path="transaction.operation.asset_reserve">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].payer)}">
+                    {{ formatted_account(op[1].payer) }}
+                </router-link>
+                <span place="amount">{{ formatted_asset(op[1].amount_to_reserve.asset_id, op[1].amount_to_reserve.amount)
+                    }}</span>
+            </i18n>
+        </td>
         <!-- 16:asset_fund_fee_pool -->
         <th v-if="ops[op[0]] == 'asset_fund_fee_pool'">
             <router-link :to="{path: '/block/' + op['block_id']}">
@@ -263,18 +271,30 @@
         <th v-if="ops[op[0]] == 'witness_create'">
             <router-link :to="{path: '/block/' + op['block_id']}">
         <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
-              class="label label-warning">{{$t('transaction.trxTypes.witness_create')}}</span>
+              class="label label-warning">{{$t('transaction.trxTypes.witness_create.name')}}</span>
             </router-link>
         </th>
-        <td v-if="ops[op[0]] == 'witness_create'">-</td>
+        <td v-if="ops[op[0]] == 'witness_create'">
+            <i18n path="transaction.operation.witness_create">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
+                    {{ formatted_account(op[1].witness_account) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 21:witness_update -->
         <th v-if="ops[op[0]] == 'witness_update'">
             <router-link :to="{path: '/block/' + op['block_id']}">
         <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
-              class="label label-primary">{{$t('transaction.trxTypes.witness_update')}}</span>
+              class="label label-primary">{{$t('transaction.trxTypes.witness_update.name')}}</span>
             </router-link>
         </th>
-        <td v-if="ops[op[0]] == 'witness_update'">-</td>
+        <td v-if="ops[op[0]] == 'witness_update'">
+            <i18n path="transaction.operation.witness_update">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
+                    {{ formatted_account(op[1].witness_account) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 22:proposal_create -->
         <th v-if="ops[op[0]] == 'proposal_create'">
             <router-link :to="{path: '/block/' + op['block_id']}">
@@ -288,7 +308,7 @@
                     {{ formatted_account(op[1].fee_paying_account) }}
                 </router-link>
             </i18n>
-            <History_Proposed_Op :latestTransactions="op[1].proposed_ops[0]"></History_Proposed_Op>
+            <History_Proposed_Op :op="op[1].proposed_ops[0].op"></History_Proposed_Op>
         </td>
         <!-- 23:proposal_update -->
         <th v-if="ops[op[0]] == 'proposal_update'">
@@ -357,7 +377,13 @@
               class="label label-warning">{{$t('transaction.trxTypes.committee_member_create')}}</span>
             </router-link>
         </th>
-        <td v-if="ops[op[0]] == 'committee_member_create'">-</td>
+        <td v-if="ops[op[0]] == 'committee_member_create'">
+            <i18n path="transaction.operation.committee_member_create">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].committee_member_account)}">
+                    {{ formatted_account(op[1].committee_member_account) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 30:committee_member_update -->
         <th v-if="ops[op[0]] == 'committee_member_update'">
             <router-link :to="{path: '/block/' + op['block_id']}">
@@ -365,7 +391,13 @@
               class="label label-primary">{{$t('transaction.trxTypes.committee_member_update')}}</span>
             </router-link>
         </th>
-        <td v-if="ops[op[0]] == 'committee_member_update'">-</td>
+        <td v-if="ops[op[0]] == 'committee_member_update'">
+            <i18n path="transaction.operation.committee_member_update">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].committee_member_account)}">
+                    {{ formatted_account(op[1].committee_member_account) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 31:committee_member_update_global_parameters -->
         <th v-if="ops[op[0]] == 'committee_member_update_global_parameters'">
             <router-link :to="{path: '/block/' + op['block_id']}">
@@ -373,7 +405,13 @@
                 class="label label-primary">{{$t('transaction.trxTypes.committee_member_update_global_parameters')}}</span>
             </router-link>
         </th>
-        <td v-if="ops[op[0]] == 'committee_member_update_global_parameters'">-</td>
+        <td v-if="ops[op[0]] == 'committee_member_update_global_parameters'">
+            <i18n path="transaction.operation.committee_member_update_global_parameters">
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].committee_member_account)}">
+                    {{ formatted_account(op[1].committee_member_account) }}
+                </router-link>
+            </i18n>
+        </td>
         <!-- 32:vesting_balance_create -->
         <th v-if="ops[op[0]] == 'vesting_balance_create'">
             <router-link :to="{path: '/block/' + op['block_id']}">
@@ -1031,9 +1069,12 @@
 <script>
     import { ChainTypes } from 'gxbjs/es';
     import History_Proposed_Op from './History_Proposed_Op.vue';
-    import { deserialize_contract_params, fetch_account_by_chain, fetch_asset_by_id } from '@/services/CommonService';
+    import { deserialize_contract_params, fetch_account_by_chain } from '@/services/CommonService';
+    import filters from '@/filters';
+    import { mapGetters } from 'vuex';
 
     let ops = Object.keys(ChainTypes.operations);
+
     let account_listing = {
         no_listing: 0,
         white_listed: 1,
@@ -1050,57 +1091,50 @@
                 type: String
             }
         },
+        filters,
         data () {
             return {
                 listings,
                 items: {},
                 account: {},
-                assets: {},
                 params: {},
                 ops: ops
             };
         },
+        computed: {
+            ...mapGetters({
+                assetList: 'assetList'
+            })
+        },
         methods: {
             formatted_account (id) {
-                let self = this;
                 if (this.items[id]) {
                     return this.account[id];
                 }
                 this.items[id] = true;
                 fetch_account_by_chain(id).then((account) => {
-                    self.$set(self.account, id, account.toJS().name);
+                    this.$set(this.account, id, account.toJS().name);
                 }).catch(ex => {
-                    self.items[id] = false;
+                    this.items[id] = false;
                     console.error(ex);
                 });
                 return this.account[id];
             },
             formatted_asset (asset_id, amount) {
-                let self = this;
-                if (this.items[asset_id + amount]) {
-                    return this.assets[asset_id + amount];
-                }
-                this.items[asset_id + amount] = true;
-                fetch_asset_by_id(asset_id, amount).then((asset) => {
-                    self.$set(self.assets, asset_id + amount, asset);
-                }).catch(ex => {
-                    self.items[asset_id + amount] = false;
-                    console.error(ex);
-                });
-                return this.assets[asset_id + amount];
+                return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
             },
             formatted_params (contract, method, data) {
-                let self = this;
                 if (this.items[`${contract}_${method}_${data}`]) {
                     return this.params[`${contract}_${method}_${data}`];
                 }
                 this.items[`${contract}_${method}_${data}`] = true;
                 deserialize_contract_params(contract, method, data).then(result => {
-                    self.$set(self.params, `${contract}_${method}_${data}`, JSON.stringify(result));
+                    this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
                 }).catch(ex => {
                     this.items[`${contract}_${method}_${data}`] = false;
                     console.error(ex);
                 });
+                return this.params[`${contract}_${method}_${data}`];
             }
         },
         updated () {
