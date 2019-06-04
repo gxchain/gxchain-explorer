@@ -348,8 +348,7 @@
                 ChainStore,
                 pageNo: 1,
                 pageSize: 10,
-                totalPage: 0,
-                isRefreshPage: false
+                totalPage: 0
             };
         },
         filters: filters,
@@ -422,9 +421,10 @@
                     this.isTrustNode = results[0] && results[1];
                 });
             },
-            loadAccountHistory (id, pageNo, pageSize) {
+            loadAccountHistory (id, pageNo, pageSize, dataList) {
                 fetch_account_history(this.account_info.id, pageNo, pageSize).then(res => {
                     const respList = res.body.list;
+                    const list = dataList || [];
                     this.totalPage = Math.ceil(res.body.totalCount / pageSize);
                     for (let i = 0; i < respList.length; i++) {
                         const item = [];
@@ -435,8 +435,9 @@
                         }
                         item['block_id'] = respList[i].block_data.block_num;
                         item['timestamp'] = new Date(respList[i].block_data.block_time + 'Z').format('yyyy-MM-dd hh:mm:ss');
-                        this.latestTransactions.push(item);
+                        list.push(item);
                     }
+                    this.latestTransactions = list;
                     this.history_loading = false;
                 }).catch((ex) => {
                     console.error(ex);
@@ -445,7 +446,7 @@
             },
             loadMoreHistory () {
                 this.pageNo++;
-                this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize);
+                this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize, this.latestTransactions);
             },
             onUpdate () {
                 fetch_account_by_chain(this.$route.params.id_or_name).then(res => {
