@@ -44,8 +44,8 @@
                     },
                     {
                         name: this.$t('api.query_account_history'),
-                        api: '/api/account/:id?pageNo=:pageNo&pageSize=:pageSize',
-                        example: `http://${location.host}/api/account_history/1.2.6?pageNo=1&pageSize=20`
+                        api: '/api/account/:id_or_name?pageNo=:pageNo&pageSize=:pageSize',
+                        example: `http://${location.host}/api/account_history/paul?pageNo=1&pageSize=10`
                     },
                     {
                         name: this.$t('api.query_account_balance'),

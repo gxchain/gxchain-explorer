@@ -29,7 +29,44 @@ const fetch_full_account = (account) => {
  */
 const fetch_account_history = (id_or_name, pageNo, pageSize) => {
     return new Promise(function (resolve, reject) {
-        fetch_full_account(id_or_name).then((account) => {
+        if (id_or_name.indexOf('.') === -1) {
+            fetch_account(id_or_name).then((account) => {
+                superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
+                .set('Content-Type', 'application/json')
+                .send({
+                    'query': {
+                        'bool': {
+                            'must': [{
+                                'term': {
+                                    'account_history.account': account.id
+                                }
+                            }]
+                        }
+                    },
+                    'from': (pageNo - 1) * pageSize,
+                    'size': pageSize,
+                    'sort': [{'block_data.block_time': 'desc'}]
+                })
+                .end((err, res) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        try {
+                            const respList = res.body.hits.hits;
+                            const list = [];
+                            for (let i = 0; i < respList.length; i++) {
+                                list.push(respList[i]._source);
+                            }
+                            resolve({ list, totalCount: res.body.hits.total, pageNo, pageSize });
+                        } catch (ex) {
+                            reject(ex);
+                        }
+                    }
+                });
+            }).catch((ex) => {
+                reject(ex);
+            });
+        } else {
             superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
             .set('Content-Type', 'application/json')
             .send({
@@ -37,7 +74,7 @@ const fetch_account_history = (id_or_name, pageNo, pageSize) => {
                     'bool': {
                         'must': [{
                             'term': {
-                                'account_history.account': account.id
+                                'account_history.account': id_or_name
                             }
                         }]
                     }
@@ -62,9 +99,7 @@ const fetch_account_history = (id_or_name, pageNo, pageSize) => {
                     }
                 }
             });
-        }).catch((ex) => {
-            reject(ex);
-        });
+        }
     });
 };
 
@@ -75,13 +110,22 @@ const fetch_account_history = (id_or_name, pageNo, pageSize) => {
  */
 const fetch_account_balance = (id_or_name) => {
     return new Promise((resolve, reject) => {
-        resolve(fetch_full_account(id_or_name).then((account) => {
-            return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
-                return balances;
+        if (id_or_name.indexOf('.') === -1) {
+            fetch_account(id_or_name).then((account) => {
+                console.log(account[0]);
+                return Apis.instance().db_api().exec('get_account_balances', [account.id, []]);
+            }).then((balances) => {
+                resolve(balances);
+            }).catch((ex) => {
+                reject(ex);
             });
-        }).catch((ex) => {
-            reject(ex);
-        }));
+        } else {
+            Apis.instance().db_api().exec('get_account_balances', [id_or_name, []]).then((balances) => {
+                resolve(balances);
+            }).catch((ex) => {
+                reject(ex);
+            });
+        }
     });
 };
 
