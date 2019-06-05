@@ -307,7 +307,7 @@
                     {{ formatted_account(op[1].fee_paying_account) }}
                 </router-link>
             </i18n>
-            <History_Proposed_Op :op="op[1].proposed_ops[0].op"></History_Proposed_Op>
+            <history-proposed-op :op="op[1].proposed_ops[0].op"></history-proposed-op>
         </td>
         <!-- 23:proposal_update -->
         <th v-if="ops[op[0]] == 'proposal_update'">
@@ -1067,7 +1067,7 @@
 
 <script>
     import { ChainTypes } from 'gxbjs/es';
-    import History_Proposed_Op from './History_Proposed_Op.vue';
+    import HistoryProposedOp from './HistoryProposedOp.vue';
     import { deserialize_contract_params, fetch_account_by_chain } from '@/services/CommonService';
     import filters from '@/filters';
     import { mapGetters } from 'vuex';
@@ -1141,7 +1141,7 @@
             $('[data-toggle="tooltip"]').tooltip();
         },
         components: {
-            History_Proposed_Op: History_Proposed_Op
+            HistoryProposedOp: HistoryProposedOp
         }
     };
 </script>

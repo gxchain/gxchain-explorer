@@ -473,8 +473,8 @@
                         </tr>
                         <tr v-if="op[1].proposed_ops[0]">
                             <td colspan="2">
-                                <Proposed_Op v-for="(operation,index) in op[1].proposed_ops[0]" :key="index" :id="index"
-                                             :operation="operation"></Proposed_Op>
+                                <proposed-op v-for="(operation,index) in op[1].proposed_ops[0]" :key="index" :id="index"
+                                             :operation="operation"></proposed-op>
                             </td>
                         </tr>
                         </tbody>
@@ -1820,7 +1820,7 @@
 
 <script>
     import { ChainTypes } from 'gxbjs/es';
-    import Proposed_Op from './Proposed_Op.vue';
+    import ProposedOp from './ProposedOp.vue';
     import {
         deserialize_contract_params, fetch_account_by_chain,
         fetch_product_by_chain
@@ -1997,7 +1997,7 @@
             }
         },
         components: {
-            Proposed_Op: Proposed_Op
+            ProposedOp: ProposedOp
         }
     };
 </script>

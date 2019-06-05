@@ -280,6 +280,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
+                            <a class="pull-right" href="#modal-history" data-toggle="modal">{{$t('account.basic.more')}}</a>
                         </div>
                         <div class="panel-body no-padding">
                             <Loading v-show="history_loading"></Loading>
@@ -292,12 +293,8 @@
                                         <th class="right" width="80">{{$t('index.transactions.time')}}</th>
                                     </tr>
                                     </thead>
-                                    <History_Op :latestTransactions="latestTransactions" parent="Account"></History_Op>
+                                    <history-op :latestTransactions="latestTransactions" parent="Account"></history-op>
                                 </table>
-                            </div>
-                            <div class="load-box" v-if="totalPage > 0">
-                                <span class="more" v-if="pageNo < totalPage" @click="loadMoreHistory">{{$t('account.basic.more')}}</span>
-                                <span class="no-more" v-else>{{$t('account.basic.no_more')}}</span>
                             </div>
                         </div>
                     </div>
@@ -308,6 +305,7 @@
             <h4 class="page-header">{{$t('account.title')}}</h4>
             <p class="null-tip">{{$t('account.empty')}}</p>
         </div>
+        <modal-history :account="$route.params.id_or_name"></modal-history>
     </div>
 </template>
 
@@ -317,7 +315,8 @@
     import { Apis } from 'gxbjs-ws';
     import { fetch_account_by_chain, fetch_account_history } from '@/services/CommonService';
     import filters from '@/filters';
-    import History_Op from './partial/History_Op.vue';
+    import HistoryOp from './partial/HistoryOp.vue';
+    import modalHistory from '@/components/modals/modal-history.vue';
 
     export default {
         data () {
@@ -421,10 +420,10 @@
                     this.isTrustNode = results[0] && results[1];
                 });
             },
-            loadAccountHistory (id, pageNo, pageSize, dataList) {
-                fetch_account_history(this.account_info.id, pageNo, pageSize).then(res => {
+            loadLatestHistory (id_or_name, pageNo, pageSize) {
+                fetch_account_history(id_or_name, pageNo, pageSize).then(res => {
                     const respList = res.body.list;
-                    const list = dataList || [];
+                    const list = [];
                     this.totalPage = Math.ceil(res.body.totalCount / pageSize);
                     for (let i = 0; i < respList.length; i++) {
                         const item = [];
@@ -444,10 +443,6 @@
                     this.history_loading = false;
                 });
             },
-            loadMoreHistory () {
-                this.pageNo++;
-                this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize, this.latestTransactions);
-            },
             onUpdate () {
                 fetch_account_by_chain(this.$route.params.id_or_name).then(res => {
                     this.account_info = res.toJS();
@@ -459,7 +454,6 @@
                     }
                     if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
                         this.loadTrustNodeInfo(this.account_info.id);
-                        this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize);
                     }
                     let ids = Object.keys(this.account_info.balances);
                     for (let i = 0; i < ids.length; i++) {
@@ -551,16 +545,28 @@
                 return result.join('&nbsp;');
             }
         },
+        created () {
+            if (this.$route.params.id_or_name) {
+                window.getAccountHistoryInterval = setInterval(() => {
+                    this.loadLatestHistory(this.$route.params.id_or_name, 1, 20);
+                }, 1000);
+            }
+        },
+        beforeRouteLeave (to, from, next) {
+            if (window.getAccountHistoryInterval) {
+                clearInterval(window.getAccountHistoryInterval);
+            }
+            next();
+        },
         mounted () {
             if (this.$route.params.id_or_name !== this.keywords) {
                 this.setKeywords({keywords: this.$route.params.id_or_name});
             }
             this.onUpdate();
         },
-        destroyed () {
-        },
         components: {
-            History_Op: History_Op
+            HistoryOp,
+            modalHistory
         }
     };
 </script>
@@ -619,19 +625,5 @@
         font-size: 15px;
         background: #eee;
         padding: 5px;
-    }
-    .load-box {
-        padding: 8px;
-        text-align: center;
-    }
-    .load-box .more {
-        color: #6699ff;
-    }
-    .load-box .more:hover {
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    .load-box .no-more {
-        color: #333333;
     }
 </style>

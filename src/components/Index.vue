@@ -118,7 +118,7 @@
                                 <th class="right" width="80">{{$t('index.transactions.time')}}</th>
                             </tr>
                             </thead>
-                            <History_Op :latestTransactions="latestTransactions"></History_Op>
+                            <history-op :latestTransactions="latestTransactions"></history-op>
                         </table>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
     import { ChainStore } from 'gxbjs';
     import { Apis } from 'gxbjs-ws';
     import filters from '../filters';
-    import History_Op from './partial/History_Op.vue';
+    import HistoryOp from './partial/HistoryOp.vue';
     import { calc_block_time } from '@/services/CommonService';
     import { mapActions } from 'vuex';
     import DigitalRoll from './partial/DigitalRoll';
@@ -602,7 +602,7 @@
             }
         },
         components: {
-            History_Op: History_Op,
+            HistoryOp: HistoryOp,
             DigitalRoll: DigitalRoll,
             AccountImage
         }
