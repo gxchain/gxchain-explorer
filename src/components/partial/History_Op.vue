@@ -373,7 +373,7 @@
         <th v-if="ops[op[0]] == 'committee_member_create'">
             <router-link :to="{path: '/block/' + op['block_id']}">
         <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
-              class="label label-warning">{{$t('transaction.trxTypes.committee_member_create')}}</span>
+              class="label label-warning">{{$t('transaction.trxTypes.committee_member_create.name')}}</span>
             </router-link>
         </th>
         <td v-if="ops[op[0]] == 'committee_member_create'">
@@ -387,7 +387,7 @@
         <th v-if="ops[op[0]] == 'committee_member_update'">
             <router-link :to="{path: '/block/' + op['block_id']}">
         <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
-              class="label label-primary">{{$t('transaction.trxTypes.committee_member_update')}}</span>
+              class="label label-primary">{{$t('transaction.trxTypes.committee_member_update.name')}}</span>
             </router-link>
         </th>
         <td v-if="ops[op[0]] == 'committee_member_update'">
