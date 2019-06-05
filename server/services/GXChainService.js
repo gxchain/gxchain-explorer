@@ -6,62 +6,76 @@ import superagent from 'superagent';
 import config from '../../config';
 
 /**
- * get account information by name
+ * fetch account information by account name or id
  * @param account_name
  */
 const fetch_account = (account_name) => {
     return Apis.instance().db_api().exec('get_account_by_name', [account_name]);
 };
 
+/**
+ * fetch full account information by name
+ * @param account_name
+ * @returns {bluebird}
+ */
 const fetch_full_account = (account) => {
     return Apis.instance().db_api().exec('get_full_accounts', [[account], false]);
 };
 
-const fetch_account_history = (account_id, pageNo, pageSize) => {
+/**
+ * fetch account history by account name or id
+ * @param id_or_name
+ * @returns {bluebird}
+ */
+const fetch_account_history = (id_or_name, pageNo, pageSize) => {
     return new Promise(function (resolve, reject) {
-        superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
-        .set('Content-Type', 'application/json')
-        .send({
-            'query': {
-                'bool': {
-                    'must': [{
-                        'term': {
-                            'account_history.account': account_id
-                        }
-                    }]
-                }
-            },
-            'from': (pageNo - 1) * pageSize,
-            'size': pageSize,
-            'sort': [{'block_data.block_time': 'desc'}]
-        })
-        .end((err, res) => {
-            if (err) {
-                reject(err);
-            } else {
-                try {
-                    const respList = res.body.hits.hits;
-                    const list = [];
-                    for (let i = 0; i < respList.length; i++) {
-                        list.push(respList[i]._source);
+        fetch_full_account(id_or_name).then((account) => {
+            superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
+            .set('Content-Type', 'application/json')
+            .send({
+                'query': {
+                    'bool': {
+                        'must': [{
+                            'term': {
+                                'account_history.account': account.id
+                            }
+                        }]
                     }
-                    resolve({ list, totalCount: res.body.hits.total, pageNo, pageSize });
-                } catch (ex) {
-                    reject(ex);
+                },
+                'from': (pageNo - 1) * pageSize,
+                'size': pageSize,
+                'sort': [{'block_data.block_time': 'desc'}]
+            })
+            .end((err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    try {
+                        const respList = res.body.hits.hits;
+                        const list = [];
+                        for (let i = 0; i < respList.length; i++) {
+                            list.push(respList[i]._source);
+                        }
+                        resolve({ list, totalCount: res.body.hits.total, pageNo, pageSize });
+                    } catch (ex) {
+                        reject(ex);
+                    }
                 }
-            }
+            });
+        }).catch((ex) => {
+            reject(ex);
         });
     });
 };
 
 /**
  * fetch account balance of GXC by account name or id
- * @param account_name
+ * @param id_or_name
  * @returns {bluebird}
  */
-const fetch_account_balance = (account_name) => {
+const fetch_account_balance = (id_or_name) => {
     return new Promise((resolve, reject) => {
-        resolve(fetch_account(account_name).then((account) => {
+        resolve(fetch_full_account(id_or_name).then((account) => {
             return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
                 return balances;
             });
@@ -230,7 +244,6 @@ const fetch_candidates = function () {
             superagent.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
         ]).then(results => {
             let accounts = results[0];
-            // console.log(accounts);
             let trustNodeOffChainInfo = JSON.parse(results[1].text).list;
             let candidates = accounts.map(a => {
                 let info = trustNodeOffChainInfo.find(t => t.accountName === a[1].account.name);

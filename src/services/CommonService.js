@@ -27,8 +27,8 @@ export const fetch_account = (id_or_name) => {
     });
 };
 
-export const fetch_account_history = (id, pageNo, pageSize) => {
-    return Vue.http.get(`//${baseURL}/api/account_history/${id}?pageNo=${pageNo}&pageSize=${pageSize}`, {
+export const fetch_account_history = (id_or_name, pageNo, pageSize) => {
+    return Vue.http.get(`//${baseURL}/api/account_history/${id_or_name}?pageNo=${pageNo}&pageSize=${pageSize}`, {
         responseType: 'json'
     });
 };
