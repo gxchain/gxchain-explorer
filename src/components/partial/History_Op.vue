@@ -221,7 +221,7 @@
         <th v-if="ops[op[0]] == 'asset_reserve'">
             <router-link :to="{path: '/block/' + op['block_id']}">
         <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
-              class="label label-danger">{{$t('transaction.trxTypes.asset_reserve')}}</span>
+              class="label label-danger">{{$t('transaction.trxTypes.asset_reserve.name')}}</span>
             </router-link>
         </th>
         <td v-if="ops[op[0]] == 'asset_reserve'">
