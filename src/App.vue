@@ -49,9 +49,17 @@
             this.$http.get('//static.gxb.io/gxs/symbols/maps.json?v=' + new Date().getTime()).then(resp => {
                 this.setSymbolsMap({symbolsMap: resp.body || {}});
             }).catch(ex => { console.error(ex) });
+            this.$http.get('/api/assets').then(resp => {
+                const assetList = {};
+                for (let i = 0; i < resp.body.length; i++) {
+                    assetList[resp.body[i].id] = resp.body[i];
+                }
+                this.setAssetList({assetList: assetList || {}});
+            }).catch(ex => { console.error(ex) });
         },
         methods: {
             ...mapActions({
+                setAssetList: 'setAssetList',
                 setSymbolsMap: 'setSymbolsMap'
             }),
             keywordsChanged () {

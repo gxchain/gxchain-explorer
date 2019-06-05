@@ -175,15 +175,42 @@ const locale = {
                 asset_to_issue: 'Amount to issue',
                 issue_to_account: 'To'
             },
-            'asset_reserve': 'Reserve asset',
+            'asset_reserve': {
+                name: 'Reserve asset',
+                fee: 'Fee',
+                account: 'Account',
+                amount_to_reserve: 'Reserved (Burnt) Amount'
+            },
             'asset_fund_fee_pool': 'Fund asset fee pool',
             'asset_settle': 'Asset settlement',
             'asset_global_settle': 'Global asset settlement',
             'asset_publish_feed': 'Publish feed',
-            'committee_member_create': 'Create committee member',
-            'committee_member_update': 'Update committee member',
-            'witness_create': 'Create TrustNode',
-            'witness_update': 'Update TrustNode',
+            'committee_member_create': {
+                name: 'Create committee member',
+                account: 'Committee member',
+                url: 'Url',
+                fee: 'Fee'
+            },
+            'committee_member_update': {
+                name: 'Update committee member',
+                account: 'Committee member',
+                url: 'Url',
+                fee: 'Fee'
+            },
+            'witness_create': {
+                name: 'Create TrustNode',
+                witness_account: 'TrustNode candidate',
+                witness_url: 'Url',
+                signing_key: 'Signing Key',
+                fee: 'Fee'
+            },
+            'witness_update': {
+                name: 'Update TrustNode',
+                witness_account: 'TrustNode candidate',
+                witness_url: 'Url',
+                signing_key: 'Signing Key',
+                fee: 'Fee'
+            },
             'witness_withdraw_pay': 'TrustNode pay withdrawal',
             'proposal': {
                 proposal_create: 'Create proposal',
@@ -461,6 +488,8 @@ const locale = {
             'witness_pay': 'Withdraw TrustNode pay to account',
             'witness_receive': 'Received witness from witness',
             'committee_member_update_global_parameters': '{account} updated the global committee parameters',
+            'committee_member_create': '{account} was upgraded to become a witness',
+            'committee_member_update': '{account} update its committee info',
             'worker_create': '{account} created a worker proposal with daily pay of {pay}',
             'override_transfer': '{issuer} transferred {amount} from {from} to {to}',
             'account_upgrade_merchant': '{account} was upgraded to merchant',
@@ -610,8 +639,8 @@ const locale = {
             asset_global_settle: 'Global asset settlement',
             asset_publish_feed: 'Publish feed',
             committee_member_create: 'Create committee member',
-            witness_create: 'Create witness',
-            witness_withdraw_pay: 'Witness pay withdrawal',
+            witness_create: 'Create TrustNode',
+            witness_withdraw_pay: 'TrustNode pay withdrawal',
             proposal_create: 'Create proposal',
             proposal_update: 'Update proposal',
             proposal_delete: 'Delete proposal',
@@ -628,7 +657,7 @@ const locale = {
             assert: 'Assert operation',
             balance_claim: 'Claim balance',
             override_transfer: 'Override transfer',
-            witness_update: 'Update witness',
+            witness_update: 'Update TrustNode',
             committee_member_update_global_parameters: 'Global parameters update',
             transfer_to_blind: 'Transfer to blinded account',
             blind_transfer: 'Blinded transfer',

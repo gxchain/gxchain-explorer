@@ -315,7 +315,7 @@
     import { mapActions, mapGetters } from 'vuex';
     import { ChainStore } from 'gxbjs';
     import { Apis } from 'gxbjs-ws';
-    import { get_assets_by_ids, fetch_account_by_chain, fetch_account_history } from '@/services/CommonService';
+    import { fetch_account_by_chain, fetch_account_history } from '@/services/CommonService';
     import filters from '@/filters';
     import History_Op from './partial/History_Op.vue';
 
@@ -462,21 +462,13 @@
                         this.loadAccountHistory(this.account_info.id, this.pageNo, this.pageSize);
                     }
                     let ids = Object.keys(this.account_info.balances);
-                    get_assets_by_ids(ids).then(assets => {
-                        let assetMap = {};
-                        assets.forEach(asset => {
-                            assetMap[asset.id] = asset;
-                        });
-                        for (let i = 0; i < ids.length; i++) {
-                            if (typeof this.account_info.balances[ids[i]] !== 'object') {
-                                let obj = {
-                                    symbol: assetMap[ids[i]].symbol,
-                                    amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(assetMap[ids[i]].precision), assetMap[ids[i]].precision)
-                                };
-                                this.account_info.balances[ids[i]] = obj;
-                            }
-                        }
-                    });
+                    for (let i = 0; i < ids.length; i++) {
+                        let obj = {
+                            symbol: this.assetList[ids[i]].symbol,
+                            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
+                        };
+                        this.account_info.balances[ids[i]] = obj;
+                    }
                     this.loading = false;
                     return null;
                 }).catch((ex) => {
@@ -535,7 +527,8 @@
         computed: {
 
             ...mapGetters({
-                keywords: 'keywords'
+                keywords: 'keywords',
+                assetList: 'assetList'
             }),
 
             is_contract_account () {

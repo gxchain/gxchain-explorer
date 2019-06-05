@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import filters from '@/filters';
 import Promise from 'bluebird';
 import { Apis } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
@@ -96,47 +95,6 @@ export const fetch_product_by_chain = (prod_id) => {
  */
 export const get_objects = (ids) => {
     return Apis.instance().db_api().exec('get_objects', [ids]);
-};
-
-let assetsMap = {};
-/***
- * get assets by ids
- * @param ids
- * @returns {bluebird}
- */
-export const get_assets_by_ids = (ids) => {
-    return new Promise(function (resolve, reject) {
-        let new_ids = [];
-        ids.forEach(id => {
-            if (!assetsMap[id]) {
-                new_ids.push(id);
-            }
-        });
-        if (new_ids.length > 0) {
-            return get_objects(new_ids).then(assets => {
-                assets.forEach(asset => {
-                    assetsMap[asset.id] = asset;
-                });
-                resolve(ids.map(id => {
-                    return assetsMap[id];
-                }));
-            }).catch(reject);
-        } else {
-            resolve(ids.map(id => {
-                return assetsMap[id];
-            }));
-        }
-    });
-};
-
-export const fetch_asset_by_id = (asset_id, amount) => {
-    return new Promise(function (resolve, reject) {
-        get_assets_by_ids([asset_id]).then(assets => {
-            resolve(filters.number((amount / 100000).toFixed(assets[0].precision), assets[0].precision) + ' ' + assets[0].symbol);
-        }).catch(ex => {
-            reject(ex);
-        });
-    });
 };
 
 export const deserialize_contract_params = (contract, method, data) => {
