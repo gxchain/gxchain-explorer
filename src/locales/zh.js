@@ -525,7 +525,7 @@ const locale = {
         empty: '未查询到账户信息',
         membership: {
             lifetime: '终身会员',
-            normal: '普通会员',
+            normal: '普通账户',
             contract: '合约账户',
             trustnode: '候选公信节点'
         },
