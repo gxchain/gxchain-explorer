@@ -1432,7 +1432,7 @@
 
 <script>
     import { ChainTypes } from 'gxbjs/es';
-    import { fetch_account_by_chain, fetch_product_by_chain } from '@/services/CommonService';
+    import { fetch_account, fetch_product_by_chain } from '@/services/CommonService';
     import filters from '@/filters';
     import { mapGetters } from 'vuex';
 
@@ -1471,8 +1471,8 @@
                     return this.op[1][key];
                 }
                 this.items[key] = true;
-                fetch_account_by_chain(id).then((account) => {
-                    this.$set(this.op[1], key, account.toJS().name);
+                fetch_account(id).then((res) => {
+                    this.$set(this.op[1], key, res.body.account.name);
                 }).catch(ex => {
                     this.items[key] = false;
                     console.error(ex);
