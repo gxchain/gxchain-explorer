@@ -152,8 +152,7 @@
                             <tr v-for="(item,i) in rankings">
                                 <td>{{i+1}}</td>
                                 <td>
-                                    <account-image :size="8"
-                                                   :account="item.accountName"></account-image>
+                                    <account-image :size="8" :account="item.accountName" :type="item.accountType"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:'/account/'+item.accountName}">
                                         {{item.accountName}}
@@ -200,12 +199,12 @@
                             <tbody>
                             <tr v-for="asset in assets" :key="asset.id">
                                 <td>
-                                    <account-image :size="8" :account="asset.symbol"></account-image>
+                                    <account-image :size="8" :account="asset.symbol" :type="3"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:`/asset/${asset.symbol}`}">{{asset.symbol}}</router-link>
                                 </td>
                                 <td>
-                                    <account-image :size="8" :account="asset.issuer.name"></account-image>
+                                    <account-image :size="8" :account="asset.issuer.name" :type="asset.issuer.code ? 2 : 1"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:`/account/${asset.issuer.name}`}">{{asset.issuer.name}}
                                     </router-link>
@@ -435,6 +434,7 @@
                     this.rankings = resp.body.map(item => {
                         return {
                             accountName: item.accountName,
+                            accountType: item.accountType,
                             amount: filters.number(item.amount, assetInfo.precision),
                             freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
                             totalAmount: filters.number(item.totalAmount, assetInfo.precision),
@@ -496,6 +496,7 @@
             loadAssets () {
                 this.$http.get('/api/assets').then(resp => {
                     this.assets = resp.body;
+                    console.log(this.assets);
                     this.assets_loading = false;
                     this.loadRankings();
                 });

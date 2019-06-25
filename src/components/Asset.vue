@@ -65,8 +65,7 @@
                             <tr v-for="(item,i) in rankings">
                                 <td>{{i+1}}</td>
                                 <td>
-                                    <account-image :size="8"
-                                                   :account="item.accountName"></account-image>
+                                    <account-image :size="8" :account="item.accountName" :type="item.accountType"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:'/account/'+item.accountName}">
                                         {{item.accountName}}

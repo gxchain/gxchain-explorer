@@ -18,7 +18,7 @@
                 <tbody>
                   <tr v-for="member in global_params.active_committee_members" :key="member">
                     <td>
-                      <account-image :size="8" :account="getCommitteeAccountName(member)"></account-image>
+                      <account-image :size="8" :account="getCommitteeAccountName(member)" :type="1"></account-image>
                       &nbsp;
                       <router-link :to="{path:'/account/'+getCommitteeAccountName(member)}">
                         {{getCommitteeAccountName(member)}}
@@ -51,7 +51,7 @@
                   <tbody>
                     <tr v-for="witness in global_params.active_witnesses" :key="witness" :class="{info:getLastConfirmedBlock(witness)==block_info.head_block_number}">
                       <td>
-                        <account-image :size="8" :account="getWitnessAccountName(witness)"></account-image>
+                        <account-image :size="8" :account="getWitnessAccountName(witness)" :type="1"></account-image>
                         &nbsp;
                         <router-link :to="{path:'/account/'+getWitnessAccountName(witness)}">
                           {{getWitnessAccountName(witness)}}
@@ -98,7 +98,7 @@
                                     <div>
                                         <img v-if="c.extra&&c.extra.logo" :src="c.extra.logo" width="16px"/>
                                         <account-image v-if="!(c.extra&&c.extra.logo)" :size="8"
-                                                        :account="c.account"></account-image>
+                                                        :account="c.account" :type="1"></account-image>
                                         &nbsp;
                                         <router-link :to="{path:'/account/'+c.account}">
                                             {{c.account}}
@@ -115,7 +115,7 @@
                                     <div v-if="candidates.second[index]">
                                         <img v-if="candidates.second[index].extra&&c.extra.logo" :src="candidates.second[index].extra.logo" width="16px"/>
                                         <account-image v-if="!(candidates.second[index].extra&&candidates.second[index].extra.logo)" :size="8"
-                                                        :account="candidates.second[index].account"></account-image>
+                                                        :account="candidates.second[index].account" :type="1"></account-image>
                                         &nbsp;
                                         <router-link :to="{path:'/account/'+candidates.second[index].account}">
                                             {{candidates.second[index].account}}
