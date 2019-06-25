@@ -1822,7 +1822,7 @@
     import { ChainTypes } from 'gxbjs/es';
     import Proposed_Op from './Proposed_Op.vue';
     import {
-        deserialize_contract_params, fetch_account_by_chain,
+        deserialize_contract_params, fetch_account,
         fetch_product_by_chain
     } from '@/services/CommonService';
     import filters from '@/filters';
@@ -1868,8 +1868,8 @@
                     return this.account[id];
                 }
                 this.items[id] = true;
-                fetch_account_by_chain(id).then((account) => {
-                    this.$set(this.account, id, account.toJS().name);
+                fetch_account(id).then((res) => {
+                    this.$set(this.account, id, res.body.account.name);
                 }).catch(ex => {
                     this.items[id] = false;
                     console.error(ex);
