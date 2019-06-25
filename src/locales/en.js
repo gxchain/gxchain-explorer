@@ -526,7 +526,7 @@ const locale = {
         empty: 'No record',
         membership: {
             lifetime: 'Lifetime',
-            normal: 'Basic',
+            normal: 'Normal Account',
             contract: 'Contract Account',
             trustnode: 'TrustNode Candidate'
         },
