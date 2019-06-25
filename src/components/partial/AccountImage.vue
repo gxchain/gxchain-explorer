@@ -91,6 +91,9 @@
         },
         mounted () {
             this.drawCanvas();
+            this.$nextTick(() => {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         }
     };
 </script>

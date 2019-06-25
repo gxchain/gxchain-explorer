@@ -152,6 +152,7 @@
                         }
                         return {
                             accountName: item.accountName,
+                            accountType: item.accountType,
                             amount: filters.number(item.amount, assetInfo.precision),
                             freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
                             totalAmount: filters.number(item.totalAmount, assetInfo.precision),

@@ -496,7 +496,6 @@
             loadAssets () {
                 this.$http.get('/api/assets').then(resp => {
                     this.assets = resp.body;
-                    console.log(this.assets);
                     this.assets_loading = false;
                     this.loadRankings();
                 });
