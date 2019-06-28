@@ -1,6 +1,5 @@
 import express from 'express';
 import GXChainService from '../services/GXChainService';
-import LevelDBService from '../services/LevelDBService';
 import jdenticon from 'jdenticon';
 import crypto from 'crypto';
 import IPFSService from '../services/IPFSService';
@@ -63,46 +62,38 @@ router.get('/asset/:asset_name', function (req, res) {
 router.get('/transaction/:tx_id', function (req, res) {
     let txid = req.params.tx_id.toLowerCase();
     let STA_SERVICE = config.build.env.STA_SERVICE;
-    if (config.build.env.network.indexOf('testnet') === -1 && config.build.env.network.indexOf('47.96.164.78') === -1) {
-        superagent.get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`).query({
-            txid: txid
-        }).end((err, resp) => {
-            if (err) {
-                console.error('error when get block by txid', err);
+    superagent.get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`).query({
+        txid: txid
+    }).end((err, resp) => {
+        if (err) {
+            console.error('error when get block by txid', err);
+            return res.send({});
+        }
+        let blockInfo = JSON.parse(resp.text || '{}');
+        GXChainService.fetch_block(blockInfo.blockNum).then(block => {
+            if (!block) {
+                console.log('block not found:', blockInfo.blockNum);
                 return res.send({});
             }
-            let blockInfo = JSON.parse(resp.text || '{}');
-            GXChainService.fetch_block(blockInfo.blockNum).then(block => {
-                if (!block) {
-                    console.log('block not found:', blockInfo.blockNum);
-                    return res.send({});
+            let index = -1;
+            block.transaction_ids.forEach((id, i) => {
+                if (id === txid) {
+                    index = i;
                 }
-                let index = -1;
-                block.transaction_ids.forEach((id, i) => {
-                    if (id === txid) {
-                        index = i;
-                    }
-                });
-                console.log('>>>', index);
-                if (index >= 0) {
-                    let tx = block.transactions[index];
-                    tx.current_block_number = blockInfo.blockNum;
-                    res.send(block.transactions[index]);
-                } else {
-                    res.send({});
-                }
-            }).catch(ex => {
-                console.error('error fetching block', ex);
-                res.send({});
             });
-        });
-    } else {
-        LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction) => {
-            res.send(JSON.parse(transaction));
-        }).catch(() => {
+            console.log('>>>', index);
+            if (index >= 0) {
+                let tx = block.transactions[index];
+                tx.current_block_number = blockInfo.blockNum;
+                res.send(block.transactions[index]);
+            } else {
+                res.send({});
+            }
+        }).catch(ex => {
+            console.error('error fetching block', ex);
             res.send({});
         });
-    }
+    });
 });
 
 router.get('/trustnode/candidates', function (req, res) {
