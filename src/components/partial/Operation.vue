@@ -1681,6 +1681,10 @@
                             <th>{{$t('transaction.trxTypes.call_contract.fee')}}</th>
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
+                        <tr v-if="op[1].amount">
+                            <th>{{$t('transaction.trxTypes.call_contract.amount')}}</th>
+                            <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
+                        </tr>
                         </tbody>
                         <!-- 76:update_contract -->
                         <tbody v-if="ops[op[0]] == 'update_contract'">

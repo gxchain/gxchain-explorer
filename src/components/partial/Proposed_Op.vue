@@ -1424,6 +1424,48 @@
                         </td>
                     </tr>
                     </tbody>
+                    <!-- 73:call_contract -->
+                    <tbody v-if="ops[op[0]] == 'call_contract'">
+                    <tr>
+                        <th>{{$t('transaction.trx_type')}}</th>
+                        <td align="right"><span
+                                class="label label-success">{{$t('transaction.trxTypes.call_contract.name')}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{$t('transaction.trxTypes.call_contract.account')}}</th>
+                        <td align="right">
+                            <router-link :to="{path: '/account/' + op[1].account}">
+                                {{formatted_account(op[1].account, 'account')}}
+                            </router-link>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{$t('transaction.trxTypes.call_contract.contract_name')}}</th>
+                        <td align="right">
+                            <router-link :to="{path: '/account/' + op[1].contract_id}">
+                                {{formatted_account(op[1].contract_id, 'contract_id')}}
+                            </router-link>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{$t('transaction.trxTypes.call_contract.method_name')}}</th>
+                        <td align="right">{{op[1].method_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{$t('transaction.trxTypes.call_contract.params')}}</th>
+                        <td align="right">{{formatted_params(op[1].contract_id, op[1].method_name, op[1].data)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{$t('transaction.trxTypes.call_contract.fee')}}</th>
+                        <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                    </tr>
+                    <tr v-if="op[1].amount">
+                        <th>{{$t('transaction.trxTypes.call_contract.amount')}}</th>
+                        <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -412,7 +412,8 @@ const locale = {
                 contract_name: '合约名称',
                 method_name: '合约方法',
                 params: '参数',
-                fee: '手续费'
+                fee: '手续费',
+                amount: '发送资产'
             },
             'update_contract': {
                 name: '更新合约',
