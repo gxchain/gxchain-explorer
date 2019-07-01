@@ -413,7 +413,8 @@ const locale = {
                 contract_name: 'Contract Name',
                 method_name: 'Method Name',
                 params: 'Parameters',
-                fee: 'Fee'
+                fee: 'Fee',
+                amount: 'Sending Assets'
             },
             'update_contract': {
                 name: 'Create Contract',
