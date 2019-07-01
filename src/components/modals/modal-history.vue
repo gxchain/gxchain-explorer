@@ -85,6 +85,9 @@
                         if (item[1].hasOwnProperty('amount_')) {
                             item[1].amount = item[1].amount_;
                         }
+                        if (item[1].hasOwnProperty('proposed_ops_str')) {
+                            item[1].proposed_ops = JSON.parse(item[1].proposed_ops_str);
+                        }
                         item['block_id'] = respList[i].block_data.block_num;
                         item['timestamp'] = new Date(respList[i].block_data.block_time + 'Z').format('yyyy-MM-dd hh:mm:ss');
                         list.push(item);

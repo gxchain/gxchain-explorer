@@ -313,8 +313,8 @@
     import { mapActions, mapGetters } from 'vuex';
     import { ChainStore } from 'gxbjs';
     import { Apis } from 'gxbjs-ws';
-    import { fetch_account_by_chain, fetch_account_history } from '@/services/CommonService';
     import filters from '@/filters';
+    import { calc_block_time } from '@/services/CommonService';
     import HistoryOp from './partial/HistoryOp.vue';
     import modalHistory from '@/components/modals/modal-history.vue';
 
@@ -323,6 +323,7 @@
             return {
                 loading: true,
                 history_loading: true,
+                history_length: 10,
                 abi: {
                     type: 'raw'
                 },
@@ -420,55 +421,54 @@
                     this.isTrustNode = results[0] && results[1];
                 });
             },
-            loadLatestHistory (id_or_name, pageNo, pageSize) {
-                fetch_account_history(id_or_name, pageNo, pageSize).then(res => {
-                    const respList = res.body.list;
-                    const list = [];
-                    this.totalPage = Math.ceil(res.body.totalCount / pageSize);
-                    for (let i = 0; i < respList.length; i++) {
-                        const item = [];
-                        item[0] = respList[i].operation_type;
-                        item[1] = respList[i].operation_history.op_object;
-                        if (item[1].hasOwnProperty('amount_')) {
-                            item[1].amount = item[1].amount_;
-                        }
-                        item['block_id'] = respList[i].block_data.block_num;
-                        item['timestamp'] = new Date(respList[i].block_data.block_time + 'Z').format('yyyy-MM-dd hh:mm:ss');
-                        list.push(item);
-                    }
-                    this.latestTransactions = list;
-                    this.history_loading = false;
-                }).catch((ex) => {
-                    console.error(ex);
-                    this.history_loading = false;
-                });
-            },
             onUpdate () {
-                fetch_account_by_chain(this.$route.params.id_or_name).then(res => {
-                    this.account_info = res.toJS();
-                    if (this.account_info && this.account_info.code && !this.code.wast) {
-                        if (this.account_info.abi.tables.length > 0) {
-                            this.current_table.name = this.account_info.abi.tables[0].name;
+                try {
+                    if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+                        this.loading = false;
+                        return;
+                    }
+                } catch (e) {
+                    console.error(e);
+                    this.loading = false;
+                }
+                this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
+                if (this.account_info && this.account_info.code && !this.code.wast) {
+                    if (this.account_info.abi.tables.length > 0) {
+                        this.current_table.name = this.account_info.abi.tables[0].name;
+                    }
+                    this.getWAST();
+                }
+                if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
+                    this.loadTrustNodeInfo(this.account_info.id);
+                }
+                let ids = Object.keys(this.account_info.balances);
+                for (let i = 0; i < ids.length; i++) {
+                    let obj = {
+                        symbol: this.assetList[ids[i]].symbol,
+                        amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
+                    };
+                    this.account_info.balances[ids[i]] = obj;
+                }
+                if (this.account_info.history) {
+                    let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
+                    for (let i = length - 1; i >= 0; i--) {
+                        this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
+
+                        if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
+                            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
+                            let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
+                            let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
+                            this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
                         }
-                        this.getWAST();
+
+                        this.latestTransactions.unshift(this.account_info.history[i].op);
+                        if (this.latestTransactions.length > length) {
+                            this.latestTransactions.pop();
+                        }
                     }
-                    if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
-                        this.loadTrustNodeInfo(this.account_info.id);
-                    }
-                    let ids = Object.keys(this.account_info.balances);
-                    for (let i = 0; i < ids.length; i++) {
-                        let obj = {
-                            symbol: this.assetList[ids[i]].symbol,
-                            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
-                        };
-                        this.account_info.balances[ids[i]] = obj;
-                    }
-                    this.loading = false;
-                    return null;
-                }).catch((ex) => {
-                    console.error(ex);
-                    this.loading = false;
-                });
+                    this.history_loading = false;
+                }
+                this.loading = false;
             }
         },
         watch: {
@@ -545,24 +545,15 @@
                 return result.join('&nbsp;');
             }
         },
-        created () {
-            if (this.$route.params.id_or_name) {
-                window.getAccountHistoryInterval = setInterval(() => {
-                    this.loadLatestHistory(this.$route.params.id_or_name, 1, 20);
-                }, 1000);
-            }
-        },
-        beforeRouteLeave (to, from, next) {
-            if (window.getAccountHistoryInterval) {
-                clearInterval(window.getAccountHistoryInterval);
-            }
-            next();
-        },
         mounted () {
             if (this.$route.params.id_or_name !== this.keywords) {
                 this.setKeywords({keywords: this.$route.params.id_or_name});
             }
+            ChainStore.subscribe(this.onUpdate);
             this.onUpdate();
+        },
+        destroyed () {
+            ChainStore.unsubscribe(this.onUpdate);
         },
         components: {
             HistoryOp,

@@ -112,7 +112,6 @@ const fetch_account_balance = (id_or_name) => {
     return new Promise((resolve, reject) => {
         if (id_or_name.indexOf('.') === -1) {
             fetch_account(id_or_name).then((account) => {
-                console.log(account[0]);
                 return Apis.instance().db_api().exec('get_account_balances', [account.id, []]);
             }).then((balances) => {
                 resolve(balances);
