@@ -434,7 +434,7 @@
                     this.rankings = resp.body.map(item => {
                         return {
                             accountName: item.accountName,
-                            accountType: item.accountType,
+                            accountType: item.accountType || 1,
                             amount: filters.number(item.amount, assetInfo.precision),
                             freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
                             totalAmount: filters.number(item.totalAmount, assetInfo.precision),
