@@ -42,11 +42,11 @@
                         api: '/api/account/:id_or_name',
                         example: `http://${location.host}/api/account/paul`
                     },
-                    {
-                        name: this.$t('api.query_account_history'),
-                        api: '/api/account/:id_or_name?pageNo=:pageNo&pageSize=:pageSize',
-                        example: `http://${location.host}/api/account_history/paul?pageNo=1&pageSize=10`
-                    },
+                    // {
+                    //     name: this.$t('api.query_account_history'),
+                    //     api: '/api/account/:id_or_name?pageNo=:pageNo&pageSize=:pageSize',
+                    //     example: `http://${location.host}/api/account_history/paul?pageNo=1&pageSize=10`
+                    // },
                     {
                         name: this.$t('api.query_account_balance'),
                         api: '/api/account_balance/:id_or_name',

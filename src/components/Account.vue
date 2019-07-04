@@ -280,7 +280,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
-                            <a class="pull-right" href="#modal-history" data-toggle="modal">{{$t('account.basic.more')}}</a>
+                            <a class="pull-right more-btn" v-on:click="collapse"
+                               v-if="latestTransactions.length > 9">{{$t('account.basic.more')}}</a>
+                            <!-- <a class="pull-right" href="#modal-history" data-toggle="modal">{{$t('account.basic.more')}}</a> -->
                         </div>
                         <div class="panel-body no-padding">
                             <Loading v-show="history_loading"></Loading>
@@ -323,7 +325,8 @@
             return {
                 loading: true,
                 history_loading: true,
-                history_length: 10,
+                // history_length: 10,
+                history_length: 100,
                 abi: {
                     type: 'raw'
                 },
@@ -357,6 +360,9 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
+            collapse () {
+                $('.collapse').collapse('toggle');
+            },
             getWAST () {
                 this.$http.post('/api/wasm2wast', {wasm: this.account_info.code}).then(resp => {
                     this.code.wast = resp.body.wast;
