@@ -307,7 +307,7 @@
             <h4 class="page-header">{{$t('account.title')}}</h4>
             <p class="null-tip">{{$t('account.empty')}}</p>
         </div>
-        <modal-history :account="$route.params.id_or_name"></modal-history>
+        <!-- <modal-history :account="$route.params.id_or_name"></modal-history> -->
     </div>
 </template>
 
@@ -318,7 +318,7 @@
     import filters from '@/filters';
     import { calc_block_time } from '@/services/CommonService';
     import HistoryOp from './partial/HistoryOp.vue';
-    import modalHistory from '@/components/modals/modal-history.vue';
+    // import modalHistory from '@/components/modals/modal-history.vue';
 
     export default {
         data () {
@@ -562,8 +562,8 @@
             ChainStore.unsubscribe(this.onUpdate);
         },
         components: {
-            HistoryOp,
-            modalHistory
+            HistoryOp
+            // modalHistory
         }
     };
 </script>
