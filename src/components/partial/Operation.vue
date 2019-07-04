@@ -1814,6 +1814,10 @@
                             <th>{{$t('transaction.trxTypes.inter_contract_call.fee')}}</th>
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
+                        <tr v-if="op[1].amount">
+                            <th>{{$t('transaction.trxTypes.inter_contract_call.amount')}}</th>
+                            <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

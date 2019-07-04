@@ -978,7 +978,7 @@
             </router-link>
         </th>
         <td v-if="ops[op[0]] == 'call_contract'">
-            <i18n path="transaction.operation.call_contract">
+            <i18n path="transaction.operation.call_contract_and_transfer" v-if="op[1].amount">
                 <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].account)}">
                     {{ formatted_account(op[1].account) }}
                 </router-link>
@@ -986,7 +986,16 @@
                     {{ formatted_account(op[1].contract_id) }}
                 </router-link>
                 <span place="method_name">{{op[1].method_name}}</span>
-                <span place="params">{{formatted_params(op[1].contract_id,op[1].method_name,op[1].data)}}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
+            </i18n>
+            <i18n path="transaction.operation.call_contract" v-else>
+                <router-link place="account" :to="{path: '/account/' + formatted_account(op[1].account)}">
+                    {{ formatted_account(op[1].account) }}
+                </router-link>
+                <router-link place="contract_name" :to="{path: '/account/' + formatted_account(op[1].contract_id)}">
+                    {{ formatted_account(op[1].contract_id) }}
+                </router-link>
+                <span place="method_name">{{op[1].method_name}}</span>
             </i18n>
         </td>
         <!-- 76:update_contract -->
@@ -1046,7 +1055,7 @@
             </router-link>
         </th>
         <td v-if="ops[op[0]] == 'inter_contract_call'">
-            <i18n path="transaction.operation.inter_contract_call">
+            <i18n path="transaction.operation.inter_contract_call_and_transfer" v-if="op[1].amount">
                 <router-link place="sender_contract"
                              :to="{path: '/account/' + formatted_account(op[1].sender_contract)}">
                     {{ formatted_account(op[1].sender_contract) }}
@@ -1055,7 +1064,17 @@
                     {{ formatted_account(op[1].contract_id) }}
                 </router-link>
                 <span place="method_name">{{op[1].method_name}}</span>
-                <span place="params">{{formatted_params(op[1].contract_id,op[1].method_name,op[1].data)}}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
+            </i18n>
+            <i18n path="transaction.operation.inter_contract_call" v-else>
+                <router-link place="sender_contract"
+                             :to="{path: '/account/' + formatted_account(op[1].sender_contract)}">
+                    {{ formatted_account(op[1].sender_contract) }}
+                </router-link>
+                <router-link place="contract_name" :to="{path: '/account/' + formatted_account(op[1].contract_id)}">
+                    {{ formatted_account(op[1].contract_id) }}
+                </router-link>
+                <span place="method_name">{{op[1].method_name}}</span>
             </i18n>
         </td>
         <td align="right">

@@ -441,7 +441,8 @@ const locale = {
                 contract_name: '接受合约',
                 method_name: '方法名',
                 data: '参数',
-                fee: '手续费'
+                fee: '手续费',
+                amount: '发送资产'
             },
             'status_states': {
                 0: '未发布',
@@ -512,12 +513,14 @@ const locale = {
             'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
             'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
             'create_contract': '{account} 创建了智能合约 {contract_name}',
-            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 参数: {params}',
+            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
+            'call_contract_and_transfer': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户',
             'update_contract': '{account} 更新了智能合约 {contract_name}',
             'custom': '{account} 创建了一笔自定义操作',
             'trust_node_pledge_withdraw': '{account} 取回公信节点保证金',
             'inline_transfer': '合约账户 {from} 发送 {amount} 到 {to}, 备注: {memo}',
-            'inter_contract_call': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 参数: {params}'
+            'inter_contract_call': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法',
+            'inter_contract_call_and_transfer': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户'
         }
     },
     // account

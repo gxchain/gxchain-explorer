@@ -442,7 +442,8 @@ const locale = {
                 contract_name: 'Contract Name',
                 method_name: 'Method Name',
                 params: 'Parameters',
-                fee: 'Fee'
+                fee: 'Fee',
+                amount: 'Sending Assets'
             },
             'status_states': {
                 0: 'Unpublished',
@@ -513,12 +514,14 @@ const locale = {
             'balance_unlock': '{account} complete a loyalty program',
             'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
             'create_contract': '{account} created the contract {contract_name}',
-            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method with params: {params}',
+            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method',
+            'call_contract_and_transfer': '{account} call the contract {contract_name} \'s {method_name} method and sent {amount} to contract account',
             'update_contract': '{account} updated the contract {contract_name}',
             'custom': '{account} created a custom operation',
             'trust_node_pledge_withdraw': '{account} withdrww trustnode margin',
             'inline_transfer': 'contract account {from} sent {amount} to {to} with memo {memo}',
-            'inter_contract_call': 'contract {account} call the contract {contract_name} \'s {method_name} method with params: {params}'
+            'inter_contract_call': 'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method',
+            'inter_contract_call_and_transfer': 'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method and sent {amount} to contract account'
         }
     },
     // account
