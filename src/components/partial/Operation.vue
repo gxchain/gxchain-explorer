@@ -1674,7 +1674,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.call_contract.params')}}</th>
-                            <td align="right">{{formatted_params(op[1].contract_id, op[1].method_name, op[1].data)}}
+                            <td align="right" width="80%">{{formatted_params(op[1].contract_id, op[1].method_name, op[1].data)}}
                             </td>
                         </tr>
                         <tr>
@@ -1906,7 +1906,7 @@
                 }
                 this.items[`${contract}_${method}_${data}`] = true;
                 deserialize_contract_params(contract, method, data).then(result => {
-                    this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
+                    this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result, null, 2));
                 }).catch(ex => {
                     this.items[`${contract}_${method}_${data}`] = false;
                     console.error(ex);
