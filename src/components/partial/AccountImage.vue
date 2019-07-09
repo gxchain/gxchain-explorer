@@ -69,6 +69,7 @@
         },
         methods: {
             drawCanvas () {
+                if (this.account === null) return;
                 if (this.symbolsMap[this.account]) {
                     this.imgShow = true;
                     this.imgSrc = this.symbolsMap[this.account];
