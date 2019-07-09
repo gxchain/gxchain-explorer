@@ -113,7 +113,7 @@
                                 <td class="text-right">{{c.votes/100000|number(0)}}</td>
                                 <td>
                                     <div v-if="candidates.second[index]">
-                                        <img v-if="candidates.second[index].extra&&c.extra.logo" :src="candidates.second[index].extra.logo" width="16px"/>
+                                        <img v-if="candidates.second[index].extra&&candidates.second[index].extra.logo" :src="candidates.second[index].extra.logo" width="16px"/>
                                         <account-image v-if="!(candidates.second[index].extra&&candidates.second[index].extra.logo)" :size="8"
                                                         :account="candidates.second[index].account" :type="1"></account-image>
                                         &nbsp;
@@ -250,7 +250,7 @@
       line-height: 8px;
       color: #666;
   }
-  
+
   .panel-trust-nodes thead tr th:nth-of-type(3),
   .panel-trust-nodes tbody tr td:nth-of-type(3) {
       padding-right: 20px;
