@@ -92,6 +92,12 @@
                         if (item[1].hasOwnProperty('proposed_ops_str')) {
                             item[1].proposed_ops = JSON.parse(item[1].proposed_ops_str);
                         }
+                        if (item[1].hasOwnProperty('request_params')) {
+                            if (item[1].request_params.hasOwnProperty('amount_')) {
+                                item[1].request_params.amount_.amount = item[1].request_params.amount_.amount_str;
+                                item[1].request_params.amount = item[1].request_params.amount_;
+                            }
+                        }
                         item['block_id'] = respList[i].block_data.block_num;
                         item['timestamp'] = new Date(respList[i].block_data.block_time + 'Z').format('yyyy-MM-dd hh:mm:ss');
                         list.push(item);
