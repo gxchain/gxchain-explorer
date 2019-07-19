@@ -82,7 +82,11 @@
                         const item = [];
                         item[0] = respList[i].operation_type;
                         item[1] = respList[i].operation_history.op_object;
+                        if (item[1].hasOwnProperty('fee')) {
+                            item[1].fee.amount = item[1].fee.amount_str;
+                        }
                         if (item[1].hasOwnProperty('amount_')) {
+                            item[1].amount_.amount = item[1].amount_.amount_str;
                             item[1].amount = item[1].amount_;
                         }
                         if (item[1].hasOwnProperty('proposed_ops_str')) {
