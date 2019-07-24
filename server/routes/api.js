@@ -1,7 +1,5 @@
 import express from 'express';
 import GXChainService from '../services/GXChainService';
-import LevelDBService from '../services/LevelDBService';
-import HoldrankService from '../services/HoldrankService';
 import jdenticon from 'jdenticon';
 import crypto from 'crypto';
 import IPFSService from '../services/IPFSService';
@@ -17,9 +15,9 @@ let router = express.Router();
  */
 
 router.get('/supply', function (req, res) {
-    GXChainService.gxs_supply().then(function (gxs) {
+    GXChainService.gxc_supply().then(function (gxc) {
         res.send({
-            total_supply: gxs.current_supply / 100000,
+            total_supply: gxc.current_supply / 100000,
             circulating_supply: 60000000
         });
     });
@@ -64,46 +62,38 @@ router.get('/asset/:asset_name', function (req, res) {
 router.get('/transaction/:tx_id', function (req, res) {
     let txid = req.params.tx_id.toLowerCase();
     let STA_SERVICE = config.build.env.STA_SERVICE;
-    if (config.build.env.network.indexOf('testnet') === -1 && config.build.env.network.indexOf('47.96.164.78') === -1) {
-        superagent.get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`).query({
-            txid: txid
-        }).end((err, resp) => {
-            if (err) {
-                console.error('error when get block by txid', err);
+    superagent.get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`).query({
+        txid: txid
+    }).end((err, resp) => {
+        if (err) {
+            console.error('error when get block by txid', err);
+            return res.send({});
+        }
+        let blockInfo = JSON.parse(resp.text || '{}');
+        GXChainService.fetch_block(blockInfo.blockNum).then(block => {
+            if (!block) {
+                console.log('block not found:', blockInfo.blockNum);
                 return res.send({});
             }
-            let blockInfo = JSON.parse(resp.text || '{}');
-            GXChainService.fetch_block(blockInfo.blockNum).then(block => {
-                if (!block) {
-                    console.log('block not found:', blockInfo.blockNum);
-                    return res.send({});
+            let index = -1;
+            block.transaction_ids.forEach((id, i) => {
+                if (id === txid) {
+                    index = i;
                 }
-                let index = -1;
-                block.transaction_ids.forEach((id, i) => {
-                    if (id === txid) {
-                        index = i;
-                    }
-                });
-                console.log('>>>', index);
-                if (index >= 0) {
-                    let tx = block.transactions[index];
-                    tx.current_block_number = blockInfo.blockNum;
-                    res.send(block.transactions[index]);
-                } else {
-                    res.send({});
-                }
-            }).catch(ex => {
-                console.error('error fetching block', ex);
-                res.send({});
             });
-        });
-    } else {
-        LevelDBService.get(req.params.tx_id.toLowerCase()).then((transaction) => {
-            res.send(JSON.parse(transaction));
-        }).catch(() => {
+            console.log('>>>', index);
+            if (index >= 0) {
+                let tx = block.transactions[index];
+                tx.current_block_number = blockInfo.blockNum;
+                res.send(block.transactions[index]);
+            } else {
+                res.send({});
+            }
+        }).catch(ex => {
+            console.error('error fetching block', ex);
             res.send({});
         });
-    }
+    });
 });
 
 router.get('/trustnode/candidates', function (req, res) {
@@ -121,6 +111,17 @@ router.get('/trustnode/candidates', function (req, res) {
 router.get('/account/:account_id_or_name', function (req, res) {
     GXChainService.fetch_full_account(req.params.account_id_or_name).then((account) => {
         res.send(account.length > 0 ? account[0][1] : {});
+    }).catch(() => {
+        res.send({});
+    });
+});
+
+/**
+ * 账户历史查询
+ */
+router.get('/account_history/:account_id_or_name', function (req, res) {
+    GXChainService.fetch_account_history(req.params.account_id_or_name, req.query.pageNo || 1, req.query.pageSize || 10).then((histories) => {
+        res.send(histories);
     }).catch(() => {
         res.send({});
     });
@@ -158,17 +159,6 @@ router.get('/product/:product_id', function (req, res) {
     }).catch(() => {
         res.send({});
     });
-});
-
-/**
- * 持仓
- */
-router.get('/holdrank/:typeid', function (req, res) {
-    try {
-        res.send(JSON.stringify(HoldrankService.get_rank(req.params.typeid)));
-    } catch (err) {
-        res.send({});
-    }
 });
 
 router.post('/wasm2wast', function (req, res) {

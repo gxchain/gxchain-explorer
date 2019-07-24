@@ -45,6 +45,6 @@ export default {
         padding: 8px;
         line-height: 36px;
         color: #ccc;
-        border-top: 3px double #eee;
+        border-top: 1px double #eee;
     }
 </style>

@@ -175,15 +175,42 @@ const locale = {
                 asset_to_issue: 'Amount to issue',
                 issue_to_account: 'To'
             },
-            'asset_reserve': 'Reserve asset',
+            'asset_reserve': {
+                name: 'Reserve asset',
+                fee: 'Fee',
+                account: 'Account',
+                amount_to_reserve: 'Reserved (Burnt) Amount'
+            },
             'asset_fund_fee_pool': 'Fund asset fee pool',
             'asset_settle': 'Asset settlement',
             'asset_global_settle': 'Global asset settlement',
             'asset_publish_feed': 'Publish feed',
-            'committee_member_create': 'Create committee member',
-            'committee_member_update': 'Update committee member',
-            'witness_create': 'Create TrustNode',
-            'witness_update': 'Update TrustNode',
+            'committee_member_create': {
+                name: 'Create committee member',
+                account: 'Committee member',
+                url: 'Url',
+                fee: 'Fee'
+            },
+            'committee_member_update': {
+                name: 'Update committee member',
+                account: 'Committee member',
+                url: 'Url',
+                fee: 'Fee'
+            },
+            'witness_create': {
+                name: 'Create TrustNode',
+                witness_account: 'TrustNode candidate',
+                witness_url: 'Url',
+                signing_key: 'Signing Key',
+                fee: 'Fee'
+            },
+            'witness_update': {
+                name: 'Update TrustNode',
+                witness_account: 'TrustNode candidate',
+                witness_url: 'Url',
+                signing_key: 'Signing Key',
+                fee: 'Fee'
+            },
             'witness_withdraw_pay': 'TrustNode pay withdrawal',
             'proposal': {
                 proposal_create: 'Create proposal',
@@ -386,7 +413,8 @@ const locale = {
                 contract_name: 'Contract Name',
                 method_name: 'Method Name',
                 params: 'Parameters',
-                fee: 'Fee'
+                fee: 'Fee',
+                amount: 'Sending Assets'
             },
             'update_contract': {
                 name: 'Create Contract',
@@ -414,7 +442,8 @@ const locale = {
                 contract_name: 'Contract Name',
                 method_name: 'Method Name',
                 params: 'Parameters',
-                fee: 'Fee'
+                fee: 'Fee',
+                amount: 'Sending Assets'
             },
             'status_states': {
                 0: 'Unpublished',
@@ -461,6 +490,8 @@ const locale = {
             'witness_pay': 'Withdraw TrustNode pay to account',
             'witness_receive': 'Received witness from witness',
             'committee_member_update_global_parameters': '{account} updated the global committee parameters',
+            'committee_member_create': '{account} was upgraded to become a witness',
+            'committee_member_update': '{account} update its committee info',
             'worker_create': '{account} created a worker proposal with daily pay of {pay}',
             'override_transfer': '{issuer} transferred {amount} from {from} to {to}',
             'account_upgrade_merchant': '{account} was upgraded to merchant',
@@ -483,12 +514,14 @@ const locale = {
             'balance_unlock': '{account} complete a loyalty program',
             'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
             'create_contract': '{account} created the contract {contract_name}',
-            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method with params: {params}',
+            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method',
+            'call_contract_and_transfer': '{account} call the contract {contract_name} \'s {method_name} method and sent {amount} to contract account',
             'update_contract': '{account} updated the contract {contract_name}',
             'custom': '{account} created a custom operation',
             'trust_node_pledge_withdraw': '{account} withdrww trustnode margin',
             'inline_transfer': 'contract account {from} sent {amount} to {to} with memo {memo}',
-            'inter_contract_call': 'contract {account} call the contract {contract_name} \'s {method_name} method with params: {params}'
+            'inter_contract_call': 'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method',
+            'inter_contract_call_and_transfer': 'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method and sent {amount} to contract account'
         }
     },
     // account
@@ -497,13 +530,14 @@ const locale = {
         empty: 'No record',
         membership: {
             lifetime: 'Lifetime',
-            normal: 'Basic',
+            normal: 'Normal Account',
             contract: 'Contract Account',
             trustnode: 'TrustNode Candidate'
         },
         basic: {
             title: 'Basic Information',
             more: 'More',
+            no_more: 'No More',
             account_name: 'Account Name',
             account_id: 'Account ID',
             membership: 'Membership',
@@ -565,30 +599,12 @@ const locale = {
         query_block: 'Query Block:',
         query_transaction: 'Query Transaction:',
         query_account: 'Query Account:',
+        query_account_history: 'Query Account History',
         query_account_balance: 'Query Account Balance:',
         get_account_header: 'Get Account Header:',
         assets: 'Assets:',
         asset_info: 'Asset Info:',
         candidates: 'TrustNode Candidates:'
-    },
-    holdrank: {
-        locknum: 'Total Frozen',
-        last_updated_at: 'Updated at: {datetime}',
-        rank: {
-            active: 'Holding Rank',
-            lock: 'Frozen Rank',
-            all: 'Total Rank'
-        },
-        table: {
-            userid: 'Account ID',
-            username: 'Account Name',
-            activegxs: 'Holding GXC',
-            peractive: 'Holding Percent',
-            lockgxs: 'Frozen GXC',
-            perlock: 'Frozen Percent',
-            allgxs: 'Total GXC',
-            perall: 'Total Percent'
-        }
     },
     fee: {
         mark: 'In the GXChain ecosystem every operation is assigned an individual fee.These fees are subject to change. However, they are defined solely by shareholder approval, thus each and every shareholder of the GXChain core asset has a say as to what the fees should be. If shareholders can be convinced to reduce a certain fee and consensus is reached, the fee will be reduced automatically by the blockchain. Changes of blockchain parameters are proposed by members of the committee. These members are voted by shareholders and improve the flexibility and reaction rate.',
@@ -627,8 +643,8 @@ const locale = {
             asset_global_settle: 'Global asset settlement',
             asset_publish_feed: 'Publish feed',
             committee_member_create: 'Create committee member',
-            witness_create: 'Create witness',
-            witness_withdraw_pay: 'Witness pay withdrawal',
+            witness_create: 'Create TrustNode',
+            witness_withdraw_pay: 'TrustNode pay withdrawal',
             proposal_create: 'Create proposal',
             proposal_update: 'Update proposal',
             proposal_delete: 'Delete proposal',
@@ -645,7 +661,7 @@ const locale = {
             assert: 'Assert operation',
             balance_claim: 'Claim balance',
             override_transfer: 'Override transfer',
-            witness_update: 'Update witness',
+            witness_update: 'Update TrustNode',
             committee_member_update_global_parameters: 'Global parameters update',
             transfer_to_blind: 'Transfer to blinded account',
             blind_transfer: 'Blinded transfer',

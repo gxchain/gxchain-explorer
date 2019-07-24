@@ -3,33 +3,128 @@ import { Apis } from 'gxbjs-ws';
 import { ChainStore } from 'gxbjs';
 import Immutable from 'immutable';
 import superagent from 'superagent';
+import config from '../../config';
 
 /**
- * get account information by name
+ * fetch account information by account name or id
  * @param account_name
  */
 const fetch_account = (account_name) => {
     return Apis.instance().db_api().exec('get_account_by_name', [account_name]);
 };
 
+/**
+ * fetch full account information by name
+ * @param account_name
+ * @returns {bluebird}
+ */
 const fetch_full_account = (account) => {
     return Apis.instance().db_api().exec('get_full_accounts', [[account], false]);
 };
 
 /**
- * fetch account balance of GXS by account name or id
- * @param account_name
+ * fetch account history by account name or id
+ * @param id_or_name
  * @returns {bluebird}
  */
-const fetch_account_balance = (account_name) => {
-    return new Promise((resolve, reject) => {
-        resolve(fetch_account(account_name).then((account) => {
-            return Apis.instance().db_api().exec('get_account_balances', [account.id, []]).then(function (balances) {
-                return balances;
+const fetch_account_history = (id_or_name, pageNo, pageSize) => {
+    return new Promise(function (resolve, reject) {
+        if (id_or_name.indexOf('.') === -1) {
+            fetch_account(id_or_name).then((account) => {
+                superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
+                .set('Content-Type', 'application/json')
+                .send({
+                    'query': {
+                        'bool': {
+                            'must': [{
+                                'term': {
+                                    'account_history.account': account.id
+                                }
+                            }]
+                        }
+                    },
+                    'from': (pageNo - 1) * pageSize,
+                    'size': pageSize,
+                    'sort': [{'block_data.block_time': 'desc'}]
+                })
+                .end((err, res) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        try {
+                            const respList = res.body.hits.hits;
+                            const list = [];
+                            for (let i = 0; i < respList.length; i++) {
+                                list.push(respList[i]._source);
+                            }
+                            resolve({ list, totalCount: res.body.hits.total, pageNo, pageSize });
+                        } catch (ex) {
+                            reject(ex);
+                        }
+                    }
+                });
+            }).catch((ex) => {
+                reject(ex);
             });
-        }).catch((ex) => {
-            reject(ex);
-        }));
+        } else {
+            superagent.post(JSON.parse(config.build.env.ES_PLUGIN))
+            .set('Content-Type', 'application/json')
+            .send({
+                'query': {
+                    'bool': {
+                        'must': [{
+                            'term': {
+                                'account_history.account': id_or_name
+                            }
+                        }]
+                    }
+                },
+                'from': (pageNo - 1) * pageSize,
+                'size': pageSize,
+                'sort': [{'block_data.block_time': 'desc'}]
+            })
+            .end((err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    try {
+                        const respList = res.body.hits.hits;
+                        const list = [];
+                        for (let i = 0; i < respList.length; i++) {
+                            list.push(respList[i]._source);
+                        }
+                        resolve({ list, totalCount: res.body.hits.total, pageNo, pageSize });
+                    } catch (ex) {
+                        reject(ex);
+                    }
+                }
+            });
+        }
+    });
+};
+
+/**
+ * fetch account balance of GXC by account name or id
+ * @param id_or_name
+ * @returns {bluebird}
+ */
+const fetch_account_balance = (id_or_name) => {
+    return new Promise((resolve, reject) => {
+        if (id_or_name.indexOf('.') === -1) {
+            fetch_account(id_or_name).then((account) => {
+                return Apis.instance().db_api().exec('get_account_balances', [account.id, []]);
+            }).then((balances) => {
+                resolve(balances);
+            }).catch((ex) => {
+                reject(ex);
+            });
+        } else {
+            Apis.instance().db_api().exec('get_account_balances', [id_or_name, []]).then((balances) => {
+                resolve(balances);
+            }).catch((ex) => {
+                reject(ex);
+            });
+        }
     });
 };
 
@@ -99,9 +194,9 @@ const fetch_assets = function () {
 };
 
 /**
- * 公信股供应量查询接口
+ * GXC供应量查询接口
  */
-const gxs_supply = function () {
+const gxc_supply = function () {
     return new Promise(function (resolve, reject) {
         return Apis.instance().db_api().exec('get_objects', [['2.3.1']]).then(function (resps) {
             resolve(resps[0]);
@@ -192,7 +287,6 @@ const fetch_candidates = function () {
             superagent.get('https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json')
         ]).then(results => {
             let accounts = results[0];
-            // console.log(accounts);
             let trustNodeOffChainInfo = JSON.parse(results[1].text).list;
             let candidates = accounts.map(a => {
                 let info = trustNodeOffChainInfo.find(t => t.accountName === a[1].account.name);
@@ -226,12 +320,13 @@ const fetch_candidates = function () {
 };
 
 export default {
-    gxs_supply,
+    gxc_supply,
     fetch_block,
     fetch_asset,
     fetch_assets,
     fetch_account,
     fetch_full_account,
+    fetch_account_history,
     fetch_account_balance,
     fetch_product,
     fetch_candidates

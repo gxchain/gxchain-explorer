@@ -115,10 +115,10 @@
                             <tr>
                                 <th>{{$t('index.transactions.type')}}</th>
                                 <th>{{$t('index.transactions.content')}}</th>
-                                <th class="right">{{$t('index.transactions.time')}}</th>
+                                <th class="right" width="80">{{$t('index.transactions.time')}}</th>
                             </tr>
                             </thead>
-                            <History_Op :latestTransactions="latestTransactions"></History_Op>
+                            <history-op :latestTransactions="latestTransactions"></history-op>
                         </table>
                     </div>
                 </div>
@@ -152,8 +152,7 @@
                             <tr v-for="(item,i) in rankings">
                                 <td>{{i+1}}</td>
                                 <td>
-                                    <account-image :size="8"
-                                                   :account="item.accountName"></account-image>
+                                    <account-image :size="8" :account="item.accountName" :type="item.accountType"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:'/account/'+item.accountName}">
                                         {{item.accountName}}
@@ -200,12 +199,12 @@
                             <tbody>
                             <tr v-for="asset in assets" :key="asset.id">
                                 <td>
-                                    <account-image :size="8" :account="asset.symbol"></account-image>
+                                    <account-image :size="8" :account="asset.symbol" :type="3"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:`/asset/${asset.symbol}`}">{{asset.symbol}}</router-link>
                                 </td>
                                 <td>
-                                    <account-image :size="8" :account="asset.issuer.name"></account-image>
+                                    <account-image :size="8" :account="asset.issuer.name" :type="asset.issuer.code ? 2 : 1"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:`/account/${asset.issuer.name}`}">{{asset.issuer.name}}
                                     </router-link>
@@ -228,7 +227,7 @@
     import { ChainStore } from 'gxbjs';
     import { Apis } from 'gxbjs-ws';
     import filters from '../filters';
-    import History_Op from './partial/History_Op.vue';
+    import HistoryOp from './partial/HistoryOp.vue';
     import { calc_block_time } from '@/services/CommonService';
     import { mapActions } from 'vuex';
     import DigitalRoll from './partial/DigitalRoll';
@@ -435,6 +434,7 @@
                     this.rankings = resp.body.map(item => {
                         return {
                             accountName: item.accountName,
+                            accountType: item.accountType || 1,
                             amount: filters.number(item.amount, assetInfo.precision),
                             freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
                             totalAmount: filters.number(item.totalAmount, assetInfo.precision),
@@ -602,7 +602,7 @@
             }
         },
         components: {
-            History_Op: History_Op,
+            HistoryOp: HistoryOp,
             DigitalRoll: DigitalRoll,
             AccountImage
         }
@@ -610,6 +610,10 @@
 </script>
 
 <style scoped>
+    a {
+        vertical-align: middle;
+    }
+    
     .page-header {
         margin: 0 0 20px;
     }

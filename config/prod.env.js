@@ -2,6 +2,7 @@ let isTest = process.env.test;
 let isDev = process.env.dev;
 
 var sta_service = '"https://wallet.gxb.io/statistics/gxchain"';
+var es_plugin = '"https://block.gxb.io/search/gxchain*/data/_search?pretty=true"';
 var network = JSON.stringify({
     blockchain: 'gxc',
     protocol: 'https',
@@ -11,6 +12,7 @@ var network = JSON.stringify({
 });
 if(isTest){
     sta_service = '"https://testnet.wallet.gxchain.org/statistics/gxchain"';
+    es_plugin = '"https://testnet.gxchain.org/search/gxchain*/data/_search?pretty=true"';
     network = JSON.stringify({
         blockchain: 'gxc',
         protocol: 'https',
@@ -21,6 +23,7 @@ if(isTest){
 }
 if(isDev){
     sta_service = '"http://47.96.164.78:8218/gxchain"';
+    es_plugin = '"http://47.96.164.78:28090/search/gxchain*/data/_search?pretty=true"';
     JSON.stringify({
         blockchain: 'gxc',
         protocol: 'http',
@@ -33,5 +36,6 @@ if(isDev){
 module.exports = {
     NODE_ENV: '"production"',
     STA_SERVICE: sta_service,
+    ES_PLUGIN: es_plugin,
     network: network
 };

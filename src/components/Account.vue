@@ -280,8 +280,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
-                            <a class="pull-right more-btn" v-on:click="collapse"
-                               v-if="latestTransactions.length > 9">{{$t('account.basic.more')}}</a>
+                            <a class="pull-right" href="#modal-history" data-toggle="modal">{{$t('account.basic.more')}}</a>
                         </div>
                         <div class="panel-body no-padding">
                             <Loading v-show="history_loading"></Loading>
@@ -291,10 +290,10 @@
                                     <tr>
                                         <th>{{$t('index.transactions.type')}}</th>
                                         <th>{{$t('index.transactions.content')}}</th>
-                                        <th class="right">{{$t('index.transactions.time')}}</th>
+                                        <th class="right" width="80">{{$t('index.transactions.time')}}</th>
                                     </tr>
                                     </thead>
-                                    <History_Op :latestTransactions="latestTransactions" parent="Account"></History_Op>
+                                    <history-op :latestTransactions="latestTransactions" parent="Account"></history-op>
                                 </table>
                             </div>
                         </div>
@@ -306,6 +305,7 @@
             <h4 class="page-header">{{$t('account.title')}}</h4>
             <p class="null-tip">{{$t('account.empty')}}</p>
         </div>
+        <modal-history :account="$route.params.id_or_name"></modal-history>
     </div>
 </template>
 
@@ -313,15 +313,17 @@
     import { mapActions, mapGetters } from 'vuex';
     import { ChainStore } from 'gxbjs';
     import { Apis } from 'gxbjs-ws';
-    import { calc_block_time, get_assets_by_ids } from '@/services/CommonService';
     import filters from '@/filters';
-    import History_Op from './partial/History_Op.vue';
+    import { calc_block_time } from '@/services/CommonService';
+    import HistoryOp from './partial/HistoryOp.vue';
+    import modalHistory from '@/components/modals/modal-history.vue';
 
     export default {
         data () {
             return {
                 loading: true,
                 history_loading: true,
+                history_length: 10,
                 abi: {
                     type: 'raw'
                 },
@@ -341,10 +343,12 @@
                 },
                 account_info: null,
                 latestTransactions: [],
-                history_length: 100,
                 isTrustNode: -1,
                 network: process.env.network,
-                ChainStore
+                ChainStore,
+                pageNo: 1,
+                pageSize: 10,
+                totalPage: 0
             };
         },
         filters: filters,
@@ -353,9 +357,6 @@
             ...mapActions({
                 setKeywords: 'setKeywords'
             }),
-            collapse () {
-                $('.collapse').collapse('toggle');
-            },
             getWAST () {
                 this.$http.post('/api/wasm2wast', {wasm: this.account_info.code}).then(resp => {
                     this.code.wast = resp.body.wast;
@@ -427,6 +428,7 @@
                         return;
                     }
                 } catch (e) {
+                    console.error(e);
                     this.loading = false;
                 }
                 this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
@@ -440,19 +442,13 @@
                     this.loadTrustNodeInfo(this.account_info.id);
                 }
                 let ids = Object.keys(this.account_info.balances);
-                get_assets_by_ids(ids).then(assets => {
-                    let assetMap = {};
-                    assets.forEach(asset => {
-                        assetMap[asset.id] = asset;
-                    });
-                    for (let i = 0; i < ids.length; i++) {
-                        let obj = {
-                            symbol: assetMap[ids[i]].symbol,
-                            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(assetMap[ids[i]].precision), assetMap[ids[i]].precision)
-                        };
-                        this.account_info.balances[ids[i]] = obj;
-                    }
-                });
+                for (let i = 0; i < ids.length; i++) {
+                    let obj = {
+                        symbol: this.assetList[ids[i]].symbol,
+                        amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
+                    };
+                    this.account_info.balances[ids[i]] = obj;
+                }
                 if (this.account_info.history) {
                     let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
                     for (let i = length - 1; i >= 0; i--) {
@@ -476,7 +472,8 @@
             }
         },
         watch: {
-            keywords () {
+            keywords (newVal, oldVal) {
+                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
                 this.loading = true;
                 this.account_info = null;
                 this.current_table = {
@@ -490,6 +487,8 @@
                     hasMore: false
                 };
                 this.code.wast = '';
+                this.isTrustNode = -1;
+                this.pageNo = 1;
                 this.latestTransactions = [];
                 this.onUpdate();
             },
@@ -522,7 +521,8 @@
         computed: {
 
             ...mapGetters({
-                keywords: 'keywords'
+                keywords: 'keywords',
+                assetList: 'assetList'
             }),
 
             is_contract_account () {
@@ -556,7 +556,8 @@
             ChainStore.unsubscribe(this.onUpdate);
         },
         components: {
-            History_Op: History_Op
+            HistoryOp,
+            modalHistory
         }
     };
 </script>

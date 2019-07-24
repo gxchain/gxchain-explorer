@@ -65,8 +65,7 @@
                             <tr v-for="(item,i) in rankings">
                                 <td>{{i+1}}</td>
                                 <td>
-                                    <account-image :size="8"
-                                                   :account="item.accountName"></account-image>
+                                    <account-image :size="8" :account="item.accountName" :type="item.accountType"></account-image>
                                     &nbsp;
                                     <router-link :to="{path:'/account/'+item.accountName}">
                                         {{item.accountName}}
@@ -153,6 +152,7 @@
                         }
                         return {
                             accountName: item.accountName,
+                            accountType: item.accountType || 1,
                             amount: filters.number(item.amount, assetInfo.precision),
                             freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
                             totalAmount: filters.number(item.totalAmount, assetInfo.precision),
@@ -174,7 +174,8 @@
             $('[data-toggle="tooltip"]').tooltip();
         },
         watch: {
-            keywords () {
+            keywords (newVal, oldVal) {
+                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
                 this.loading = true;
                 this.asset = null;
                 this.loadData();

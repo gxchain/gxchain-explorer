@@ -6,7 +6,6 @@ import Transaction from '@/components/Transaction';
 import Account from '@/components/Account';
 import Asset from '@/components/Asset';
 import connect from '@/common/connect';
-import Holdrank from '@/components/Holdrank';
 import Fee from '@/components/Fee';
 import Node_Members from '@/components/Node_Members';
 
@@ -39,11 +38,6 @@ const router = new Router({
             path: '/asset/:asset_name',
             name: 'Asset',
             component: Asset
-        },
-        {
-            path: '/holdrank/:type',
-            name: 'Holdrank',
-            component: Holdrank
         },
         {
             path: '/fee/',

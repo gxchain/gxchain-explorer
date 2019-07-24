@@ -173,13 +173,42 @@ const locale = {
                 asset_to_issue: '发行数量',
                 issue_to_account: '发往'
             },
-            'asset_reserve': '销毁资产',
+            'asset_reserve': {
+                name: '销毁资产',
+                fee: '手续费',
+                account: '账户名',
+                amount_to_reserve: '保留（销毁）数量'
+            },
             'asset_fund_fee_pool': '积存资产费用池',
             'asset_settle': '资产结算',
             'asset_global_settle': '全局资产清算',
             'asset_publish_feed': '发布资产喂价',
-            'committee_member_create': '创建理事会成员',
-            'witness_create': '创建公信节点',
+            'committee_member_create': {
+                name: '创建理事会成员',
+                account: '理事会成员',
+                url: '网址',
+                fee: '手续费'
+            },
+            'committee_member_update': {
+                name: '更新理事会成员信息',
+                account: '理事会成员',
+                url: '网址',
+                fee: '手续费'
+            },
+            'witness_create': {
+                name: '创建公信节点候选人',
+                witness_account: '公信节点候选人',
+                witness_url: '网址',
+                signing_key: 'Signing Key',
+                fee: '手续费'
+            },
+            'witness_update': {
+                name: '更新公信节点候选人信息',
+                witness_account: '公信节点候选人',
+                witness_url: '网址',
+                signing_key: 'Signing Key',
+                fee: '手续费'
+            },
             'witness_withdraw_pay': '公信节点取回报酬',
             'proposal': {
                 proposal_create: '创建提案',
@@ -231,12 +260,10 @@ const locale = {
                 to: '发往',
                 amount: '金额'
             },
-            'witness_update': '更新公信节点',
             'committee_member_update_global_parameters': '全局参数更新',
             'transfer_to_blind': '向隐私账户转账',
             'blind_transfer': '隐私转账',
             'transfer_from_blind': '从隐私账户转出',
-            'committee_member_update': '更新理事会成员账户',
             'asset_claim_fees': '领取资产手续费',
             'account_upgrade_merchant': {
                 name: '商户认证',
@@ -385,7 +412,8 @@ const locale = {
                 contract_name: '合约名称',
                 method_name: '合约方法',
                 params: '参数',
-                fee: '手续费'
+                fee: '手续费',
+                amount: '发送资产'
             },
             'update_contract': {
                 name: '更新合约',
@@ -413,7 +441,8 @@ const locale = {
                 contract_name: '接受合约',
                 method_name: '方法名',
                 data: '参数',
-                fee: '手续费'
+                fee: '手续费',
+                amount: '发送资产'
             },
             'status_states': {
                 0: '未发布',
@@ -440,7 +469,7 @@ const locale = {
             'limit_order_sell': '{account} 提交卖单，以 {price} 的价格卖出 {amount} ',
             'limit_order_buy': '{account} 提交买单，以 {price} 的价格买入 {amount} ',
             'call_order_update': '{account} 调整了 {debtSymbol} 债务 {debt} ，以及抵押 {collateral}',
-            'asset_reserve': '{account} 保留了 {amount}',
+            'asset_reserve': '{account} 保留（销毁）了 {amount}',
             'asset_issue': '{account} 发行了 {amount} 到 {to}',
             'asset_create': '{account} 创建了资产 {asset}',
             'asset_update': '{account} 更新了资产 {asset}',
@@ -456,11 +485,13 @@ const locale = {
             'asset_settle': '{account} 请求清算 {amount}',
             'asset_global_settle': '{account} 请求以 {price} 的价格进行全局清算 {asset}',
             'witness_create': '{account} 升级到公信节点候选人',
-            'witness_update': '{account} 更新了候选人信息',
+            'witness_update': '{account} 更新了公信节点候选人信息',
             'witness_pay': '提取候选人收入到账户',
             'witness_receive': 'Received witness from witness',
             'worker_create': '{account} 创建了预算提案，请求每日支付 {pay}',
             'committee_member_update_global_parameters': '{account} 更新了全局理事会参数',
+            'committee_member_create': '{account} 升级到理事会成员',
+            'committee_member_update': '{account} 更新了理事会成员信息',
             'override_transfer': '{issuer} 从 {from} 到 {to} 发送 {amount} ',
             'account_upgrade_merchant': '{account} 认证为商户',
             'account_upgrade_datasource': '{account} 认证为数据源',
@@ -482,12 +513,14 @@ const locale = {
             'balance_unlock': '{account} 完成一笔忠诚计划余额解冻操作',
             'proxy_transfer': '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
             'create_contract': '{account} 创建了智能合约 {contract_name}',
-            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 参数: {params}',
+            'call_contract': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
+            'call_contract_and_transfer': '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户',
             'update_contract': '{account} 更新了智能合约 {contract_name}',
             'custom': '{account} 创建了一笔自定义操作',
             'trust_node_pledge_withdraw': '{account} 取回公信节点保证金',
             'inline_transfer': '合约账户 {from} 发送 {amount} 到 {to}, 备注: {memo}',
-            'inter_contract_call': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 参数: {params}'
+            'inter_contract_call': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法',
+            'inter_contract_call_and_transfer': '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户'
         }
     },
     // account
@@ -496,13 +529,14 @@ const locale = {
         empty: '未查询到账户信息',
         membership: {
             lifetime: '终身会员',
-            normal: '普通会员',
+            normal: '普通账户',
             contract: '合约账户',
             trustnode: '候选公信节点'
         },
         basic: {
             title: '基本信息',
             more: '更多',
+            no_more: '没有更多了',
             account_name: '账户名',
             account_id: '账户ID',
             membership: '账户类型',
@@ -564,30 +598,12 @@ const locale = {
         query_block: '区块查询',
         query_transaction: '交易查询',
         query_account: '账户查询',
+        query_account_history: '账户历史查询',
         query_account_balance: '余额查询',
         get_account_header: '账户头像',
         assets: '资产列表:',
         asset_info: '资产信息:',
         candidates: '候选公信节点:'
-    },
-    holdrank: {
-        locknum: '目前冻结的GXC总量',
-        last_updated_at: '本次更新日期: {datetime}',
-        rank: {
-            active: '激活排行',
-            lock: '冻结排行',
-            all: '总量排行'
-        },
-        table: {
-            userid: '账户id',
-            username: '账户名',
-            activegxs: '激活中的GXC',
-            peractive: '占激活百分比',
-            lockgxs: '冻结中的GXC',
-            perlock: '占冻结百分比',
-            allgxs: '总量GXC(激活+冻结)',
-            perall: '占总量百分比'
-        }
     },
     fee: {
         mark: '在GXChain系统中，每一种操作都将花费相应手续费。手续费率可能发生变化。然而，手续费的调整需要获得股东的授权。所以每一位持有GXChain核心资产的股东对费率的构成都有话语权。如果股东确信某种手续费的降低将带来好处，并且达成共识，那么该种手续费则由区块链自动进行调低。区块链参数的改变由理事会成员提出动议。这些成员由全体股东投票选举产生，以提高系统灵活性和响应率。',
@@ -626,8 +642,8 @@ const locale = {
             asset_global_settle: '全局资产清算',
             asset_publish_feed: '发布资产喂价',
             committee_member_create: '创建理事会成员',
-            witness_create: '创建见证人',
-            witness_withdraw_pay: '见证人取回报酬',
+            witness_create: '创建公信节点候选人',
+            witness_withdraw_pay: '公信节点取回报酬',
             proposal_create: '创建提案',
             proposal_update: '更新提案',
             proposal_delete: '删除提案',
@@ -644,12 +660,12 @@ const locale = {
             assert: '断言操作',
             balance_claim: '领取余额',
             override_transfer: '优先覆盖转账',
-            witness_update: '更新见证人',
+            witness_update: '更新公信节点候选人信息',
             committee_member_update_global_parameters: '全局参数更新',
             transfer_to_blind: '向隐私账户转账',
             blind_transfer: '隐私转账',
             transfer_from_blind: '从隐私账户转出',
-            committee_member_update: '更新理事会成员账户',
+            committee_member_update: '更新理事会成员信息',
             asset_claim_fees: '领取资产手续费',
             account_upgrade_merchant: '商户认证',
             account_upgrade_datasource: '数据源认证',

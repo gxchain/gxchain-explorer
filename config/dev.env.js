@@ -4,7 +4,7 @@ var prodEnv = require('./prod.env');
 module.exports = merge(prodEnv, {
     NODE_ENV: '"development"',
     STA_SERVICE: '"https://testnet.wallet.gxchain.org/statistics/gxchain"',
-    // STA_SERVICE: '"https://wallet.gxb.io/statistics/gxchain"',
+    ES_PLUGIN: '"https://testnet.gxchain.org/search/gxchain*/data/_search?pretty=true"',
     network: JSON.stringify({
         blockchain: 'gxc',
         protocol: 'https',
