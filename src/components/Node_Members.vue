@@ -18,7 +18,9 @@
                 <tbody>
                   <tr v-for="member in global_params.active_committee_members" :key="member">
                     <td>
-                      <account-image :size="8" :account="getCommitteeAccountName(member)" :type="1"></account-image>
+                      <img v-if="candidates_first[getCommitteeAccountName(member)] && candidates_first[getCommitteeAccountName(member)].extra&&candidates_first[getCommitteeAccountName(member)].extra.logo" :src="candidates_first[getCommitteeAccountName(member)].extra.logo" width="16px"/>
+
+                      <account-image v-else :size="8" :account="getCommitteeAccountName(member)" :type="1"></account-image>
                       &nbsp;
                       <router-link :to="{path:'/account/'+getCommitteeAccountName(member)}">
                         {{getCommitteeAccountName(member)}}
@@ -51,7 +53,8 @@
                   <tbody>
                     <tr v-for="witness in global_params.active_witnesses" :key="witness" :class="{info:getLastConfirmedBlock(witness)==block_info.head_block_number}">
                       <td>
-                        <account-image :size="8" :account="getWitnessAccountName(witness)" :type="1"></account-image>
+                        <img v-if="candidates_first[getWitnessAccountName(witness)] && candidates_first[getWitnessAccountName(witness)].extra&&candidates_first[getWitnessAccountName(witness)].extra.logo" :src="candidates_first[getWitnessAccountName(witness)].extra.logo" width="16px"/>
+                        <account-image v-else :size="8" :account="getWitnessAccountName(witness)" :type="1"></account-image>
                         &nbsp;
                         <router-link :to="{path:'/account/'+getWitnessAccountName(witness)}">
                           {{getWitnessAccountName(witness)}}
@@ -153,6 +156,7 @@
               block_info: null,
               global_params: null,
               candidates: {},
+              candidates_first: {},
               ChainStore
           };
       },
@@ -174,6 +178,9 @@
                       first: resp.data.splice(0, Math.ceil(resp.data.length / 2)),
                       second: resp.data
                   };
+                  this.candidates.first.forEach(h => {
+                      this.candidates_first[h.account] = h;
+                  });
               });
           },
           getCommitteeAccountName (member) {
