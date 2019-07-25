@@ -617,4 +617,13 @@
         background: #eee;
         padding: 5px;
     }
+
+</style>
+
+<style>
+
+    .modal-backdrop {
+        opacity: 0 !important;
+        filter: alpha(opacity=0) !important;
+    }
 </style>
