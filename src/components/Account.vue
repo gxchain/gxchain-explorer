@@ -532,6 +532,7 @@ export default {
             this.isTrustNode = -1;
             this.pageNo = 1;
             this.latestTransactions = [];
+            $('#modal-history').modal('hide');
             this.onUpdate();
         },
         'current_table.name': function (val) {
