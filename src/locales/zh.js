@@ -540,7 +540,9 @@ const locale = {
             account_name: '账户名',
             account_id: '账户ID',
             membership: '账户类型',
-            referrer_name: '推荐人'
+            referrer_name: '推荐人',
+            contract_info: '合约信息',
+            commit: '提交'
         },
         contract: {
             abi: {

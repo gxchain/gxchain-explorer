@@ -18,7 +18,7 @@
                                target="_blank">{{$t('account.basic.more')}}</a>
 
                         </div>
-                        <div class="panel-body no-padding">
+                        <div class="panel-body no-padding  panel-contract-info">
                             <div class="table-responsive">
                                 <table class="table table-striped no-margin">
                                     <tbody>
@@ -136,13 +136,38 @@
                 </div>
             </div>
             <div class="row">
-                <!--ABI-->
-                <div class="col-md-6" v-if="is_contract_account">
-                    <div class="panel panel-default panel-abi">
-                        <div class="panel-heading">
-                            <span class="fas fa-angle-right"></span>&nbsp;{{$t('account.contract.abi.title')}}
+                <div class="col-md-12" v-if="is_contract_account">
+                    <div class="panel panel-default panel-contract">
+                        <div class="contract-info-wrap">
+                            <div class="pull-right tool-tip">
+                                <span class="fa fa-fg fa-lightbulb" data-toggle="tooltip" data-placement="top" :title="'备注信息来源：github.com/gxchain/contractInfo'"></span>
+                            </div>
+                            <div class="contract-info">
+                                <img v-if="contractInfo.logo" class="portrait" :src="contractInfo.logo" alt="">
+                                <svg v-if="!contractInfo.logo" class="portrait" id="icon-contract" viewBox="0 0 1024 1024" width="100%" height="100%"><path d="M512 0a512 512 0 1 1 0 1024A512 512 0 0 1 512 0z m38.115556 284.444444l-169.528889 455.111112h93.297777l169.528889-455.111112H550.115556z m108.771555 134.257778L796.444444 512l-163.271111 110.762667 50.176 34.019555L853.333333 541.809778V482.986667l-176.184889-115.825778-18.261333 51.484444zM170.666667 482.190222v58.766222l176.184889 115.825778 18.261333-51.484444L227.555556 512l163.271111-110.762667-50.232889-34.019555L170.666667 482.190222z" fill="#34CB49"></path></svg>
+                                <div>
+                                    <div class="account-wrap">
+                                        <span class="account" v-if="contractInfo.name">{{contractInfo.name}}</span>
+                                        <a v-if="contractInfo.links && contractInfo.links.home" :href="contractInfo.links.home" target="_blank">
+                                            <span class="fa fa-fw fa-home"></span>
+                                        </a>
+                                        <a v-if="contractInfo.links && contractInfo.links.github" :href="contractInfo.links.github" target="_blank">
+                                            <span class="fab fa-fw fa-github"></span>
+                                        </a>
+                                    </div>
+                                    <div class="title" v-if="contractInfo.title">
+                                        {{contractInfo.title[_i18n.locale]}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body no-padding">
+                        <div class="panel-heading">
+                            <span class="tab" :class="{'active':contractTab ==item.key}" v-for="(item,index) in contractTabs" :key="item.key" @click="selectSontractTab(item.key)">
+                                <span class="fas" :class="[item.icon]"></span>&nbsp;{{item.name}}
+                            </span>
+                        </div>
+                        <!--ABI-->
+                        <div class="panel-body no-padding" v-show="contractTab=='ABI'">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li :class="{active:abi.type=='raw'}" @click="abi.type='raw'">
                                     <a role="tab" href="javascriprt:;">ABI Raw</a>
@@ -201,15 +226,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!--Code-->
-                <div class="col-md-6" v-if="is_contract_account">
-                    <div class="panel panel-default panel-code">
-                        <div class="panel-heading">
-                            <span class="fas fa-code"></span>&nbsp;{{$t('account.contract.code.title')}}
-                        </div>
-                        <div class="panel-body no-padding">
+                        <!--Code-->
+                        <div class="panel-body no-padding" v-show="contractTab=='CODE'">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li :class="{active:code.type=='wast'}" @click="code.type='wast'">
                                     <a role="tab" href="javascriprt:;">WAST</a>
@@ -227,30 +245,24 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!--Database-->
-            <div class="row">
-                <div class="col-md-12" v-if="is_contract_account">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span class="fas fa-database"></span>&nbsp;{{$t('account.contract.database.title')}}
-                            <select v-model="current_table.name">
-                                <option v-for="table in account_info.abi.tables" :value="table.name" :key="table.name">
-                                    {{table.name}}
-                                </option>
-                            </select>
-                            <a class="btn btn-sm btn-default" :class="{disabled:current_table.page===0}"
-                               @click=loadTableData(current_table.page-1)>
-                                <i class="fa fa-arrow-left"></i>
-                            </a>
-                            <a class="btn btn-sm btn-default" :class="{disabled:!current_table.hasMore}"
-                               @click="loadTableData(current_table.page+1)">
-                                <i class="fa fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        <div class="panel-body no-padding">
+                        <!--Database-->
+                        <div class="panel-body no-padding"  v-show="contractTab=='DATABASE'">
+                            <div class="panel-heading panel-heading-database">
+                                <span class="fas fa-database"></span>&nbsp;{{$t('account.contract.database.title')}}
+                                <select v-model="current_table.name">
+                                    <option v-for="table in account_info.abi.tables" :value="table.name" :key="table.name">
+                                        {{table.name}}
+                                    </option>
+                                </select>
+                                <a class="btn btn-sm btn-default" :class="{disabled:current_table.page===0}"
+                                @click=loadTableData(current_table.page-1)>
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                                <a class="btn btn-sm btn-default" :class="{disabled:!current_table.hasMore}"
+                                @click="loadTableData(current_table.page+1)">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
                             <div class="table-responsive no-margin">
                                 <table class="table table-bordered table-striped no-margin">
                                     <thead>
@@ -310,311 +322,404 @@
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex';
-    import { ChainStore } from 'gxbjs';
-    import { Apis } from 'gxbjs-ws';
-    import filters from '@/filters';
-    import { calc_block_time } from '@/services/CommonService';
-    import HistoryOp from './partial/HistoryOp.vue';
-    import modalHistory from '@/components/modals/modal-history.vue';
+import { mapActions, mapGetters } from 'vuex';
+import { ChainStore } from 'gxbjs';
+import { Apis } from 'gxbjs-ws';
+import filters from '@/filters';
+import { calc_block_time } from '@/services/CommonService';
+import HistoryOp from './partial/HistoryOp.vue';
+import modalHistory from '@/components/modals/modal-history.vue';
 
-    export default {
-        data () {
-            return {
-                loading: true,
-                history_loading: true,
-                history_length: 10,
-                abi: {
-                    type: 'raw'
+export default {
+    data () {
+        return {
+            loading: true,
+            history_loading: true,
+            history_length: 10,
+            abi: {
+                type: 'raw'
+            },
+            code: {
+                type: 'wast',
+                wast: ''
+            },
+            current_table: {
+                headers: [],
+                name: '',
+                page: 0,
+                primary_key: null,
+                upper_bound: -1,
+                lower_bound: 0,
+                hasMore: false,
+                data: []
+            },
+            account_info: null,
+            latestTransactions: [],
+            isTrustNode: -1,
+            network: process.env.network,
+            ChainStore,
+            pageNo: 1,
+            pageSize: 10,
+            totalPage: 0,
+            contractInfo: {},
+            contractTab: 'ABI',
+            contractTabs: [
+                {
+                    key: 'ABI',
+                    icon: 'fa-angle-right',
+                    name: this.$t('account.contract.abi.title')
                 },
-                code: {
-                    type: 'wast',
-                    wast: ''
+                {
+                    key: 'CODE',
+                    icon: 'fa-code',
+                    name: this.$t('account.contract.code.title')
                 },
-                current_table: {
-                    headers: [],
-                    name: '',
-                    page: 0,
-                    primary_key: null,
-                    upper_bound: -1,
-                    lower_bound: 0,
-                    hasMore: false,
-                    data: []
-                },
-                account_info: null,
-                latestTransactions: [],
-                isTrustNode: -1,
-                network: process.env.network,
-                ChainStore,
-                pageNo: 1,
-                pageSize: 10,
-                totalPage: 0
-            };
+                {
+                    key: 'DATABASE',
+                    icon: 'fa-database',
+                    name: this.$t('account.contract.database.title')
+                }
+            ]
+        };
+    },
+    filters: filters,
+    methods: {
+
+        ...mapActions({
+            setKeywords: 'setKeywords'
+        }),
+        getWAST () {
+            this.$http.post('/api/wasm2wast', { wasm: this.account_info.code }).then(resp => {
+                this.code.wast = resp.body.wast;
+            }).catch(console.error);
         },
-        filters: filters,
-        methods: {
-
-            ...mapActions({
-                setKeywords: 'setKeywords'
-            }),
-            getWAST () {
-                this.$http.post('/api/wasm2wast', {wasm: this.account_info.code}).then(resp => {
-                    this.code.wast = resp.body.wast;
-                }).catch(console.error);
-            },
-            sumLockedBalance (balances) {
-                var sum = 0;
-                balances.forEach(b => {
-                    sum += Number(b.amount.amount);
-                });
-                return sum;
-            },
-            getActionDefine (action_name) {
-                let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
-                return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
-            },
-            getTableDefine (tables) {
-                return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
-            },
-            loadTableData (page) {
-                const pageSize = 10;
-                if (page < this.current_table.page) {
-                    this.current_table.upper_bound = this.current_table.lower_bound + 1;
+        sumLockedBalance (balances) {
+            var sum = 0;
+            balances.forEach(b => {
+                sum += Number(b.amount.amount);
+            });
+            return sum;
+        },
+        getActionDefine (action_name) {
+            let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
+            return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
+        },
+        getTableDefine (tables) {
+            return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
+        },
+        loadTableData (page) {
+            const pageSize = 10;
+            if (page < this.current_table.page) {
+                this.current_table.upper_bound = this.current_table.lower_bound + 1;
+            }
+            if (page === 0) {
+                this.current_table.upper_bound = -1;
+            }
+            Apis.instance().db_api().exec('get_table_rows_ex', [
+                this.account_info.name, // contract_name
+                this.current_table.name, // table_name
+                {
+                    lower_bound: 0,
+                    upper_bound: this.current_table.upper_bound,
+                    reverse: true,
+                    limit: pageSize
                 }
-                if (page === 0) {
-                    this.current_table.upper_bound = -1;
+            ]).then(resp => {
+                this.current_table.page = page;
+                if (resp.rows.length > 0) {
+                    this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
+                    this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
                 }
-                Apis.instance().db_api().exec('get_table_rows_ex', [
-                    this.account_info.name, // contract_name
-                    this.current_table.name, // table_name
-                    {
-                        lower_bound: 0,
-                        upper_bound: this.current_table.upper_bound,
-                        reverse: true,
-                        limit: pageSize
-                    }
-                ]).then(resp => {
-                    this.current_table.page = page;
-                    if (resp.rows.length > 0) {
-                        this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
-                        this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
-                    }
-                    this.current_table.data = resp.rows.map(row => {
-                        let result = [];
-                        this.current_table.headers.forEach(h => {
-                            result.push(row[h]);
-                        });
-                        return result;
+                this.current_table.data = resp.rows.map(row => {
+                    let result = [];
+                    this.current_table.headers.forEach(h => {
+                        result.push(row[h]);
                     });
-                    this.current_table.hasMore = resp.rows.length === pageSize;
+                    return result;
                 });
-            },
-            loadTrustNodeInfo (id) {
-                if (this.trustNodeInfoLoading) {
+                this.current_table.hasMore = resp.rows.length === pageSize;
+            });
+        },
+        loadTrustNodeInfo (id) {
+            if (this.trustNodeInfoLoading) {
+                return;
+            }
+            this.trustNodeInfoLoading = true;
+            Promise.all([
+                Apis.instance().db_api().exec('get_witness_by_account', [id]),
+                Apis.instance().db_api().exec('get_committee_member_by_account', [id])
+            ]).then(results => {
+                this.isTrustNode = results[0] && results[1];
+            });
+        },
+        onUpdate () {
+            try {
+                if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+                    this.loading = false;
                     return;
                 }
-                this.trustNodeInfoLoading = true;
-                Promise.all([
-                    Apis.instance().db_api().exec('get_witness_by_account', [id]),
-                    Apis.instance().db_api().exec('get_committee_member_by_account', [id])
-                ]).then(results => {
-                    this.isTrustNode = results[0] && results[1];
-                });
-            },
-            onUpdate () {
-                try {
-                    if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
-                        this.loading = false;
-                        return;
-                    }
-                } catch (e) {
-                    console.error(e);
-                    this.loading = false;
-                }
-                this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
-                if (this.account_info && this.account_info.code && !this.code.wast) {
-                    if (this.account_info.abi.tables.length > 0) {
-                        this.current_table.name = this.account_info.abi.tables[0].name;
-                    }
-                    this.getWAST();
-                }
-                if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
-                    this.loadTrustNodeInfo(this.account_info.id);
-                }
-                let ids = Object.keys(this.account_info.balances);
-                for (let i = 0; i < ids.length; i++) {
-                    let obj = {
-                        symbol: this.assetList[ids[i]].symbol,
-                        amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
-                    };
-                    this.account_info.balances[ids[i]] = obj;
-                }
-                if (this.account_info.history) {
-                    let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
-                    for (let i = length - 1; i >= 0; i--) {
-                        this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
-
-                        if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-                            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
-                            let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
-                            let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
-                            this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
-                        }
-
-                        this.latestTransactions.unshift(this.account_info.history[i].op);
-                        if (this.latestTransactions.length > length) {
-                            this.latestTransactions.pop();
-                        }
-                    }
-                    this.history_loading = false;
-                }
+            } catch (e) {
+                console.error(e);
                 this.loading = false;
             }
-        },
-        watch: {
-            keywords (newVal, oldVal) {
-                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
-                this.loading = true;
-                this.account_info = null;
-                this.current_table = {
-                    headers: [],
-                    name: '',
-                    primary_key: null,
-                    upper_bound: -1,
-                    lower_bound: 0,
-                    page: 0,
-                    data: [],
-                    hasMore: false
+            this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
+            if (this.account_info && this.account_info.code && !this.code.wast) {
+                if (this.account_info.abi.tables.length > 0) {
+                    this.current_table.name = this.account_info.abi.tables[0].name;
+                }
+                this.getWAST();
+            }
+            if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
+                this.loadTrustNodeInfo(this.account_info.id);
+            }
+            let ids = Object.keys(this.account_info.balances);
+            for (let i = 0; i < ids.length; i++) {
+                let obj = {
+                    symbol: this.assetList[ids[i]].symbol,
+                    amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
                 };
-                this.code.wast = '';
-                this.isTrustNode = -1;
-                this.pageNo = 1;
-                this.latestTransactions = [];
-                this.onUpdate();
-            },
-            'current_table.name': function (val) {
-                if (val) {
-                    this.account_info.abi.structs.forEach(s => {
-                        if (s.name === val) {
-                            this.current_table.headers = s.fields.map(f => f.name);
-                            this.current_table.primary_key = null;
-                            if (this.current_table.headers.length > 0) {
-                                this.current_table.primary_key = this.current_table.headers[0];
-                            }
-                            this.current_table.page = 0;
-                            this.current_table.upper_bound = -1;
-                            this.current_table.lower_bound = 0;
-                            this.loadTableData(0);
-                        }
-                    });
-                }
-            },
-            '$route' () {
-                if (this.$route.params.id_or_name !== this.keywords) {
-                    this.loading = true;
-                    this.account_info = null;
-                    this.latestTransactions = [];
-                    this.setKeywords({keywords: this.$route.params.id_or_name});
-                }
+                this.account_info.balances[ids[i]] = obj;
             }
+            if (this.account_info.history) {
+                let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
+                for (let i = length - 1; i >= 0; i--) {
+                    this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
+
+                    if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
+                        let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
+                        let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
+                        let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
+                        this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
+                    }
+
+                    this.latestTransactions.unshift(this.account_info.history[i].op);
+                    if (this.latestTransactions.length > length) {
+                        this.latestTransactions.pop();
+                    }
+                }
+                this.history_loading = false;
+            }
+            this.loading = false;
         },
-        computed: {
-
-            ...mapGetters({
-                keywords: 'keywords',
-                assetList: 'assetList'
-            }),
-
-            is_contract_account () {
-                return this.account_info && !!this.account_info.code;
-            },
-
-            account_type () {
-                let result = [];
-                if (this.account_info.code) {
-                    return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
+        getContractInfo (contract_name) {
+            let url = `https://raw.githubusercontent.com/gxchain/contractInfo/master/contracts/${contract_name}.json?v=${new Date().getTime()}`;
+            this.$http.get(url).then(resp => {
+                if (resp.status === 200) {
+                    this.contractInfo = resp.body;
                 }
-                if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
-                    result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
-                } else {
-                    result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
-                }
-                if (this.isTrustNode) {
-                    result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
-                }
-                return result.join('&nbsp;');
-            }
+            }).catch(ex => { console.error(ex) });
         },
-        mounted () {
-            if (this.$route.params.id_or_name !== this.keywords) {
-                this.setKeywords({keywords: this.$route.params.id_or_name});
-            }
-            ChainStore.subscribe(this.onUpdate);
+        selectSontractTab (key) {
+            this.contractTab = key;
+        }
+    },
+    watch: {
+        keywords (newVal, oldVal) {
+            if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+            this.loading = true;
+            this.account_info = null;
+            this.current_table = {
+                headers: [],
+                name: '',
+                primary_key: null,
+                upper_bound: -1,
+                lower_bound: 0,
+                page: 0,
+                data: [],
+                hasMore: false
+            };
+            this.code.wast = '';
+            this.isTrustNode = -1;
+            this.pageNo = 1;
+            this.latestTransactions = [];
             this.onUpdate();
         },
-        destroyed () {
-            ChainStore.unsubscribe(this.onUpdate);
+        'current_table.name': function (val) {
+            if (val) {
+                this.account_info.abi.structs.forEach(s => {
+                    if (s.name === val) {
+                        this.current_table.headers = s.fields.map(f => f.name);
+                        this.current_table.primary_key = null;
+                        if (this.current_table.headers.length > 0) {
+                            this.current_table.primary_key = this.current_table.headers[0];
+                        }
+                        this.current_table.page = 0;
+                        this.current_table.upper_bound = -1;
+                        this.current_table.lower_bound = 0;
+                        this.loadTableData(0);
+                    }
+                });
+            }
         },
-        components: {
-            HistoryOp,
-            modalHistory
+        '$route' () {
+            if (this.$route.params.id_or_name !== this.keywords) {
+                this.loading = true;
+                this.account_info = null;
+                this.latestTransactions = [];
+                this.setKeywords({ keywords: this.$route.params.id_or_name });
+            }
         }
-    };
+    },
+    computed: {
+
+        ...mapGetters({
+            keywords: 'keywords',
+            assetList: 'assetList'
+        }),
+
+        is_contract_account () {
+            return this.account_info && !!this.account_info.code;
+        },
+
+        account_type () {
+            let result = [];
+            if (this.account_info.code) {
+                return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
+            }
+            if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
+                result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
+            } else {
+                result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
+            }
+            if (this.isTrustNode) {
+                result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
+            }
+            return result.join('&nbsp;');
+        }
+    },
+    mounted () {
+        if (this.$route.params.id_or_name !== this.keywords) {
+            this.setKeywords({ keywords: this.$route.params.id_or_name });
+        }
+        ChainStore.subscribe(this.onUpdate);
+        this.onUpdate();
+        this.getContractInfo(this.$route.params.id_or_name);
+    },
+    destroyed () {
+        ChainStore.unsubscribe(this.onUpdate);
+    },
+    components: {
+        HistoryOp,
+        modalHistory
+    }
+};
 </script>
 
 <style scoped>
-    .color-warning {
-        color: #ffbc10;
-    }
+.color-warning {
+  color: #ffbc10;
+}
 
-    .right {
-        text-align: right;
-    }
+.right {
+  text-align: right;
+}
 
-    .center {
-        text-align: center;
-    }
+.center {
+  text-align: center;
+}
 
-    .more-btn {
-        cursor: pointer;
-    }
+.more-btn {
+  cursor: pointer;
+}
 
-    .overflow-wrap {
-        word-break: break-all;
-    }
+.overflow-wrap {
+  word-break: break-all;
+}
 
-    .panel .table-responsive {
-        margin-bottom: 0;
-        border: none;
-    }
+.panel .table-responsive {
+  margin-bottom: 0;
+  border: none;
+}
 
-    .panel-abi pre, .panel-code pre {
-        border: none;
-        border-top: 1px solid #eee;
-        border-radius: 0;
-        margin: 0;
-        max-height: 500px;
-    }
+.panel-contract pre {
+  border: none;
+  border-top: 1px solid #eee;
+  border-radius: 0;
+  margin: 0;
+  max-height: 500px;
+}
 
-    .panel-code .wasm pre {
-        white-space: normal
-    }
+.panel-code .wasm pre {
+  white-space: normal;
+}
 
-    .panel-code .panel-heading, .panel-abi .panel-heading {
-        border-bottom: 1px solid #eee;
-    }
+.panel-contract .panel-heading {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 0;
+}
 
-    .panel-code .panel-body, .panel-abi .panel-body {
-        padding-top: 10px !important;
-    }
+.panel-contract .tab {
+  padding: 0 12px;
+  display: inline-block;
+  height: 55px;
+  line-height: 55px;
+  cursor: pointer;
+}
 
-    .panel-tables {
-        margin: 10px;
-    }
+.panel-contract .tab.active {
+  color: #6699ff;
+}
 
-    .panel-tables .panel-heading {
-        font-size: 15px;
-        background: #eee;
-        padding: 5px;
-    }
+.contract-info-wrap {
+  padding: 20px 15px;
+}
+
+.contract-info-wrap .portrait {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.contract-info {
+  display: flex;
+  align-items: center;
+}
+
+.contract-info .panel-contract .panel-body {
+  padding-top: 10px !important;
+}
+
+.contract-info .account-wrap {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.contract-info-wrap .tool-tip {
+  font-size: 18px;
+}
+
+.contract-info .account {
+  margin-right: 15px;
+}
+
+.contract-info .title {
+  margin-top: 10px;
+}
+
+.panel-tables {
+  margin: 10px;
+}
+
+.panel-tables .panel-heading {
+  font-size: 15px;
+  background: #eee;
+  padding: 5px;
+}
+
+.panel-contract-info pre {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 10px;
+  font-size: 8px;
+  line-height: 8px;
+  color: #666;
+}
+
+.panel-contract .panel-heading-database {
+  padding: 10px;
+}
 </style>

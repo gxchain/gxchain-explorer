@@ -541,7 +541,9 @@ const locale = {
             account_name: 'Account Name',
             account_id: 'Account ID',
             membership: 'Membership',
-            referrer_name: 'Register Referrer'
+            referrer_name: 'Register Referrer',
+            contract_info: 'Contract Information',
+            commit: 'Commit'
         },
         contract: {
             abi: {
