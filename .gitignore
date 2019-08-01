@@ -10,7 +10,7 @@ logs
 .data
 dist
 server-dist
-tools
+tools/*.sh
 *.zip
 
 # IDE
