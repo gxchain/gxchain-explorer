@@ -543,7 +543,8 @@ const locale = {
             membership: 'Membership',
             referrer_name: 'Register Referrer',
             contract_info: 'Contract Information',
-            commit: 'Commit'
+            commit: 'Commit',
+            pending_claim: 'Pending Claim'
         },
         contract: {
             abi: {

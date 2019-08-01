@@ -147,7 +147,7 @@
                                 <svg v-if="!contractInfo.logo" class="portrait" id="icon-contract" viewBox="0 0 1024 1024" width="100%" height="100%"><path d="M512 0a512 512 0 1 1 0 1024A512 512 0 0 1 512 0z m38.115556 284.444444l-169.528889 455.111112h93.297777l169.528889-455.111112H550.115556z m108.771555 134.257778L796.444444 512l-163.271111 110.762667 50.176 34.019555L853.333333 541.809778V482.986667l-176.184889-115.825778-18.261333 51.484444zM170.666667 482.190222v58.766222l176.184889 115.825778 18.261333-51.484444L227.555556 512l163.271111-110.762667-50.232889-34.019555L170.666667 482.190222z" fill="#34CB49"></path></svg>
                                 <div>
                                     <div class="account-wrap">
-                                        <span class="account" v-if="contractInfo.name">{{contractInfo.name}}</span>
+                                        <span class="account">{{account_info.name}}</span>
                                         <a v-if="contractInfo.links && contractInfo.links.home" :href="contractInfo.links.home" target="_blank">
                                             <span class="fa fa-fw fa-home"></span>
                                         </a>
@@ -157,6 +157,9 @@
                                     </div>
                                     <div class="title" v-if="contractInfo.title">
                                         {{contractInfo.title[_i18n.locale]}}
+                                    </div>
+                                    <div v-else>
+                                        <a class="incomplete-tip" href="https://github.com/gxchain/contractInfo" target="_blank">{{$t('account.basic.pending_claim')}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +244,9 @@
                                     <pre>{{this.code.wast}}</pre>
                                 </div>
                                 <div role="tabpanel" class="tab-pane wasm" :class="{active:code.type=='wasm'}">
-                                    <pre>{{account_info.code}}</pre>
+                                    <pre>
+                                        <code>{{account_info.code}}</code>
+                                    </pre>
                                 </div>
                             </div>
                         </div>
@@ -663,12 +668,12 @@ export default {
 }
 
 .contract-info-wrap {
-  padding: 20px 15px;
+  padding: 15px;
 }
 
 .contract-info-wrap .portrait {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   margin-right: 20px;
 }
@@ -690,6 +695,8 @@ export default {
 
 .contract-info-wrap .tool-tip {
   font-size: 18px;
+  position: relative;
+  top:2px;
 }
 
 .contract-info .account {
@@ -722,5 +729,13 @@ export default {
 
 .panel-contract .panel-heading-database {
   padding: 10px;
+}
+
+.incomplete-tip{
+    background: #f0ad4e;
+    border-radius: 3px;
+    color: #fff;
+    padding: .2em .6em .3em;
+    font-size: 75%;
 }
 </style>
