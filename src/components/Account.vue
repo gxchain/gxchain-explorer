@@ -675,7 +675,7 @@ export default {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
 .contract-info {
@@ -737,5 +737,10 @@ export default {
     color: #fff;
     padding: .2em .6em .3em;
     font-size: 75%;
+}
+
+.panel-contract .panel-body{
+    height: 500px;
+    overflow: hidden;
 }
 </style>
