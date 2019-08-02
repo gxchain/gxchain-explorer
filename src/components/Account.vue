@@ -361,6 +361,7 @@ export default {
             account_info: null,
             latestTransactions: [],
             isTrustNode: -1,
+            trustNodeInfoLoading: false,
             network: process.env.network,
             ChainStore,
             pageNo: 1,
@@ -451,10 +452,10 @@ export default {
             }
             this.trustNodeInfoLoading = true;
             Promise.all([
-                Apis.instance().db_api().exec('get_witness_by_account', [id]),
-                Apis.instance().db_api().exec('get_committee_member_by_account', [id])
+                Apis.instance().db_api().exec('get_witness_by_account', [id])
+                // Apis.instance().db_api().exec('get_committee_member_by_account', [id])
             ]).then(results => {
-                this.isTrustNode = results[0] && results[1];
+                this.isTrustNode = results[0] ? 1 : -1;
             });
         },
         onUpdate () {
@@ -535,6 +536,7 @@ export default {
             };
             this.code.wast = '';
             this.isTrustNode = -1;
+            this.trustNodeInfoLoading = false;
             this.pageNo = 1;
             this.latestTransactions = [];
             $('#modal-history').modal('hide');
@@ -587,7 +589,7 @@ export default {
             } else {
                 result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
             }
-            if (this.isTrustNode) {
+            if (this.isTrustNode !== -1) {
                 result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
             }
             return result.join('&nbsp;');
