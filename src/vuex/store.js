@@ -6,7 +6,9 @@ Vue.use(Vuex);
 const state = {
     assetList: {},
     symbolsMap: {},
-    keywords: ''
+    keywords: '',
+    gscatter: null,
+    gxc: null
 };
 
 const mutations = {
@@ -18,6 +20,10 @@ const mutations = {
     },
     setKeywords (state, payload) {
         state.keywords = payload.keywords;
+    },
+    setPlugin (state, payload) {
+        state.gscatter = payload.gscatter;
+        state.gxc = payload.gxc;
     }
 };
 
@@ -30,13 +36,18 @@ const actions = {
     },
     setKeywords ({commit}, payload) {
         commit('setKeywords', payload);
+    },
+    setPlugin ({commit}, payload) {
+        commit('setPlugin', payload);
     }
 };
 
 const getters = {
     assetList: state => state.assetList,
     symbolsMap: state => state.symbolsMap,
-    keywords: state => state.keywords
+    keywords: state => state.keywords,
+    gscatter: state => state.gscatter,
+    gxc: state => state.gxc
 };
 
 export default new Vuex.Store({

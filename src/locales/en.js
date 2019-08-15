@@ -707,6 +707,10 @@ const locale = {
             long_symbol: 'Longer Symbols',
             price_per_output: ''
         }
+    },
+    // contract
+    contract: {
+        title: 'Call Contract'
     }
 };
 

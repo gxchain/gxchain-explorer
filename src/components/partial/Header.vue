@@ -108,7 +108,6 @@
             return {
                 account: null,
                 connected: false,
-                gscatter: null,
                 search: '',
                 flagImg: {
                     'zh': require('../../../static/language-dropdown/img/CN.png'),
@@ -120,11 +119,10 @@
             GScatterJS.gscatter.connect(location.host).then((connected) => {
                 if (!connected) return false;
                 this.connected = connected;
-                this.gscatter = GScatterJS.gscatter;
-                // require version, if user's plugin is less than the version, when operate, plugin will prompt a tips
-                // this.gscatter.requireVersion('9.9.9');
-                // when user not login, you could use api which not need identity, like generateKey
-                this.gxc = this.gscatter.gxc(process.env.network);
+                this.setPlugin({
+                    gscatter: GScatterJS.gscatter,
+                    gxc: GScatterJS.gscatter.gxc(process.env.network)
+                });
                 // if identity exist, means user has authorize the website and already unlock, you could display user info then
                 if (this.gscatter.identity) {
                     this.account = this.gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
@@ -133,7 +131,9 @@
         },
         computed: {
             ...mapGetters({
-                keywords: 'keywords'
+                keywords: 'keywords',
+                gscatter: 'gscatter',
+                gxc: 'gxc'
             })
         },
         watch: {
@@ -145,7 +145,8 @@
         },
         methods: {
             ...mapActions({
-                setKeywords: 'setKeywords'
+                setKeywords: 'setKeywords',
+                setPlugin: 'setPlugin'
             }),
             eventChanged () {
                 this.search = this.search.replace(/(^\s*)|(\s*$)/g, '');

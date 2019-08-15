@@ -144,20 +144,17 @@
                         </div>
                         <div class="panel-body no-padding">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li :class="{active:abi.type=='raw'}" @click="abi.type='raw'">
-                                    <a role="tab" href="javascriprt:;">ABI Raw</a>
-                                </li>
                                 <li :class="{active:abi.type=='action'}" @click="abi.type='action'">
                                     <a role="tab" href="javascriprt:;">Actions</a>
+                                </li>
+                                <li :class="{active:abi.type=='raw'}" @click="abi.type='raw'">
+                                    <a role="tab" href="javascriprt:;">ABI Raw</a>
                                 </li>
                                 <li :class="{active:abi.type=='table'}" @click="abi.type='table'">
                                     <a role="tab" href="javascriprt:;">Tables</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='raw'}">
-                                    <pre>{{JSON.stringify(account_info.abi,null,'  ')}}</pre>
-                                </div>
                                 <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='action'}">
                                     <div class="table-responsive no-padding no-margin" style="border:none">
                                         <table class="table table-striped">
@@ -165,16 +162,24 @@
                                             <tr>
                                                 <th>Payable</th>
                                                 <th>Define</th>
+                                                <th class="text-right" v-if="gxc">Operation</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr v-for="action in account_info.abi.actions" :key="action.name">
                                                 <td>{{action.payable}}</td>
                                                 <td>{{getActionDefine(action.name)}}</td>
+                                                <td align="right" v-if="gxc">
+                                                    <a class="btb btn-xs btn-success" href="javascript:;"
+                                                       @click="setContractParams(action)">call</a>
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='raw'}">
+                                    <pre>{{JSON.stringify(account_info.abi,null,'  ')}}</pre>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" :class="{active:abi.type=='table'}">
                                     <div class="panel panel-default panel-tables"
@@ -280,7 +285,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{$t('index.transactions.title')}}
-                            <a class="pull-right" href="#modal-history" data-toggle="modal">{{$t('account.basic.more')}}</a>
+                            <a class="pull-right" href="#modal-history"
+                               data-toggle="modal">{{$t('account.basic.more')}}</a>
                         </div>
                         <div class="panel-body no-padding">
                             <Loading v-show="history_loading"></Loading>
@@ -306,6 +312,12 @@
             <p class="null-tip">{{$t('account.empty')}}</p>
         </div>
         <modal-history :account="$route.params.id_or_name"></modal-history>
+        <modal-call-contract ref="modalCall" :fields="contract.params"
+                             :contract="contract.name"
+                             :payable="contract.payable"
+                             :method="contract.method">
+
+        </modal-call-contract>
     </div>
 </template>
 
@@ -317,15 +329,22 @@
     import { calc_block_time } from '@/services/CommonService';
     import HistoryOp from './partial/HistoryOp.vue';
     import modalHistory from '@/components/modals/modal-history.vue';
+    import modalCallContract from '@/components/modals/modal-call-contract.vue';
 
     export default {
         data () {
             return {
+                contract: {
+                    params: [],
+                    name: '',
+                    method: '',
+                    payable: false
+                },
                 loading: true,
                 history_loading: true,
                 history_length: 10,
                 abi: {
-                    type: 'raw'
+                    type: 'action'
                 },
                 code: {
                     type: 'wast',
@@ -368,6 +387,17 @@
                     sum += Number(b.amount.amount);
                 });
                 return sum;
+            },
+            setContractParams (action) {
+                let actionDef = this.account_info.abi.structs.find(s => s.name === action.name);
+                this.$refs.modalCall.result = '';
+                this.contract.name = this.account_info.name;
+                this.contract.method = action.name;
+                this.contract.payable = action.payable;
+                this.contract.params = actionDef.fields.map(f => {
+                    return {name: f.name, type: f.type, value: null};
+                });
+                $('#modal-call').modal();
             },
             getActionDefine (action_name) {
                 let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
@@ -523,7 +553,8 @@
 
             ...mapGetters({
                 keywords: 'keywords',
-                assetList: 'assetList'
+                assetList: 'assetList',
+                gxc: 'gxc'
             }),
 
             is_contract_account () {
@@ -558,7 +589,8 @@
         },
         components: {
             HistoryOp,
-            modalHistory
+            modalHistory,
+            modalCallContract
         }
     };
 </script>

@@ -706,6 +706,10 @@ const locale = {
             long_symbol: '更长的资产符号',
             price_per_output: ''
         }
+    },
+    // contract
+    contract: {
+        title: '合约调用'
     }
 };
 
