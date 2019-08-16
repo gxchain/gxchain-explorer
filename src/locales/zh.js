@@ -712,7 +712,11 @@ const locale = {
     },
     // contract
     contract: {
-        title: '合约调用'
+        title: '合约调用',
+        method: '方法',
+        payable_asset: '附带资产',
+        params: '参数',
+        output: '输出结果'
     }
 };
 

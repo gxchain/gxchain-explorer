@@ -713,7 +713,11 @@ const locale = {
     },
     // contract
     contract: {
-        title: 'Call Contract'
+        title: 'Call Contract',
+        method: 'Method',
+        payable_asset: 'Payable Asset',
+        params: 'Params',
+        output: 'Output'
     }
 };
 
