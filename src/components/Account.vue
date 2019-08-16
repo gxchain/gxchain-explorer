@@ -435,7 +435,7 @@
                 this.contract.method = action.name;
                 this.contract.payable = action.payable;
                 this.contract.params = actionDef.fields.map(f => {
-                    return {name: f.name, type: f.type, value: null};
+                    return {name: f.name, type: f.type, value: ''};
                 });
                 $('#modal-call').modal();
             },
