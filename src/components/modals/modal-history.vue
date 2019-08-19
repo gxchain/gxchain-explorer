@@ -89,6 +89,9 @@
                             item[1].amount_.amount = item[1].amount_.amount_str;
                             item[1].amount = item[1].amount_;
                         }
+                        if (item[1].hasOwnProperty('memo_')) {
+                            item[1].memo = item[1].memo_;
+                        }
                         if (item[1].hasOwnProperty('proposed_ops_str')) {
                             item[1].proposed_ops = JSON.parse(item[1].proposed_ops_str);
                         }
