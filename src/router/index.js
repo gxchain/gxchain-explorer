@@ -8,6 +8,7 @@ import Asset from '@/components/Asset';
 import connect from '@/common/connect';
 import Fee from '@/components/Fee';
 import Node_Members from '@/components/Node_Members';
+import Tools from '@/components/tools/Index';
 
 Vue.use(Router);
 
@@ -48,6 +49,11 @@ const router = new Router({
             path: '/node_members/',
             name: 'Node_Members',
             component: Node_Members
+        },
+        {
+            path: '/tools/',
+            name: 'Tools',
+            component: Tools
         }
 
     ]

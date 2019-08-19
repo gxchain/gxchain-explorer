@@ -41,6 +41,9 @@
                             <a href="javascript:;" @click="login">{{$t('header.login')}}</a>
                         </li>
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
+                        <li>
+                            <router-link :to="{path:'/tools/'}">工具</router-link>
+                        </li>
                         <li><a href="/#/fee">{{$t('header.fee')}}</a></li>
                         <li><a href="/#/node_members">{{$t('header.node_members')}}</a></li>
                         <li><a href="#modal-about" data-toggle="modal">{{$t('header.about')}}</a></li>
