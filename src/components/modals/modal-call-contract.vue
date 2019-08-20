@@ -14,12 +14,18 @@
                     <amount-asset v-if="payable" :assets="assets" @assetChanged="assetChanged"></amount-asset>
                     <h3 class="page-header" v-if="fields.length>0">{{$t('contract.params')}}</h3>
                     <form @submit="submit">
-                        <div :class="{'form-group':f.type != 'bool','checkbox':f.type == 'bool'}" v-for="f in fields">
+                        <div :class="{'form-group':f.type != 'bool','checkbox':f.type == 'bool'}"
+                             v-for="(f,index) in fields">
                             <label v-if="f.type != 'bool'">{{f.name}}</label>
-                            <input v-if="f.type != 'bool'" type="text" class="form-control" v-model="f.value">
+                            <input v-if="f.type != 'bool' && f.type !='contract_asset'" type="text" class="form-control"
+                                   v-model="f.value">
                             <label v-if="f.type == 'bool'">
                                 <input type="checkbox"/> {{f.name}}
                             </label>
+                            <amount-asset v-if="f.type =='contract_asset'"
+                                          :assets="assets"
+                                          @assetChanged="(a)=>fieldAssetChanged(f,a)">
+                            </amount-asset>
                         </div>
                         <hr/>
                         <button type="submit" :class="{disabled: submitting}" class="btn btn-default">
@@ -92,7 +98,12 @@
             assetChanged (asset) {
                 this.asset.amount = asset.amount;
                 this.asset.symbol = asset.symbol;
-                console.log(JSON.stringify(this.asset));
+            },
+            fieldAssetChanged (filed, asset) {
+                filed.value = {
+                    asset_id: Number(asset.id.split('.')[2]),
+                    amount: Math.floor(Math.pow(10, asset.precision) * asset.amount)
+                };
             }
         },
         components: {

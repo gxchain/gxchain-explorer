@@ -25,9 +25,12 @@
         },
         methods: {
             assetChanged (e) {
+                let selected_asset = this.assets.find(a => a.symbol === this.symbol);
                 this.$emit('assetChanged', {
                     symbol: this.symbol,
-                    amount: this.amount
+                    amount: this.amount,
+                    id: selected_asset.id,
+                    precision: selected_asset.precision
                 });
             }
         }
