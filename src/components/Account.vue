@@ -435,7 +435,14 @@
                 this.contract.method = action.name;
                 this.contract.payable = action.payable;
                 this.contract.params = actionDef.fields.map(f => {
-                    return {name: f.name, type: f.type, value: ''};
+                    let field = {name: f.name, type: f.type, value: ''};
+                    if (f.type === 'contract_asset') {
+                        field.value = {
+                            amount: 0,
+                            asset_id: 1
+                        };
+                    }
+                    return field;
                 });
                 $('#modal-call').modal();
             },
