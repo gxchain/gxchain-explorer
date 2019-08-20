@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <hr>
                 <div class="tools-list row">
-                    <div class="col-md-3 col-xs-6" v-for="(item,index) in toolsLsit" :key="index">
+                    <div class="col-md-3 col-xs-6" v-for="(item,index) in toolsList" :key="index">
                         <a class="item" href="">
                             <div class="logo">
                                 <img :src="item.logo" :alt="item.title">
@@ -24,7 +24,7 @@
 export default {
     data () {
         return {
-            toolsLsit: [
+            toolsList: [
                 {
                     name: '批量转账',
                     title: '批量转账',
@@ -72,7 +72,7 @@ export default {
     display: flex;
     align-self: center;
     text-decoration: none;
-    padding: 36px 16px;
+    padding: 32px 16px;
     background: #f2f2f2;
     margin-bottom: 20px;
     border-radius: 6px;
@@ -105,7 +105,7 @@ export default {
         overflow: hidden;
         color: #8f96a0;
         font-size: 12px;
-        margin-top: 2px;
+        margin-top: 5px;
       }
     }
     &:hover {
