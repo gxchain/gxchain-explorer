@@ -14,15 +14,16 @@
                     <div class="btn-wrap text-right">
                         <button type="button" class="btn btn-link" @click="handleDownload">下载模版</button>
                         <span class="upload-file-wrap">
-                            <button type="button" class="btn btn-info">导入</button>
+                            <button type="button" class="btn btn-info" :disabled="running">导入</button>
                             <input 
                                 type="file"
                                 ref="uploadFile"
                                 id="uploadFile"
                                 :value="csvFiles"
+                                :disabled="running"
                                 v-on:change="handleChangeFile($event)">
                         </span>
-                        <button type="button" class="btn btn-primary btc-execute" @click="handleExecute">执行
+                        <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">执行
                             <!-- <i class="fas fa-spinner"></i> -->
                         </button>
                         <button type="button" class="btn btn-warning" @click="handleClearData">清空</button>
@@ -33,8 +34,8 @@
                                     导出<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu export-type">
-                                <li><a @click="handleExport('all')">全部</a></li>
-                                <li><a @click="handleExport('sucess')">成功记录</a></li>
+                                <li><a @click="handleExport">全部</a></li>
+                                <li><a @click="handleExport('success')">成功记录</a></li>
                                 <li><a @click="handleExport('fail')">失败记录</a></li>
                             </ul>
                         </div>
@@ -50,12 +51,12 @@
                                     <th class="text-right" v-show="running">Resullt</th>
                                 </tr>
                                 <template v-for="(item, index) in renderTransferData">
-                                    <tr>
+                                    <tr :class="transferColor[item.status]">
                                         <td class="text-center">{{item['Account']}}</td>
                                         <td class="text-center">{{item['Amount']}}</td>
                                         <td class="text-center">{{item['Asset']}}</td>
                                         <td class="text-center">{{item['Memo']}}</td>
-                                        <td class="text-right" style="width:30%;"v-show="running">{{item['Resullt']}}</td>
+                                        <td class="text-right" style="width:30%;"v-show="running">{{item['Result']}}</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -104,7 +105,17 @@ export default {
             createCsvFile: '',
             csvFiles: '',
             renderTransferData: [],
-            running: false
+            running: false,
+            executeNum: {
+                all: 0,
+                success: 0,
+                fail: 0
+            },
+            transferColor: {
+                success: 'success',
+                padding: 'warning',
+                fail: 'danger'
+            }
         };
     },
     mounted () {
@@ -148,6 +159,11 @@ export default {
             if (!this.isSupportDownloadFuc()) return;
             let exportData;
             // TODO: 需要对数据分类再导出 this.renderTransferData
+
+            if (type === 'sucess' || type === 'fail') {
+                this.renderTransferData = this.renderTransferData.filter(item => item.status === type);
+            }
+
             try {
                 exportData = Papa.unparse({
                     'fields': this.fields,
@@ -168,17 +184,40 @@ export default {
             }
         },
         async handleExecute () {
-            this.running = true;
-            let result = await this.gxc.transfer('test-net', '123', '0.1 PPS', true);
-            console.log(result);
-            // this.renderTransferData.forEach(item => {
-            //     setInterval(() => {
-            //         this.$set(item, 'Txid', 'Txid的值为：' + Math.random() * 100);
-            //     }, 600);
-            // });
+            this.executeNum.all = this.renderTransferData.length;
+
+            if (this.renderTransferData.length > 0) {
+                this.running = true;
+            }
+
+            // TODO:异步执行转账
+            // for (const item of this.renderTransferData) {
+            //     await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
+            //         this.executeNum.success++;
+            //         console.log(this.executeNum.success);
+            //         console.log(res);
+            //     }).catch(ex => {
+            //         this.executeNum.fail++;
+            //         console.log(ex);
+            //     });
+            // }
+            this.renderTransferData.forEach(item => {
+                setInterval(() => {
+                    // 成功
+                    if (Math.random() > 0.5) {
+                        this.$set(item, 'Result', 'Txid的值为：' + Math.random() * 100);
+                        this.$set(item, 'status', 'success');
+                    } else {
+                        // 失败
+                        this.$set(item, 'Result', 'Txid的值为：' + Math.random() * 100);
+                        this.$set(item, 'status', 'fail');
+                    }
+                }, 1000);
+            });
         },
         handleClearData () {
             this.renderTransferData = [];
+            this.running = false;
         },
         handleRefresh () {
             alert('shuaixn');
