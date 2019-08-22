@@ -1,6 +1,7 @@
 {
     "extends": "standard",
     "root": true,
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
@@ -17,9 +18,14 @@
     },
     "plugins": ["html", "vue", "standard"],
     "rules": {
-        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "generator-star-spacing": 0,
+        "indent": ["error", 4, {
+            "SwitchCase": 1
+        }],
         "quotes": ["error", "single"],
-        "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
+        "semi": ["error", "always", {
+            "omitLastInOneLineBlock": true
+        }],
         "no-debugger": ["error"],
         "no-console": ["off"],
         "no-new": ["off"],

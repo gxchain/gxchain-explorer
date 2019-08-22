@@ -22,26 +22,40 @@
                                 :value="csvFiles"
                                 v-on:change="handleChangeFile($event)">
                         </span>
-                        <button type="button" class="btn btn-primary">执行</button>
+                        <button type="button" class="btn btn-primary btc-execute" @click="handleExecute">执行
+                            <!-- <i class="fas fa-spinner"></i> -->
+                        </button>
                         <button type="button" class="btn btn-warning" @click="handleClearData">清空</button>
-                        <button type="button" class="btn btn-success" @click="handleExport">导出</button>
                         <button type="button" class="btn btn-primary " @click="handleRefresh">刷新</button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" 
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    导出<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu export-type">
+                                <li><a @click="handleExport('all')">全部</a></li>
+                                <li><a @click="handleExport('sucess')">成功记录</a></li>
+                                <li><a @click="handleExport('fail')">失败记录</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="table-wrap panel-body no-padding table-responsive">
-                        <table class="table table-striped table-bordered no-margin">
+                        <table class="table table-bordered no-margin">
                             <tbody>
                                 <tr>
                                     <th class="text-center">Account</th>
-                                    <th class="text-right">Amount</th>
-                                    <th class="text-right">Memo</th>
-                                    <th class="text-right">Txid</th>
+                                    <th class="text-center">Amount</th>
+                                    <th class="text-center">Asset</th>
+                                    <th class="text-center">Memo</th>
+                                    <th class="text-right" v-show="running">Resullt</th>
                                 </tr>
                                 <template v-for="(item, index) in renderTransferData">
                                     <tr>
                                         <td class="text-center">{{item['Account']}}</td>
-                                        <td class="text-right">{{item['Amount']}}</td>
-                                        <td class="text-right">{{item['Memo']}}</td>
-                                        <td class="text-right">{{item['Txid']}}</td>
+                                        <td class="text-center">{{item['Amount']}}</td>
+                                        <td class="text-center">{{item['Asset']}}</td>
+                                        <td class="text-center">{{item['Memo']}}</td>
+                                        <td class="text-right" style="width:30%;"v-show="running">{{item['Resullt']}}</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -49,6 +63,7 @@
                         <div class="no-data-tip" v-if="renderTransferData.length == 0">   
                             <span>暂无数据</span>
                         </div>
+                        <!-- <Loading v-show="loading"/> -->
                     </div>
                 </div>
             </div>
@@ -58,6 +73,7 @@
 <script>
 import BreadBox from './components/BreadBox';
 import Papa from 'papaparse';
+import { mapGetters } from 'vuex';
 const BULK_TRANSFER_TEMPLATE_NAME = 'Bulk_Transfer_Template.csv';
 export default {
     components: {
@@ -65,6 +81,7 @@ export default {
     },
     data () {
         return {
+            loading: true,
             breadList: [
                 {
                     name: '工具',
@@ -75,18 +92,19 @@ export default {
                     path: '/tools/bulk-transfer'
                 }
             ],
-            fields: ['Account', 'Amount', 'Memo', 'Txid'],
+            fields: ['Account', 'Amount', 'Asset', 'Memo'],
             createTransferData: [
                 {
                     'Account': '',
                     'Amount': '',
-                    'Memo': '',
-                    'Txid': ''
+                    'Asset': '',
+                    'Memo': ''
                 }
             ],
             createCsvFile: '',
             csvFiles: '',
-            renderTransferData: []
+            renderTransferData: [],
+            running: false
         };
     },
     mounted () {
@@ -98,6 +116,11 @@ export default {
         } catch (err) {
             console.error(err);
         }
+    },
+    computed: {
+        ...mapGetters({
+            gxc: 'gxc'
+        })
     },
     methods: {
         handleDownload () {
@@ -121,9 +144,10 @@ export default {
                 console.error(err);
             }
         },
-        handleExport () {
+        handleExport (type) {
             if (!this.isSupportDownloadFuc()) return;
             let exportData;
+            // TODO: 需要对数据分类再导出 this.renderTransferData
             try {
                 exportData = Papa.unparse({
                     'fields': this.fields,
@@ -142,6 +166,16 @@ export default {
                 alert('浏览器不支持');
                 return false;
             }
+        },
+        async handleExecute () {
+            this.running = true;
+            let result = await this.gxc.transfer('test-net', '123', '0.1 PPS', true);
+            console.log(result);
+            // this.renderTransferData.forEach(item => {
+            //     setInterval(() => {
+            //         this.$set(item, 'Txid', 'Txid的值为：' + Math.random() * 100);
+            //     }, 600);
+            // });
         },
         handleClearData () {
             this.renderTransferData = [];
@@ -171,6 +205,17 @@ export default {
     margin-bottom: 15px;
     .btn {
       margin-bottom: 5px;
+    }
+    .btc-execute {
+      i {
+        margin-left: 3px;
+      }
+    }
+    .export-type {
+      min-width: 0;
+      a {
+        cursor: pointer;
+      }
     }
   }
   .upload-file-wrap {
