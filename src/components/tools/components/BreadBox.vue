@@ -19,4 +19,10 @@ export default {
     }
 };
 </script>
+<style lang="less" scoped>
+a {
+  color: #337ab7;
+}
+</style>
+
 

@@ -11,35 +11,40 @@
                     </p>
                 </div>
                 <div class="bulk-transfer">
-                    <div class="btn-wrap text-right">
-                        <button type="button" class="btn btn-link" @click="handleDownload">下载模版</button>
-                        <span class="upload-file-wrap">
-                            <button type="button" class="btn btn-info" :disabled="running">导入</button>
-                            <input 
-                                type="file"
-                                ref="uploadFile"
-                                id="uploadFile"
-                                :value="csvFiles"
-                                :disabled="running"
-                                v-on:change="handleChangeFile($event)">
-                        </span>
-                        <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">执行
-                            <!-- <i class="fas fa-spinner"></i> -->
-                        </button>
-                        <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">清空</button>
-                        <button type="button" class="btn btn-primary " :disabled="refreshBtn" @click="handleRefresh">
-                            刷新 <span v-if="refreshBtn">{{refreshWait}}s</span>
-                        </button>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success dropdown-toggle" 
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    导出<span class="caret"></span>
+                    <div class="control-wrap">
+                        <div class="statistics-wrap">
+                            本次导入多少<span class="s-num s-primary">100</span>条数据 ；成功<span class="s-num s-success">10</span>条；失败<span class="s-num s-warn">12</span>条；
+                        </div>
+                        <div class="btn-wrap"> 
+                            <button type="button" class="btn btn-link" @click="handleDownload">下载模版</button>
+                            <span class="upload-file-wrap">
+                                <button type="button" class="btn btn-info" :disabled="running">导入</button>
+                                <input 
+                                    type="file"
+                                    ref="uploadFile"
+                                    id="uploadFile"
+                                    :value="csvFiles"
+                                    :disabled="running"
+                                    v-on:change="handleChangeFile($event)">
+                            </span>
+                            <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">执行
+                                <!-- <i class="fas fa-spinner"></i> -->
                             </button>
-                            <ul class="dropdown-menu export-type">
-                                <li><a @click="handleExport">全部</a></li>
-                                <li><a @click="handleExport('success')">成功记录</a></li>
-                                <li><a @click="handleExport('fail')">失败记录</a></li>
-                            </ul>
+                            <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">清空</button>
+                            <button type="button" class="btn btn-primary " :disabled="refreshBtn" @click="handleRefresh">
+                                刷新 <span v-if="refreshBtn">{{refreshWait}}s</span>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success dropdown-toggle" 
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        导出<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu export-type">
+                                    <li><a @click="handleExport">全部</a></li>
+                                    <li><a @click="handleExport('success')">成功记录</a></li>
+                                    <li><a @click="handleExport('fail')">失败记录</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="table-wrap panel-body no-padding table-responsive">
@@ -279,15 +284,33 @@ export default {
 </script>
 <style scoped lang="less">
 .bulk-transfer {
-  .btn-wrap {
-    margin-bottom: 15px;
-    .btn {
-      margin-bottom: 5px;
+  .control-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    .s-num {
+      font-size: 16px;
+      font-weight: 600;
     }
+    .s-primary {
+      color: #337ab7;
+    }
+    .s-success {
+      color: #5cb85c;
+    }
+    .s-warn {
+      color: #d9534f;
+    }
+  }
+  .btn-wrap {
     .btc-execute {
       i {
         margin-left: 3px;
       }
+    }
+    .btn {
+      margin-bottom: 5px;
     }
     .export-type {
       min-width: 0;
@@ -325,6 +348,16 @@ export default {
     border-right: 1px solid rgb(221, 221, 221);
     border-bottom: 1px solid rgb(221, 221, 221);
     border-left: 1px solid rgb(221, 221, 221);
+  }
+  @media (max-width: 768px) {
+    .control-wrap {
+      display: block;
+      text-align: right;
+      .statistics-wrap {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+    }
   }
 }
 </style>
