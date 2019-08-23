@@ -26,8 +26,10 @@
                         <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">执行
                             <!-- <i class="fas fa-spinner"></i> -->
                         </button>
-                        <button type="button" class="btn btn-warning" @click="handleClearData">清空</button>
-                        <button type="button" class="btn btn-primary " @click="handleRefresh">刷新</button>
+                        <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">清空</button>
+                        <button type="button" class="btn btn-primary " :disabled="refreshBtn" @click="handleRefresh">
+                            刷新 <span v-if="refreshBtn">{{refreshWait}}s</span>
+                        </button>
                         <div class="btn-group">
                             <button type="button" class="btn btn-success dropdown-toggle" 
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,17 +50,17 @@
                                     <th class="text-center">Amount</th>
                                     <th class="text-center">Asset</th>
                                     <th class="text-center">Memo</th>
-                                    <th class="text-right" v-show="running">Resullt</th>
+                                    <th class="text-right" v-show="running">Result</th>
                                 </tr>
-                                <template v-for="(item, index) in renderTransferData">
-                                    <tr :class="transferColor[item.status]">
-                                        <td class="text-center">{{item['Account']}}</td>
-                                        <td class="text-center">{{item['Amount']}}</td>
-                                        <td class="text-center">{{item['Asset']}}</td>
-                                        <td class="text-center">{{item['Memo']}}</td>
-                                        <td class="text-right" style="width:30%;"v-show="running">{{item['Result']}}</td>
-                                    </tr>
-                                </template>
+                                <transfer-item 
+                                    v-for="(item, index) in renderTransferData" 
+                                    :ref="'transfer-item-' + index"
+                                    :index="index"
+                                    :data="item"
+                                    :running="running"
+                                    :key="index"
+                                    @onSuccess="onTransferSuccess"
+                                ></transfer-item>
                             </tbody>
                         </table>
                         <div class="no-data-tip" v-if="renderTransferData.length == 0">   
@@ -73,12 +75,15 @@
 </template>
 <script>
 import BreadBox from './components/BreadBox';
+import TransferItem from './components/TransferItem';
 import Papa from 'papaparse';
 import { mapGetters } from 'vuex';
+import { setTimeout } from 'timers';
 const BULK_TRANSFER_TEMPLATE_NAME = 'Bulk_Transfer_Template.csv';
 export default {
     components: {
-        BreadBox
+        BreadBox,
+        TransferItem
     },
     data () {
         return {
@@ -94,6 +99,7 @@ export default {
                 }
             ],
             fields: ['Account', 'Amount', 'Asset', 'Memo'],
+            exportFields: ['Account', 'Amount', 'Asset', 'Memo', 'Result'],
             createTransferData: [
                 {
                     'Account': '',
@@ -111,11 +117,8 @@ export default {
                 success: 0,
                 fail: 0
             },
-            transferColor: {
-                success: 'success',
-                padding: 'warning',
-                fail: 'danger'
-            }
+            refreshWait: 10,
+            refreshBtn: false
         };
     },
     mounted () {
@@ -130,7 +133,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            gxc: 'gxc'
+            gxc: 'gxc',
+            account: 'account'
         })
     },
     methods: {
@@ -155,25 +159,84 @@ export default {
                 console.error(err);
             }
         },
+        async handleExecute () {
+            if (this.account.authority !== 'active') {
+                alert('请先登录');
+                return;
+            }
+
+            this.executeNum.all = this.renderTransferData.length;
+            if (this.renderTransferData.length > 0) {
+                this.running = true;
+            }
+            // TODO:异步执行转账
+            for (const item of this.renderTransferData) {
+                await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
+                    this.executeNum.success++;
+                    this.$set(item, 'Txid', res[0].id);
+                    this.$set(item, 'status', 'pending');
+                    this.$set(item, 'Result', '转账进行中');
+                }).catch(ex => {
+                    this.executeNum.fail++;
+                    console.log(ex);
+                    this.$set(item, 'Mssage', ex.message);
+                    this.$set(item, 'status', 'fail');
+                    this.$set(item, 'Result', '转账失败');
+                });
+            }
+            // this.renderTransferData.forEach(item => {
+            //     setTimeout(() => {
+            //         if (Math.random() > 0.5) {
+            //             // 进行中
+            //             this.$set(item, 'Txid', '5d0885190319a2acca2db7576a6d67e6048a708e');
+            //             this.$set(item, 'status', 'pending');
+            //             this.$set(item, 'Result', '转账进行中');
+            //         } else {
+            //             // 失败
+            //             this.$set(item, 'Mssage', '这是报错信息');
+            //             this.$set(item, 'status', 'fail');
+            //             this.$set(item, 'Result', '转账失败');
+            //         }
+            //     }, 2000);
+            // });
+        },
+        handleClearData () {
+            this.renderTransferData = [];
+            this.running = false;
+        },
+        handleRefresh () {
+            if (this.renderTransferData.length === 0) return;
+            if (this.refreshBtn) return;
+            this.refreshBtn = true;
+            this.setRefreshStatus();
+
+            this.renderTransferData.forEach((item, index) => {
+                let child_get_transaction = this.$refs[`transfer-item-${index}`][0].get_transaction;
+                if (typeof child_get_transaction === 'function') {
+                    child_get_transaction();
+                }
+            });
+        },
         handleExport (type) {
             if (!this.isSupportDownloadFuc()) return;
+            if (this.renderTransferData.length === 0) return;
             let exportData;
-            // TODO: 需要对数据分类再导出 this.renderTransferData
+            let cloneRenderTransferData = [...this.renderTransferData];
 
-            if (type === 'sucess' || type === 'fail') {
-                this.renderTransferData = this.renderTransferData.filter(item => item.status === type);
+            if (type === 'success' || type === 'fail') {
+                cloneRenderTransferData = cloneRenderTransferData.filter(item => item.status === type);
             }
 
             try {
                 exportData = Papa.unparse({
-                    'fields': this.fields,
-                    'data': this.renderTransferData
+                    'fields': this.exportFields,
+                    'data': cloneRenderTransferData
                 });
             } catch (err) {
                 console.error(err);
             }
             let timename = new Date().format('yyyy-MM-dd hh:mm:ss');
-            this.funDownload(exportData, `导出记录${timename}.csv`);
+            this.funDownload(exportData, `导出转账记录${timename}.csv`);
         },
         isSupportDownloadFuc () {
             if ('download' in document.createElement('a')) {
@@ -183,44 +246,20 @@ export default {
                 return false;
             }
         },
-        async handleExecute () {
-            this.executeNum.all = this.renderTransferData.length;
-
-            if (this.renderTransferData.length > 0) {
-                this.running = true;
+        setRefreshStatus () {
+            this.refreshWait--;
+            if (this.refreshWait === 0) {
+                this.refreshBtn = false;
+                this.refreshWait = 10;
+                return;
             }
-
-            // TODO:异步执行转账
-            // for (const item of this.renderTransferData) {
-            //     await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
-            //         this.executeNum.success++;
-            //         console.log(this.executeNum.success);
-            //         console.log(res);
-            //     }).catch(ex => {
-            //         this.executeNum.fail++;
-            //         console.log(ex);
-            //     });
-            // }
-            this.renderTransferData.forEach(item => {
-                setInterval(() => {
-                    // 成功
-                    if (Math.random() > 0.5) {
-                        this.$set(item, 'Result', 'Txid的值为：' + Math.random() * 100);
-                        this.$set(item, 'status', 'success');
-                    } else {
-                        // 失败
-                        this.$set(item, 'Result', 'Txid的值为：' + Math.random() * 100);
-                        this.$set(item, 'status', 'fail');
-                    }
-                }, 1000);
-            });
+            setTimeout(() => {
+                this.setRefreshStatus();
+            }, 1000);
         },
-        handleClearData () {
-            this.renderTransferData = [];
-            this.running = false;
-        },
-        handleRefresh () {
-            alert('shuaixn');
+        onTransferSuccess (index) {
+            this.$set(this.renderTransferData[index], 'status', 'success');
+            this.$set(this.renderTransferData[index], 'Result', '转账成功');
         },
         funDownload (content, filename) {
             let eleLink = document.createElement('a');

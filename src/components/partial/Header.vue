@@ -129,6 +129,9 @@ export default {
             // if identity exist, means user has authorize the website and already unlock, you could display user info then
             if (this.gscatter.identity) {
                 this.account = this.gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
+                this.setAccount({
+                    account: this.account
+                });
             }
         });
     },
@@ -149,7 +152,8 @@ export default {
     methods: {
         ...mapActions({
             setKeywords: 'setKeywords',
-            setPlugin: 'setPlugin'
+            setPlugin: 'setPlugin',
+            setAccount: 'setAccount'
         }),
         eventChanged () {
             this.search = this.search.replace(/(^\s*)|(\s*$)/g, '');
@@ -172,6 +176,9 @@ export default {
                 this.gscatter.suggestNetwork(process.env.network).then(() => {
                     this.gscatter.getIdentity({ accounts: [process.env.network] }).then(() => {
                         this.account = this.gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
+                        this.setAccount({
+                            account: this.account
+                        });
                     });
                 }).catch(ex => {
                     console.error('login failed:', ex);
@@ -181,6 +188,9 @@ export default {
         logout () {
             this.gscatter.forgetIdentity().then(() => {
                 this.account = null;
+                this.setAccount({
+                    account: {}
+                });
             });
         }
     }
