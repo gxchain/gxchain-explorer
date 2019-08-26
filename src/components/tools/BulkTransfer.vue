@@ -246,7 +246,7 @@ export default {
             }, 1000);
         },
         onTransferSuccess (index) {
-            this.executeNum.sucess++;
+            this.executeNum.success++;
             this.$set(this.renderTransferData[index], 'status', 'success');
             this.$set(this.renderTransferData[index], 'Result', `${this.$t('tools.bulk_transfer.transfer_success')} Txid: ${this.renderTransferData[index]['Txid']}`);
         },
