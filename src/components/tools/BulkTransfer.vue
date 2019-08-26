@@ -13,9 +13,9 @@
                 <div class="bulk-transfer">
                     <div class="control-wrap">
                         <div class="statistics-wrap">
-                            {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{renderTransferData.length}} </span> {{$t('tools.bulk_transfer.article')}}；
-                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{executeNum.processing}} </span> 
-                            {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span>
+                            {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{renderTransferData.length}} </span> {{$t('tools.bulk_transfer.article')}};
+                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{executeNum.processing}} </span>;
+                            {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span>;
                             {{$t('tools.bulk_transfer.failure')}}<span class="s-num s-warn"> {{executeNum.fail}} </span>
                         </div>
                         <div class="btn-wrap"> 
