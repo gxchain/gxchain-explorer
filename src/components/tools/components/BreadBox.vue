@@ -3,7 +3,7 @@
         <ol class="breadcrumb">
             <li v-for="(item,index) in breadList" :key="index">
                 <router-link :to="{path : item.path}">
-                    {{item.name}}
+                    {{$t(item.key)}}
                 </router-link>
             </li>
          </ol>

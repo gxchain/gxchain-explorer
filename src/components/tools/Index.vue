@@ -4,14 +4,14 @@
             <div class="col-md-12">
                 <hr>
                 <div class="tools-list row">
-                    <div class="col-md-3 col-xs-6" v-for="item in toolsList" :key="item.key">
+                    <div class="col-md-3 col-xs-6" v-for="item in toolsList" :key="item.name_key">
                         <a class="item" @click="goDetails(item)">
                             <div class="logo">
                                 <img :src="item.logo" :alt="item.name">
                             </div>
                             <div class="info">
-                                <h6 class="name">{{item.name}}</h6>
-                                <div class="intro">{{item.des}}</div>
+                                <h6 class="name">{{$t(item.name_key)}}</h6>
+                                <div class="intro">{{$t(item.des)}}</div>
                             </div>
                         </a>
                     </div>
@@ -27,9 +27,10 @@ export default {
         return {
             toolsList: [
                 {
-                    name: this.$t('tools.bulk_transfer.title'),
-                    key: 'bulk-transfer',
-                    des: this.$t('tools.bulk_transfer.des'),
+                    name: '批量转账',
+                    name_key: 'tools.bulk_transfer.title',
+                    path: 'bulk-transfer',
+                    des: 'tools.bulk_transfer.des',
                     logo: require('@/assets/img/tools/transfer.png')
                 }
                 // {
@@ -57,7 +58,7 @@ export default {
     },
     methods: {
         goDetails (item) {
-            this.$router.push({ path: `/tools/${item.key}` });
+            this.$router.push({ path: `/tools/${item.path}` });
         }
     }
 };

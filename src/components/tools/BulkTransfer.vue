@@ -98,11 +98,13 @@ export default {
             loading: true,
             breadList: [
                 {
-                    name: this.$t('tools.title'),
+                    name: '工具',
+                    key: 'tools.title',
                     path: '/tools/index'
                 },
                 {
-                    name: this.$t('tools.bulk_transfer.title'),
+                    name: '批量转账',
+                    key: 'tools.bulk_transfer.title',
                     path: '/tools/bulk-transfer'
                 }
             ],
