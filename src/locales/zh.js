@@ -734,7 +734,7 @@ const locale = {
             empty: '清空',
             refresh: '刷新',
             export: '导出',
-            import_all: '本次导入数据',
+            import_all: '本次导入',
             article: '条',
             all: '全部',
             successful: '成功',

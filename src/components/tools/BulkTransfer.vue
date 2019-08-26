@@ -14,9 +14,9 @@
                     <div class="control-wrap">
                         <div class="statistics-wrap">
                             {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{renderTransferData.length}} </span> {{$t('tools.bulk_transfer.article')}}；
-                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{executeNum.processing}} </span> {{$t('tools.bulk_transfer.article')}}；
-                            {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span> {{$t('tools.bulk_transfer.article')}}；
-                            {{$t('tools.bulk_transfer.failure')}}<span class="s-num s-warn"> {{executeNum.fail}} </span> {{$t('tools.bulk_transfer.article')}}；
+                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{executeNum.processing}} </span> 
+                            {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span>
+                            {{$t('tools.bulk_transfer.failure')}}<span class="s-num s-warn"> {{executeNum.fail}} </span>
                         </div>
                         <div class="btn-wrap"> 
                             <button type="button" class="btn btn-link" @click="handleDownload">{{$t('tools.bulk_transfer.download_template')}}</button>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-wrap panel-body no-padding table-responsive">
+                    <div class="table-wrap panel-body no-padding">
                         <table class="table table-bordered no-margin">
                             <tbody>
                                 <tr>
