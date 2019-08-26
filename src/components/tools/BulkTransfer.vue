@@ -14,7 +14,7 @@
                     <div class="control-wrap">
                         <div class="statistics-wrap">
                             {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{renderTransferData.length}} </span> {{$t('tools.bulk_transfer.article')}};
-                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{executeNum.processing}} </span>;
+                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{processingNum}} </span>;
                             {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span>;
                             {{$t('tools.bulk_transfer.failure')}}<span class="s-num s-warn"> {{executeNum.fail}} </span>
                         </div>
@@ -121,7 +121,6 @@ export default {
             renderTransferData: [],
             running: false,
             executeNum: {
-                processing: 0,
                 success: 0,
                 fail: 0
             },
@@ -143,7 +142,10 @@ export default {
         ...mapGetters({
             gxc: 'gxc',
             account: 'account'
-        })
+        }),
+        'processingNum': function () {
+            return this.running ? this.renderTransferData.length - this.executeNum.success - this.executeNum.fail : 0;
+        }
     },
     methods: {
         handleDownload () {
@@ -179,7 +181,6 @@ export default {
 
             for (const item of this.renderTransferData) {
                 await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
-                    this.executeNum.processing++;
                     this.$set(item, 'Txid', res[0].id);
                     this.$set(item, 'status', 'processing');
                     this.$set(item, 'Result', this.$t('tools.bulk_transfer.transfer_processing'));
@@ -206,7 +207,7 @@ export default {
             this.setRefreshStatus();
 
             this.renderTransferData.forEach((item, index) => {
-                let child_get_transaction = this.$refs[`transfer-item-${index}`][0].get_transaction;
+                let child_get_transaction = this.$refs[`transfer-item-${index}`][0].get_transaction_outside;
                 if (typeof child_get_transaction === 'function') {
                     child_get_transaction();
                 }
@@ -247,7 +248,7 @@ export default {
         onTransferSuccess (index) {
             this.executeNum.sucess++;
             this.$set(this.renderTransferData[index], 'status', 'success');
-            this.$set(this.renderTransferData[index], 'Result', this.$t('tools.bulk_transfer.transfer_success'));
+            this.$set(this.renderTransferData[index], 'Result', `${this.$t('tools.bulk_transfer.transfer_success')} Txid: ${this.renderTransferData[index]['Txid']}`);
         },
         funDownload (content, filename) {
             let eleLink = document.createElement('a');

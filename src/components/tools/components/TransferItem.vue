@@ -4,10 +4,11 @@
         <td class="text-center">{{data['Amount']}}</td>
         <td class="text-center">{{data['Asset']}}</td>
         <td class="text-center">{{data['Memo']}}</td>
-        <td class="text-right" style="width:30%;"v-if="running">
+        <td class="text-right" style="width:37%;"v-if="running">
             <span class="txid-status" v-if="data.status == 'processing' && data.Txid">
-                <button type="button" class="btn btn-primary btn-xs"><i class="far fa-clock"></i> {{countDown}}s </button>
-                <span>Txid:{{data.Txid}}</span>
+                <button type="button" class="btn btn-primary btn-xs" v-if="countDown==0"><i class="fas fa-spinner" :class="{'loading-animate':transferLoading}"></i></button>
+                <button type="button" class="btn btn-primary btn-xs" v-else><i class="far fa-clock"></i> {{countDown}}s </button>
+                <span>Txid: {{data.Txid}}</span>
             </span>
             <span v-else-if="data.status == 'fail'" 
                 @mouseover="funPopover(index,'show')" 
@@ -17,7 +18,7 @@
             <span v-else-if="data.status == 'success'" class="txid-status" >
                 <button type="button" class="btn btn-success btn-xs">{{$t('tools.bulk_transfer.successful')}}</button>
                 <span>
-                    Txid:<router-link :to="{path : '/transaction/'+data.Txid}">{{data.Txid}}</router-link>
+                    Txid: <a target="_blank" :href="'#/transaction/'+data.Txid">{{data.Txid}}</a>
                 </span>
             </span>
             <span v-else>
@@ -48,22 +49,30 @@ export default {
             countDown: 45,
             timer: null,
             transaction: {},
-            transferNum: 0
+            transferNum: 0,
+            transferLoading: false
         };
     },
     watch: {
         'running': function (val) {
-            if (val) {
-                this.funCountDown();
-            } else {
+            if (!val) {
                 this.removeTimer();
             }
+        },
+        'data.status': {
+            handler (val) {
+                if (val === 'processing') {
+                    this.funCountDown();
+                }
+            },
+            deep: true
         }
     },
     methods: {
         get_transaction () {
             if (!this.data.Txid || this.data.status !== 'processing') return;
             this.transferNum++;
+            this.transferLoading = true;
             fetch_transaction(this.data.Txid).then(res => {
                 this.transaction = res.body;
                 if (this.transaction) {
@@ -73,6 +82,8 @@ export default {
                         setTimeout(() => {
                             this.get_transaction();
                         }, 3000);
+                    } else {
+                        this.transferLoading = false;
                     }
                 }
             }).catch(ex => {
@@ -83,6 +94,10 @@ export default {
                 }
                 console.log(ex);
             });
+        },
+        get_transaction_outside () {
+            this.transferNum = 0;
+            this.get_transaction();
         },
         funPopover (index, type) {
             $('.popover-toggle-' + index).popover(type);
