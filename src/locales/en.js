@@ -13,6 +13,7 @@ const locale = {
         home: 'Home',
         login: 'Login',
         fee: 'Network Fees',
+        tools: 'Tools',
         node_members: 'Node Members',
         profile: 'Profile',
         download: 'You haven\'t download extension, confirm to download',
@@ -718,6 +719,32 @@ const locale = {
         payable_asset: 'Payable Asset',
         params: 'Params',
         output: 'Output'
+    },
+    // tools
+    tools: {
+        title: 'Tools',
+        no_data: 'No Data',
+        logo: 'Login First',
+        browser_not_support: 'Browser does not support',
+        bulk_transfer: {
+            title: ' Bulk Transfer',
+            des: 'Support bulk transfer of assets on the GXChain',
+            download_template: 'Download Template',
+            import: 'Import',
+            execute: 'Execute',
+            empty: 'Empty',
+            refresh: 'Refresh',
+            export: 'Export',
+            import_all: 'Import',
+            article: '',
+            all: 'All',
+            successful: 'Successful',
+            failure: 'Failure',
+            processing: 'Processing',
+            transfer_processing: 'Transfer in progress',
+            transfer_success: 'Successful transfer',
+            transfer_fail: 'Transfer failed'
+        }
     }
 };
 

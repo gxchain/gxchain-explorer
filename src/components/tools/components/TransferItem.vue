@@ -5,17 +5,17 @@
         <td class="text-center">{{data['Asset']}}</td>
         <td class="text-center">{{data['Memo']}}</td>
         <td class="text-right" style="width:30%;"v-if="running">
-            <span class="txid-status" v-if="data.status == 'pending' && data.Txid">
+            <span class="txid-status" v-if="data.status == 'processing' && data.Txid">
                 <button type="button" class="btn btn-primary btn-xs"><i class="far fa-clock"></i> {{countDown}}s </button>
                 <span>Txid:{{data.Txid}}</span>
             </span>
             <span v-else-if="data.status == 'fail'" 
                 @mouseover="funPopover(index,'show')" 
                 @mouseleave="funPopover(index,'hide')">
-                <a tabindex="0" class="btn btn-xs btn-danger" :class="'popover-toggle-'+index" role="button" data-toggle="popover" data-trigger="focus" data-placement="left"  :data-content="data.Mssage">转账失败 <i class="fas fa-question-circle"></i></a>
+                <a tabindex="0" class="btn btn-xs btn-danger" :class="'popover-toggle-'+index" role="button" data-toggle="popover" data-trigger="focus" data-placement="left"  :data-content="data.Mssage">{{$t('tools.bulk_transfer.failure')}} <i class="fas fa-question-circle"></i></a>
             </span>
             <span v-else-if="data.status == 'success'" class="txid-status" >
-                <button type="button" class="btn btn-success btn-xs">转账成功</button>
+                <button type="button" class="btn btn-success btn-xs">{{$t('tools.bulk_transfer.successful')}}</button>
                 <span>
                     Txid:<router-link :to="{path : '/transaction/'+data.Txid}">{{data.Txid}}</router-link>
                 </span>
@@ -42,7 +42,7 @@ export default {
         return {
             transferColor: {
                 success: 'success',
-                pending: 'warning',
+                processing: 'warning',
                 fail: 'danger'
             },
             countDown: 45,
@@ -61,6 +61,29 @@ export default {
         }
     },
     methods: {
+        get_transaction () {
+            if (!this.data.Txid || this.data.status !== 'processing') return;
+            this.transferNum++;
+            fetch_transaction(this.data.Txid).then(res => {
+                this.transaction = res.body;
+                if (this.transaction) {
+                    if (this.transaction.current_block_number) {
+                        this.$emit('onSuccess', this.index);
+                    } else if (this.transferNum < TRANSFER_MAX_NUM) {
+                        setTimeout(() => {
+                            this.get_transaction();
+                        }, 3000);
+                    }
+                }
+            }).catch(ex => {
+                if (this.transferNum < TRANSFER_MAX_NUM) {
+                    setTimeout(() => {
+                        this.get_transaction();
+                    }, 3000);
+                }
+                console.log(ex);
+            });
+        },
         funPopover (index, type) {
             $('.popover-toggle-' + index).popover(type);
         },
@@ -73,27 +96,6 @@ export default {
             this.timer = setTimeout(() => {
                 this.funCountDown();
             }, 1000);
-        },
-        get_transaction () {
-            if (!this.data.Txid || this.data.status !== 'pending') return;
-            this.transferNum++;
-            fetch_transaction(this.data.Txid).then(res => {
-                this.transaction = res.body;
-                if (this.transaction) {
-                    // setTimeout(() => {
-                    //     this.$emit('onSuccess', this.index);
-                    // }, 5000);
-                    if (this.transaction.current_block_number) {
-                        this.$emit('onSuccess', this.index);
-                    } else if (this.transferNum < TRANSFER_MAX_NUM) {
-                        setTimeout(() => {
-                            this.get_transaction();
-                        }, 3000);
-                    }
-                }
-            }).catch(ex => {
-                console.log(ex);
-            });
         },
         removeTimer () {
             clearTimeout(this.timer);

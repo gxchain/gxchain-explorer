@@ -7,18 +7,21 @@
                 <div class="alert alert-info" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p>
-                        <span>这里是适用说明，这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明这里是适用说明</span>
+                        <span>{{$t('tools.bulk_transfer.download_template')}} > {{$t('tools.bulk_transfer.import')}} > {{$t('tools.bulk_transfer.execute')}}</span>
                     </p>
                 </div>
                 <div class="bulk-transfer">
                     <div class="control-wrap">
                         <div class="statistics-wrap">
-                            本次导入多少<span class="s-num s-primary">100</span>条数据 ；成功<span class="s-num s-success">10</span>条；失败<span class="s-num s-warn">12</span>条；
+                            {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{renderTransferData.length}} </span> {{$t('tools.bulk_transfer.article')}}；
+                            {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{executeNum.processing}} </span> {{$t('tools.bulk_transfer.article')}}；
+                            {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span> {{$t('tools.bulk_transfer.article')}}；
+                            {{$t('tools.bulk_transfer.failure')}}<span class="s-num s-warn"> {{executeNum.fail}} </span> {{$t('tools.bulk_transfer.article')}}；
                         </div>
                         <div class="btn-wrap"> 
-                            <button type="button" class="btn btn-link" @click="handleDownload">下载模版</button>
+                            <button type="button" class="btn btn-link" @click="handleDownload">{{$t('tools.bulk_transfer.download_template')}}</button>
                             <span class="upload-file-wrap">
-                                <button type="button" class="btn btn-info" :disabled="running">导入</button>
+                                <button type="button" class="btn btn-info" :disabled="running">{{$t('tools.bulk_transfer.import')}} </button>
                                 <input 
                                     type="file"
                                     ref="uploadFile"
@@ -27,22 +30,22 @@
                                     :disabled="running"
                                     v-on:change="handleChangeFile($event)">
                             </span>
-                            <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">执行
+                            <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">{{$t('tools.bulk_transfer.execute')}}
                                 <!-- <i class="fas fa-spinner"></i> -->
                             </button>
-                            <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">清空</button>
+                            <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">{{$t('tools.bulk_transfer.empty')}}</button>
                             <button type="button" class="btn btn-primary " :disabled="refreshBtn" @click="handleRefresh">
-                                刷新 <span v-if="refreshBtn">{{refreshWait}}s</span>
+                                {{$t('tools.bulk_transfer.refresh')}} <span v-if="refreshBtn">{{refreshWait}}s</span>
                             </button>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-success dropdown-toggle" 
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        导出<span class="caret"></span>
+                                        {{$t('tools.bulk_transfer.export')}}<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu export-type">
-                                    <li><a @click="handleExport">全部</a></li>
-                                    <li><a @click="handleExport('success')">成功记录</a></li>
-                                    <li><a @click="handleExport('fail')">失败记录</a></li>
+                                    <li><a @click="handleExport">{{$t('tools.bulk_transfer.all')}}</a></li>
+                                    <li><a @click="handleExport('success')">{{$t('tools.bulk_transfer.successful')}}</a></li>
+                                    <li><a @click="handleExport('fail')">{{$t('tools.bulk_transfer.failure')}}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -69,7 +72,7 @@
                             </tbody>
                         </table>
                         <div class="no-data-tip" v-if="renderTransferData.length == 0">   
-                            <span>暂无数据</span>
+                            <span>{{$t('tools.no_data')}}</span>
                         </div>
                         <!-- <Loading v-show="loading"/> -->
                     </div>
@@ -95,11 +98,11 @@ export default {
             loading: true,
             breadList: [
                 {
-                    name: '工具',
+                    name: this.$t('tools.title'),
                     path: '/tools/index'
                 },
                 {
-                    name: '批量转账',
+                    name: this.$t('tools.bulk_transfer.title'),
                     path: '/tools/bulk-transfer'
                 }
             ],
@@ -118,7 +121,7 @@ export default {
             renderTransferData: [],
             running: false,
             executeNum: {
-                all: 0,
+                processing: 0,
                 success: 0,
                 fail: 0
             },
@@ -144,7 +147,7 @@ export default {
     },
     methods: {
         handleDownload () {
-            if (!this.isSupportDownloadFuc()) return;
+            if (!this.isSupportDownload()) return;
             this.funDownload(this.createCsvFile, BULK_TRANSFER_TEMPLATE_NAME);
         },
         handleChangeFile (e) {
@@ -166,48 +169,35 @@ export default {
         },
         async handleExecute () {
             if (this.account.authority !== 'active') {
-                alert('请先登录');
+                alert(this.$t('tools.logo'));
                 return;
             }
 
-            this.executeNum.all = this.renderTransferData.length;
             if (this.renderTransferData.length > 0) {
                 this.running = true;
             }
-            // TODO:异步执行转账
+
             for (const item of this.renderTransferData) {
                 await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
-                    this.executeNum.success++;
+                    this.executeNum.processing++;
                     this.$set(item, 'Txid', res[0].id);
-                    this.$set(item, 'status', 'pending');
-                    this.$set(item, 'Result', '转账进行中');
+                    this.$set(item, 'status', 'processing');
+                    this.$set(item, 'Result', this.$t('tools.bulk_transfer.transfer_processing'));
                 }).catch(ex => {
                     this.executeNum.fail++;
-                    console.log(ex);
                     this.$set(item, 'Mssage', ex.message);
                     this.$set(item, 'status', 'fail');
-                    this.$set(item, 'Result', '转账失败');
+                    this.$set(item, 'Result', this.$t('tools.bulk_transfer.transfer_fail'));
+                    console.log(ex);
                 });
             }
-            // this.renderTransferData.forEach(item => {
-            //     setTimeout(() => {
-            //         if (Math.random() > 0.5) {
-            //             // 进行中
-            //             this.$set(item, 'Txid', '5d0885190319a2acca2db7576a6d67e6048a708e');
-            //             this.$set(item, 'status', 'pending');
-            //             this.$set(item, 'Result', '转账进行中');
-            //         } else {
-            //             // 失败
-            //             this.$set(item, 'Mssage', '这是报错信息');
-            //             this.$set(item, 'status', 'fail');
-            //             this.$set(item, 'Result', '转账失败');
-            //         }
-            //     }, 2000);
-            // });
         },
         handleClearData () {
             this.renderTransferData = [];
             this.running = false;
+            this.executeNum.success = 0;
+            this.executeNum.fail = 0;
+            this.executeNum.processing = 0;
         },
         handleRefresh () {
             if (this.renderTransferData.length === 0) return;
@@ -223,7 +213,7 @@ export default {
             });
         },
         handleExport (type) {
-            if (!this.isSupportDownloadFuc()) return;
+            if (!this.isSupportDownload()) return;
             if (this.renderTransferData.length === 0) return;
             let exportData;
             let cloneRenderTransferData = [...this.renderTransferData];
@@ -241,15 +231,7 @@ export default {
                 console.error(err);
             }
             let timename = new Date().format('yyyy-MM-dd hh:mm:ss');
-            this.funDownload(exportData, `导出转账记录${timename}.csv`);
-        },
-        isSupportDownloadFuc () {
-            if ('download' in document.createElement('a')) {
-                return true;
-            } else {
-                alert('浏览器不支持');
-                return false;
-            }
+            this.funDownload(exportData, `Export_transfer_record_${timename}.csv`);
         },
         setRefreshStatus () {
             this.refreshWait--;
@@ -263,8 +245,9 @@ export default {
             }, 1000);
         },
         onTransferSuccess (index) {
+            this.executeNum.sucess++;
             this.$set(this.renderTransferData[index], 'status', 'success');
-            this.$set(this.renderTransferData[index], 'Result', '转账成功');
+            this.$set(this.renderTransferData[index], 'Result', this.$t('tools.bulk_transfer.transfer_success'));
         },
         funDownload (content, filename) {
             let eleLink = document.createElement('a');
@@ -278,6 +261,14 @@ export default {
             eleLink.click();
             // remove
             document.body.removeChild(eleLink);
+        },
+        isSupportDownload () {
+            if ('download' in document.createElement('a')) {
+                return true;
+            } else {
+                alert(this.$t('tools.browser_not_support'));
+                return false;
+            }
         }
     }
 };
@@ -301,6 +292,9 @@ export default {
     }
     .s-warn {
       color: #d9534f;
+    }
+    .s-processing {
+      color: #f0ad4e;
     }
   }
   .btn-wrap {

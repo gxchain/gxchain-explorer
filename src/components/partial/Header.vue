@@ -42,7 +42,7 @@
                         </li>
                         <li><a href="#modal-api" data-toggle="modal">API</a></li>
                         <li>
-                            <router-link :to="{path:'/tools/index'}">工具</router-link>
+                            <router-link :to="{path:'/tools/index'}">{{$t('header.tools')}}</router-link>
                         </li>
                         <li><a href="/#/fee">{{$t('header.fee')}}</a></li>
                         <li><a href="/#/node_members">{{$t('header.node_members')}}</a></li>

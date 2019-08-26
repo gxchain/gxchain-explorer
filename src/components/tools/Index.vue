@@ -7,7 +7,7 @@
                     <div class="col-md-3 col-xs-6" v-for="item in toolsList" :key="item.key">
                         <a class="item" @click="goDetails(item)">
                             <div class="logo">
-                                <img :src="item.logo" :alt="item.title">
+                                <img :src="item.logo" :alt="item.name">
                             </div>
                             <div class="info">
                                 <h6 class="name">{{item.name}}</h6>
@@ -27,35 +27,30 @@ export default {
         return {
             toolsList: [
                 {
-                    name: '批量转账',
+                    name: this.$t('tools.bulk_transfer.title'),
                     key: 'bulk-transfer',
-                    title: '批量转账',
-                    des: 'EOS节点排名、交易、账号等查询工具。',
-                    logo: 'https://public.bitzhidao.com/eos_navbar_logo/dapp-total.png'
+                    des: this.$t('tools.bulk_transfer.des'),
+                    logo: require('@/assets/img/tools/transfer.png')
                 }
                 // {
                 //     name: '交易序列化',
-                //     title: '批量转账',
-                //     des: '可查询账号竞拍信息的EOS区块链浏览器。',
-                //     logo: 'https://public.bitzhidao.com/eos_navbar_logo/eosblocksmith.png'
+                //     des: 'Support bulk transfer',
+                //     logo: ''
                 // },
                 // {
                 //     name: '合约参数序列化',
-                //     title: '批量转账',
-                //     des: '可查询账号竞拍信息的EOS区块链浏览器。',
-                //     logo: 'https://public.bitzhidao.com/eos_navbar_logo/logo_RatingDApp.png'
+                //     des: '',
+                //     logo: ''
                 // },
                 // {
                 //     name: '交易签名',
-                //     title: '批量转账',
-                //     des: ' DApp 产业生态和分析，助力 DApp 生态健康稳固发展。',
-                //     logo: 'https://public.bitzhidao.com/eos_navbar_logo/logo_eosq.png'
+                //     des: '',
+                //     logo: ''
                 // },
                 // {
                 //     name: '哈希',
-                //     title: '批量转账',
-                //     des: '可查询账号竞拍信息的EOS区块链浏览器。',
-                //     logo: 'https://public.bitzhidao.com/eos_navbar_logo/dapp-total.png'
+                //     des: '',
+                //     logo: ''
                 // }
             ]
         };
