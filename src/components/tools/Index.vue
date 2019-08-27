@@ -78,10 +78,12 @@ export default {
     cursor: pointer;
     .logo {
       margin: 0 6px;
+      display: flex;
+      align-items: center;
       img {
-        min-width: 32px;
-        width: 32px;
-        height: 32px;
+        min-width: 36px;
+        width: 36px;
+        height: 36px;
       }
     }
     .info {
@@ -96,10 +98,9 @@ export default {
         margin: 0;
       }
       .intro {
-        display: block;
-        white-space: nowrap;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         overflow: hidden;
         color: #8f96a0;
         font-size: 12px;

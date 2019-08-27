@@ -13,10 +13,23 @@
                 <div class="bulk-transfer">
                     <div class="control-wrap">
                         <div class="statistics-wrap">
-                            {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{renderTransferData.length}} </span> {{$t('tools.bulk_transfer.article')}};
+                            {{$t('tools.bulk_transfer.import_all')}}<span class="s-num s-primary"> {{recordNum}} </span> {{$t('tools.bulk_transfer.article')}};
                             {{$t('tools.bulk_transfer.processing')}}<span class="s-num s-processing"> {{processingNum}} </span>;
-                            {{$t('tools.bulk_transfer.successful')}}<span class="s-num s-success"> {{executeNum.success}} </span>;
-                            {{$t('tools.bulk_transfer.failure')}}<span class="s-num s-warn"> {{executeNum.fail}} </span>
+                            {{$t('tools.bulk_transfer.success')}}<span class="s-num s-success"> {{executeNum.success}} </span>;
+                            {{$t('tools.bulk_transfer.fail')}}<span class="s-num s-warn"> {{executeNum.fail}} </span>
+                            <div class="btn-group" style="top:-1.4px;">
+                                <button type="button" class="btn dropdown-toggle" 
+                                        v-if="executeEnd"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{$t('tools.bulk_transfer.'+filterType)}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu export-type">
+                                    <li><a @click="handleFilter('all')">{{$t('tools.bulk_transfer.all')}}</a></li>
+                                    <li v-if="processingNum>0"><a @click="handleFilter('processing')">{{$t('tools.bulk_transfer.processing')}}</a></li>
+                                    <li v-if="executeNum.success>0"><a @click="handleFilter('success')">{{$t('tools.bulk_transfer.success')}}</a></li>
+                                    <li v-if="executeNum.fail"><a @click="handleFilter('fail')">{{$t('tools.bulk_transfer.fail')}}</a></li>
+                                </ul>
+                        </div>
                         </div>
                         <div class="btn-wrap"> 
                             <button type="button" class="btn btn-link" @click="handleDownload">{{$t('tools.bulk_transfer.download_template')}}</button>
@@ -30,22 +43,28 @@
                                     :disabled="running"
                                     v-on:change="handleChangeFile($event)">
                             </span>
+                            <!--btn execute-->         
                             <button type="button" class="btn btn-primary btc-execute" :disabled="running" @click="handleExecute">{{$t('tools.bulk_transfer.execute')}}
-                                <!-- <i class="fas fa-spinner"></i> -->
+                                <i class="fas fa-spinner loading-animate" v-show="running && !executeEnd"></i>
                             </button>
-                            <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">{{$t('tools.bulk_transfer.empty')}}</button>
+                            <!--btn clear-->    
+                            <button type="button" class="btn btn-warning" :disabled="refreshBtn" @click="handleClearData">{{$t('tools.bulk_transfer.clear')}}</button>
+                            <!--btn refresh-->    
                             <button type="button" class="btn btn-primary " :disabled="refreshBtn" @click="handleRefresh">
-                                {{$t('tools.bulk_transfer.refresh')}} <span v-if="refreshBtn">{{refreshWait}}s</span>
+                                {{$t('tools.bulk_transfer.refresh')}} 
+                                <span v-if="refreshBtn">{{refreshWait}}s</span>
                             </button>
+                            <!--btn export-->    
                             <div class="btn-group">
                                 <button type="button" class="btn btn-success dropdown-toggle" 
+                                        :disabled="!executeEnd"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {{$t('tools.bulk_transfer.export')}}<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu export-type">
-                                    <li><a @click="handleExport">{{$t('tools.bulk_transfer.all')}}</a></li>
-                                    <li><a @click="handleExport('success')">{{$t('tools.bulk_transfer.successful')}}</a></li>
-                                    <li><a @click="handleExport('fail')">{{$t('tools.bulk_transfer.failure')}}</a></li>
+                                    <li><a @click="handleExport('all')">{{$t('tools.bulk_transfer.all')}}</a></li>
+                                    <li><a @click="handleExport('success')">{{$t('tools.bulk_transfer.success')}}</a></li>
+                                    <li><a @click="handleExport('fail')">{{$t('tools.bulk_transfer.fail')}}</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -58,7 +77,7 @@
                                     <th class="text-center">Amount</th>
                                     <th class="text-center">Asset</th>
                                     <th class="text-center">Memo</th>
-                                    <th class="text-right" v-show="running">Result</th>
+                                    <th class="text-center" v-show="running">Result</th>
                                 </tr>
                                 <transfer-item 
                                     v-for="(item, index) in renderTransferData" 
@@ -67,11 +86,12 @@
                                     :data="item"
                                     :running="running"
                                     :key="index"
+                                    @onExecuteEnd="onExecuteEnd"
                                     @onSuccess="onTransferSuccess"
                                 ></transfer-item>
                             </tbody>
                         </table>
-                        <div class="no-data-tip" v-if="renderTransferData.length == 0">   
+                        <div class="no-data-tip" v-if="recordNum == 0">   
                             <span>{{$t('tools.no_data')}}</span>
                         </div>
                         <!-- <Loading v-show="loading"/> -->
@@ -124,10 +144,14 @@ export default {
             running: false,
             executeNum: {
                 success: 0,
-                fail: 0
+                fail: 0,
+                end: 0
             },
+            executeEnd: false,
+            recordNum: 0,
             refreshWait: 10,
-            refreshBtn: false
+            refreshBtn: false,
+            filterType: 'all'
         };
     },
     mounted () {
@@ -146,7 +170,7 @@ export default {
             account: 'account'
         }),
         'processingNum': function () {
-            return this.running ? this.renderTransferData.length - this.executeNum.success - this.executeNum.fail : 0;
+            return this.running ? this.recordNum - this.executeNum.success - this.executeNum.fail : 0;
         }
     },
     methods: {
@@ -164,6 +188,7 @@ export default {
                     complete: function (results) {
                         if (results.data && results.data.length > 0) {
                             that.renderTransferData = [...that.renderTransferData, ...results.data];
+                            that.recordNum = that.renderTransferData.length;
                         }
                     }
                 });
@@ -177,7 +202,7 @@ export default {
                 return;
             }
 
-            if (this.renderTransferData.length > 0) {
+            if (this.recordNum > 0) {
                 this.running = true;
             }
 
@@ -185,12 +210,12 @@ export default {
                 await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
                     this.$set(item, 'Txid', res[0].id);
                     this.$set(item, 'status', 'processing');
-                    this.$set(item, 'Result', this.$t('tools.bulk_transfer.transfer_processing'));
+                    this.$set(item, 'Result', 'Processing');
                 }).catch(ex => {
                     this.executeNum.fail++;
                     this.$set(item, 'Mssage', ex.message);
                     this.$set(item, 'status', 'fail');
-                    this.$set(item, 'Result', this.$t('tools.bulk_transfer.transfer_fail'));
+                    this.$set(item, 'Result', 'Fail');
                     console.log(ex);
                 });
             }
@@ -201,11 +226,15 @@ export default {
             this.executeNum.success = 0;
             this.executeNum.fail = 0;
             this.executeNum.processing = 0;
+            this.executeNum.end = 0;
+            this.recordNum = 0;
+            this.executeEnd = false;
         },
         handleRefresh () {
-            if (this.renderTransferData.length === 0) return;
+            if (this.recordNum === 0) return;
             if (this.refreshBtn) return;
             this.refreshBtn = true;
+            this.executeNum.end = 0;
             this.setRefreshStatus();
 
             this.renderTransferData.forEach((item, index) => {
@@ -217,11 +246,11 @@ export default {
         },
         handleExport (type) {
             if (!this.isSupportDownload()) return;
-            if (this.renderTransferData.length === 0) return;
+            if (this.recordNum === 0) return;
             let exportData;
             let cloneRenderTransferData = [...this.renderTransferData];
 
-            if (type === 'success' || type === 'fail') {
+            if (type !== 'all') {
                 cloneRenderTransferData = cloneRenderTransferData.filter(item => item.status === type);
             }
 
@@ -236,9 +265,23 @@ export default {
             let timename = new Date().format('yyyy-MM-dd hh:mm:ss');
             this.funDownload(exportData, `Export_transfer_record_${timename}.csv`);
         },
+        handleFilter (type) {
+            this.filterType = type;
+            this.renderTransferData.forEach(item => {
+                if (type === 'all') {
+                    this.$set(item, 'hide', false);
+                } else {
+                    if (item['status'] !== type) {
+                        this.$set(item, 'hide', true);
+                    } else {
+                        this.$set(item, 'hide', false);
+                    }
+                }
+            });
+        },
         setRefreshStatus () {
             this.refreshWait--;
-            if (this.refreshWait === 0) {
+            if (this.refreshWait <= 0) {
                 this.refreshBtn = false;
                 this.refreshWait = 10;
                 return;
@@ -250,7 +293,13 @@ export default {
         onTransferSuccess (index) {
             this.executeNum.success++;
             this.$set(this.renderTransferData[index], 'status', 'success');
-            this.$set(this.renderTransferData[index], 'Result', `${this.$t('tools.bulk_transfer.transfer_success')} Txid: ${this.renderTransferData[index]['Txid']}`);
+            this.$set(this.renderTransferData[index], 'Result', `Success Txid: ${this.renderTransferData[index]['Txid']}`);
+        },
+        onExecuteEnd () {
+            this.executeNum.end++;
+            if (this.executeNum.end >= this.recordNum - this.executeNum.fail) {
+                this.executeEnd = true;
+            }
         },
         funDownload (content, filename) {
             let eleLink = document.createElement('a');
@@ -309,11 +358,11 @@ export default {
     .btn {
       margin-bottom: 5px;
     }
-    .export-type {
-      min-width: 0;
-      a {
-        cursor: pointer;
-      }
+  }
+  .export-type {
+    min-width: 0;
+    a {
+      cursor: pointer;
     }
   }
   .upload-file-wrap {
@@ -329,10 +378,6 @@ export default {
       width: 100%;
       overflow: hidden;
     }
-  }
-  .table-wrap {
-    max-height: 600px;
-    overflow-y: auto;
   }
   .no-data-tip {
     text-align: center;
@@ -355,6 +400,25 @@ export default {
         margin-bottom: 10px;
       }
     }
+  }
+}
+.loading-animate {
+  -webkit-animation: loadingLoop 1s linear infinite;
+  animation: loadingLoop 1s linear infinite;
+}
+@keyframes loadingLoop {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  50% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 </style>

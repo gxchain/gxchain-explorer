@@ -1,22 +1,22 @@
 <template>
-     <tr :class="transferColor[data.status]">
+     <tr :class="transferColor[data.status]" v-show="!data.hide">
         <td class="text-center">{{data['Account']}}</td>
         <td class="text-center">{{data['Amount']}}</td>
         <td class="text-center">{{data['Asset']}}</td>
         <td class="text-center">{{data['Memo']}}</td>
-        <td class="text-right" style="width:37%;"v-if="running">
+        <td class="text-left" style="width:38%;"v-if="running">
             <span class="txid-status" v-if="data.status == 'processing' && data.Txid">
-                <button type="button" class="btn btn-primary btn-xs" v-if="countDown==0"><i class="fas fa-spinner" :class="{'loading-animate':transferLoading}"></i></button>
+                <button type="button" class="btn btn-primary btn-xs" v-if="countDown<=0"><i class="fas fa-spinner" :class="{'loading-animate':transferLoading}"></i></button>
                 <button type="button" class="btn btn-primary btn-xs" v-else><i class="far fa-clock"></i> {{countDown}}s </button>
                 <span>Txid: {{data.Txid}}</span>
             </span>
             <span v-else-if="data.status == 'fail'" 
                 @mouseover="funPopover(index,'show')" 
                 @mouseleave="funPopover(index,'hide')">
-                <a tabindex="0" class="btn btn-xs btn-danger" :class="'popover-toggle-'+index" role="button" data-toggle="popover" data-trigger="focus" data-placement="left"  :data-content="data.Mssage">{{$t('tools.bulk_transfer.failure')}} <i class="fas fa-question-circle"></i></a>
+                <a tabindex="0" class="btn btn-xs btn-danger" :class="'popover-toggle-'+index" role="button" data-toggle="popover" data-trigger="focus" data-placement="left"  :data-content="data.Mssage">{{$t('tools.bulk_transfer.fail')}} <i class="fas fa-question-circle"></i></a>
             </span>
             <span v-else-if="data.status == 'success'" class="txid-status" >
-                <button type="button" class="btn btn-success btn-xs">{{$t('tools.bulk_transfer.successful')}}</button>
+                <button type="button" class="btn btn-success btn-xs">{{$t('tools.bulk_transfer.success')}}</button>
                 <span>
                     Txid: <a target="_blank" :href="'#/transaction/'+data.Txid">{{data.Txid}}</a>
                 </span>
@@ -46,7 +46,7 @@ export default {
                 processing: 'warning',
                 fail: 'danger'
             },
-            countDown: 45,
+            countDown: 5,
             timer: null,
             transaction: {},
             transferNum: 0,
@@ -54,11 +54,6 @@ export default {
         };
     },
     watch: {
-        'running': function (val) {
-            if (!val) {
-                this.removeTimer();
-            }
-        },
         'data.status': {
             handler (val) {
                 if (val === 'processing') {
@@ -78,11 +73,13 @@ export default {
                 if (this.transaction) {
                     if (this.transaction.current_block_number) {
                         this.$emit('onSuccess', this.index);
+                        this.$emit('onExecuteEnd');
                     } else if (this.transferNum < TRANSFER_MAX_NUM) {
                         setTimeout(() => {
                             this.get_transaction();
                         }, 3000);
                     } else {
+                        this.$emit('onExecuteEnd');
                         this.transferLoading = false;
                     }
                 }
@@ -91,6 +88,8 @@ export default {
                     setTimeout(() => {
                         this.get_transaction();
                     }, 3000);
+                } else {
+                    this.$emit('onExecuteEnd');
                 }
                 console.log(ex);
             });
@@ -104,8 +103,9 @@ export default {
         },
         funCountDown () {
             this.countDown--;
-            if (this.countDown === 0) {
+            if (this.countDown <= 0) {
                 this.get_transaction();
+                this.removeTimer();
                 return;
             }
             this.timer = setTimeout(() => {

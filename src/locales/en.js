@@ -728,22 +728,23 @@ const locale = {
         browser_not_support: 'Browser does not support',
         bulk_transfer: {
             title: ' Bulk Transfer',
-            des: 'Support bulk transfer of assets on the GXChain',
+            des: 'Bulk transfer utility, suitable for community airdrops, batch awards',
             download_template: 'Download Template',
             import: 'Import',
             execute: 'Execute',
-            empty: 'Empty',
+            clear: 'Clear',
             refresh: 'Refresh',
             export: 'Export',
-            import_all: 'Import',
+            filter: 'Filter',
+            import_all: 'Records',
             article: '',
             all: 'All',
-            successful: 'Successful',
-            failure: 'Failure',
+            success: 'Success',
+            fail: 'Fail',
             processing: 'Processing',
             transfer_processing: 'Transfer in progress',
-            transfer_success: 'Successful transfer',
-            transfer_fail: 'Transfer failed'
+            transfer_success: 'Success',
+            transfer_fail: 'Fail'
         }
     }
 };
