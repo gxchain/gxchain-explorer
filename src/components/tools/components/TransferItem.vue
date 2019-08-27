@@ -46,7 +46,7 @@ export default {
                 processing: 'warning',
                 fail: 'danger'
             },
-            countDown: 5,
+            countDown: 45,
             timer: null,
             transaction: {},
             transferNum: 0,
