@@ -59,7 +59,7 @@
                                 <button type="button" class="btn btn-success dropdown-toggle" 
                                         :disabled="!executeEnd"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{$t('tools.bulk_transfer.export')}}<span class="caret"></span>
+                                        {{$t('tools.bulk_transfer.export')}} <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu export-type">
                                     <li><a @click="handleExport('all')">{{$t('tools.bulk_transfer.all')}}</a></li>
@@ -154,7 +154,7 @@ export default {
             filterType: 'all'
         };
     },
-    mounted () {
+    async mounted () {
         try {
             this.createCsvFile = Papa.unparse({
                 'fields': this.fields,
@@ -205,20 +205,45 @@ export default {
             if (this.recordNum > 0) {
                 this.running = true;
             }
-
-            for (const item of this.renderTransferData) {
-                await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
-                    this.$set(item, 'Txid', res[0].id);
-                    this.$set(item, 'status', 'processing');
-                    this.$set(item, 'Result', 'Processing');
-                }).catch(ex => {
-                    this.executeNum.fail++;
-                    this.$set(item, 'Mssage', ex.message);
-                    this.$set(item, 'status', 'fail');
-                    this.$set(item, 'Result', 'Fail');
-                    console.log(ex);
-                });
+            // for (const item of this.renderTransferData) {
+            //     await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
+            //         this.$set(item, 'Txid', res[0].id);
+            //         this.$set(item, 'status', 'processing');
+            //         this.$set(item, 'Result', 'Processing');
+            //     }).catch(ex => {
+            //         this.executeNum.fail++;
+            //         this.$set(item, 'Mssage', ex.message);
+            //         this.$set(item, 'status', 'fail');
+            //         this.$set(item, 'Result', 'Fail');
+            //         console.log(ex);
+            //     });
+            // }
+            const transferFn = (item) => this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
+                this.$set(item, 'Txid', res[0].id);
+                this.$set(item, 'status', 'processing');
+                this.$set(item, 'Result', 'Processing');
+            }).catch(ex => {
+                this.executeNum.fail++;
+                this.$set(item, 'Mssage', ex.message);
+                this.$set(item, 'status', 'fail');
+                this.$set(item, 'Result', 'Fail');
+                console.log(ex);
+            });
+            await this.asyncConcurrent(10, this.renderTransferData, transferFn);
+        },
+        async asyncConcurrent (poolLimit, array, iteratorFn) {
+            const ret = [];
+            const executing = [];
+            for (const item of array) {
+                const p = Promise.resolve().then(() => iteratorFn(item, array));
+                ret.push(p);
+                const e = p.then(() => executing.splice(executing.indexOf(e), 1));
+                executing.push(e);
+                if (executing.length >= poolLimit) {
+                    await Promise.race(executing);
+                }
             }
+            return Promise.all(ret);
         },
         handleClearData () {
             this.renderTransferData = [];

@@ -68,7 +68,7 @@ export default {
             if (!this.data.Txid || this.data.status !== 'processing') return;
             this.transferNum++;
             this.transferLoading = true;
-            fetch_transaction(this.data.Txid).then(res => {
+            fetch_transaction(this.data.Txid, new Date().getTime()).then(res => {
                 this.transaction = res.body;
                 if (this.transaction) {
                     if (this.transaction.current_block_number) {
