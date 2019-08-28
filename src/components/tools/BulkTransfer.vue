@@ -94,7 +94,6 @@
                         <div class="no-data-tip" v-if="recordNum == 0">   
                             <span>{{$t('tools.no_data')}}</span>
                         </div>
-                        <!-- <Loading v-show="loading"/> -->
                     </div>
                 </div>
             </div>
@@ -154,7 +153,7 @@ export default {
             filterType: 'all'
         };
     },
-    async mounted () {
+    mounted () {
         try {
             this.createCsvFile = Papa.unparse({
                 'fields': this.fields,
@@ -205,19 +204,7 @@ export default {
             if (this.recordNum > 0) {
                 this.running = true;
             }
-            // for (const item of this.renderTransferData) {
-            //     await this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
-            //         this.$set(item, 'Txid', res[0].id);
-            //         this.$set(item, 'status', 'processing');
-            //         this.$set(item, 'Result', 'Processing');
-            //     }).catch(ex => {
-            //         this.executeNum.fail++;
-            //         this.$set(item, 'Mssage', ex.message);
-            //         this.$set(item, 'status', 'fail');
-            //         this.$set(item, 'Result', 'Fail');
-            //         console.log(ex);
-            //     });
-            // }
+
             const transferFn = (item) => this.gxc.transfer(item.Account, item.Memo, `${item.Amount} ${item.Asset}`, true).then(res => {
                 this.$set(item, 'Txid', res[0].id);
                 this.$set(item, 'status', 'processing');
@@ -229,7 +216,7 @@ export default {
                 this.$set(item, 'Result', 'Fail');
                 console.log(ex);
             });
-            await this.asyncConcurrent(10, this.renderTransferData, transferFn);
+            this.asyncConcurrent(10, this.renderTransferData, transferFn);
         },
         async asyncConcurrent (poolLimit, array, iteratorFn) {
             const ret = [];
@@ -250,7 +237,6 @@ export default {
             this.running = false;
             this.executeNum.success = 0;
             this.executeNum.fail = 0;
-            this.executeNum.processing = 0;
             this.executeNum.end = 0;
             this.recordNum = 0;
             this.executeEnd = false;
