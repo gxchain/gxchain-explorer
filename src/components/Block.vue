@@ -48,90 +48,95 @@
 </template>
 
 <script>
-    import { Apis } from 'gxbjs-ws';
-    import { mapActions, mapGetters } from 'vuex';
-    import { fetch_account, fetch_block } from '@/services/CommonService';
-    import JSON from './partial/JSON.vue';
-    import Operation from './partial/Operation.vue';
+import { Apis } from 'gxbjs-ws';
+import { mapActions, mapGetters } from 'vuex';
+import { fetch_account, fetch_block } from '@/services/CommonService';
+import JSON from './partial/JSON.vue';
+import Operation from './partial/Operation.vue';
 
-    export default {
-        data () {
-            return {
-                loading: true,
-                block: null,
-                account_name: null
-            };
-        },
-        methods: {
-            ...mapActions({
-                setKeywords: 'setKeywords'
-            }),
+export default {
+    data () {
+        return {
+            loading: true,
+            block: null,
+            account_name: null
+        };
+    },
+    methods: {
+        ...mapActions({
+            setKeywords: 'setKeywords'
+        }),
 
-            fetch_block () {
-                let self = this;
-                this.block = null;
-                this.account_name = null;
-                fetch_block(this.$route.params.block_height).then(function (resp) {
-                    self.block = resp.body;
-                    self.loading = false;
-                    if (self.block) {
-                        Apis.instance().db_api().exec('get_objects', [[self.block.witness]]).then((res) => {
-                            fetch_account(res[0].witness_account).then(function (res) {
-                                self.account_name = res.body.account ? res.body.account.name : '';
-                            }).catch(ex => {
-                                console.error(ex);
-                            });
+        fetch_block () {
+            if (!/^\d+$/.test(this.keywords)) {
+                this.loading = false;
+                return;
+            }
+
+            let self = this;
+            this.block = null;
+            this.account_name = null;
+            fetch_block(this.$route.params.block_height).then(function (resp) {
+                self.block = resp.body;
+                self.loading = false;
+                if (self.block) {
+                    Apis.instance().db_api().exec('get_objects', [[self.block.witness]]).then((res) => {
+                        fetch_account(res[0].witness_account).then(function (res) {
+                            self.account_name = res.body.account ? res.body.account.name : '';
+                        }).catch(ex => {
+                            console.error(ex);
                         });
-                    }
-                }, function () {
-                    self.block = {error: this.$t('block.error')};
-                    self.loading = false;
-                });
-            },
+                    });
+                }
+            }, function () {
+                self.block = { error: this.$t('block.error') };
+                self.loading = false;
+            });
+        },
 
-            goNext () {
-                this.loading = true;
-                this.setKeywords({keywords: parseInt(this.$route.params.block_height) + 1});
-            },
+        goNext () {
+            this.loading = true;
+            this.setKeywords({ keywords: parseInt(this.$route.params.block_height) + 1 });
+        },
 
-            goPrev () {
-                this.loading = true;
-                this.setKeywords({keywords: parseInt(this.$route.params.block_height) - 1});
-            }
+        goPrev () {
+            this.loading = true;
+            this.setKeywords({ keywords: parseInt(this.$route.params.block_height) - 1 });
+        }
 
-        },
-        computed: {
-            ...mapGetters({
-                keywords: 'keywords'
-            })
-        },
-        watch: {
-            keywords (newVal, oldVal) {
-                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
-                this.loading = true;
-                this.fetch_block();
-            }
-        },
-        components: {
-            json: JSON,
-            Operation: Operation
-        },
-        mounted () {
-            if (this.$route.params.block_height !== this.keywords) {
-                this.setKeywords({keywords: this.$route.params.block_height});
-            }
+    },
+    computed: {
+        ...mapGetters({
+            keywords: 'keywords'
+        })
+    },
+    watch: {
+        keywords (newVal, oldVal) {
+            if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+            this.loading = true;
             this.fetch_block();
         }
-    };
+    },
+    components: {
+        json: JSON,
+        Operation: Operation
+    },
+    mounted () {
+        if (this.$route.params.block_height !== this.keywords) {
+            this.setKeywords({ keywords: this.$route.params.block_height });
+        }
+        this.fetch_block();
+    }
+};
 </script>
 
 <style scoped>
-    .block-summary {
-        margin-top: 15px;
-    }
+.block-summary {
+  margin-top: 15px;
+}
 
-    .pager {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
+.pager {
+  padding-right: 15px;
+  padding-left: 15px;
+}
 </style>

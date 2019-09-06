@@ -97,40 +97,45 @@
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex';
-    import AccountImage from './partial/AccountImage';
-    import filters from '../filters';
+import { mapActions, mapGetters } from 'vuex';
+import AccountImage from './partial/AccountImage';
+import filters from '../filters';
 
-    export default {
-        filters,
-        components: {
-            AccountImage
+export default {
+    filters,
+    components: {
+        AccountImage
+    },
+    data () {
+        return {
+            loading: true,
+            asset: null,
+            page: 1,
+            hasMore: true,
+            rankings: [],
+            network: process.env.network
+        };
+    },
+    methods: {
+        ...mapActions({
+            setKeywords: 'setKeywords'
+        }),
+        loadData () {
+            if (!/^1.3.\d+$/.test(this.keywords) && !(this.keywords.charCodeAt(0) <= 'Z'.charCodeAt(0) && this.keywords.charCodeAt(0) >= 'A'.charCodeAt(0))) {
+                this.loading = false;
+                return;
+            }
+
+            this.$http.get(`/api/asset/${this.keywords.toUpperCase()}`).then(resp => {
+                let asset = resp.body;
+                this.asset = asset;
+                this.loading = false;
+                this.loadRankings(1);
+            });
         },
-        data () {
-            return {
-                loading: true,
-                asset: null,
-                page: 1,
-                hasMore: true,
-                rankings: [],
-                network: process.env.network
-            };
-        },
-        methods: {
-            ...mapActions({
-                setKeywords: 'setKeywords'
-            }),
-            loadData () {
-                this.$http.get(`/api/asset/${this.keywords.toUpperCase()}`).then(resp => {
-                    let asset = resp.body;
-                    this.asset = asset;
-                    this.loading = false;
-                    this.loadRankings(1);
-                });
-            },
-            loadRankings (page) {
-                const pageSize = 40;
-                this.$http
+        loadRankings (page) {
+            const pageSize = 40;
+            this.$http
                 .get(`${process.env.STA_SERVICE}/account/assetRankList`, {
                     params: {
                         symbol: this.keywords.toUpperCase(),
@@ -162,48 +167,48 @@
                 }).catch(ex => {
                     console.error(ex);
                 });
-            }
-        },
-        mounted () {
-            if (this.$route.params.asset_name !== this.keywords) {
-                this.setKeywords({keywords: this.$route.params.asset_name});
-            }
+        }
+    },
+    mounted () {
+        if (this.$route.params.asset_name !== this.keywords) {
+            this.setKeywords({ keywords: this.$route.params.asset_name });
+        }
+        this.loadData();
+    },
+    updated () {
+        $('[data-toggle="tooltip"]').tooltip();
+    },
+    watch: {
+        keywords (newVal, oldVal) {
+            if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+            this.loading = true;
+            this.asset = null;
             this.loadData();
         },
-        updated () {
-            $('[data-toggle="tooltip"]').tooltip();
-        },
-        watch: {
-            keywords (newVal, oldVal) {
-                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+        '$route' () {
+            if (this.$route.params.asset_name !== this.keywords) {
                 this.loading = true;
                 this.asset = null;
-                this.loadData();
-            },
-            '$route' () {
-                if (this.$route.params.asset_name !== this.keywords) {
-                    this.loading = true;
-                    this.asset = null;
-                    this.setKeywords({keywords: this.$route.params.asset_name});
-                }
+                this.setKeywords({ keywords: this.$route.params.asset_name });
             }
-        },
-        computed: {
-            ...mapGetters({
-                keywords: 'keywords'
-            })
         }
-    };
+    },
+    computed: {
+        ...mapGetters({
+            keywords: 'keywords'
+        })
+    }
+};
 </script>
 <style scoped>
-    .panel-ranking .footer {
-        text-align: center;
-        padding: 10px 0;
-        border-top: 1px solid #eee;
-        font-size: 20px;
-    }
+.panel-ranking .footer {
+  text-align: center;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+  font-size: 20px;
+}
 
-    .panel-ranking .footer a {
-        color: #999;
-    }
+.panel-ranking .footer a {
+  color: #999;
+}
 </style>
