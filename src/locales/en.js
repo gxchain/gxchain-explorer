@@ -575,6 +575,8 @@ const locale = {
     },
     // asset
     asset: {
+        title: 'Asset Information',
+        empty: 'No record',
         issuer: 'Issuer',
         precision: 'Precision',
         max_supply: 'Max Supply',

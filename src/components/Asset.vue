@@ -93,6 +93,10 @@
                 </div>
             </div>
         </div>
+        <div v-if="!asset||!asset.id" v-show="!loading">
+            <h4 class="page-header">{{$t('asset.title')}}</h4>
+            <p class="null-tip">{{$t('asset.empty')}}</p>
+        </div>
     </div>
 </template>
 
@@ -146,6 +150,8 @@ export default {
                 .then(resp => {
                     this.page = page;
                     let assetInfo = this.asset;
+                    if (!assetInfo || !assetInfo.id) return;
+
                     let currentSupply = assetInfo.detail.current_supply / Math.pow(10, assetInfo.precision);
                     if (!resp.body || resp.body.length < pageSize) {
                         this.hasMore = false;

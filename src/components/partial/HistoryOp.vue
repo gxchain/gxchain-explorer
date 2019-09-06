@@ -1085,82 +1085,84 @@
 </template>
 
 <script>
-    import { ChainTypes } from 'gxbjs/es';
-    import HistoryProposedOp from './HistoryProposedOp.vue';
-    import { deserialize_contract_params, fetch_account } from '@/services/CommonService';
-    import filters from '@/filters';
-    import { mapGetters } from 'vuex';
+import { ChainTypes } from 'gxbjs/es';
+import HistoryProposedOp from './HistoryProposedOp.vue';
+import { deserialize_contract_params, fetch_account } from '@/services/CommonService';
+import filters from '@/filters';
+import { mapGetters } from 'vuex';
 
-    let ops = Object.keys(ChainTypes.operations);
+let ops = Object.keys(ChainTypes.operations);
 
-    let account_listing = {
-        no_listing: 0,
-        white_listed: 1,
-        black_listed: 2,
-        white_and_black_listed: 1 | 2
-    };
-    let listings = Object.keys(account_listing);
-    export default {
-        props: {
-            latestTransactions: {
-                type: Array
-            },
-            parent: {
-                type: String
-            }
+let account_listing = {
+    no_listing: 0,
+    white_listed: 1,
+    black_listed: 2,
+    white_and_black_listed: 1 | 2
+};
+let listings = Object.keys(account_listing);
+export default {
+    props: {
+        latestTransactions: {
+            type: Array
         },
-        filters,
-        data () {
-            return {
-                listings,
-                items: {},
-                account: {},
-                params: {},
-                ops: ops
-            };
-        },
-        computed: {
-            ...mapGetters({
-                assetList: 'assetList'
-            })
-        },
-        methods: {
-            formatted_account (id) {
-                if (!id) return;
-                if (this.items[id]) {
-                    return this.account[id];
-                }
-                this.items[id] = true;
-                fetch_account(id).then((res) => {
-                    this.$set(this.account, id, res.body.account.name);
-                }).catch(ex => {
-                    this.items[id] = false;
-                    console.error(ex);
-                });
+        parent: {
+            type: String
+        }
+    },
+    filters,
+    data () {
+        return {
+            listings,
+            items: {},
+            account: {},
+            params: {},
+            ops: ops
+        };
+    },
+    computed: {
+        ...mapGetters({
+            assetList: 'assetList'
+        })
+    },
+    methods: {
+        formatted_account (id) {
+            if (!id) return;
+            if (this.items[id]) {
                 return this.account[id];
-            },
-            formatted_asset (asset_id, amount) {
-                return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
-            },
-            formatted_params (contract, method, data) {
-                if (this.items[`${contract}_${method}_${data}`]) {
-                    return this.params[`${contract}_${method}_${data}`];
+            }
+            this.items[id] = true;
+            fetch_account(id).then((res) => {
+                if (res.body.account) {
+                    this.$set(this.account, id, res.body.account.name);
                 }
-                this.items[`${contract}_${method}_${data}`] = true;
-                deserialize_contract_params(contract, method, data).then(result => {
-                    this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
-                }).catch(ex => {
-                    this.items[`${contract}_${method}_${data}`] = false;
-                    console.error(ex);
-                });
+            }).catch(ex => {
+                this.items[id] = false;
+                console.error(ex);
+            });
+            return this.account[id];
+        },
+        formatted_asset (asset_id, amount) {
+            return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
+        },
+        formatted_params (contract, method, data) {
+            if (this.items[`${contract}_${method}_${data}`]) {
                 return this.params[`${contract}_${method}_${data}`];
             }
-        },
-        updated () {
-            $('[data-toggle="tooltip"]').tooltip();
-        },
-        components: {
-            HistoryProposedOp: HistoryProposedOp
+            this.items[`${contract}_${method}_${data}`] = true;
+            deserialize_contract_params(contract, method, data).then(result => {
+                this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
+            }).catch(ex => {
+                this.items[`${contract}_${method}_${data}`] = false;
+                console.error(ex);
+            });
+            return this.params[`${contract}_${method}_${data}`];
         }
-    };
+    },
+    updated () {
+        $('[data-toggle="tooltip"]').tooltip();
+    },
+    components: {
+        HistoryProposedOp: HistoryProposedOp
+    }
+};
 </script>

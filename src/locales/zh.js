@@ -574,6 +574,8 @@ const locale = {
     },
     // asset
     asset: {
+        title: '资产信息',
+        empty: '未查询到资产信息',
         issuer: '发行人',
         precision: '精度',
         max_supply: '发行总量',

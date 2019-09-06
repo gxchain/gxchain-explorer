@@ -350,181 +350,185 @@
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex';
-    import { ChainStore } from 'gxbjs';
-    import { Apis } from 'gxbjs-ws';
-    import filters from '@/filters';
-    import { calc_block_time } from '@/services/CommonService';
-    import HistoryOp from './partial/HistoryOp.vue';
-    import modalHistory from '@/components/modals/modal-history.vue';
-    import modalCallContract from '@/components/modals/modal-call-contract.vue';
+import { mapActions, mapGetters } from 'vuex';
+import { ChainStore } from 'gxbjs';
+import { Apis } from 'gxbjs-ws';
+import filters from '@/filters';
+import { calc_block_time } from '@/services/CommonService';
+import HistoryOp from './partial/HistoryOp.vue';
+import modalHistory from '@/components/modals/modal-history.vue';
+import modalCallContract from '@/components/modals/modal-call-contract.vue';
 
-    export default {
-        data () {
-            return {
-                loading: true,
-                history_loading: true,
-                history_length: 10,
-                contract: {
-                    params: [],
-                    name: '',
-                    method: '',
-                    payable: false
+export default {
+    data () {
+        return {
+            loading: true,
+            history_loading: true,
+            history_length: 10,
+            contract: {
+                params: [],
+                name: '',
+                method: '',
+                payable: false
+            },
+            abi: {
+                type: 'action'
+            },
+            code: {
+                type: 'wast',
+                wast: ''
+            },
+            current_table: {
+                headers: [],
+                name: '',
+                page: 0,
+                primary_key: null,
+                upper_bound: -1,
+                lower_bound: 0,
+                hasMore: false,
+                data: []
+            },
+            account_info: null,
+            latestTransactions: [],
+            isTrustNode: -1,
+            network: process.env.network,
+            ChainStore,
+            pageNo: 1,
+            pageSize: 10,
+            totalPage: 0,
+            contractInfo: {},
+            contractTab: 'ABI',
+            contractTabs: [
+                {
+                    key: 'ABI',
+                    icon: 'fa-angle-right',
+                    name: this.$t('account.contract.abi.title')
                 },
-                abi: {
-                    type: 'action'
+                {
+                    key: 'CODE',
+                    icon: 'fa-code',
+                    name: this.$t('account.contract.code.title')
                 },
-                code: {
-                    type: 'wast',
-                    wast: ''
-                },
-                current_table: {
-                    headers: [],
-                    name: '',
-                    page: 0,
-                    primary_key: null,
-                    upper_bound: -1,
-                    lower_bound: 0,
-                    hasMore: false,
-                    data: []
-                },
-                account_info: null,
-                latestTransactions: [],
-                isTrustNode: -1,
-                network: process.env.network,
-                ChainStore,
-                pageNo: 1,
-                pageSize: 10,
-                totalPage: 0,
-                contractInfo: {},
-                contractTab: 'ABI',
-                contractTabs: [
-                    {
-                        key: 'ABI',
-                        icon: 'fa-angle-right',
-                        name: this.$t('account.contract.abi.title')
-                    },
-                    {
-                        key: 'CODE',
-                        icon: 'fa-code',
-                        name: this.$t('account.contract.code.title')
-                    },
-                    {
-                        key: 'DATABASE',
-                        icon: 'fa-database',
-                        name: this.$t('account.contract.database.title')
-                    }
-                ]
-            };
+                {
+                    key: 'DATABASE',
+                    icon: 'fa-database',
+                    name: this.$t('account.contract.database.title')
+                }
+            ]
+        };
+    },
+    filters: filters,
+    methods: {
+
+        ...mapActions({
+            setKeywords: 'setKeywords',
+            setContractInfoMap: 'setContractInfoMap'
+        }),
+        getWAST () {
+            this.$http.post('/api/wasm2wast', { wasm: this.account_info.code }).then(resp => {
+                this.code.wast = resp.body.wast;
+            }).catch(console.error);
         },
-        filters: filters,
-        methods: {
-
-            ...mapActions({
-                setKeywords: 'setKeywords'
-            }),
-            getWAST () {
-                this.$http.post('/api/wasm2wast', {wasm: this.account_info.code}).then(resp => {
-                    this.code.wast = resp.body.wast;
-                }).catch(console.error);
-            },
-            setContractParams (action) {
-                let actionDef = this.account_info.abi.structs.find(s => s.name === action.name);
-                this.$refs.modalCall.result = '';
-                this.contract.name = this.account_info.name;
-                this.contract.method = action.name;
-                this.contract.payable = action.payable;
-                this.contract.params = actionDef.fields.map(f => {
-                    let field = {name: f.name, type: f.type, value: ''};
-                    if (f.type === 'contract_asset') {
-                        field.value = {
-                            amount: 0,
-                            asset_id: 1
-                        };
-                    }
-                    return field;
-                });
-                $('#modal-call').modal();
-            },
-            sumLockedBalance (balances) {
-                var sum = 0;
-                balances.forEach(b => {
-                    sum += Number(b.amount.amount);
-                });
-                return sum;
-            },
-            getActionDefine (action_name) {
-                let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
-                return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
-            },
-            getTableDefine (tables) {
-                return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
-            },
-            loadTableData (page) {
-                const pageSize = 10;
-                if (page < this.current_table.page) {
-                    this.current_table.upper_bound = this.current_table.lower_bound + 1;
+        setContractParams (action) {
+            let actionDef = this.account_info.abi.structs.find(s => s.name === action.name);
+            this.$refs.modalCall.result = '';
+            this.contract.name = this.account_info.name;
+            this.contract.method = action.name;
+            this.contract.payable = action.payable;
+            this.contract.params = actionDef.fields.map(f => {
+                let field = { name: f.name, type: f.type, value: '' };
+                if (f.type === 'contract_asset') {
+                    field.value = {
+                        amount: 0,
+                        asset_id: 1
+                    };
                 }
-                if (page === 0) {
-                    this.current_table.upper_bound = -1;
+                return field;
+            });
+            $('#modal-call').modal();
+        },
+        sumLockedBalance (balances) {
+            var sum = 0;
+            balances.forEach(b => {
+                sum += Number(b.amount.amount);
+            });
+            return sum;
+        },
+        getActionDefine (action_name) {
+            let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
+            return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
+        },
+        getTableDefine (tables) {
+            return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
+        },
+        loadTableData (page) {
+            const pageSize = 10;
+            if (page < this.current_table.page) {
+                this.current_table.upper_bound = this.current_table.lower_bound + 1;
+            }
+            if (page === 0) {
+                this.current_table.upper_bound = -1;
+            }
+            Apis.instance().db_api().exec('get_table_rows_ex', [
+                this.account_info.name, // contract_name
+                this.current_table.name, // table_name
+                {
+                    lower_bound: 0,
+                    upper_bound: this.current_table.upper_bound,
+                    reverse: true,
+                    limit: pageSize
                 }
-                Apis.instance().db_api().exec('get_table_rows_ex', [
-                    this.account_info.name, // contract_name
-                    this.current_table.name, // table_name
-                    {
-                        lower_bound: 0,
-                        upper_bound: this.current_table.upper_bound,
-                        reverse: true,
-                        limit: pageSize
-                    }
-                ]).then(resp => {
-                    this.current_table.page = page;
-                    if (resp.rows.length > 0) {
-                        this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
-                        this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
-                    }
-                    this.current_table.data = resp.rows.map(row => {
-                        let result = [];
-                        this.current_table.headers.forEach(h => {
-                            result.push(row[h]);
-                        });
-                        return result;
+            ]).then(resp => {
+                this.current_table.page = page;
+                if (resp.rows.length > 0) {
+                    this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
+                    this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
+                }
+                this.current_table.data = resp.rows.map(row => {
+                    let result = [];
+                    this.current_table.headers.forEach(h => {
+                        result.push(row[h]);
                     });
-                    this.current_table.hasMore = resp.rows.length === pageSize;
+                    return result;
                 });
-            },
-            loadTrustNodeInfo (id) {
-                if (this.trustNodeInfoLoading) {
+                this.current_table.hasMore = resp.rows.length === pageSize;
+            });
+        },
+        loadTrustNodeInfo (id) {
+            if (this.trustNodeInfoLoading) {
+                return;
+            }
+            this.trustNodeInfoLoading = true;
+            Promise.all([
+                Apis.instance().db_api().exec('get_witness_by_account', [id]),
+                Apis.instance().db_api().exec('get_committee_member_by_account', [id])
+            ]).then(results => {
+                this.isTrustNode = results[0] && results[1];
+            });
+        },
+        onUpdate () {
+            try {
+                if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+                    this.loading = false;
                     return;
                 }
-                this.trustNodeInfoLoading = true;
-                Promise.all([
-                    Apis.instance().db_api().exec('get_witness_by_account', [id]),
-                    Apis.instance().db_api().exec('get_committee_member_by_account', [id])
-                ]).then(results => {
-                    this.isTrustNode = results[0] && results[1];
-                });
-            },
-            onUpdate () {
-                try {
-                    if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
-                        this.loading = false;
-                        return;
-                    }
-                } catch (e) {
-                    console.error(e);
-                    this.loading = false;
-                }
+            } catch (e) {
+                this.loading = false;
+            }
+            try {
                 this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
-                if (this.account_info && this.account_info.code && !this.code.wast) {
-                    if (this.account_info.abi.tables.length > 0) {
-                        this.current_table.name = this.account_info.abi.tables[0].name;
-                    }
-                    this.getWAST();
+            } catch (error) {
+            }
+            if (this.account_info && this.account_info.code && !this.code.wast) {
+                if (this.account_info.abi.tables.length > 0) {
+                    this.current_table.name = this.account_info.abi.tables[0].name;
                 }
-                if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
-                    this.loadTrustNodeInfo(this.account_info.id);
-                }
+                this.getWAST();
+            }
+            if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
+                this.loadTrustNodeInfo(this.account_info.id);
+            }
+            if (this.account_info && this.account_info.balances) {
                 let ids = Object.keys(this.account_info.balances);
                 for (let i = 0; i < ids.length; i++) {
                     let obj = {
@@ -533,261 +537,271 @@
                     };
                     this.account_info.balances[ids[i]] = obj;
                 }
-                if (this.account_info.history) {
-                    let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
-                    for (let i = length - 1; i >= 0; i--) {
-                        this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
+            }
+            if (this.account_info && this.account_info.history) {
+                let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
+                for (let i = length - 1; i >= 0; i--) {
+                    this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
 
-                        if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-                            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
-                            let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
-                            let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
-                            this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
-                        }
-
-                        this.latestTransactions.unshift(this.account_info.history[i].op);
-                        if (this.latestTransactions.length > length) {
-                            this.latestTransactions.pop();
-                        }
+                    if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
+                        let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
+                        let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
+                        let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
+                        this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
                     }
-                    this.history_loading = false;
+
+                    this.latestTransactions.unshift(this.account_info.history[i].op);
+                    if (this.latestTransactions.length > length) {
+                        this.latestTransactions.pop();
+                    }
                 }
-                this.loading = false;
-            },
-            getContractInfo (contract_name) {
-                let url = `https://raw.githubusercontent.com/gxchain/contractInfo/master/contracts/${contract_name}.json?v=${new Date().getTime()}`;
-                this.$http.get(url).then(resp => {
-                    if (resp.status === 200) {
-                        this.contractInfo = resp.body;
-                    }
-                }).catch(ex => {
-                    console.error(ex);
-                });
-            },
-            selectSontractTab (key) {
-                this.contractTab = key;
+                this.history_loading = false;
+            }
+            this.loading = false;
+        },
+        getContractInfo (contract_name) {
+            let url = `https://raw.githubusercontent.com/gxchain/contractInfo/master/contracts/${contract_name}.json?v=${new Date().getTime()}`;
+            this.$http.get(url).then(resp => {
+                if (resp.status === 200) {
+                    this.contractInfo = resp.body;
+                    this.setContractInfoMap({ key: contract_name, content: resp.body });
+                }
+            }).catch(ex => {
+                this.setContractInfoMap({ key: contract_name, content: {} });
+            });
+        },
+        initContractInfo () {
+            this.contractInfo = this.contractInfoMap[this.$route.params.id_or_name];
+            if (!this.contractInfo) {
+                this.getContractInfo(this.$route.params.id_or_name);
             }
         },
-        watch: {
-            keywords (newVal, oldVal) {
-                if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+        selectSontractTab (key) {
+            this.contractTab = key;
+        }
+    },
+    watch: {
+        keywords (newVal, oldVal) {
+            if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+            this.loading = true;
+            this.account_info = null;
+            this.current_table = {
+                headers: [],
+                name: '',
+                primary_key: null,
+                upper_bound: -1,
+                lower_bound: 0,
+                page: 0,
+                data: [],
+                hasMore: false
+            };
+            this.code.wast = '';
+            this.isTrustNode = -1;
+            this.pageNo = 1;
+            this.latestTransactions = [];
+            $('#modal-history').modal('hide');
+            this.onUpdate();
+            this.initContractInfo();
+        },
+        'current_table.name': function (val) {
+            if (val) {
+                this.account_info.abi.structs.forEach(s => {
+                    if (s.name === val) {
+                        this.current_table.headers = s.fields.map(f => f.name);
+                        this.current_table.primary_key = null;
+                        if (this.current_table.headers.length > 0) {
+                            this.current_table.primary_key = this.current_table.headers[0];
+                        }
+                        this.current_table.page = 0;
+                        this.current_table.upper_bound = -1;
+                        this.current_table.lower_bound = 0;
+                        this.loadTableData(0);
+                    }
+                });
+            }
+        },
+        '$route' () {
+            if (this.$route.params.id_or_name !== this.keywords) {
                 this.loading = true;
                 this.account_info = null;
-                this.current_table = {
-                    headers: [],
-                    name: '',
-                    primary_key: null,
-                    upper_bound: -1,
-                    lower_bound: 0,
-                    page: 0,
-                    data: [],
-                    hasMore: false
-                };
-                this.code.wast = '';
-                this.isTrustNode = -1;
-                this.pageNo = 1;
                 this.latestTransactions = [];
-                $('#modal-history').modal('hide');
-                this.onUpdate();
-            },
-            'current_table.name': function (val) {
-                if (val) {
-                    this.account_info.abi.structs.forEach(s => {
-                        if (s.name === val) {
-                            this.current_table.headers = s.fields.map(f => f.name);
-                            this.current_table.primary_key = null;
-                            if (this.current_table.headers.length > 0) {
-                                this.current_table.primary_key = this.current_table.headers[0];
-                            }
-                            this.current_table.page = 0;
-                            this.current_table.upper_bound = -1;
-                            this.current_table.lower_bound = 0;
-                            this.loadTableData(0);
-                        }
-                    });
-                }
-            },
-            '$route' () {
-                if (this.$route.params.id_or_name !== this.keywords) {
-                    this.loading = true;
-                    this.account_info = null;
-                    this.latestTransactions = [];
-                    this.setKeywords({keywords: this.$route.params.id_or_name});
-                }
+                this.setKeywords({ keywords: this.$route.params.id_or_name });
             }
-        },
-        computed: {
-
-            ...mapGetters({
-                keywords: 'keywords',
-                assetList: 'assetList',
-                gxc: 'gxc'
-            }),
-
-            is_contract_account () {
-                return this.account_info && !!this.account_info.code;
-            },
-
-            account_type () {
-                let result = [];
-                if (this.account_info.code) {
-                    return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
-                }
-                if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
-                    result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
-                } else {
-                    result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
-                }
-                if (this.isTrustNode) {
-                    result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
-                }
-                return result.join('&nbsp;');
-            }
-        },
-        mounted () {
-            if (this.$route.params.id_or_name !== this.keywords) {
-                this.setKeywords({keywords: this.$route.params.id_or_name});
-            }
-            ChainStore.subscribe(this.onUpdate);
-            this.onUpdate();
-            this.getContractInfo(this.$route.params.id_or_name);
-        },
-        destroyed () {
-            ChainStore.unsubscribe(this.onUpdate);
-        },
-        components: {
-            HistoryOp,
-            modalHistory,
-            modalCallContract
         }
-    };
+    },
+    computed: {
+
+        ...mapGetters({
+            keywords: 'keywords',
+            assetList: 'assetList',
+            gxc: 'gxc',
+            contractInfoMap: 'contractInfoMap'
+        }),
+
+        is_contract_account () {
+            return this.account_info && !!this.account_info.code;
+        },
+
+        account_type () {
+            let result = [];
+            if (this.account_info.code) {
+                return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
+            }
+            if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
+                result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
+            } else {
+                result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
+            }
+            if (this.isTrustNode) {
+                result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
+            }
+            return result.join('&nbsp;');
+        }
+    },
+    mounted () {
+        if (this.$route.params.id_or_name !== this.keywords) {
+            this.setKeywords({ keywords: this.$route.params.id_or_name });
+        }
+        ChainStore.subscribe(this.onUpdate);
+        this.onUpdate();
+        this.initContractInfo();
+    },
+    destroyed () {
+        ChainStore.unsubscribe(this.onUpdate);
+    },
+    components: {
+        HistoryOp,
+        modalHistory,
+        modalCallContract
+    }
+};
 </script>
 
 <style scoped>
-    .color-warning {
-        color: #ffbc10;
-    }
+.color-warning {
+  color: #ffbc10;
+}
 
-    .right {
-        text-align: right;
-    }
+.right {
+  text-align: right;
+}
 
-    .center {
-        text-align: center;
-    }
+.center {
+  text-align: center;
+}
 
-    .more-btn {
-        cursor: pointer;
-    }
+.more-btn {
+  cursor: pointer;
+}
 
-    .overflow-wrap {
-        word-break: break-all;
-    }
+.overflow-wrap {
+  word-break: break-all;
+}
 
-    .panel .table-responsive {
-        margin-bottom: 0;
-        border: none;
-    }
+.panel .table-responsive {
+  margin-bottom: 0;
+  border: none;
+}
 
-    .panel-contract pre {
-        border: none;
-        border-top: 1px solid #eee;
-        border-radius: 0;
-        margin: 0;
-        max-height: 500px;
-    }
+.panel-contract pre {
+  border: none;
+  border-top: 1px solid #eee;
+  border-radius: 0;
+  margin: 0;
+  max-height: 500px;
+}
 
-    .panel-code .wasm pre {
-        white-space: normal;
-    }
+.panel-code .wasm pre {
+  white-space: normal;
+}
 
-    .panel-contract .panel-heading {
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        padding: 0;
-    }
+.panel-contract .panel-heading {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 0;
+}
 
-    .panel-contract .tab {
-        padding: 0 12px;
-        display: inline-block;
-        height: 55px;
-        line-height: 55px;
-        cursor: pointer;
-    }
+.panel-contract .tab {
+  padding: 0 12px;
+  display: inline-block;
+  height: 55px;
+  line-height: 55px;
+  cursor: pointer;
+}
 
-    .panel-contract .tab.active {
-        color: #6699ff;
-    }
+.panel-contract .tab.active {
+  color: #6699ff;
+}
 
-    .contract-info-wrap {
-        padding: 15px;
-    }
+.contract-info-wrap {
+  padding: 15px;
+}
 
-    .contract-info-wrap .portrait {
-        width: 55px;
-        height: 55px;
-        border-radius: 50%;
-        margin-right: 20px;
-    }
+.contract-info-wrap .portrait {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
 
-    .contract-info {
-        display: flex;
-        align-items: center;
-    }
+.contract-info {
+  display: flex;
+  align-items: center;
+}
 
-    .contract-info .panel-contract .panel-body {
-        padding-top: 10px !important;
-    }
+.contract-info .panel-contract .panel-body {
+  padding-top: 10px !important;
+}
 
-    .contract-info .account-wrap {
-        font-size: 18px;
-        font-weight: 500;
-        color: #333;
-    }
+.contract-info .account-wrap {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
 
-    .contract-info-wrap .tool-tip {
-        font-size: 18px;
-        position: relative;
-        top: 2px;
-    }
+.contract-info-wrap .tool-tip {
+  font-size: 18px;
+  position: relative;
+  top: 2px;
+}
 
-    .contract-info .account {
-        margin-right: 15px;
-    }
+.contract-info .account {
+  margin-right: 15px;
+}
 
-    .contract-info .title {
-        margin-top: 10px;
-    }
+.contract-info .title {
+  margin-top: 10px;
+}
 
-    .panel-tables {
-        margin: 10px;
-    }
+.panel-tables {
+  margin: 10px;
+}
 
-    .panel-tables .panel-heading {
-        font-size: 15px;
-        background: #eee;
-        padding: 5px;
-    }
+.panel-tables .panel-heading {
+  font-size: 15px;
+  background: #eee;
+  padding: 5px;
+}
 
-    .panel-contract-info pre {
-        border: none;
-        border-radius: 0;
-        margin: 0;
-        padding: 10px;
-        font-size: 8px;
-        line-height: 8px;
-        color: #666;
-    }
+.panel-contract-info pre {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 10px;
+  font-size: 8px;
+  line-height: 8px;
+  color: #666;
+}
 
-    .panel-contract .panel-heading-database {
-        padding: 10px;
-    }
+.panel-contract .panel-heading-database {
+  padding: 10px;
+}
 
-    .incomplete-tip {
-        background: #f0ad4e;
-        border-radius: 3px;
-        color: #fff;
-        padding: .2em .6em .3em;
-        font-size: 75%;
-    }
+.incomplete-tip {
+  background: #f0ad4e;
+  border-radius: 3px;
+  color: #fff;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+}
 </style>

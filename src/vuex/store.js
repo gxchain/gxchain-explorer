@@ -8,7 +8,8 @@ const state = {
     symbolsMap: {},
     keywords: '',
     gscatter: null,
-    gxc: null
+    gxc: null,
+    contractInfoMap: {}
 };
 
 const mutations = {
@@ -24,21 +25,37 @@ const mutations = {
     setPlugin (state, payload) {
         state.gscatter = payload.gscatter;
         state.gxc = payload.gxc;
+    },
+    setContractInfoMap (state, payload) {
+        state.contractInfoMap[payload.key] = payload.content;
     }
 };
 
 const actions = {
-    setAssetList ({commit}, payload) {
+    setAssetList ({
+        commit
+    }, payload) {
         commit('setAssetList', payload);
     },
-    setSymbolsMap ({commit}, payload) {
+    setSymbolsMap ({
+        commit
+    }, payload) {
         commit('setSymbolsMap', payload);
     },
-    setKeywords ({commit}, payload) {
+    setKeywords ({
+        commit
+    }, payload) {
         commit('setKeywords', payload);
     },
-    setPlugin ({commit}, payload) {
+    setPlugin ({
+        commit
+    }, payload) {
         commit('setPlugin', payload);
+    },
+    setContractInfoMap ({
+        commit
+    }, payload) {
+        commit('setContractInfoMap', payload);
     }
 };
 
@@ -47,7 +64,8 @@ const getters = {
     symbolsMap: state => state.symbolsMap,
     keywords: state => state.keywords,
     gscatter: state => state.gscatter,
-    gxc: state => state.gxc
+    gxc: state => state.gxc,
+    contractInfoMap: state => state.contractInfoMap
 };
 
 export default new Vuex.Store({
