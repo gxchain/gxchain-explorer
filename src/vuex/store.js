@@ -9,7 +9,8 @@ const state = {
     keywords: '',
     gscatter: null,
     gxc: null,
-    contractInfoMap: {}
+    contractInfoMap: {},
+    account: {}
 };
 
 const mutations = {
@@ -28,6 +29,9 @@ const mutations = {
     },
     setContractInfoMap (state, payload) {
         state.contractInfoMap[payload.key] = payload.content;
+    },
+    setAccount (state, payload) {
+        state.account = payload.account;
     }
 };
 
@@ -56,6 +60,11 @@ const actions = {
         commit
     }, payload) {
         commit('setContractInfoMap', payload);
+    },
+    setAccount ({
+        commit
+    }, payload) {
+        commit('setAccount', payload);
     }
 };
 
@@ -65,7 +74,8 @@ const getters = {
     keywords: state => state.keywords,
     gscatter: state => state.gscatter,
     gxc: state => state.gxc,
-    contractInfoMap: state => state.contractInfoMap
+    contractInfoMap: state => state.contractInfoMap,
+    account: state => state.account
 };
 
 export default new Vuex.Store({

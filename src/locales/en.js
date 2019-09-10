@@ -13,6 +13,7 @@ const locale = {
         home: 'Home',
         login: 'Login',
         fee: 'Network Fees',
+        tools: 'Tools',
         node_members: 'Node Members',
         profile: 'Profile',
         download: 'You haven\'t download extension, confirm to download',
@@ -720,6 +721,33 @@ const locale = {
         payable_asset: 'Payable Asset',
         params: 'Params',
         output: 'Output'
+    },
+    // tools
+    tools: {
+        title: 'Tools',
+        no_data: 'No Data',
+        logo: 'Login First',
+        browser_not_support: 'Browser does not support',
+        bulk_transfer: {
+            title: ' Bulk Transfer',
+            des: 'Bulk transfer utility, suitable for community airdrops, batch awards',
+            download_template: 'Download Template',
+            import: 'Import',
+            execute: 'Execute',
+            clear: 'Clear',
+            refresh: 'Refresh',
+            export: 'Export',
+            filter: 'Filter',
+            import_all: 'Records',
+            article: '',
+            all: 'All',
+            success: 'Success',
+            fail: 'Fail',
+            processing: 'Processing',
+            transfer_processing: 'Transfer in progress',
+            transfer_success: 'Success',
+            transfer_fail: 'Fail'
+        }
     }
 };
 

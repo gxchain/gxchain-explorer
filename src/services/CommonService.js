@@ -15,8 +15,9 @@ export const fetch_block = (block_height) => {
     });
 };
 
-export const fetch_transaction = (tx_id) => {
-    return Vue.http.get(`//${baseURL}/api/transaction/${tx_id}`, {
+export const fetch_transaction = (tx_id, t) => {
+    let _t = t ? `?t=${t}` : '';
+    return Vue.http.get(`//${baseURL}/api/transaction/${tx_id}${_t}`, {
         responseType: 'json'
     });
 };

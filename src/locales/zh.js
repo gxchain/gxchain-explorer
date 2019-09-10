@@ -12,6 +12,7 @@ const locale = {
         trustnode_election: '公信节点竞选',
         home: '首页',
         login: 'GXC Wallet登录',
+        tools: '工具',
         fee: '网络费率',
         node_members: '节点成员',
         profile: '账户资料',
@@ -719,6 +720,33 @@ const locale = {
         payable_asset: '附带资产',
         params: '参数',
         output: '输出结果'
+    },
+    // tools
+    tools: {
+        title: '工具',
+        no_data: '暂无数据',
+        logo: '请先登录',
+        browser_not_support: '浏览器不支持',
+        bulk_transfer: {
+            title: ' 批量转账',
+            des: '支持公信链上资产批量转账，适用于社区空投、批量奖励发放',
+            download_template: '下载模版',
+            import: '导入',
+            execute: '执行',
+            clear: '清空',
+            refresh: '刷新',
+            export: '导出',
+            filter: '筛选',
+            import_all: '本次导入',
+            article: '条',
+            all: '全部',
+            success: '成功',
+            fail: '失败',
+            processing: '进行中',
+            transfer_processing: '转账进行中',
+            transfer_success: '转账成功',
+            transfer_fail: '转账失败'
+        }
     }
 };
 
