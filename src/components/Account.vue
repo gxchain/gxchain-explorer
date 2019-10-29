@@ -143,9 +143,9 @@
                                 <span class="fa fa-fg fa-lightbulb" data-toggle="tooltip" data-placement="top"
                                       :title="'备注信息来源：github.com/gxchain/contractInfo'"></span>
                             </div>
-                            <div class="contract-info" v-if='contractInfo'>
-                                <img v-if="contractInfo.logo" class="portrait" :src="contractInfo.logo" alt="">
-                                <svg v-if="!contractInfo.logo" class="portrait" id="icon-contract"
+                            <div class="contract-info">
+                                <img v-if="contractInfo&&contractInfo.logo" class="portrait" :src="contractInfo.logo" alt="">
+                                <svg v-if="!(contractInfo&&contractInfo.logo)" class="portrait" id="icon-contract"
                                      viewBox="0 0 1024 1024" width="100%" height="100%">
                                     <path d="M512 0a512 512 0 1 1 0 1024A512 512 0 0 1 512 0z m38.115556 284.444444l-169.528889 455.111112h93.297777l169.528889-455.111112H550.115556z m108.771555 134.257778L796.444444 512l-163.271111 110.762667 50.176 34.019555L853.333333 541.809778V482.986667l-176.184889-115.825778-18.261333 51.484444zM170.666667 482.190222v58.766222l176.184889 115.825778 18.261333-51.484444L227.555556 512l163.271111-110.762667-50.232889-34.019555L170.666667 482.190222z"
                                           fill="#34CB49"></path>
