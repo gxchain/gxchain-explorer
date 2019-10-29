@@ -47,9 +47,9 @@ export default {
             history_loading: true,
             latestTransactions: [],
             pagination: {
-                per_page: 10,    // required
+                per_page: 10, // required
                 current_page: 1, // required
-                last_page: 0    // required
+                last_page: 0 // required
             },
             paginationOptions: {
                 offset: 5,

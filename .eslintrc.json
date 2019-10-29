@@ -16,21 +16,47 @@
         "amd": true,
         "jquery": true
     },
-    "plugins": ["html", "vue", "standard"],
+    "plugins": [
+        "html",
+        "vue",
+        "standard"
+    ],
     "rules": {
         "generator-star-spacing": 0,
-        "indent": ["error", 4, {
-            "SwitchCase": 1
-        }],
-        "quotes": ["error", "single"],
-        "semi": ["error", "always", {
-            "omitLastInOneLineBlock": true
-        }],
-        "no-debugger": ["error"],
-        "no-console": ["off"],
-        "no-new": ["off"],
-        "no-extend-native": ["off"],
-        "camelcase": ["off"],
+        "indent": "off",
+        "indent-legacy": "error",
+        "no-multi-spaces": [
+            "error",
+            {
+                "ignoreEOLComments": true
+            }
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always",
+            {
+                "omitLastInOneLineBlock": true
+            }
+        ],
+        "no-debugger": [
+            "error"
+        ],
+        "no-console": [
+            "off"
+        ],
+        "no-new": [
+            "off"
+        ],
+        "no-extend-native": [
+            "off"
+        ],
+        "camelcase": [
+            "off"
+        ],
         "vue/jsx-uses-vars": 2
     }
 }
