@@ -40,7 +40,7 @@ if (app.get('env') === 'development') {
 
     compiler.plugin('compilation', function (compilation) {
         compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-            hotMiddleware.publish({action: 'reload'});
+            hotMiddleware.publish({ action: 'reload' });
             cb();
         });
     });
@@ -48,27 +48,32 @@ if (app.get('env') === 'development') {
     app.use(devMiddleware);
     app.use(hotMiddleware);
 
-    var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+    var staticPath = path.posix.join(
+    config.dev.assetsPublicPath,
+    config.dev.assetsSubDirectory
+  );
     app.use(staticPath, express.static('./static'));
 } else {
     app.use(logger('combined'));
     app.use(express.static('./dist'));
 }
 
-app.use(require('connect-history-api-fallback')({
-    index: '/',
-    rewrites: [
-        {
-            from: '/api/*',
-            to: function (options) {
-                return options.parsedUrl.href;
-            }
-        }
-    ]
-}));
+app.use(
+  require('connect-history-api-fallback')({
+      index: '/',
+      rewrites: [
+          {
+              from: '/api/*',
+              to: function (options) {
+                  return options.parsedUrl.href;
+              }
+          }
+      ]
+  })
+);
 
-app.use(bodyParser.json({limit: '5mb'}));
-app.use(bodyParser.urlencoded({extended: false, limit: '5mb'}));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
 
 let connected = false;
 const connectedCheck = function (req, res, next) {
@@ -116,7 +121,7 @@ app.use(function (err, req, res) {
 const filterAndSortURLs = (latencies, witnesses) => {
     let us = witnesses
     .filter(a => {
-        /* Only keep the nodes we were able to connect to */
+      /* Only keep the nodes we were able to connect to */
         return !!latencies[a];
     })
     .sort((a, b) => {
@@ -125,7 +130,10 @@ const filterAndSortURLs = (latencies, witnesses) => {
     return us;
 };
 
-let witnesses = process.env.NODE_ENV === 'production' ? config.build.witnesses : config.dev.witnesses;
+let witnesses =
+  process.env.NODE_ENV === 'production'
+    ? config.build.witnesses
+    : config.dev.witnesses;
 
 if (witnesses.length === 0) {
     console.error('未配置启动节点,请先在config.json文件中配置common.witnesses');
@@ -136,8 +144,10 @@ if (witnesses.length === 0) {
  * @param callback
  */
 let connect = function (callback) {
-    let connectionManager = new Manager({url: witnesses[0], urls: witnesses});
-    connectionManager.checkConnections().then((resp) => {
+    let connectionManager = new Manager({ url: witnesses[0], urls: witnesses });
+    connectionManager
+    .checkConnections()
+    .then(resp => {
         let urls = filterAndSortURLs(resp, witnesses);
         console.log(urls);
         if (urls.length === 0) {
@@ -147,18 +157,22 @@ let connect = function (callback) {
             }, 3000);
         } else {
             connectionManager.urls = urls;
-            connectionManager.connectWithFallback(true).then(() => {
-                console.log('已连接');
-                connected = true;
-                callback && callback();
-            }).catch((ex) => {
-                console.error('连接失败,3秒后重试', ex.message);
-                setTimeout(function () {
-                    connect(callback);
-                }, 3000);
-            });
+            connectionManager
+          .connectWithFallback(true)
+          .then(() => {
+              console.log('已连接');
+              connected = true;
+              callback && callback();
+          })
+          .catch(ex => {
+              console.error('连接失败,3秒后重试', ex.message);
+              setTimeout(function () {
+                  connect(callback);
+              }, 3000);
+          });
         }
-    }).catch((ex) => {
+    })
+    .catch(ex => {
         console.error('检查连接失败,3秒后重试', ex.message);
         setTimeout(function () {
             connect(callback);
@@ -181,23 +195,39 @@ let startServer = function () {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', () => {
-        devMiddleware && devMiddleware.waitUntilValid(() => {
-            var uri = `http://localhost:${port}`;
-            console.log('> Listening at ' + uri + '\n');
-            if (app.get('env') === 'development' && autoOpenBrowser) {
-                opn(uri);
-            }
-        });
+        devMiddleware &&
+      devMiddleware.waitUntilValid(() => {
+          var uri = `http://localhost:${port}`;
+          console.log('> Listening at ' + uri + '\n');
+          if (app.get('env') === 'development' && autoOpenBrowser) {
+              opn(uri);
+          }
+      });
     });
     figlet('GXB-EXPLORER', 'Standard', function (err, text) {
         if (err) {
             console.error(err);
         }
-        console.log(colors.rainbow('\n=*=*=*=*=*=*=*=*=*==*=*=GXChain区块浏览器已启动=*=*=*==*=*=*=*=*=*=*=\n'));
-        console.log(colors.cyan(`${(text || '').split('\n').map(function (line) {
-            return `${line}`;
-        }).join('\n')}`));
-        console.log(colors.rainbow('=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=**=*=*=*=*=*=*=\n'));
+        console.log(
+      colors.rainbow(
+        '\n=*=*=*=*=*=*=*=*=*==*=*=GXChain区块浏览器已启动=*=*=*==*=*=*=*=*=*=*=\n'
+      )
+    );
+        console.log(
+      colors.cyan(
+        `${(text || '')
+          .split('\n')
+          .map(function (line) {
+              return `${line}`;
+          })
+          .join('\n')}`
+      )
+    );
+        console.log(
+      colors.rainbow(
+        '=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=**=*=*=*=*=*=*=\n'
+      )
+    );
     });
 };
 
@@ -213,10 +243,13 @@ let startSubScribe = function () {
     subscribed = true;
     ChainStore.subscribe(function () {
         let dynamicGlobal = ChainStore.getObject('2.1.0').toJS();
-        // console.log('latest block:', dynamicGlobal.last_irreversible_block_num);
-        process.env.SYNC && BlockSyncTask.sync_to_block(dynamicGlobal.last_irreversible_block_num);
+    // console.log('latest block:', dynamicGlobal.last_irreversible_block_num);
+        process.env.SYNC &&
+      BlockSyncTask.sync_to_block(dynamicGlobal.last_irreversible_block_num);
     });
-    Apis.instance().db_api().exec('get_objects', [['2.1.0']]);
+    Apis.instance()
+    .db_api()
+    .exec('get_objects', [['2.1.0']]);
 };
 
 /**
@@ -224,16 +257,18 @@ let startSubScribe = function () {
  */
 let initConnection = function () {
     console.log('初始化数据缓存');
-    let promises = [
-        ChainStore.init(),
-        BlockSyncTask.init()
-    ];
-    Promise.all(promises).then(function () {
+    let promises = [ChainStore.init(), BlockSyncTask.init()];
+    Promise.all(promises)
+    .then(function () {
         console.log('初始化成功');
         startSubScribe();
         startServer();
-    }).catch((ex) => {
-        console.error('获取初始信息失败,请检查:\n1. 节点数据是否同步 \n2. 系统时钟是否正确\n', ex);
+    })
+    .catch(ex => {
+        console.error(
+        '获取初始信息失败,请检查:\n1. 节点数据是否同步 \n2. 系统时钟是否正确\n',
+        ex
+      );
     });
 };
 // websocket 状态处理
@@ -250,7 +285,8 @@ Apis.setRpcConnectionStatusCallback(function (status) {
     if (status === 'reconnect') {
         console.log('断开重连');
         ChainStore.resetCache();
-    } else if (connected && (status === 'closed' || status === 'error')) { // 出错重连
+    } else if (connected && (status === 'closed' || status === 'error')) {
+    // 出错重连
         connected = false;
         console.log('重新连接其他witness');
         connect(function () {
@@ -275,22 +311,20 @@ function onError (error) {
         throw error;
     }
 
-    var bind = typeof port === 'string'
-        ? 'Pipe ' + port
-        : 'Port ' + port;
+    var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
-    // handle specific listen errors with friendly messages
+  // handle specific listen errors with friendly messages
     switch (error.code) {
-        case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
-            process.exit(1);
-            break;
-        case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
-            process.exit(1);
-            break;
-        default:
-            throw error;
+    case 'EACCES':
+        console.error(bind + ' requires elevated privileges');
+        process.exit(1);
+        break;
+    case 'EADDRINUSE':
+        console.error(bind + ' is already in use');
+        process.exit(1);
+        break;
+    default:
+        throw error;
     }
 }
 
@@ -299,9 +333,14 @@ process.stdin.resume();
 function exitHandler (reason, err) {
     if (err) console.log(err.stack);
     console.log('程序退出:', reason);
-    Promise.all([BlockSyncTask.store(), LevelDBService.put('last-close', new Date().getTime())]).then(function () {
+    Promise.all([
+        BlockSyncTask.store(),
+        LevelDBService.put('last-close', new Date().getTime())
+    ])
+    .then(function () {
         process.exit();
-    }).catch(() => {
+    })
+    .catch(() => {
         process.exit();
     });
 }
