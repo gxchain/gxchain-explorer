@@ -1,5 +1,5 @@
 const locale = {
-    // header
+  // header
     header: {
         block: 'Block',
         transaction: 'Transaction',
@@ -19,7 +19,7 @@ const locale = {
         download: 'You haven\'t download extension, confirm to download',
         logout: 'Logout'
     },
-    // index
+  // index
     index: {
         latest_status: 'Latest Status',
         last_updated_at: 'Updated at: {seconds}s ago',
@@ -86,7 +86,7 @@ const locale = {
             duration: 'Running Duration'
         }
     },
-    // block
+  // block
     block: {
         id: 'Block ID',
         title: 'Block Info',
@@ -98,39 +98,40 @@ const locale = {
         empty: 'No record',
         error: 'Fetch error'
     },
-    // transaction
+  // transaction
     transaction: {
         title: 'Transaction Info',
-        empty: 'No record, Possible reason: The transaction information has not yet been recorded to the irreversible block',
+        empty:
+      'No record, Possible reason: The transaction information has not yet been recorded to the irreversible block',
         error: 'Fetch error',
         current_block_number: 'Current Block',
         trx_op: 'Operation Info',
         trx_type: 'Type',
         trxTypes: {
-            'all': 'Show all',
-            'transfer': {
+            all: 'Show all',
+            transfer: {
                 name: 'Transfer',
                 from: 'From',
                 amount: 'Amount',
                 to: 'To',
                 fee: 'Fee'
             },
-            'limit_order_create': 'Place order',
-            'limit_order_cancel': 'Cancel order',
-            'call_order_update': 'Update margin',
-            'account_create': {
+            limit_order_create: 'Place order',
+            limit_order_cancel: 'Cancel order',
+            call_order_update: 'Update margin',
+            account_create: {
                 name: 'Create account',
                 fee: 'Fee',
                 registrar: 'Registrar',
                 referrer: 'Referrer',
                 account: 'Account'
             },
-            'account_update': {
+            account_update: {
                 name: 'Update account',
                 fee: 'Fee',
                 account: 'Account'
             },
-            'account_whitelist': {
+            account_whitelist: {
                 name: 'Account whitelist',
                 fee: 'Fee',
                 authorizing_account: 'Authorizing account',
@@ -143,19 +144,19 @@ const locale = {
                     white_and_black_listed: 'Whitelisted and blacklisted'
                 }
             },
-            'account_upgrade': {
+            account_upgrade: {
                 name: 'Upgrade Account',
                 account_to_upgrade: 'Upgrade account',
                 fee: 'Fee',
                 upgrade_to_lifetime_member: 'Upgrade to lifetime member'
             },
-            'account_transfer': {
+            account_transfer: {
                 name: 'Transfer Account',
                 account_id: 'Account id',
                 new_owner: 'New Owner',
                 fee: 'Fee'
             },
-            'asset_create': {
+            asset_create: {
                 name: 'Create asset',
                 fee: 'Fee',
                 issuer: 'Issuer',
@@ -166,54 +167,54 @@ const locale = {
                 market_fee: 'Market fee',
                 maximum_market_fee: 'Maximum market fee'
             },
-            'asset_update': 'Update asset',
-            'asset_update_bitasset': 'Update SmartCoin',
-            'asset_update_feed_producers': 'Update asset feed producers',
-            'asset_issue': {
+            asset_update: 'Update asset',
+            asset_update_bitasset: 'Update SmartCoin',
+            asset_update_feed_producers: 'Update asset feed producers',
+            asset_issue: {
                 name: 'Issue asset',
                 fee: 'Fee',
                 issuer: 'Issuer',
                 asset_to_issue: 'Amount to issue',
                 issue_to_account: 'To'
             },
-            'asset_reserve': {
+            asset_reserve: {
                 name: 'Reserve asset',
                 fee: 'Fee',
                 account: 'Account',
                 amount_to_reserve: 'Reserved (Burnt) Amount'
             },
-            'asset_fund_fee_pool': 'Fund asset fee pool',
-            'asset_settle': 'Asset settlement',
-            'asset_global_settle': 'Global asset settlement',
-            'asset_publish_feed': 'Publish feed',
-            'committee_member_create': {
+            asset_fund_fee_pool: 'Fund asset fee pool',
+            asset_settle: 'Asset settlement',
+            asset_global_settle: 'Global asset settlement',
+            asset_publish_feed: 'Publish feed',
+            committee_member_create: {
                 name: 'Create committee member',
                 account: 'Committee member',
                 url: 'Url',
                 fee: 'Fee'
             },
-            'committee_member_update': {
+            committee_member_update: {
                 name: 'Update committee member',
                 account: 'Committee member',
                 url: 'Url',
                 fee: 'Fee'
             },
-            'witness_create': {
+            witness_create: {
                 name: 'Create TrustNode',
                 witness_account: 'TrustNode candidate',
                 witness_url: 'Url',
                 signing_key: 'Signing Key',
                 fee: 'Fee'
             },
-            'witness_update': {
+            witness_update: {
                 name: 'Update TrustNode',
                 witness_account: 'TrustNode candidate',
                 witness_url: 'Url',
                 signing_key: 'Signing Key',
                 fee: 'Fee'
             },
-            'witness_withdraw_pay': 'TrustNode pay withdrawal',
-            'proposal': {
+            witness_withdraw_pay: 'TrustNode pay withdrawal',
+            proposal: {
                 proposal_create: 'Create proposal',
                 proposal_update: 'Update proposal',
                 proposal_delete: 'Delete proposal',
@@ -231,21 +232,21 @@ const locale = {
                     key_approvals_to_remove: 'Key approvals to remove'
                 }
             },
-            'withdraw_permission_create': 'Create withdrawal permission',
-            'withdraw_permission_update': 'Update withdrawal permission',
-            'withdraw_permission_claim': 'Claim withdrawal permission',
-            'withdraw_permission_delete': 'Delete withdrawal permission',
-            'fill_order': 'Fill order',
-            'committee_member_update_global_parameters': 'Global parameters update',
-            'vesting_balance_create': 'Create vesting balance',
-            'vesting_balance_withdraw': {
+            withdraw_permission_create: 'Create withdrawal permission',
+            withdraw_permission_update: 'Update withdrawal permission',
+            withdraw_permission_claim: 'Claim withdrawal permission',
+            withdraw_permission_delete: 'Delete withdrawal permission',
+            fill_order: 'Fill order',
+            committee_member_update_global_parameters: 'Global parameters update',
+            vesting_balance_create: 'Create vesting balance',
+            vesting_balance_withdraw: {
                 name: 'Withdraw vesting balance',
                 owner: 'To',
                 amount: 'Amount',
                 fee: 'Fee'
             },
-            'worker_create': 'Create budget item',
-            'custom': {
+            worker_create: 'Create budget item',
+            custom: {
                 name: 'Custom',
                 payer: 'Payer',
                 fee: 'Fee',
@@ -253,9 +254,9 @@ const locale = {
                 toHex: 'StrToUtf8Hex',
                 toString: 'Utf8HexToStr'
             },
-            'assert': 'Assert operation',
-            'balance_claim': 'Claim balance',
-            'override_transfer': {
+            assert: 'Assert operation',
+            balance_claim: 'Claim balance',
+            override_transfer: {
                 name: 'Override transfer',
                 fee: 'Fee',
                 issuer: 'Issuer',
@@ -263,80 +264,80 @@ const locale = {
                 to: 'To',
                 amount: 'Amount'
             },
-            'transfer_to_blind': 'Transfer to blinded account',
-            'blind_transfer': 'Blinded transfer',
-            'transfer_from_blind': 'Transfer from blinded account',
-            'asset_claim_fees': 'Claim asset fees',
-            'account_upgrade_merchant': {
+            transfer_to_blind: 'Transfer to blinded account',
+            blind_transfer: 'Blinded transfer',
+            transfer_from_blind: 'Transfer from blinded account',
+            asset_claim_fees: 'Claim asset fees',
+            account_upgrade_merchant: {
                 name: 'Merchant verify',
                 account_to_upgrade: 'Upgrade account',
                 auth_referrer: 'Auth referrer',
                 upgrade_to_merchant_member: 'Upgrade to merchant member',
                 fee: 'Fee'
             },
-            'account_upgrade_datasource': {
+            account_upgrade_datasource: {
                 name: 'DataSource verify',
                 account_to_upgrade: 'Upgrade account',
                 auth_referrer: 'Auth referrer',
                 upgrade_to_datasource_member: 'Upgrade to datasource member',
                 fee: 'Fee'
             },
-            'data_market_category_create': {
+            data_market_category_create: {
                 name: 'Market category created',
                 category_name: 'Category name',
                 issuer: 'Issuer',
                 fee: 'Fee',
                 create_date_time: 'Create datetime'
             },
-            'data_market_category_update': {
+            data_market_category_update: {
                 name: 'Market category updated',
                 category: 'Category id',
                 new_category_name: 'New category name',
                 new_status: 'New status',
                 fee: 'Fee'
             },
-            'free_data_product_create': {
+            free_data_product_create: {
                 name: 'Data item for free marked created',
                 product_name: 'Product name',
                 issuer: 'Issuer',
                 fee: 'Fee',
                 create_date_time: 'Create datetime'
             },
-            'free_data_product_update': {
+            free_data_product_update: {
                 name: 'Data item form free market updated',
                 free_data_product: 'Product id',
                 new_product_name: 'New product name',
                 new_status: 'New status',
                 fee: 'Fee'
             },
-            'league_data_product_create': {
+            league_data_product_create: {
                 name: 'Data item for alliance created',
                 product_name: 'Product name',
                 issuer: 'Issuer',
                 fee: 'Fee',
                 create_date_time: 'Create datetime'
             },
-            'league_data_product_update': {
+            league_data_product_update: {
                 name: 'Data item for alliance updated',
                 free_data_product: 'Product id',
                 new_product_name: 'New product name',
                 new_status: 'New status',
                 fee: 'Fee'
             },
-            'league_create': {
+            league_create: {
                 name: 'Alliance created',
                 legue_name: 'Legue name',
                 fee: 'Fee',
                 create_date_time: 'Create datetime'
             },
-            'league_update': {
+            league_update: {
                 name: 'Alliance updated',
                 legue: 'Legue id',
                 new_legue_name: 'New legue name',
                 new_status: 'New status',
                 fee: 'Fee'
             },
-            'data_transaction_create': {
+            data_transaction_create: {
                 name: 'Data transaction created',
                 request_id: 'Request id',
                 product_id: 'Product name',
@@ -345,14 +346,14 @@ const locale = {
                 requester: 'Requester',
                 create_date_time: 'Create datetime'
             },
-            'data_transaction_update': {
+            data_transaction_update: {
                 name: 'Data transaction updated',
                 request_id: 'Request id',
                 new_status: 'New status',
                 fee: 'Fee',
                 new_requester: 'New requester'
             },
-            'data_transaction_pay': {
+            data_transaction_pay: {
                 name: 'Data transaction pay',
                 fee: 'Fee',
                 from: 'From',
@@ -360,26 +361,26 @@ const locale = {
                 amount: 'Amount',
                 request_id: 'Request id'
             },
-            'account_upgrade_data_transaction_member': {
+            account_upgrade_data_transaction_member: {
                 name: 'Upgrade to DE witness',
                 fee: 'Fee',
                 account_to_upgrade: 'Upgrade account',
                 upgrade_to_data_transaction_member: 'Upgrade to data transaction member'
             },
-            'data_transaction_datasource_upload': {
+            data_transaction_datasource_upload: {
                 name: 'Copyright stored',
                 request_id: 'Request id',
                 requester: 'Requester',
                 datasource: 'Datasource',
                 fee: 'Fee'
             },
-            'data_transaction_datasource_validate_error': {
+            data_transaction_datasource_validate_error: {
                 name: 'Data transaction fail',
                 request_id: 'Request id',
                 datasource: 'Datasource',
                 fee: 'Fee'
             },
-            'balance_lock': {
+            balance_lock: {
                 name: 'Balance Lock',
                 create_date_time: 'Start Date',
                 amount: 'Lockup Amount',
@@ -387,12 +388,12 @@ const locale = {
                 term: ' Months',
                 interest_rate: 'Annualized Bonus'
             },
-            'balance_unlock': {
+            balance_unlock: {
                 name: 'Balance Unlock',
                 account: 'Unlock Account',
                 lock_id: 'Lock ID'
             },
-            'proxy_transfer': {
+            proxy_transfer: {
                 name: 'Proxy Transfer',
                 from: 'From',
                 to: 'To',
@@ -402,13 +403,13 @@ const locale = {
                 proxy_account: 'Proxy Account',
                 fee: 'Fee'
             },
-            'create_contract': {
+            create_contract: {
                 name: 'Create Contract',
                 account: 'Account',
                 contract_name: 'Contract Name',
                 fee: 'Fee'
             },
-            'call_contract': {
+            call_contract: {
                 name: 'Call Contract',
                 account: 'Account',
                 contract_name: 'Contract Name',
@@ -417,19 +418,19 @@ const locale = {
                 fee: 'Fee',
                 amount: 'Sending Assets'
             },
-            'update_contract': {
+            update_contract: {
                 name: 'Create Contract',
                 owner: 'Onwer',
                 new_owner: 'New Onwer',
                 contract_name: 'Contract Name',
                 fee: 'Fee'
             },
-            'trust_node_pledge_withdraw': {
+            trust_node_pledge_withdraw: {
                 name: 'TrustNode margin Withdraw',
                 witness_account: 'Account',
                 fee: 'Fee'
             },
-            'inline_transfer': {
+            inline_transfer: {
                 name: 'Inline Transfer',
                 from: 'From',
                 amount: 'Amount',
@@ -437,7 +438,7 @@ const locale = {
                 memo: 'Memo(Tag)',
                 fee: 'Fee'
             },
-            'inter_contract_call': {
+            inter_contract_call: {
                 name: 'Inter Contract Call',
                 sender_contract: 'Account',
                 contract_name: 'Contract Name',
@@ -446,86 +447,108 @@ const locale = {
                 fee: 'Fee',
                 amount: 'Sending Assets'
             },
-            'status_states': {
+            status_states: {
                 0: 'Unpublished',
                 1: 'Published',
                 2: 'Deleted'
             }
         },
         operation: {
-            'pending': 'pending %(blocks)s blocks',
-            'no_recent': 'No recent transactions',
-            'reg_account': '{registrar} registered the account {new_account}',
-            'transfer': '{from} sent {amount} to {to}',
-            'proposal_create': '{account} created a proposed transaction',
-            'proposal_update': '{account} updated a proposed transaction',
-            'proposal_delete': '{account} deleted a proposed transaction',
-            'account_create': '{registrar} created a account {account}',
-            'account_transfer': '{account} transfer to {new_account}',
-            'fill_order': '{account} bought {received} at {price}',
-            'vesting_balance_withdraw': '{account} withdrew vesting balance of {amount}',
-            'balance_claim': '{account} claimed a balance of {amount}',
-            'publish_feed': '{account} published feed price of {price}',
-            'set_proxy': '{account} set {proxy} as their voting proxy',
-            'update_account': '{account} updated their account data',
-            'limit_order_sell': '{account} placed an order to sell {amount} at {price}',
-            'limit_order_buy': '{account} placed an order to buy {amount} at {price}',
-            'limit_order_cancel': '{account} cancelled order #%(order)s',
-            'call_order_update': '{account} changed {debtSymbol} debt by {debt} and collateral by {collateral}',
-            'asset_reserve': '{account} reserved (burnt) {amount}',
-            'asset_issue': '{account} issued {amount} to {to}',
-            'asset_fund_fee_pool': '{account} funded {asset} fee pool with {amount}',
-            'asset_create': '{account} created the asset {asset}',
-            'asset_update': '{account} updated the asset {asset}',
-            'lifetime_upgrade_account': '{account} was upgraded to lifetime member',
-            'annual_upgrade_account': '{account} was upgraded to annual member',
-            'unlisted_by': '{lister} unlisted the account {listee}',
-            'whitelisted_by': '{lister} whitelisted the account {listee}',
-            'blacklisted_by': '{lister} blacklisted the account {listee}',
-            'transfer_account': '{account} ownership transferred to {to}',
-            'asset_update_feed_producers': '{account} updated the feed producers for the asset {asset}',
-            'asset_settle': '{account} requested settlement of {amount}',
-            'asset_global_settle': '{account} requested global settlement of {asset} at {price}',
-            'witness_create': '{account} was upgraded to become a TrustNode candidate',
-            'witness_update': '{account} update its candidate info',
-            'witness_pay': 'Withdraw TrustNode pay to account',
-            'witness_receive': 'Received witness from witness',
-            'committee_member_update_global_parameters': '{account} updated the global committee parameters',
-            'committee_member_create': '{account} was upgraded to become a witness',
-            'committee_member_update': '{account} update its committee info',
-            'worker_create': '{account} created a worker proposal with daily pay of {pay}',
-            'override_transfer': '{issuer} transferred {amount} from {from} to {to}',
-            'account_upgrade_merchant': '{account} was upgraded to merchant',
-            'account_upgrade_datasource': '{account} was upgraded to datasource',
-            'data_market_category_create': '{issuer} created the market category {category}',
-            'data_market_category_update': '{issuer} passed the proposal and updated the market category {category}',
-            'free_data_product_create': '{issuer} created the free market product {product}',
-            'free_data_product_update': '{issuer} passed the proposal and updated the free market product {product}',
-            'league_data_product_create': '{issuer} created the alliance market product {product}',
-            'league_data_product_update': '{issuer} passed the proposal and updated the alliance market product named  {product}',
-            'league_create': '{issuer} created the league {league}',
-            'league_update': '{issuer} passed the proposal and updated the league {league}',
-            'data_transaction_create': '{account} created a data transaction',
-            'data_transaction_update': '{account} updated a data transaction',
-            'data_transaction_pay': '{from} payed {amount} for data transaction to {to}',
-            'account_upgrade_data_transaction_member': '{account} was upgraded to data transaction confirm node',
-            'data_transaction_datasource_upload': '{account} confirmed an data upload from {datasource}',
-            'data_transaction_datasource_validate_error': '{account} returned an error when processing the data upload',
-            'balance_lock': '{account} locked {amount} for loyalty program',
-            'balance_unlock': '{account} complete a loyalty program',
-            'proxy_transfer': '{from} sent {amount} to {to} delegated by {account}',
-            'create_contract': '{account} created the contract {contract_name}',
-            'call_contract': '{account} call the contract {contract_name} \'s {method_name} method',
-            'call_contract_and_transfer': '{account} call the contract {contract_name} \'s {method_name} method and sent {amount} to contract account',
-            'update_contract': '{account} updated the contract {contract_name}',
-            'custom': '{account} created a custom operation',
-            'trust_node_pledge_withdraw': '{account} withdrww trustnode margin',
-            'inline_transfer': 'contract account {from} sent {amount} to {to} with memo {memo}',
-            'inter_contract_call': 'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method',
-            'inter_contract_call_and_transfer': 'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method and sent {amount} to contract account'
+            pending: 'pending %(blocks)s blocks',
+            no_recent: 'No recent transactions',
+            reg_account: '{registrar} registered the account {new_account}',
+            transfer: '{from} sent {amount} to {to}',
+            proposal_create: '{account} created a proposed transaction',
+            proposal_update: '{account} updated a proposed transaction',
+            proposal_delete: '{account} deleted a proposed transaction',
+            account_create: '{registrar} created a account {account}',
+            account_transfer: '{account} transfer to {new_account}',
+            fill_order: '{account} bought {received} at {price}',
+            vesting_balance_withdraw:
+        '{account} withdrew vesting balance of {amount}',
+            balance_claim: '{account} claimed a balance of {amount}',
+            publish_feed: '{account} published feed price of {price}',
+            set_proxy: '{account} set {proxy} as their voting proxy',
+            update_account: '{account} updated their account data',
+            limit_order_sell: '{account} placed an order to sell {amount} at {price}',
+            limit_order_buy: '{account} placed an order to buy {amount} at {price}',
+            limit_order_cancel: '{account} cancelled order #%(order)s',
+            call_order_update:
+        '{account} changed {debtSymbol} debt by {debt} and collateral by {collateral}',
+            asset_reserve: '{account} reserved (burnt) {amount}',
+            asset_issue: '{account} issued {amount} to {to}',
+            asset_fund_fee_pool: '{account} funded {asset} fee pool with {amount}',
+            asset_create: '{account} created the asset {asset}',
+            asset_update: '{account} updated the asset {asset}',
+            lifetime_upgrade_account: '{account} was upgraded to lifetime member',
+            annual_upgrade_account: '{account} was upgraded to annual member',
+            unlisted_by: '{lister} unlisted the account {listee}',
+            whitelisted_by: '{lister} whitelisted the account {listee}',
+            blacklisted_by: '{lister} blacklisted the account {listee}',
+            transfer_account: '{account} ownership transferred to {to}',
+            asset_update_feed_producers:
+        '{account} updated the feed producers for the asset {asset}',
+            asset_settle: '{account} requested settlement of {amount}',
+            asset_global_settle:
+        '{account} requested global settlement of {asset} at {price}',
+            witness_create: '{account} was upgraded to become a TrustNode candidate',
+            witness_update: '{account} update its candidate info',
+            witness_pay: 'Withdraw TrustNode pay to account',
+            witness_receive: 'Received witness from witness',
+            committee_member_update_global_parameters:
+        '{account} updated the global committee parameters',
+            committee_member_create: '{account} was upgraded to become a witness',
+            committee_member_update: '{account} update its committee info',
+            worker_create:
+        '{account} created a worker proposal with daily pay of {pay}',
+            override_transfer: '{issuer} transferred {amount} from {from} to {to}',
+            account_upgrade_merchant: '{account} was upgraded to merchant',
+            account_upgrade_datasource: '{account} was upgraded to datasource',
+            data_market_category_create:
+        '{issuer} created the market category {category}',
+            data_market_category_update:
+        '{issuer} passed the proposal and updated the market category {category}',
+            free_data_product_create:
+        '{issuer} created the free market product {product}',
+            free_data_product_update:
+        '{issuer} passed the proposal and updated the free market product {product}',
+            league_data_product_create:
+        '{issuer} created the alliance market product {product}',
+            league_data_product_update:
+        '{issuer} passed the proposal and updated the alliance market product named  {product}',
+            league_create: '{issuer} created the league {league}',
+            league_update:
+        '{issuer} passed the proposal and updated the league {league}',
+            data_transaction_create: '{account} created a data transaction',
+            data_transaction_update: '{account} updated a data transaction',
+            data_transaction_pay:
+        '{from} payed {amount} for data transaction to {to}',
+            account_upgrade_data_transaction_member:
+        '{account} was upgraded to data transaction confirm node',
+            data_transaction_datasource_upload:
+        '{account} confirmed an data upload from {datasource}',
+            data_transaction_datasource_validate_error:
+        '{account} returned an error when processing the data upload',
+            balance_lock: '{account} locked {amount} for loyalty program',
+            balance_unlock: '{account} complete a loyalty program',
+            proxy_transfer: '{from} sent {amount} to {to} delegated by {account}',
+            create_contract: '{account} created the contract {contract_name}',
+            call_contract:
+        '{account} call the contract {contract_name} \'s {method_name} method',
+            call_contract_and_transfer:
+        '{account} call the contract {contract_name} \'s {method_name} method and sent {amount} to contract account',
+            update_contract: '{account} updated the contract {contract_name}',
+            custom: '{account} created a custom operation',
+            trust_node_pledge_withdraw: '{account} withdrww trustnode margin',
+            inline_transfer:
+        'contract account {from} sent {amount} to {to} with memo {memo}',
+            inter_contract_call:
+        'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method',
+            inter_contract_call_and_transfer:
+        'contract account {sender_contract} call the contract account {contract_name} \'s {method_name} method and sent {amount} to contract account'
         }
     },
-    // account
+  // account
     account: {
         title: 'Account Information',
         empty: 'No record',
@@ -574,7 +597,7 @@ const locale = {
         locked_balance: 'Loyalty Program(GXC)',
         pledge_balance: 'TrustNode margin balance(GXC)'
     },
-    // asset
+  // asset
     asset: {
         title: 'Asset Information',
         empty: 'No record',
@@ -584,21 +607,26 @@ const locale = {
         current_supply: 'Current Supply',
         gxc: 'Actual supply of GXC = Current Supply - GXC managed by the Foundation'
     },
-    // about
+  // about
     about: {
         title: 'About GXChain Blockchain Explorer',
         version: 'Version',
         version_intro_title: 'About this version',
-        version_intro: 'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
+        version_intro:
+      'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
         project_intro_title: 'About this project',
-        project_intro: 'GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXC for your good job.',
+        project_intro:
+      'GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it\'s very welcome to commit your pull request, you\'ll probably be rewarded of some GXC for your good job.',
         github: 'Github',
         about_company: 'About GXChain',
-        company_intro1: 'GXChain is a fundamental blockchain for the global data economy, designed to build a trusted data internet of value.',
-        company_intro2: 'Benefiting from DPoS based Graphene underlying architecture, GXChain possesses functions including G-ID, GVM, BaaS and Blockcity, which are convenient for application development. ',
-        company_intro3: 'GXChain based DApp-Blockcity has more than two million verified users and provides abundant data for other DApps and strategic partners. GXChain launched decentralized data marketplace as well which is serving hundreds of Chinese enterprises. GXChain team independently developed its main net and launched it in June 2017. Based on decentralization, cryptography, and smart token design, GXChain provides a leading solution for the data economy by developing multiple trusted data modules. Data uploading, storage, computation, and exchange has been gradually realized with many commercialized applications.'
+        company_intro1:
+      'GXChain is a fundamental blockchain for the global data economy, designed to build a trusted data internet of value.',
+        company_intro2:
+      'Benefiting from DPoS based Graphene underlying architecture, GXChain possesses functions including G-ID, GVM, BaaS and Blockcity, which are convenient for application development. ',
+        company_intro3:
+      'GXChain based DApp-Blockcity has more than two million verified users and provides abundant data for other DApps and strategic partners. GXChain launched decentralized data marketplace as well which is serving hundreds of Chinese enterprises. GXChain team independently developed its main net and launched it in June 2017. Based on decentralization, cryptography, and smart token design, GXChain provides a leading solution for the data economy by developing multiple trusted data modules. Data uploading, storage, computation, and exchange has been gradually realized with many commercialized applications.'
     },
-    // api
+  // api
     api: {
         title: 'APIs',
         query_supply: 'Query Supply:',
@@ -613,7 +641,8 @@ const locale = {
         candidates: 'TrustNode Candidates:'
     },
     fee: {
-        mark: 'In the GXChain ecosystem every operation is assigned an individual fee.These fees are subject to change. However, they are defined solely by shareholder approval, thus each and every shareholder of the GXChain core asset has a say as to what the fees should be. If shareholders can be convinced to reduce a certain fee and consensus is reached, the fee will be reduced automatically by the blockchain. Changes of blockchain parameters are proposed by members of the committee. These members are voted by shareholders and improve the flexibility and reaction rate.',
+        mark:
+      'In the GXChain ecosystem every operation is assigned an individual fee.These fees are subject to change. However, they are defined solely by shareholder approval, thus each and every shareholder of the GXChain core asset has a say as to what the fees should be. If shareholders can be convinced to reduce a certain fee and consensus is reached, the fee will be reduced automatically by the blockchain. Changes of blockchain parameters are proposed by members of the committee. These members are voted by shareholders and improve the flexibility and reaction rate.',
         feeGroups: {
             general_row: 'General',
             asset_row: 'Asset-Specific',
@@ -714,7 +743,7 @@ const locale = {
             price_per_output: ''
         }
     },
-    // contract
+  // contract
     contract: {
         title: 'Call Contract',
         method: 'Method',
@@ -722,7 +751,7 @@ const locale = {
         params: 'Params',
         output: 'Output'
     },
-    // tools
+  // tools
     tools: {
         title: 'Tools',
         no_data: 'No Data',
@@ -730,7 +759,8 @@ const locale = {
         browser_not_support: 'Browser does not support',
         bulk_transfer: {
             title: ' Bulk Transfer',
-            des: 'Bulk transfer utility, suitable for community airdrops, batch awards',
+            des:
+        'Bulk transfer utility, suitable for community airdrops, batch awards',
             download_template: 'Download Template',
             import: 'Import',
             execute: 'Execute',
@@ -747,6 +777,11 @@ const locale = {
             transfer_processing: 'Transfer in progress',
             transfer_success: 'Success',
             transfer_fail: 'Fail'
+        },
+        key_gen: {
+            title: 'Key Generation',
+            des: 'Generate random keys for GXChain',
+            gen: 'Generate'
         }
     }
 };

@@ -1,62 +1,45 @@
 {
-    "extends": "standard",
-    "root": true,
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true
-        }
-    },
-    "env": {
-        "node": true,
-        "browser": true,
-        "es6": true,
-        "amd": true,
-        "jquery": true
-    },
-    "plugins": [
-        "html",
-        "vue",
-        "standard"
-    ],
-    "rules": {
-        "generator-star-spacing": 0,
-        "indent": "off",
-        "indent-legacy": "error",
-        "no-multi-spaces": [
-            "error",
-            {
-                "ignoreEOLComments": true
-            }
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always",
-            {
-                "omitLastInOneLineBlock": true
-            }
-        ],
-        "no-debugger": [
-            "error"
-        ],
-        "no-console": [
-            "off"
-        ],
-        "no-new": [
-            "off"
-        ],
-        "no-extend-native": [
-            "off"
-        ],
-        "camelcase": [
-            "off"
-        ],
-        "vue/jsx-uses-vars": 2
+  "extends": "standard",
+  "root": true,
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
     }
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true,
+    "amd": true,
+    "jquery": true
+  },
+  "plugins": ["html", "vue", "standard"],
+  "rules": {
+    "generator-star-spacing": 2,
+    "indent": "off",
+    "indent-legacy": "error",
+    "no-multi-spaces": [
+      "error",
+      {
+        "ignoreEOLComments": true
+      }
+    ],
+    "quotes": ["error", "single"],
+    "semi": [
+      "error",
+      "always",
+      {
+        "omitLastInOneLineBlock": true
+      }
+    ],
+    "no-debugger": ["error"],
+    "no-console": ["off"],
+    "no-new": ["off"],
+    "no-extend-native": ["off"],
+    "camelcase": ["off"],
+    "vue/jsx-uses-vars": 2
+  }
 }
