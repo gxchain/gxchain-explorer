@@ -767,7 +767,8 @@ const locale = {
         key_gen: {
             title: '公私钥生成',
             des: '生成随机的GXChain公私钥对和脑Key',
-            gen: '生成'
+            gen: '生成',
+            save: '保存'
         }
     }
 };

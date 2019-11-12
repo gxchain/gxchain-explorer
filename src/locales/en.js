@@ -781,7 +781,8 @@ const locale = {
         key_gen: {
             title: 'Key Generation',
             des: 'Generate random keys for GXChain',
-            gen: 'Generate'
+            gen: 'Generate',
+            save: 'Save'
         }
     }
 };

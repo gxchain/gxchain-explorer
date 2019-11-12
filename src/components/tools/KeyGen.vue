@@ -4,7 +4,16 @@
             <div class="col-md-12">
                 <bread-box :breadList="breadList"></bread-box>
                 <hr>
-                <pre>{{key}}<a class="pull-right" @click='generate'>{{$t("tools.key_gen.gen")}}</a></pre>
+                <a class="btn btn-primary"
+                   @click='generate'>{{$t("tools.key_gen.gen")}}</a>
+                <a class="btn btn-primary"
+                   @click='save'>{{$t("tools.key_gen.save")}}</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <br />
+                <pre>{{JSON.stringify(keypair,null,'  ')}}</pre>
             </div>
         </div>
     </div>
@@ -19,7 +28,7 @@ export default {
     data () {
         return {
             loading: true,
-            key: '',
+            keypair: {},
             breadList: [
                 {
                     key: 'tools.title',
@@ -44,8 +53,21 @@ export default {
     methods: {
         generate () {
             this.gxc.generateKey().then(resp => {
-                this.key = JSON.stringify(resp, null, ' ');
+                this.keypair = resp;
             });
+        },
+        save () {
+            let eleLink = document.createElement('a');
+            eleLink.download = `gxchain-keypair-${(new Date()).getTime()}.json`;
+            eleLink.style.display = 'none';
+            // The character content is converted to a blob address.
+            let blob = new Blob([JSON.stringify(this.keypair, null, '  ')]);
+            eleLink.href = URL.createObjectURL(blob);
+            // trigger click
+            document.body.appendChild(eleLink);
+            eleLink.click();
+            // remove
+            document.body.removeChild(eleLink);
         }
     }
 };
