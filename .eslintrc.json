@@ -19,8 +19,9 @@
   "plugins": ["html", "vue", "standard"],
   "rules": {
     "generator-star-spacing": 2,
-    "indent": "off",
-    "indent-legacy": "error",
+    "space-before-function-paren": ["error", "never"],
+    "indent": ["error", 2],
+    "curly": 0,
     "no-multi-spaces": [
       "error",
       {
@@ -28,13 +29,7 @@
       }
     ],
     "quotes": ["error", "single"],
-    "semi": [
-      "error",
-      "always",
-      {
-        "omitLastInOneLineBlock": true
-      }
-    ],
+    "semi": 0,
     "no-debugger": ["error"],
     "no-console": ["off"],
     "no-new": ["off"],
