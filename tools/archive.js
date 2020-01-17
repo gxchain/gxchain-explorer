@@ -17,33 +17,34 @@ spinner.start();
 
 var output = fs.createWriteStream(archiveFilePath);
 
-output.on('close', function () {
-    spinner.stop();
-    console.log(archive.pointer() + ' total bytes');
-    console.log('archiver has been finalized and the output file descriptor has closed.');
+output.on('close', function() {
+  spinner.stop();
+  console.log(archive.pointer() + ' total bytes');
+  console.log(
+    'archiver has been finalized and the output file descriptor has closed.'
+  );
 });
 
-archive.on('error', function (err) {
-    throw err;
+archive.on('error', function(err) {
+  throw err;
 });
 
 archive.pipe(output);
 
 // archive.directory('../node_modules', true, { date: new Date() });
-archive.directory('../build', true, {date: new Date()});
-archive.directory('../config', true, {date: new Date()});
-archive.directory('../server-dist', true, {date: new Date()});
-archive.directory('../dist', true, {date: new Date()});
+archive.directory('../build', true, { date: new Date() });
+archive.directory('../config', true, { date: new Date() });
+archive.directory('../server-dist', true, { date: new Date() });
+archive.directory('../dist', true, { date: new Date() });
 if (isTest) {
-    console.log('test env');
-    archive.file('../start-test.sh', {date: new Date(), name: 'start.sh'});
+  console.log('test env');
+  archive.file('../start-test.sh', { date: new Date(), name: 'start.sh' });
 } else if (isDev) {
-    console.log('dev env');
-    archive.file('../start-test.sh', {date: new Date(), name: 'start.sh'});
+  console.log('dev env');
+  archive.file('../start-test.sh', { date: new Date(), name: 'start.sh' });
+} else {
+  archive.file('../start.sh', { date: new Date(), name: 'start.sh' });
 }
-else {
-    archive.file('../start.sh', {date: new Date(), name: 'start.sh'});
-}
-archive.file('../package.json', {date: new Date(), name: 'package.json'});
+archive.file('../package.json', { date: new Date(), name: 'package.json' });
 
 archive.finalize();

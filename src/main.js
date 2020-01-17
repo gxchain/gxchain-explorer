@@ -12,12 +12,12 @@ import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
 
 Vue.use(VueTimeago, {
-    name: 'timeago',
-    locale: 'zh',
-    locales: {
-        'zh': require('vue-timeago/locales/zh-CN.json'),
-        'en': require('vue-timeago/locales/en-US.json')
-    }
+  name: 'timeago',
+  locale: 'zh',
+  locales: {
+    zh: require('vue-timeago/locales/zh-CN.json'),
+    en: require('vue-timeago/locales/en-US.json')
+  }
 });
 Vue.use(VueResource);
 Vue.component('Loading', Loading);
@@ -26,10 +26,10 @@ Vue.component('Chart', ECharts);
 Vue.config.productionTip = true;
 
 new Vue({
-    el: '#app',
-    i18n: locales,
-    router,
-    store,
-    template: '<App/>',
-    components: {App}
+  el: '#app',
+  i18n: locales,
+  router,
+  store,
+  template: '<App/>',
+  components: { App }
 });

@@ -1439,82 +1439,82 @@
     let ops = Object.keys(ChainTypes.operations);
 
     export default {
-        props: {
-            operation: {
-                type: Array
-            },
-            txid: {
-                type: String
+      props: {
+        operation: {
+          type: Array
+        },
+        txid: {
+          type: String
+        }
+      },
+      filters,
+      data() {
+        return {
+          items: {},
+          ops: ops,
+          op: this.operation
+        };
+      },
+      computed: {
+        ...mapGetters({
+          assetList: 'assetList'
+        })
+      },
+      mounted() {
+        if (ops[this.op[0]] === 'custom') {
+          this.utf8HexToStr(this.op[1].data);
+        }
+      },
+      methods: {
+        formatted_account(id, key) {
+          if (this.items[key]) {
+            return this.op[1][key];
+          }
+          this.items[key] = true;
+          fetch_account(id).then((res) => {
+            this.$set(this.op[1], key, res.body.account.name);
+          }).catch(ex => {
+            this.items[key] = false;
+            console.error(ex);
+          });
+          return this.op[1][key];
+        },
+        formatted_product(id, key) {
+          if (this.items[key]) {
+            return this.op[1][key];
+          }
+          this.items[key] = true;
+          fetch_product_by_chain(id).then(function(product) {
+            this.$set(this.op[1], key, product.product_name);
+          }).catch(ex => {
+            this.items[key] = false;
+            console.error(ex);
+          });
+          return this.op[1][key];
+        },
+        formatted_asset(asset_id, amount) {
+          return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
+        },
+        formatted_listing(new_listing) {
+          let account_listing = {
+            no_listing: 0,
+            white_listed: 1,
+            black_listed: 2,
+            white_and_black_listed: 1 | 2
+          };
+          let listings = Object.keys(account_listing);
+          for (let i = 0; i < listings.length; i++) {
+            if (account_listing[listings[i]] === new_listing) {
+              return 'transaction.trxTypes.account_whitelist.whitelist_states.' + listings[i];
             }
+          }
         },
-        filters,
-        data () {
-            return {
-                items: {},
-                ops: ops,
-                op: this.operation
-            };
-        },
-        computed: {
-            ...mapGetters({
-                assetList: 'assetList'
-            })
-        },
-        mounted () {
-            if (ops[this.op[0]] === 'custom') {
-                this.utf8HexToStr(this.op[1].data);
-            }
-        },
-        methods: {
-            formatted_account (id, key) {
-                if (this.items[key]) {
-                    return this.op[1][key];
-                }
-                this.items[key] = true;
-                fetch_account(id).then((res) => {
-                    this.$set(this.op[1], key, res.body.account.name);
-                }).catch(ex => {
-                    this.items[key] = false;
-                    console.error(ex);
-                });
-                return this.op[1][key];
-            },
-            formatted_product (id, key) {
-                if (this.items[key]) {
-                    return this.op[1][key];
-                }
-                this.items[key] = true;
-                fetch_product_by_chain(id).then(function (product) {
-                    this.$set(this.op[1], key, product.product_name);
-                }).catch(ex => {
-                    this.items[key] = false;
-                    console.error(ex);
-                });
-                return this.op[1][key];
-            },
-            formatted_asset (asset_id, amount) {
-                return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
-            },
-            formatted_listing (new_listing) {
-                let account_listing = {
-                    no_listing: 0,
-                    white_listed: 1,
-                    black_listed: 2,
-                    white_and_black_listed: 1 | 2
-                };
-                let listings = Object.keys(account_listing);
-                for (let i = 0; i < listings.length; i++) {
-                    if (account_listing[listings[i]] === new_listing) {
-                        return 'transaction.trxTypes.account_whitelist.whitelist_states.' + listings[i];
-                    }
-                }
-            },
-            writeUTF (str, isGetBytes) {
-                let back = [];
-                let byteSize = 0;
-                for (let i = 0; i < str.length; i++) {
-                    let code = str.charCodeAt(i);
-                    /* eslint-disable */
+        writeUTF(str, isGetBytes) {
+          let back = [];
+          let byteSize = 0;
+          for (let i = 0; i < str.length; i++) {
+            let code = str.charCodeAt(i);
+            /* eslint-disable */
                     if (0x00 <= code && code <= 0x7f) {
                         byteSize += 1;
                         back.push(code);
