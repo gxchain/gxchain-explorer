@@ -20,7 +20,7 @@
   "rules": {
     "generator-star-spacing": 2,
     "space-before-function-paren": ["error", "never"],
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "curly": 0,
     "no-multi-spaces": [
       "error",
