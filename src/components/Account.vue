@@ -360,320 +360,321 @@ import modalHistory from '@/components/modals/modal-history.vue';
 import modalCallContract from '@/components/modals/modal-call-contract.vue';
 
 export default {
-    data () {
-        return {
-            loading: true,
-            history_loading: true,
-            history_length: 10,
-            contract: {
-                params: [],
-                name: '',
-                method: '',
-                payable: false
-            },
-            abi: {
-                type: 'action'
-            },
-            code: {
-                type: 'wast',
-                wast: ''
-            },
-            current_table: {
-                headers: [],
-                name: '',
-                page: 0,
-                primary_key: null,
-                upper_bound: -1,
-                lower_bound: 0,
-                hasMore: false,
-                data: []
-            },
-            account_info: null,
-            latestTransactions: [],
-            isTrustNode: -1,
-            network: process.env.network,
-            ChainStore,
-            pageNo: 1,
-            pageSize: 10,
-            totalPage: 0,
-            contractInfo: {},
-            contractTab: 'ABI',
-            contractTabs: [
-                {
-                    key: 'ABI',
-                    icon: 'fa-angle-right',
-                    name: this.$t('account.contract.abi.title')
-                },
-                {
-                    key: 'CODE',
-                    icon: 'fa-code',
-                    name: this.$t('account.contract.code.title')
-                },
-                {
-                    key: 'DATABASE',
-                    icon: 'fa-database',
-                    name: this.$t('account.contract.database.title')
-                }
-            ]
-        };
-    },
-    filters: filters,
-    methods: {
-
-        ...mapActions({
-            setKeywords: 'setKeywords',
-            setContractInfoMap: 'setContractInfoMap'
-        }),
-        getWAST () {
-            this.$http.post('/api/wasm2wast', { wasm: this.account_info.code }).then(resp => {
-                this.code.wast = resp.body.wast;
-            }).catch(console.error);
+  data() {
+    return {
+      loading: true,
+      history_loading: true,
+      history_length: 10,
+      contract: {
+        params: [],
+        name: '',
+        method: '',
+        payable: false
+      },
+      abi: {
+        type: 'action'
+      },
+      code: {
+        type: 'wast',
+        wast: ''
+      },
+      current_table: {
+        headers: [],
+        name: '',
+        page: 0,
+        primary_key: null,
+        upper_bound: -1,
+        lower_bound: 0,
+        hasMore: false,
+        data: []
+      },
+      account_info: null,
+      latestTransactions: [],
+      isTrustNode: -1,
+      network: process.env.network,
+      ChainStore,
+      pageNo: 1,
+      pageSize: 10,
+      totalPage: 0,
+      contractInfo: {},
+      contractTab: 'ABI',
+      contractTabs: [
+        {
+          key: 'ABI',
+          icon: 'fa-angle-right',
+          name: this.$t('account.contract.abi.title')
         },
-        setContractParams (action) {
-            let actionDef = this.account_info.abi.structs.find(s => s.name === action.name);
-            this.$refs.modalCall.result = '';
-            this.contract.name = this.account_info.name;
-            this.contract.method = action.name;
-            this.contract.payable = action.payable;
-            this.contract.params = actionDef.fields.map(f => {
-                let field = { name: f.name, type: f.type, value: '' };
-                if (f.type === 'contract_asset') {
-                    field.value = {
-                        amount: 0,
-                        asset_id: 1
-                    };
-                }
-                return field;
-            });
-            $('#modal-call').modal();
+        {
+          key: 'CODE',
+          icon: 'fa-code',
+          name: this.$t('account.contract.code.title')
         },
-        sumLockedBalance (balances) {
-            var sum = 0;
-            balances.forEach(b => {
-                sum += Number(b.amount.amount);
-            });
-            return sum;
-        },
-        getActionDefine (action_name) {
-            let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
-            return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
-        },
-        getTableDefine (tables) {
-            return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
-        },
-        loadTableData (page) {
-            const pageSize = 10;
-            if (page < this.current_table.page) {
-                this.current_table.upper_bound = this.current_table.lower_bound + 1;
-            }
-            if (page === 0) {
-                this.current_table.upper_bound = -1;
-            }
-            Apis.instance().db_api().exec('get_table_rows_ex', [
-                this.account_info.name, // contract_name
-                this.current_table.name, // table_name
-                {
-                    lower_bound: 0,
-                    upper_bound: this.current_table.upper_bound,
-                    reverse: true,
-                    limit: pageSize
-                }
-            ]).then(resp => {
-                this.current_table.page = page;
-                if (resp.rows.length > 0) {
-                    this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
-                    this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
-                }
-                this.current_table.data = resp.rows.map(row => {
-                    let result = [];
-                    this.current_table.headers.forEach(h => {
-                        result.push(row[h]);
-                    });
-                    return result;
-                });
-                this.current_table.hasMore = resp.rows.length === pageSize;
-            });
-        },
-        loadTrustNodeInfo (id) {
-            if (this.trustNodeInfoLoading) {
-                return;
-            }
-            this.trustNodeInfoLoading = true;
-            Promise.all([
-                Apis.instance().db_api().exec('get_witness_by_account', [id]),
-                Apis.instance().db_api().exec('get_committee_member_by_account', [id])
-            ]).then(results => {
-                this.isTrustNode = results[0] && results[1];
-            });
-        },
-        onUpdate () {
-            try {
-                if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
-                    this.loading = false;
-                    return;
-                }
-            } catch (e) {
-                this.loading = false;
-            }
-            try {
-                this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
-            } catch (error) {
-            }
-            if (this.account_info && this.account_info.code && !this.code.wast) {
-                if (this.account_info.abi.tables.length > 0) {
-                    this.current_table.name = this.account_info.abi.tables[0].name;
-                }
-                this.getWAST();
-            }
-            if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
-                this.loadTrustNodeInfo(this.account_info.id);
-            }
-            if (this.account_info && this.account_info.balances) {
-                let ids = Object.keys(this.account_info.balances);
-                for (let i = 0; i < ids.length; i++) {
-                    let obj = {
-                        symbol: this.assetList[ids[i]].symbol,
-                        amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
-                    };
-                    this.account_info.balances[ids[i]] = obj;
-                }
-            }
-            if (this.account_info && this.account_info.history) {
-                let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
-                for (let i = length - 1; i >= 0; i--) {
-                    this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
-
-                    if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-                        let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
-                        let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
-                        let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
-                        this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
-                    }
-
-                    this.latestTransactions.unshift(this.account_info.history[i].op);
-                    if (this.latestTransactions.length > length) {
-                        this.latestTransactions.pop();
-                    }
-                }
-                this.history_loading = false;
-            }
-            this.loading = false;
-        },
-        getContractInfo (contract_name) {
-            let url = `https://raw.githubusercontent.com/gxchain/contractInfo/master/contracts/${contract_name}.json?v=${new Date().getTime()}`;
-            this.$http.get(url).then(resp => {
-                if (resp.status === 200) {
-                    this.contractInfo = resp.body;
-                    this.setContractInfoMap({ key: contract_name, content: resp.body });
-                }
-            }).catch(ex => {
-                this.setContractInfoMap({ key: contract_name, content: {} });
-            });
-        },
-        initContractInfo () {
-            this.contractInfo = this.contractInfoMap[this.$route.params.id_or_name];
-            if (!this.contractInfo) {
-                this.getContractInfo(this.$route.params.id_or_name);
-            }
-        },
-        selectSontractTab (key) {
-            this.contractTab = key;
+        {
+          key: 'DATABASE',
+          icon: 'fa-database',
+          name: this.$t('account.contract.database.title')
         }
+      ]
+    };
+  },
+  filters: filters,
+  methods: {
+    ...mapActions({
+      setKeywords: 'setKeywords',
+      setContractInfoMap: 'setContractInfoMap'
+    }),
+    getWAST() {
+      this.$http.post('/api/wasm2wast', { wasm: this.account_info.code }).then(resp => {
+        this.code.wast = resp.body.wast;
+      }).catch(console.error);
     },
-    watch: {
-        keywords (newVal, oldVal) {
-            if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
-            this.loading = true;
-            this.account_info = null;
-            this.current_table = {
-                headers: [],
-                name: '',
-                primary_key: null,
-                upper_bound: -1,
-                lower_bound: 0,
-                page: 0,
-                data: [],
-                hasMore: false
-            };
-            this.code.wast = '';
-            this.isTrustNode = -1;
-            this.pageNo = 1;
-            this.latestTransactions = [];
-            $('#modal-history').modal('hide');
-            this.onUpdate();
-            this.initContractInfo();
-        },
-        'current_table.name': function (val) {
-            if (val) {
-                this.account_info.abi.structs.forEach(s => {
-                    if (s.name === val) {
-                        this.current_table.headers = s.fields.map(f => f.name);
-                        this.current_table.primary_key = null;
-                        if (this.current_table.headers.length > 0) {
-                            this.current_table.primary_key = this.current_table.headers[0];
-                        }
-                        this.current_table.page = 0;
-                        this.current_table.upper_bound = -1;
-                        this.current_table.lower_bound = 0;
-                        this.loadTableData(0);
-                    }
-                });
-            }
-        },
-        '$route' () {
-            if (this.$route.params.id_or_name !== this.keywords) {
-                this.loading = true;
-                this.account_info = null;
-                this.latestTransactions = [];
-                this.setKeywords({ keywords: this.$route.params.id_or_name });
-            }
+    setContractParams(action) {
+      let actionDef = this.account_info.abi.structs.find(s => s.name === action.name);
+      this.$refs.modalCall.result = '';
+      this.contract.name = this.account_info.name;
+      this.contract.method = action.name;
+      this.contract.payable = action.payable;
+      this.contract.params = actionDef.fields.map(f => {
+        let field = { name: f.name, type: f.type, value: '' };
+        if (f.type === 'contract_asset') {
+          field.value = {
+            amount: 0,
+            asset_id: 1
+          };
         }
+        return field;
+      });
+      $('#modal-call').modal();
     },
-    computed: {
-
-        ...mapGetters({
-            keywords: 'keywords',
-            assetList: 'assetList',
-            gxc: 'gxc',
-            contractInfoMap: 'contractInfoMap'
-        }),
-
-        is_contract_account () {
-            return this.account_info && !!this.account_info.code;
-        },
-
-        account_type () {
-            let result = [];
-            if (this.account_info.code) {
-                return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
-            }
-            if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
-                result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
-            } else {
-                result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
-            }
-            if (this.isTrustNode) {
-                result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
-            }
-            return result.join('&nbsp;');
+    sumLockedBalance(balances) {
+      var sum = 0;
+      balances.forEach(b => {
+        sum += Number(b.amount.amount);
+      });
+      return sum;
+    },
+    getActionDefine(action_name) {
+      let actionDef = this.account_info.abi.structs.find(s => s.name === action_name);
+      return `void ${action_name}(${actionDef.fields.map(f => `${f.type} ${f.name}`).join(', ')})`;
+    },
+    getTableDefine(tables) {
+      return this.account_info.abi.structs.filter(s => tables.find(t => t.name === s.name));
+    },
+    loadTableData(page) {
+      const pageSize = 10;
+      if (page < this.current_table.page) {
+        this.current_table.upper_bound = this.current_table.lower_bound + 1;
+      }
+      if (page === 0) {
+        this.current_table.upper_bound = -1;
+      }
+      Apis.instance().db_api().exec('get_table_rows_ex', [
+        this.account_info.name, // contract_name
+        this.current_table.name, // table_name
+        {
+          lower_bound: 0,
+          upper_bound: this.current_table.upper_bound,
+          reverse: true,
+          limit: pageSize
         }
-    },
-    mounted () {
-        if (this.$route.params.id_or_name !== this.keywords) {
-            this.setKeywords({ keywords: this.$route.params.id_or_name });
+      ]).then(resp => {
+        this.current_table.page = page;
+        if (resp.rows.length > 0) {
+          this.current_table.lower_bound = resp.rows[0][this.current_table.primary_key];
+          this.current_table.upper_bound = resp.rows[resp.rows.length - 1][this.current_table.primary_key];
         }
-        ChainStore.subscribe(this.onUpdate);
-        this.onUpdate();
-        this.initContractInfo();
+        this.current_table.data = resp.rows.map(row => {
+          let result = [];
+          this.current_table.headers.forEach(h => {
+            result.push(row[h]);
+          });
+          return result;
+        });
+        this.current_table.hasMore = resp.rows.length === pageSize;
+      });
     },
-    destroyed () {
-        ChainStore.unsubscribe(this.onUpdate);
+    loadTrustNodeInfo(id) {
+      if (this.trustNodeInfoLoading) {
+        return;
+      }
+      this.trustNodeInfoLoading = true;
+      Promise.all([
+        Apis.instance().db_api().exec('get_witness_by_account', [id]),
+        Apis.instance().db_api().exec('get_committee_member_by_account', [id])
+      ]).then(results => {
+        this.isTrustNode = results[0] && results[1];
+      });
     },
-    components: {
-        HistoryOp,
-        modalHistory,
-        modalCallContract
+    onUpdate() {
+      try {
+        if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+          this.loading = false;
+          return;
+        }
+      } catch (e) {
+        this.loading = false;
+      }
+      try {
+        this.account_info = ChainStore.fetchFullAccount(this.$route.params.id_or_name).toJS();
+      } catch (error) {
+      }
+      if (this.account_info && this.account_info.code && !this.code.wast) {
+        if (this.account_info.abi.tables.length > 0) {
+          this.current_table.name = this.account_info.abi.tables[0].name;
+        }
+        this.getWAST();
+      }
+      if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
+        this.loadTrustNodeInfo(this.account_info.id);
+      }
+      if (this.account_info && this.account_info.balances) {
+        let ids = Object.keys(this.account_info.balances);
+        for (let i = 0; i < ids.length; i++) {
+          let obj = {
+            symbol: this.assetList[ids[i]].symbol,
+            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
+          };
+          this.account_info.balances[ids[i]] = obj;
+        }
+      }
+      if (this.account_info && this.account_info.history) {
+        let length = this.account_info.history.length < this.history_length ? this.account_info.history.length : this.history_length;
+        for (let i = length - 1; i >= 0; i--) {
+          this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
+
+          if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
+            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
+            let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
+            let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
+            this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
+          }
+          let op = this.account_info.history[i].op;
+          op._op_result = this.account_info.history[i].result;
+          console.log(op);
+          this.latestTransactions.unshift(op);
+          if (this.latestTransactions.length > length) {
+            this.latestTransactions.pop();
+          }
+        }
+        this.history_loading = false;
+      }
+      this.loading = false;
+    },
+    getContractInfo(contract_name) {
+      let url = `https://raw.githubusercontent.com/gxchain/contractInfo/master/contracts/${contract_name}.json?v=${new Date().getTime()}`;
+      this.$http.get(url).then(resp => {
+        if (resp.status === 200) {
+          this.contractInfo = resp.body;
+          this.setContractInfoMap({ key: contract_name, content: resp.body });
+        }
+      }).catch(ex => {
+        this.setContractInfoMap({ key: contract_name, content: {} });
+      });
+    },
+    initContractInfo() {
+      this.contractInfo = this.contractInfoMap[this.$route.params.id_or_name];
+      if (!this.contractInfo) {
+        this.getContractInfo(this.$route.params.id_or_name);
+      }
+    },
+    selectSontractTab(key) {
+      this.contractTab = key;
     }
+  },
+  watch: {
+    keywords(newVal, oldVal) {
+      if (!oldVal) return; // 防止页面刷新，触发2次onUpdate调用
+      this.loading = true;
+      this.account_info = null;
+      this.current_table = {
+        headers: [],
+        name: '',
+        primary_key: null,
+        upper_bound: -1,
+        lower_bound: 0,
+        page: 0,
+        data: [],
+        hasMore: false
+      };
+      this.code.wast = '';
+      this.isTrustNode = -1;
+      this.pageNo = 1;
+      this.latestTransactions = [];
+      $('#modal-history').modal('hide');
+      this.onUpdate();
+      this.initContractInfo();
+    },
+    'current_table.name': function(val) {
+      if (val) {
+        this.account_info.abi.structs.forEach(s => {
+          if (s.name === val) {
+            this.current_table.headers = s.fields.map(f => f.name);
+            this.current_table.primary_key = null;
+            if (this.current_table.headers.length > 0) {
+              this.current_table.primary_key = this.current_table.headers[0];
+            }
+            this.current_table.page = 0;
+            this.current_table.upper_bound = -1;
+            this.current_table.lower_bound = 0;
+            this.loadTableData(0);
+          }
+        });
+      }
+    },
+    '$route'() {
+      if (this.$route.params.id_or_name !== this.keywords) {
+        this.loading = true;
+        this.account_info = null;
+        this.latestTransactions = [];
+        this.setKeywords({ keywords: this.$route.params.id_or_name });
+      }
+    }
+  },
+  computed: {
+
+    ...mapGetters({
+      keywords: 'keywords',
+      assetList: 'assetList',
+      gxc: 'gxc',
+      contractInfoMap: 'contractInfoMap'
+    }),
+
+    is_contract_account() {
+      return this.account_info && !!this.account_info.code;
+    },
+
+    account_type() {
+      let result = [];
+      if (this.account_info.code) {
+        return `<span class="label label-warning">${this.$t('account.membership.contract')}</span>`;
+      }
+      if (this.account_info.membership_expiration_date !== '1970-01-01T00:00:00') {
+        result.push(`<span class="label label-warning">${this.$t('account.membership.lifetime')}</span>`);
+      } else {
+        result.push(`<span class="label label-default">${this.$t('account.membership.normal')}</span>`);
+      }
+      if (this.isTrustNode) {
+        result.push(`<span class="label label-success">${this.$t('account.membership.trustnode')}</span>`);
+      }
+      return result.join('&nbsp;');
+    }
+  },
+  mounted() {
+    if (this.$route.params.id_or_name !== this.keywords) {
+      this.setKeywords({ keywords: this.$route.params.id_or_name });
+    }
+    ChainStore.subscribe(this.onUpdate);
+    this.onUpdate();
+    this.initContractInfo();
+  },
+  destroyed() {
+    ChainStore.unsubscribe(this.onUpdate);
+  },
+  components: {
+    HistoryOp,
+    modalHistory,
+    modalCallContract
+  }
 };
 </script>
 

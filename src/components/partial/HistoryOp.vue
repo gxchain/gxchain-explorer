@@ -1077,6 +1077,47 @@
                 <span place="method_name">{{op[1].method_name}}</span>
             </i18n>
         </td>
+        <!-- 80:staking_create -->
+        <th v-if="ops[op[0]] == 'staking_create'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-success">{{$t('transaction.trxTypes.staking_create.name')}}</span>
+            </router-link>
+        </th>
+        <td v-if="ops[op[0]] == 'staking_create'">
+            <i18n path="transaction.operation.staking_create">
+                <router-link place="account"
+                             :to="{path: '/account/' + formatted_account(op[1].owner)}">
+                    {{ formatted_account(op[1].owner) }}
+                </router-link>
+                <router-link place="trust_node" :to="{path: '/account/' + formatted_account(op[1].trust_node)}">
+                    {{ formatted_account(op[1].trust_node) }}
+                </router-link>
+                <span place="days">{{op[1].staking_days}}</span>
+                <span place="amount">{{ formatted_asset(op[1].amount.asset_id, op[1].amount.amount) }}</span>
+            </i18n>
+        </td>
+        <!-- 81:staking_update -->
+        <th v-if="ops[op[0]] == 'staking_update'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-warning">{{$t('transaction.trxTypes.staking_update.name')}}</span>
+            </router-link>
+        </th>
+        <td v-if="ops[op[0]] == 'staking_update'">
+            <i18n path="transaction.operation.staking_update">
+                <router-link place="account"
+                             :to="{path: '/account/' + formatted_account(op[1].owner)}">
+                    {{ formatted_account(op[1].owner) }}
+                </router-link>
+                <router-link place="trust_node" :to="{path: '/account/' + formatted_account(op[1].trust_node)}">
+                    {{ formatted_account(op[1].trust_node) }}
+                </router-link>
+                <router-link place="original" :to="{path: '/account/' + formatted_account(op._op_result[1])}">
+                    {{ formatted_account(op._op_result[1]) }}
+                </router-link>
+            </i18n>
+        </td>
         <td align="right">
             <timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago>
         </td>
@@ -1087,82 +1128,92 @@
 <script>
 import { ChainTypes } from 'gxbjs/es';
 import HistoryProposedOp from './HistoryProposedOp.vue';
-import { deserialize_contract_params, fetch_account } from '@/services/CommonService';
+import { deserialize_contract_params, fetch_account, fetch_witness_account } from '@/services/CommonService';
 import filters from '@/filters';
 import { mapGetters } from 'vuex';
 
 let ops = Object.keys(ChainTypes.operations);
+console.log(ops);
 
 let account_listing = {
-    no_listing: 0,
-    white_listed: 1,
-    black_listed: 2,
-    white_and_black_listed: 1 | 2
+  no_listing: 0,
+  white_listed: 1,
+  black_listed: 2,
+  white_and_black_listed: 1 | 2
 };
+
 let listings = Object.keys(account_listing);
 export default {
-    props: {
-        latestTransactions: {
-            type: Array
-        },
-        parent: {
-            type: String
-        }
+  props: {
+    latestTransactions: {
+      type: Array
     },
-    filters,
-    data () {
-        return {
-            listings,
-            items: {},
-            account: {},
-            params: {},
-            ops: ops
-        };
-    },
-    computed: {
-        ...mapGetters({
-            assetList: 'assetList'
-        })
-    },
-    methods: {
-        formatted_account (id) {
-            if (!id) return;
-            if (this.items[id]) {
-                return this.account[id];
-            }
-            this.items[id] = true;
-            fetch_account(id).then((res) => {
-                if (res.body.account) {
-                    this.$set(this.account, id, res.body.account.name);
-                }
-            }).catch(ex => {
-                this.items[id] = false;
-                console.error(ex);
-            });
-            return this.account[id];
-        },
-        formatted_asset (asset_id, amount) {
-            return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
-        },
-        formatted_params (contract, method, data) {
-            if (this.items[`${contract}_${method}_${data}`]) {
-                return this.params[`${contract}_${method}_${data}`];
-            }
-            this.items[`${contract}_${method}_${data}`] = true;
-            deserialize_contract_params(contract, method, data).then(result => {
-                this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
-            }).catch(ex => {
-                this.items[`${contract}_${method}_${data}`] = false;
-                console.error(ex);
-            });
-            return this.params[`${contract}_${method}_${data}`];
-        }
-    },
-    updated () {
-        $('[data-toggle="tooltip"]').tooltip();
-    },
-    components: {
-        HistoryProposedOp: HistoryProposedOp
+    parent: {
+      type: String
     }
+  },
+  filters,
+  data() {
+    return {
+      listings,
+      items: {},
+      account: {},
+      params: {},
+      ops: ops
+    };
+  },
+  computed: {
+    ...mapGetters({
+      assetList: 'assetList'
+    })
+  },
+  methods: {
+    formatted_account(id) {
+      if (!id) return;
+      if (this.items[id]) {
+        return this.account[id];
+      }
+      this.items[id] = true;
+      var ids = id.split('.');
+      let task = null;
+
+      if (ids.length === 3 && ids[1] === '6') {
+        task = fetch_witness_account(id);
+      } else {
+        task = fetch_account(id)
+      }
+      task.then((res) => {
+        if (res.body.account) {
+          this.$set(this.account, id, res.body.account.name);
+        }
+      }).catch(ex => {
+        this.items[id] = false;
+        console.error(ex);
+      });
+      return this.account[id];
+    },
+    formatted_asset(asset_id, amount) {
+      return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
+    },
+    formatted_params(contract, method, data) {
+      if (this.items[`${contract}_${method}_${data}`]) {
+        return this.params[`${contract}_${method}_${data}`];
+      }
+      this.items[`${contract}_${method}_${data}`] = true;
+      deserialize_contract_params(contract, method, data).then(result => {
+        this.$set(this.params, `${contract}_${method}_${data}`, JSON.stringify(result));
+      }).catch(ex => {
+        this.items[`${contract}_${method}_${data}`] = false;
+        console.error(ex);
+      });
+      return this.params[`${contract}_${method}_${data}`];
+    }
+  },
+  updated() {
+    $('[data-toggle="tooltip"]').tooltip();
+  },
+  components: {
+    HistoryProposedOp: HistoryProposedOp
+  }
 };
 </script>
