@@ -1147,7 +1147,7 @@
                              :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
                     {{ formatted_account(op[1].witness_account) }}
                 </router-link>
-                <span place="rate">{{(op[1].commission_rate/1000).toFixed(2)}}%</span>
+                <span place="rate">{{(op[1].commission_rate/10).toFixed(1)}}%</span>
             </i18n>
         </td>
         <!-- 84:witness_unbanned -->

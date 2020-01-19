@@ -1929,7 +1929,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.witness_set_commission.rate')}}</th>
-                            <td align="right">{{(op[1].commission_rate/1000).toFixed(2)}}</td>
+                            <td align="right">{{(op[1].commission_rate/10).toFixed(1)}}</td>
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.witness_set_commission.fee')}}</th>
