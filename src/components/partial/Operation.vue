@@ -1819,6 +1819,74 @@
                             <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
                         </tr>
                         </tbody>
+                        <!-- 80:staking_create -->
+                        <tbody v-if="ops[op[0]] == 'staking_create'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-success">{{$t('transaction.trxTypes.staking_create.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_create.owner')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].owner}">
+                                    {{formatted_account(op[1].owner, 'owner')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_create.trust_node')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + formatted_account(op[1].trust_node)}">
+                                    {{formatted_account(op[1].trust_node, 'trust_node')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_create.amount')}}</th>
+                            <td align="right">{{formatted_asset(op[1].amount.asset_id, op[1].amount.amount)}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_create.days')}}</th>
+                            <td align="right">{{op[1].staking_days}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 81:staking_update -->
+                        <tbody v-if="ops[op[0]] == 'staking_update'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-warning">{{$t('transaction.trxTypes.staking_update.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_update.owner')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].owner}">
+                                    {{formatted_account(op[1].owner, 'owner')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_update.trust_node')}}</th>
+                            <td align="right">
+                                <span style="text-decoration: line-through">{{formatted_account(op_result[1])}}</span>
+                                <router-link :to="{path: '/account/' + formatted_account(op[1].trust_node)}">
+                                    {{formatted_account(op[1].trust_node, 'trust_node')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.inline_transfer.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -1831,7 +1899,7 @@
     import ProposedOp from './ProposedOp.vue';
     import {
       deserialize_contract_params, fetch_account,
-      fetch_product_by_chain
+      fetch_product_by_chain, fetch_witness_account
     } from '@/services/CommonService';
     import filters from '@/filters';
     import { mapGetters } from 'vuex';
@@ -1848,10 +1916,14 @@
         },
         txid: {
           type: String
+        },
+        op_result: {
+          type: Array
         }
       },
       filters,
       data() {
+        console.log(this.operation);
         return {
           items: {},
           ops: ops,
@@ -1872,12 +1944,23 @@
       },
       methods: {
         formatted_account(id) {
+          if (!id) return;
           if (this.items[id]) {
             return this.account[id];
           }
           this.items[id] = true;
-          fetch_account(id).then((res) => {
-            this.$set(this.account, id, res.body.account.name);
+          var ids = id.split('.');
+          let task = null;
+
+          if (ids.length === 3 && ids[1] === '6') {
+            task = fetch_witness_account(id);
+          } else {
+            task = fetch_account(id)
+          }
+          task.then((res) => {
+            if (res.body.account) {
+              this.$set(this.account, id, res.body.account.name);
+            }
           }).catch(ex => {
             this.items[id] = false;
             console.error(ex);

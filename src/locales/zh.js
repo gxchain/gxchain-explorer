@@ -446,10 +446,18 @@ const locale = {
         amount: '发送资产'
       },
       staking_create: {
-        name: '创建抵押'
+        name: '创建抵押',
+        owner: '账户',
+        trust_node: '公信节点',
+        fee: '手续费',
+        amount: '数量',
+        days: '天数'
       },
       staking_update: {
-        name: '更新抵押'
+        name: '更新抵押',
+        owner: '账户',
+        trust_node: '公信节点',
+        fee: '手续费'
       },
       staking_claim: {
         name: '取回抵押'

@@ -41,6 +41,7 @@
         :key="index"
         :id="index"
         :operation="operation"
+        :op_result="transaction.operation_results[index]"
       ></Operation>
     </div>
 
