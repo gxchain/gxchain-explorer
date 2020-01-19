@@ -82,7 +82,7 @@ export default {
           const item = [];
           item[0] = respList[i].operation_type;
           item[1] = respList[i].operation_history.op_object;
-          item[1]._op_result = JSON.parse(respList[i].operation_history.operation_result || '{}');
+          item['_op_result'] = JSON.parse(respList[i].operation_history.operation_result || '{}');
           if (item[1].hasOwnProperty('fee')) {
             item[1].fee.amount = item[1].fee.amount_str;
           }
@@ -92,6 +92,9 @@ export default {
           }
           if (item[1].hasOwnProperty('memo_')) {
             item[1].memo = item[1].memo_;
+          }
+          if (item[1].hasOwnProperty('owner_')) {
+            item[1].owner = item[1].owner_;
           }
           if (item[1].hasOwnProperty('proposed_ops_str')) {
             item[1].proposed_ops = JSON.parse(item[1].proposed_ops_str);

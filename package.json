@@ -4,7 +4,7 @@
   "description": "gxchain explorer",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js --exec babel-node --watch server",
+    "start": "test=1 nodemon server/index.js --exec babel-node --watch server",
     "clear": "rm -rf dist server-dist",
     "prebuild": "npm run clear",
     "build": "webpack --progress --hide-modules --config build/webpack.server.config.js && node build/build.js",

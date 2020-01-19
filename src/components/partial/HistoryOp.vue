@@ -1133,8 +1133,6 @@ import filters from '@/filters';
 import { mapGetters } from 'vuex';
 
 let ops = Object.keys(ChainTypes.operations);
-console.log(ops);
-
 let account_listing = {
   no_listing: 0,
   white_listed: 1,

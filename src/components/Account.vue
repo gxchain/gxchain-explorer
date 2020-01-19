@@ -550,7 +550,6 @@ export default {
           }
           let op = this.account_info.history[i].op;
           op._op_result = this.account_info.history[i].result;
-          console.log(op);
           this.latestTransactions.unshift(op);
           if (this.latestTransactions.length > length) {
             this.latestTransactions.pop();
