@@ -460,7 +460,17 @@ const locale = {
         fee: '手续费'
       },
       staking_claim: {
-        name: '取回抵押'
+        name: '取回抵押',
+        owner: '账户',
+        amount: '数量'
+      },
+      witness_set_commission: {
+        name: '设置分红比例',
+        account: '节点账户',
+        rate: '比例'
+      },
+      witness_unbanned: {
+        name: '离开小黑屋'
       },
       status_states: {
         0: '未发布',
@@ -554,7 +564,9 @@ const locale = {
         '{account} 创建了抵押投票: {amount} 给 {trust_node}, 抵押时间: {days} 天',
       staking_update:
         '{account} 修改了抵押投票的对象, 从{original}修改为{trust_node}',
-      staking_claim: '{account} 取回了一笔抵押 {amount}'
+      staking_claim: '{account} 取回了一笔抵押 {amount}',
+      witness_set_commission: '{account} 设置得票奖励分成比例 {rate}',
+      witness_unbanned: '{account} 离开了小黑屋'
     }
   },
   // account
@@ -736,7 +748,12 @@ const locale = {
       update_contract: '更新合约',
       trust_node_pledge_withdraw: '公信节点保证金赎回',
       inline_transfer: '合约内转账',
-      inter_contract_call: '跨合约调用'
+      inter_contract_call: '跨合约调用',
+      staking_create: '创建抵押',
+      staking_update: '更新抵押',
+      staking_claim: '取回抵押',
+      witness_set_commission: '设置分红比例',
+      witness_unbanned: '离开小黑屋'
     },
     feeTypes: {
       _none: '免费',

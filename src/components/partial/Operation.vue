@@ -1852,7 +1852,7 @@
                             <td align="right">{{op[1].staking_days}}</td>
                         </tr>
                         <tr>
-                            <th>{{$t('transaction.trxTypes.inline_transfer.fee')}}</th>
+                            <th>{{$t('transaction.trxTypes.staking_create.fee')}}</th>
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>
@@ -1881,9 +1881,79 @@
                                 </router-link>
                             </td>
                         </tr>
-                        
                         <tr>
-                            <th>{{$t('transaction.trxTypes.inline_transfer.fee')}}</th>
+                            <th>{{$t('transaction.trxTypes.staking_update.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 82:staking_claim -->
+                        <tbody v-if="ops[op[0]] == 'staking_claim'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-success">{{$t('transaction.trxTypes.staking_claim.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_claim.owner')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].owner}">
+                                    {{formatted_account(op[1].owner, 'owner')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_claim.amount')}}</th>
+                            <td align="right">{{formatted_asset('1.3.1', op_result[1])}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.staking_claim.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 83:witness_set_commission -->
+                        <tbody v-if="ops[op[0]] == 'witness_set_commission'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-warning">{{$t('transaction.trxTypes.witness_set_commission.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_set_commission.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].witness_account}">
+                                    {{formatted_account(op[1].witness_account, 'witness_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_set_commission.rate')}}</th>
+                            <td align="right">{{(op.[1].commission_rate/1000).toFixed(2))}}</td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_set_commission.fee')}}</th>
+                            <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
+                        </tr>
+                        </tbody>
+                        <!-- 84:witness_unbanned -->
+                        <tbody v-if="ops[op[0]] == 'witness_unbanned'">
+                        <tr>
+                            <th>{{$t('transaction.trx_type')}}</th>
+                            <td align="right"><span
+                                    class="label label-warning">{{$t('transaction.trxTypes.witness_unbanned.name')}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_unbanned.account')}}</th>
+                            <td align="right">
+                                <router-link :to="{path: '/account/' + op[1].witness_account}">
+                                    {{formatted_account(op[1].witness_account, 'witness_account')}}
+                                </router-link>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{$t('transaction.trxTypes.witness_unbanned.fee')}}</th>
                             <td align="right">{{formatted_asset(op[1].fee.asset_id, op[1].fee.amount)}}</td>
                         </tr>
                         </tbody>

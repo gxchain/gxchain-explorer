@@ -449,13 +449,31 @@ const locale = {
         amount: 'Sending Assets'
       },
       staking_create: {
-        name: 'Staking Create'
+        name: 'Staking Create',
+        owner: 'Account',
+        trust_node: 'TrustNode',
+        fee: 'Fee',
+        amount: 'Amount',
+        days: 'Days'
       },
       staking_update: {
-        name: 'Staking Update'
+        name: 'Staking Update',
+        owner: 'Account',
+        trust_node: 'TrustNode',
+        fee: 'Fee'
       },
       staking_claim: {
-        name: 'Staking Claim'
+        name: 'Staking Claim',
+        owner: 'Account',
+        amount: 'Amount'
+      },
+      witness_set_commission: {
+        name: 'TrustNode Set Commission',
+        account: 'Account',
+        rate: 'Rate'
+      },
+      witness_unbanned: {
+        name: 'TrustNode Unbanned'
       },
       status_states: {
         0: 'Unpublished',
@@ -559,7 +577,9 @@ const locale = {
       staking_create: '{account} staking {amount} for {days} to {trust_node}',
       staking_update:
         '{account} updated a staking record from {original} to {trust_node}',
-      staking_claim: '{account} claimed a staking {amount}'
+      staking_claim: '{account} claimed a staking {amount}',
+      witness_set_commission: '{account} set commission rates {rate}',
+      witness_unbanned: '{account} restarted and unbanded'
     }
   },
   // account
@@ -741,7 +761,12 @@ const locale = {
       update_contract: 'Update Contract',
       trust_node_pledge_withdraw: 'TrustNode margin Withdraw',
       inline_transfer: 'Inline Transfer',
-      inter_contract_call: 'Inter Contract Call'
+      inter_contract_call: 'Inter Contract Call',
+      staking_create: 'Staking Create',
+      staking_update: 'Staking Update',
+      staking_claim: 'Staking Claim',
+      witness_set_commission: 'TrustNode Set Commission',
+      witness_unbanned: 'Witness Unbannded'
     },
     feeTypes: {
       _none: 'Free of Charge',

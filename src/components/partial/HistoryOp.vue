@@ -1118,6 +1118,54 @@
                 </router-link>
             </i18n>
         </td>
+        <!-- 82:staking_claim -->
+        <th v-if="ops[op[0]] == 'staking_claim'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-success">{{$t('transaction.trxTypes.staking_claim.name')}}</span>
+            </router-link>
+        </th>
+        <td v-if="ops[op[0]] == 'staking_claim'">
+            <i18n path="transaction.operation.staking_claim">
+                <router-link place="account"
+                             :to="{path: '/account/' + formatted_account(op[1].owner)}">
+                    {{ formatted_account(op[1].owner) }}
+                </router-link>
+                <span place="amount">{{ formatted_asset('1.3.1', op._op_result[1]) }}</span>
+            </i18n>
+        </td>
+        <!-- 83:witness_set_commission -->
+        <th v-if="ops[op[0]] == 'witness_set_commission'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-warning">{{$t('transaction.trxTypes.witness_set_commission.name')}}</span>
+            </router-link>
+        </th>
+        <td v-if="ops[op[0]] == 'witness_set_commission'">
+            <i18n path="transaction.operation.witness_set_commission">
+                <router-link place="account"
+                             :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
+                    {{ formatted_account(op[1].witness_account) }}
+                </router-link>
+                <span place="rate">{{(op.[1].commission_rate/1000).toFixed(2)}}%</span>
+            </i18n>
+        </td>
+        <!-- 84:witness_unbanned -->
+        <th v-if="ops[op[0]] == 'witness_unbanned'">
+            <router-link :to="{path: '/block/' + op['block_id']}">
+        <span data-toggle="tooltip" data-placement="bottom" :title="'显示收录交易的区块信息 #' + op['block_id']"
+              class="label label-success">{{$t('transaction.trxTypes.witness_unbanned.name')}}</span>
+            </router-link>
+        </th>
+        <td v-if="ops[op[0]] == 'witness_unbanned'">
+            <i18n path="transaction.operation.witness_unbanned">
+                <router-link place="account"
+                             :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
+                    {{ formatted_account(op[1].witness_account) }}
+                </router-link>
+            </i18n>
+        </td>
+
         <td align="right">
             <timeago :since="op.timestamp" :auto-update="1" :locale="$t('header.flag')"></timeago>
         </td>
