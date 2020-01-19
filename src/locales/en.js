@@ -632,7 +632,14 @@ const locale = {
       empty: 'No Assets'
     },
     locked_balance: 'Loyalty Program(GXC)',
-    pledge_balance: 'TrustNode margin balance(GXC)'
+    pledge_balance: 'TrustNode margin balance(GXC)',
+    staking: {
+      title: 'Stakings',
+      no_record: 'No Record',
+      trust_node: 'TrustNode',
+      amount: 'Amount',
+      period: 'Period'
+    }
   },
   // asset
   asset: {

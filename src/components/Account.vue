@@ -307,6 +307,42 @@
                     </div>
                 </div>
             </div>
+            <!--Stakings-->
+            <div class="row">
+                <div class="col-md-12">
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="fa fa-fw fa-history"></span>&nbsp;{{$t('account.staking.title')}}
+                        </div>
+                        <div class="panel-body no-padding">
+                            <Loading v-show="staking_loading"></Loading>
+                            <div class="table-responsive no-margin" v-show="!staking_loading">
+                                <table class="table table-bordered table-striped no-margin">
+                                    <thead>
+                                      <tr>
+                                        <th>{{$t('account.staking.trust_node')}}</th>
+                                        <th class='right'>{{$t('account.staking.amount')}}</th>
+                                        <th class='right'>{{$t('account.staking.period')}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="staking in stakings" :class="{'success': !staking.is_valid}">
+                                      <td>
+                                      <router-link :to="{path: '/account/' + formatted_account(staking.trust_node)}">{{formatted_account(staking.trust_node)}}</router-link>
+                                      </td>
+                                      <td class='right'>{{formatted_asset(staking.amount.asset_id,staking.amount.amount)}}</td>
+                                      <td class='right'>
+                                      {{new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss')}} - 
+                                      {{new Date(new Date(staking.create_date_time + 'Z').getTime()+staking.staking_days*3600*1000).format('yyyy-MM-dd hh:mm:ss')}}
+                                      </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>        
+                        </div>
+                </div>
+                </div>
+            </div>
             <!--Recent Transactions-->
             <div class="row">
                 <div class="col-md-12">
@@ -354,7 +390,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { ChainStore } from 'gxbjs';
 import { Apis } from 'gxbjs-ws';
 import filters from '@/filters';
-import { calc_block_time } from '@/services/CommonService';
+import { calc_block_time, fetch_witness_account, fetch_account } from '@/services/CommonService';
 import HistoryOp from './partial/HistoryOp.vue';
 import modalHistory from '@/components/modals/modal-history.vue';
 import modalCallContract from '@/components/modals/modal-call-contract.vue';
@@ -364,7 +400,11 @@ export default {
     return {
       loading: true,
       history_loading: true,
+      staking_loading: true,
+      stakings: [],
       history_length: 10,
+      items: {},
+      account: {},
       contract: {
         params: [],
         name: '',
@@ -503,7 +543,44 @@ export default {
         Apis.instance().db_api().exec('get_committee_member_by_account', [id])
       ]).then(results => {
         this.isTrustNode = results[0] && results[1];
+        this.trustNodeInfoLoading = false;
       });
+    },
+    loadStakings(id) {
+      Apis.instance().db_api().exec('get_staking_object', [id]).then(resp => {
+        this.stakings = resp;
+        this.staking_loading = false;
+      }).catch(ex => {
+        console.error('get_staking_objetcs failed', ex);
+        this.staking_loading = false;
+      })
+    },
+    formatted_asset(asset_id, amount) {
+      return filters.number((amount / 100000).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
+    },
+    formatted_account(id) {
+      if (!id) return;
+      if (this.items[id]) {
+        return this.account[id];
+      }
+      this.items[id] = true;
+      var ids = id.split('.');
+      let task = null;
+
+      if (ids.length === 3 && ids[1] === '6') {
+        task = fetch_witness_account(id);
+      } else {
+        task = fetch_account(id)
+      }
+      task.then((res) => {
+        if (res.body.account) {
+          this.$set(this.account, id, res.body.account.name);
+        }
+      }).catch(ex => {
+        this.items[id] = false;
+        console.error(ex);
+      });
+      return this.account[id];
     },
     onUpdate() {
       try {
@@ -523,6 +600,9 @@ export default {
           this.current_table.name = this.account_info.abi.tables[0].name;
         }
         this.getWAST();
+      }
+      if (this.account_info && this.account_info.id) {
+        this.loadStakings(this.account_info.id);
       }
       if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
         this.loadTrustNodeInfo(this.account_info.id);

@@ -619,7 +619,14 @@ const locale = {
       empty: '无资产'
     },
     locked_balance: '锁仓余额(GXC)',
-    pledge_balance: '保证金余额(GXC)'
+    pledge_balance: '保证金余额(GXC)',
+    staking: {
+      title: 'Staking记录',
+      no_record: '没有Staking记录',
+      trust_node: '节点',
+      amount: '数量',
+      period: '时间'
+    }
   },
   // asset
   asset: {
