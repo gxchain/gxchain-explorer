@@ -462,15 +462,18 @@ const locale = {
       staking_claim: {
         name: '取回抵押',
         owner: '账户',
-        amount: '数量'
+        amount: '数量',
+        fee: '手续费'
       },
       witness_set_commission: {
         name: '设置分红比例',
         account: '节点账户',
-        rate: '比例'
+        rate: '比例',
+        fee: '手续费'
       },
       witness_unbanned: {
-        name: '离开小黑屋'
+        name: '离开小黑屋',
+        fee: '手续费'
       },
       status_states: {
         0: '未发布',

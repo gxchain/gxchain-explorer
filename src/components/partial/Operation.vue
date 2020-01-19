@@ -1904,7 +1904,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.staking_claim.amount')}}</th>
-                            <td align="right">{{formatted_asset('1.3.1', op_result[1])}}</td>
+                            <td align="right">{{formatted_asset(op_result[1].asset_id, op_result[1].amount)}}</td>
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.staking_claim.fee')}}</th>
@@ -1929,7 +1929,7 @@
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.witness_set_commission.rate')}}</th>
-                            <td align="right">{{(op.[1].commission_rate/1000).toFixed(2))}}</td>
+                            <td align="right">{{(op[1].commission_rate/1000).toFixed(2)}}</td>
                         </tr>
                         <tr>
                             <th>{{$t('transaction.trxTypes.witness_set_commission.fee')}}</th>

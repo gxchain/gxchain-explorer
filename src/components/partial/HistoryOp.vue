@@ -1131,7 +1131,7 @@
                              :to="{path: '/account/' + formatted_account(op[1].owner)}">
                     {{ formatted_account(op[1].owner) }}
                 </router-link>
-                <span place="amount">{{ formatted_asset('1.3.1', op._op_result[1]) }}</span>
+                <span place="amount">{{ formatted_asset(op._op_result[1].asset_id, op._op_result[1].amount) }}</span>
             </i18n>
         </td>
         <!-- 83:witness_set_commission -->
@@ -1147,7 +1147,7 @@
                              :to="{path: '/account/' + formatted_account(op[1].witness_account)}">
                     {{ formatted_account(op[1].witness_account) }}
                 </router-link>
-                <span place="rate">{{(op.[1].commission_rate/1000).toFixed(2)}}%</span>
+                <span place="rate">{{(op[1].commission_rate/1000).toFixed(2)}}%</span>
             </i18n>
         </td>
         <!-- 84:witness_unbanned -->

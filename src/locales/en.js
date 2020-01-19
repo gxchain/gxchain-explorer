@@ -465,15 +465,18 @@ const locale = {
       staking_claim: {
         name: 'Staking Claim',
         owner: 'Account',
-        amount: 'Amount'
+        amount: 'Amount',
+        fee: 'Fee'
       },
       witness_set_commission: {
         name: 'TrustNode Set Commission',
         account: 'Account',
-        rate: 'Rate'
+        rate: 'Rate',
+        fee: 'Fee'
       },
       witness_unbanned: {
-        name: 'TrustNode Unbanned'
+        name: 'TrustNode Unbanned',
+        fee: 'Fee'
       },
       status_states: {
         0: 'Unpublished',
