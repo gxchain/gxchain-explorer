@@ -326,7 +326,7 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="staking in stakings" :class="{'success': !staking.is_valid}">
+                                    <tr v-if="stakings.length>0" v-for="staking in stakings" :class="{'success': !staking.is_valid}">
                                       <td>
                                       <router-link :to="{path: '/account/' + formatted_account(staking.trust_node)}">{{formatted_account(staking.trust_node)}}</router-link>
                                       </td>
@@ -335,6 +335,11 @@
                                       {{new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss')}} - 
                                       {{new Date(new Date(staking.create_date_time + 'Z').getTime()+staking.staking_days*3600*1000).format('yyyy-MM-dd hh:mm:ss')}}
                                       </td>
+                                    </tr>
+                                    <tr v-if="stakings.length==0">
+                                    <td class="text-center" colspan="3">
+                                      <small>{{$t('account.staking.no_record')}}</small>
+                                    </td>
                                     </tr>
                                     </tbody>
                                 </table>
