@@ -628,6 +628,8 @@ const locale = {
       no_record: '没有Staking记录',
       trust_node: '节点',
       amount: '数量',
+      days: '天数',
+      weight: '权重',
       period: '时间'
     }
   },

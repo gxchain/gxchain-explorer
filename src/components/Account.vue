@@ -322,6 +322,8 @@
                                       <tr>
                                         <th>{{$t('account.staking.trust_node')}}</th>
                                         <th class='right'>{{$t('account.staking.amount')}}</th>
+                                        <th class='right'>{{$t('account.staking.weight')}}</th>
+                                        <th class='right'>{{$t('account.staking.days')}}</th>
                                         <th class='right'>{{$t('account.staking.period')}}</th>
                                       </tr>
                                     </thead>
@@ -331,13 +333,15 @@
                                       <router-link :to="{path: '/account/' + formatted_account(staking.trust_node)}">{{formatted_account(staking.trust_node)}}</router-link>
                                       </td>
                                       <td class='right'>{{formatted_asset(staking.amount.asset_id,staking.amount.amount)}}</td>
+                                      <td class='right'>{{staking.weight}}</td>
+                                      <td class='right'>{{staking.staking_days}}</td>
                                       <td class='right'>
                                       {{new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss')}} - 
                                       {{new Date(new Date(staking.create_date_time + 'Z').getTime()+staking.staking_days*3600*1000).format('yyyy-MM-dd hh:mm:ss')}}
                                       </td>
                                     </tr>
                                     <tr v-if="stakings.length==0">
-                                    <td class="text-center" colspan="3">
+                                    <td class="text-center" colspan="5">
                                       <small>{{$t('account.staking.no_record')}}</small>
                                     </td>
                                     </tr>
@@ -376,6 +380,8 @@
                                       <tr>
                                         <th>{{$t('account.staking.trust_node')}}</th>
                                         <th class='right'>{{$t('account.staking.amount')}}</th>
+                                        <th class='right'>{{$t('account.staking.weight')}}</th>
+                                        <th class='right'>{{$t('account.staking.days')}}</th>
                                         <th class='right'>{{$t('account.staking.period')}}</th>
                                       </tr>
                                     </thead>
@@ -385,13 +391,15 @@
                                       <router-link :to="{path: '/account/' + formatted_account(staking.owner)}">{{formatted_account(staking.owner)}}</router-link>
                                       </td>
                                       <td class='right'>{{formatted_asset(staking.amount.asset_id,staking.amount.amount)}}</td>
+                                      <td class='right'>{{staking.weight}}</td>
+                                      <td class='right'>{{staking.staking_days}}</td>
                                       <td class='right'>
                                       {{new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss')}} - 
                                       {{new Date(new Date(staking.create_date_time + 'Z').getTime()+staking.staking_days*3600*1000).format('yyyy-MM-dd hh:mm:ss')}}
                                       </td>
                                     </tr>
                                     <tr v-if="awarded_stakings.records.length==0">
-                                    <td class="text-center" colspan="3">
+                                    <td class="text-center" colspan="5">
                                       <small>{{$t('account.staking.no_record')}}</small>
                                     </td>
                                     </tr>

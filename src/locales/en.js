@@ -641,6 +641,8 @@ const locale = {
       no_record: 'No Record',
       trust_node: 'TrustNode',
       amount: 'Amount',
+      days: 'Days',
+      weight: 'Weights',
       period: 'Period'
     }
   },
