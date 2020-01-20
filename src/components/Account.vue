@@ -382,7 +382,7 @@
                                     <tbody>
                                     <tr v-if="awarded_stakings.records.length>0" v-for="staking in awarded_stakings.records" :class="{'success': !staking.is_valid}">
                                       <td>
-                                      <router-link :to="{path: '/account/' + formatted_account(staking.trust_node)}">{{formatted_account(staking.trust_node)}}</router-link>
+                                      <router-link :to="{path: '/account/' + formatted_account(staking.owner)}">{{formatted_account(staking.owner)}}</router-link>
                                       </td>
                                       <td class='right'>{{formatted_asset(staking.amount.asset_id,staking.amount.amount)}}</td>
                                       <td class='right'>
