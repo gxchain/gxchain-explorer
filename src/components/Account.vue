@@ -141,7 +141,7 @@
                         <div class="contract-info-wrap">
                             <div class="pull-right tool-tip">
                                 <span class="fa fa-fg fa-lightbulb" data-toggle="tooltip" data-placement="top"
-                                      :title="'备注信息来源：github.com/gxchain/contractInfo'"></span>
+                                      :title="$t('account.contract.tooltip')"></span>
                             </div>
                             <div class="contract-info">
                                 <img v-if="contractInfo&&contractInfo.logo" class="portrait" :src="contractInfo.logo" alt="">
@@ -308,15 +308,15 @@
                 </div>
             </div>
             <!--Stakings-->
-            <div class="row">
+            <div class="row" v-if="!is_contract_account">
                 <div class="col-md-12">
                 <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="fa fa-fw fa-history"></span>&nbsp;{{$t('account.staking.title')}}
                         </div>
                         <div class="panel-body no-padding">
-                            <Loading v-show="staking_loading"></Loading>
-                            <div class="table-responsive no-margin" v-show="!staking_loading">
+                            <Loading v-show="stakings_loading"></Loading>
+                            <div class="table-responsive no-margin" v-show="!stakings_loading">
                                 <table class="table table-bordered table-striped no-margin">
                                     <thead>
                                       <tr>
@@ -337,6 +337,60 @@
                                       </td>
                                     </tr>
                                     <tr v-if="stakings.length==0">
+                                    <td class="text-center" colspan="3">
+                                      <small>{{$t('account.staking.no_record')}}</small>
+                                    </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>        
+                        </div>
+                </div>
+                </div>
+            </div>
+            <!--Awarded Stakings-->
+            <div class="row" v-if="isTrustNode">
+                <div class="col-md-12">
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="fa fa-fw fa-award"></span>&nbsp;{{$t('account.staking.title_award')}}
+                            <a class="btn btn-sm btn-default" :class="{disabled:awarded_stakings.starts.length<3}"
+                                   @click="awarded_stakings.starts.pop()&&awarded_stakings.starts.pop()&&loadAwardedStakings()">
+                                    <i class="fa fa-arrow-left"></i>
+                            </a>
+                            <a class="btn btn-sm btn-default" :class="{disabled:!awarded_stakings.more}"
+                                @click="loadAwardedStakings()">
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                            <span class="pull-right fa fa-fg fa-lightbulb"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  :title="$t('account.staking.tooltip')">
+                            </span>
+                        </div>
+                        <div class="panel-body no-padding">
+                            <Loading v-show="awarded_stakings.loading"></Loading>
+                            <div class="table-responsive no-margin" v-show="!awarded_stakings.loading">
+                                <table class="table table-bordered table-striped no-margin">
+                                    <thead>
+                                      <tr>
+                                        <th>{{$t('account.staking.trust_node')}}</th>
+                                        <th class='right'>{{$t('account.staking.amount')}}</th>
+                                        <th class='right'>{{$t('account.staking.period')}}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-if="awarded_stakings.records.length>0" v-for="staking in awarded_stakings.records" :class="{'success': !staking.is_valid}">
+                                      <td>
+                                      <router-link :to="{path: '/account/' + formatted_account(staking.trust_node)}">{{formatted_account(staking.trust_node)}}</router-link>
+                                      </td>
+                                      <td class='right'>{{formatted_asset(staking.amount.asset_id,staking.amount.amount)}}</td>
+                                      <td class='right'>
+                                      {{new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss')}} - 
+                                      {{new Date(new Date(staking.create_date_time + 'Z').getTime()+staking.staking_days*3600*1000).format('yyyy-MM-dd hh:mm:ss')}}
+                                      </td>
+                                    </tr>
+                                    <tr v-if="awarded_stakings.records.length==0">
                                     <td class="text-center" colspan="3">
                                       <small>{{$t('account.staking.no_record')}}</small>
                                     </td>
@@ -405,11 +459,18 @@ export default {
     return {
       loading: true,
       history_loading: true,
-      staking_loading: true,
+      stakings_loading: true,
+      awarded_stakings: {
+        loading: true,
+        more: false,
+        records: [],
+        starts: ['1.27.0']
+      },
       stakings: [],
       history_length: 10,
       items: {},
       account: {},
+      witness_id: '',
       contract: {
         params: [],
         name: '',
@@ -548,16 +609,32 @@ export default {
         Apis.instance().db_api().exec('get_committee_member_by_account', [id])
       ]).then(results => {
         this.isTrustNode = results[0] && results[1];
+        if (this.isTrustNode) {
+          this.witness_id = results[0].id;
+          this.loadAwardedStakings();
+        }
         this.trustNodeInfoLoading = false;
       });
     },
     loadStakings(id) {
       Apis.instance().db_api().exec('get_staking_object', [id]).then(resp => {
         this.stakings = resp;
-        this.staking_loading = false;
+        this.stakings_loading = false;
       }).catch(ex => {
         console.error('get_staking_objetcs failed', ex);
-        this.staking_loading = false;
+        this.stakings_loading = false;
+      })
+    },
+    loadAwardedStakings() {
+      this.awarded_stakings.loading = true;
+      Apis.instance().db_api().exec('get_staking_object_by_witness', [this.witness_id, this.awarded_stakings.starts[this.awarded_stakings.starts.length - 1], 10]).then(resp => {
+        this.awarded_stakings.records = resp.records;
+        this.awarded_stakings.more = resp.more;
+        this.awarded_stakings.starts.push(resp.next_id);
+        this.awarded_stakings.loading = false;
+      }).catch(ex => {
+        console.error('get_staking_object_by_witness failed', ex);
+        this.awarded_stakings.loading = false;
       })
     },
     formatted_asset(asset_id, amount) {

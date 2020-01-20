@@ -608,6 +608,7 @@ const locale = {
       pending_claim: 'Pending Claim'
     },
     contract: {
+      tooltip: 'Comments by：github.com/gxchain/contractInfo',
       abi: {
         title: 'Contract ABI'
       },
@@ -634,7 +635,9 @@ const locale = {
     locked_balance: 'Loyalty Program(GXC)',
     pledge_balance: 'TrustNode margin balance(GXC)',
     staking: {
-      title: 'Stakings',
+      title: 'Stakings Record',
+      title_award: 'Awarded Staking Record',
+      tooltip: 'Record with yellow background is expired',
       no_record: 'No Record',
       trust_node: 'TrustNode',
       amount: 'Amount',

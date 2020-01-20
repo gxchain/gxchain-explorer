@@ -595,6 +595,7 @@ const locale = {
       pending_claim: '合约待认领'
     },
     contract: {
+      tooltip: '备注信息来源：github.com/gxchain/contractInfo',
       abi: {
         title: '合约ABI'
       },
@@ -621,7 +622,9 @@ const locale = {
     locked_balance: '锁仓余额(GXC)',
     pledge_balance: '保证金余额(GXC)',
     staking: {
-      title: 'Staking记录',
+      title: '参与Staking记录',
+      title_award: '获得的Staking记录',
+      tooltip: '黄色背景的记录代表已到期，将不计入票数',
       no_record: '没有Staking记录',
       trust_node: '节点',
       amount: '数量',
