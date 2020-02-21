@@ -326,7 +326,7 @@
                       <td class="right">
                         {{ new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss') }}
                         -
-                        {{ new Date(new Date(staking.create_date_time + 'Z').getTime() + staking.staking_days * 3600 * 1000).format('yyyy-MM-dd hh:mm:ss') }}
+                        {{ new Date(new Date(staking.create_date_time + 'Z').getTime() + staking.staking_days * 24 * 3600 * 1000).format('yyyy-MM-dd hh:mm:ss') }}
                       </td>
                     </tr>
                     <tr v-if="stakings.length == 0">
@@ -371,7 +371,7 @@
                   </thead>
                   <tbody>
                     <tr v-if="awarded_stakings.records.length > 0" v-for="staking in awarded_stakings.records" :class="{ success: !staking.is_valid }">
-                      <td>{{staking.id}}</td>
+                      <td>{{ staking.id }}</td>
                       <td>
                         <router-link :to="{ path: '/account/' + formatted_account(staking.owner) }">
                           {{ formatted_account(staking.owner) }}
@@ -385,7 +385,7 @@
                       <td class="right">
                         {{ new Date(staking.create_date_time + 'Z').format('yyyy-MM-dd hh:mm:ss') }}
                         -
-                        {{ new Date(new Date(staking.create_date_time + 'Z').getTime() + staking.staking_days * 3600 * 1000).format('yyyy-MM-dd hh:mm:ss') }}
+                        {{ new Date(new Date(staking.create_date_time + 'Z').getTime() + staking.staking_days * 24 * 3600 * 1000).format('yyyy-MM-dd hh:mm:ss') }}
                       </td>
                     </tr>
                     <tr v-if="awarded_stakings.records.length == 0">
