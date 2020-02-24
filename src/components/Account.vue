@@ -623,7 +623,7 @@ export default {
     loadStakings(id) {
       Apis.instance()
         .db_api()
-        .exec('get_staking_object', [id])
+        .exec('get_staking_objects', [id])
         .then((resp) => {
           this.stakings = resp;
           this.stakings_loading = false;
@@ -637,7 +637,7 @@ export default {
       this.awarded_stakings.loading = true;
       Apis.instance()
         .db_api()
-        .exec('get_staking_object_by_witness', [this.witness_id, this.awarded_stakings.starts[this.awarded_stakings.starts.length - 1], 10])
+        .exec('get_staking_objects_by_witness', [this.witness_id, this.awarded_stakings.starts[this.awarded_stakings.starts.length - 1], 10])
         .then((resp) => {
           this.awarded_stakings.records = resp.records;
           this.awarded_stakings.more = resp.more;
@@ -645,7 +645,7 @@ export default {
           this.awarded_stakings.loading = false;
         })
         .catch((ex) => {
-          console.error('get_staking_object_by_witness failed', ex);
+          console.error('get_staking_objects_by_witness failed', ex);
           this.awarded_stakings.loading = false;
         });
     },
