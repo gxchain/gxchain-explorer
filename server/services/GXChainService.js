@@ -346,7 +346,7 @@ const fetch_candidates = function() {
           .db_api()
           .exec('get_full_accounts', [nodes, false]),
         superagent.get(
-          'https://raw.githubusercontent.com/gxchain/TrustNodes/master/trustNodes.json'
+          'https://static.gxb.io/dapp/blockcity/nodevote/trustNode.json'
         )
       ]).then(results => {
         let accounts = results[0];
@@ -375,9 +375,11 @@ const fetch_candidates = function() {
             .exec('get_witness_by_account', [c.id]);
         });
         return Promise.all(promises).then(witnesses => {
+          console.log(witnesses);
           candidates = candidates
             .map((c, i) => {
               c.votes = witnesses[i].total_votes;
+              c.witness_info = witnesses[i];
               return c;
             })
             .sort((a, b) => {

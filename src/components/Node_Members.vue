@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <!--Committee-->
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div v-if="global_params" class="panel panel-default">
           <div class="panel-heading">
             <span class="fa fa-fw gxicon gxicon-commitee"></span>&nbsp;{{
@@ -116,7 +116,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-9">
         <!--Candidates-->
         <div v-if="global_params" class="panel panel-default panel-trust-nodes">
           <div class="panel-heading">
@@ -133,11 +133,13 @@
                     <th class="text-right">
                       {{ $t('index.candidate.margin') }}
                     </th>
+                    <th class="text-right">{{ $t('index.witness.rate') }}</th>
                     <th class="text-right">{{ $t('index.witness.votes') }}</th>
                     <th>{{ $t('index.candidate.account') }}</th>
                     <th class="text-right">
                       {{ $t('index.candidate.margin') }}
                     </th>
+                    <th class="text-right">{{ $t('index.witness.rate') }}</th>
                     <th class="text-right">{{ $t('index.witness.votes') }}</th>
                   </tr>
                 </thead>
@@ -170,6 +172,9 @@
                     </td>
                     <td class="text-right">
                       {{ (c.margin / 100000) | number(0) }}
+                    </td>
+                    <td class="text-right">
+                      {{ (c.witness_info.commission_rate)/10 | number(1) }}%
                     </td>
                     <td class="text-right">
                       {{ (c.votes / 100000) | number(0) }}
@@ -218,6 +223,11 @@
                         candidates.second[index] &&
                           (candidates.second[index].margin / 100000) | number(0)
                       }}
+                    </td>
+                    <td class="text-right">
+                      {{ 
+                        candidates.second[index] &&
+                          (candidates.second[index].witness_info.commission_rate)/10 | number(1) }} %
                     </td>
                     <td class="text-right">
                       {{
