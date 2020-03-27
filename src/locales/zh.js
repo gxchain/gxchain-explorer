@@ -27,6 +27,11 @@ const locale = {
       title: '公信节点投票进度',
       participants: '投票账户数: {accounts}'
     },
+    staking: {
+      title: 'Staking进度',
+      participants: '质押账户数: {accounts}',
+      tips: 'Tips: 全网Staking GXC超过500万，票数分布均匀，候选节点运行稳定的前提下，理事会将投票切换计票逻辑'
+    },
     summary: {
       title: '区块信息',
       head_block_number: '最新区块',

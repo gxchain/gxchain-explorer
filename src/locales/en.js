@@ -28,6 +28,11 @@ const locale = {
       title: 'TrustNodes Voting Progress',
       participants: '{accounts} Participants'
     },
+    staking: {
+      title: 'TrustNodes Staking Progress',
+      participants: '{accounts} Participants',
+      tips: 'Tips: After the Staking amount exceeds 5 million, if the votes are distributed evenly, and the all trusted nodes are ready to swith, the committee will vote to switch the vote couting logic'
+    },
     summary: {
       title: 'Summary',
       head_block_number: 'Head Block',

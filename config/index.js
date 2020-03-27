@@ -8,7 +8,7 @@ let witnesses = [
     // 'ws://172.19.19.149:28090'
     // "wss://node1.gxb.io",
     'wss://node5.gxb.io',
-    'wss://node8.gxb.io',
+    // 'wss://node8.gxb.io',
     'wss://node11.gxb.io',
     'wss://node15.gxb.io',
     'wss://node16.gxb.io',

@@ -41,6 +41,7 @@
     "figlet": "^1.2.0",
     "gscatterjs-core": "^0.1.2",
     "gxbjs": "^1.5.0",
+    "gxc-frontend-base": "^0.1.5",
     "hashjs": "^1.2.0",
     "ipfs-api": "^20.0.1",
     "jdenticon": "^1.8.0",

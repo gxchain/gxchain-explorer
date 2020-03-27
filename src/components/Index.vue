@@ -2,30 +2,31 @@
   <div class="container">
     <Loading v-show="loading"></Loading>
 
-    <!--<div class="row">-->
-    <!--&lt;!&ndash;TrustNodes Voting Progress&ndash;&gt;-->
-    <!--<div class="col-md-12">-->
-    <!--<div class="panel panel-default panel-progress">-->
-    <!--<div class="panel-heading">-->
-    <!--<span class="fa fa-fw fa-tasks"></span> {{$t('index.voting.title')}}-->
-    <!--</div>-->
-    <!--<div class="panel-body">-->
-    <!--<p class="text-right">{{vote.num|number(2)}} / 16,000,000.00</p>-->
-    <!--<div class="progress">-->
-    <!--<div class="progress-bar progress-bar-info progress-bar-striped active"-->
-    <!--role="progressbar"-->
-    <!--:aria-valuenow="voting_progress"-->
-    <!--aria-valuemin="0"-->
-    <!--aria-valuemax="100"-->
-    <!--style="min-width: 2em;"-->
-    <!--:style="{width:voting_progress.toFixed(2)+'%'}">-->
-    <!--{{voting_progress.toFixed(0)}}%-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
+    <div class="row">
+      <!-- TrustNodes Staking Progress -->
+      <div class="col-md-12">
+        <div class="panel panel-default panel-progress">
+          <div class="panel-heading">
+            <span class="fa fa-fw fa-tasks"></span> {{$t('index.staking.title')}}
+          </div>
+          <div class="panel-body">
+            <p class="text-right">{{staking.amount|number(2)}} / 500,000.00</p>
+            <div class="progress">
+              <div class="progress-bar progress-bar-info progress-bar-striped active"
+                  role="progressbar"
+                  :aria-valuenow="staking_progress"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style="min-width: 2em;"
+                  :style="{width:staking_progress.toFixed(2)+'%'}">
+                  {{staking_progress.toFixed(0)}}%
+              </div>
+            </div>
+            <p>{{$t('index.staking.tips')}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <h4 class="page-header" v-show="!loading">
       {{ $t('index.latest_status') }}:
@@ -298,6 +299,10 @@ export default {
         num: 0,
         accounts: 0
       },
+      staking: {
+        count: 0,
+        amount: 0
+      },
       account_number: 0,
       history_loading: true,
       assets_loading: true,
@@ -392,6 +397,9 @@ export default {
     },
     voting_progress() {
       return Math.min(this.vote.num / 16000000, 1) * 100;
+    },
+    staking_progress() {
+      return Math.min(this.staking.amount / 5000000, 1) * 100;
     }
   },
 
@@ -407,7 +415,8 @@ export default {
           ChainStore.getObject('2.1.0').toJS().head_block_number
         );
       });
-    this.loadVoteNumbers();
+    // this.loadVoteNumbers();
+    this.loadStakingStatistics();
     this.loadAssets();
     this.loadAccountNumber();
     this.accountNumberInterval = setInterval(() => {
@@ -467,6 +476,15 @@ export default {
     ...mapActions({
       setKeywords: 'setKeywords'
     }),
+    loadStakingStatistics() {
+      this.$http
+        .get(`${process.env.STA_SERVICE}/staking/sum`)
+        .then(resp => {
+          this.staking.count = Math.max(resp.body.totalCount, 0);
+          this.staking.amount = resp.body.totalAmount || 0;
+        })
+        .catch(console.error);
+    },
     loadVoteNumbers() {
       this.$http
         .get(`${process.env.STA_SERVICE}/vote/statistics`)
