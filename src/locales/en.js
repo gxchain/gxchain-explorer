@@ -46,7 +46,7 @@ const locale = {
       title: 'Active TrustNodes',
       witness: 'TrustNode',
       last_confirmed_block: 'Confirmed',
-      votes: 'Votes',
+      votes: 'Votes/New Votes',
       rate: 'Commission Rate'
     },
     committee: {

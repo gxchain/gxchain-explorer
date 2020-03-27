@@ -177,7 +177,8 @@
                       {{ (c.witness_info.commission_rate)/10 | number(1) }}%
                     </td>
                     <td class="text-right">
-                      {{ (c.votes / 100000) | number(0) }}
+                      <div>{{ (c.votes / 100000) | number(0) }}</div>
+                      <div class="success">{{ (c.witness_info.total_vote_weights / 100000) | number(0) }}</div>
                     </td>
                     <td>
                       <div v-if="candidates.second[index]">
@@ -230,10 +231,14 @@
                           (candidates.second[index].witness_info.commission_rate)/10 | number(1) }} %
                     </td>
                     <td class="text-right">
-                      {{
+                      <div>{{
                         candidates.second[index] &&
                           (candidates.second[index].votes / 100000) | number(0)
-                      }}
+                      }}</div>
+                      <div>{{
+                        candidates.second[index] &&
+                          (candidates.second[index].witness_info.total_vote_weights / 100000) | number(0)
+                      }}</div>
                     </td>
                   </tr>
                 </tbody>

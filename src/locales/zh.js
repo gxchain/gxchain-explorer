@@ -43,7 +43,7 @@ const locale = {
       title: '活跃公信节点',
       witness: '公信节点',
       last_confirmed_block: '最近确认',
-      votes: '得票数',
+      votes: '得票数/新票数',
       rate: '分成比例'
     },
     committee: {
