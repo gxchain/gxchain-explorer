@@ -375,7 +375,6 @@ const fetch_candidates = function() {
             .exec('get_witness_by_account', [c.id]);
         });
         return Promise.all(promises).then(witnesses => {
-          console.log(witnesses);
           candidates = candidates
             .map((c, i) => {
               c.votes = witnesses[i].total_votes;
