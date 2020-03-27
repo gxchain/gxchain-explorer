@@ -49,8 +49,8 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         witnesses: [
-            'wss://testnet.gxchain.org'
-            // 'wss://node5.gxb.io',
+            // 'wss://testnet.gxchain.org'
+            'wss://node5.gxb.io',
             // 'wss://node8.gxb.io',
             // 'wss://node11.gxb.io',
             // 'wss://node15.gxb.io',

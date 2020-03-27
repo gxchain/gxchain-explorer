@@ -632,9 +632,10 @@ export default {
                       head_block_time
                     );
                   }
-                  let op_item = this.account_info.history[i].op;
-                  op_item._op_result = this.account_info.history[i].result;
-                  this.latestTransactions.unshift(op_item);
+                  // console.log(this.account_info)
+                  // let op_item = this.account_info.history[i].op;
+                  // op_item._op_result = this.account_info.history[i].result;
+                  this.latestTransactions.unshift(op);
                   this.history_loading = false;
                   if (this.latestTransactions.length > this.history_length) {
                     this.latestTransactions.pop();
