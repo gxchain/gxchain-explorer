@@ -10,7 +10,7 @@
             <span class="fa fa-fw fa-tasks"></span> {{$t('index.staking.title')}}
           </div>
           <div class="panel-body">
-            <p class="text-right">{{staking.amount|number(2)}} / 500,000.00</p>
+            <p class="text-right">{{staking.amount|number(2)}} / 5,000,000.00</p>
             <div class="progress">
               <div class="progress-bar progress-bar-info progress-bar-striped active"
                   role="progressbar"
