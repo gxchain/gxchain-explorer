@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row" v-if="show_switch">
       <div class="col-md-12 text-right">
         <label>{{$t('index.witness.switch_label')}}&nbsp;<input type="checkbox" v-model="show_original_votes" /></label>
       </div>
@@ -73,8 +73,14 @@
                   <tr>
                     <th width='15'>No.</th>
                     <th>{{ $t('index.witness.witness') }}</th>
-                    <th>{{ $t('index.witness.last_confirmed_block') }}</th>
-                    <th class="text-right">{{ (show_original_votes?$t('index.witness.votes')+'/':'')+$t('index.witness.new_votes') }}</th>
+                    <th>
+                      {{ $t('index.witness.last_confirmed_block') }}
+                    </th>
+                    <th class="text-right" style="cursor:pointer" @click="setSortWitnesses(sort_witness = sort_witness === 'desc' ? 'asc' : 'desc')">
+                      {{ (show_original_votes?$t('index.witness.votes')+'/':'')+$t('index.witness.new_votes') }}
+                      <i class="fa fa-arrow-down" v-if="sort_witness === 'desc'"></i>
+                      <i class="fa fa-arrow-up" v-else></i>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -153,8 +159,16 @@
                     <th class="text-right">
                       {{ $t('index.candidate.margin') }}
                     </th>
-                    <th class="text-right">{{ $t('index.witness.rate') }}</th>
-                    <th class="text-right">{{ (show_original_votes?$t('index.candidate.votes')+'/':'')+$t('index.candidate.new_votes') }}</th>
+                    <th style="cursor:pointer;" class="text-right" @click="setSortCandidate(sort_candidate==='commission_rate asc'?'commission_rate desc':'commission_rate asc')">
+                      {{ $t('index.witness.rate') }} 
+                      <i class="fa fa-arrow-down" v-if="sort_candidate === 'commission_rate desc'"></i>
+                      <i class="fa fa-arrow-up" v-if="sort_candidate === 'commission_rate asc'"></i>
+                    </th>
+                    <th style="cursor:pointer;" class="text-right" @click="setSortCandidate(sort_candidate==='total_vote_weights asc'?'total_vote_weights desc':'total_vote_weights asc')">
+                      {{ (show_original_votes?$t('index.candidate.votes')+'/':'')+$t('index.candidate.new_votes') }}
+                      <i class="fa fa-arrow-down" v-if="sort_candidate === 'total_vote_weights desc'"></i>
+                      <i class="fa fa-arrow-up" v-if="sort_candidate === 'total_vote_weights asc'"></i>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -217,10 +231,13 @@ import AccountImage from './partial/AccountImage';
 export default {
   data() {
     return {
+      show_switch: false,
       show_original_votes: true,
       block_info: null,
       global_params: null,
       candidates: {},
+      sort_witness: 'desc',
+      sort_candidate: 'total_vote_weights desc',
       ChainStore
     };
   },
@@ -235,9 +252,56 @@ export default {
     this.loadTrustNodeCandidates();
   },
   methods: {
+    setSortCandidate(sort_by) {
+      this.sort_candidate = sort_by;
+      this.sortCandidate();
+    },
+    sortCandidate() {
+      this.candidates = this.candidates.sort((a, b) => {
+        if (this.sort_candidate === 'commission_rate desc') {
+          if (a.commission_rate === b.commission_rate) {
+            return b.total_vote_weights - a.total_vote_weights;
+          } else {
+            return b.commission_rate - a.commission_rate;
+          }
+        } else if (this.sort_candidate === 'commission_rate asc') {
+          if (a.commission_rate === b.commission_rate) {
+            return b.total_vote_weights - a.total_vote_weights;
+          } else {
+            return a.commission_rate - b.commission_rate;
+          }
+        } else if (this.sort_candidate === 'total_vote_weights asc') {
+          return a.total_vote_weights - b.total_vote_weights;
+        } else {
+          return b.total_vote_weights - a.total_vote_weights;
+        }
+      })
+    },
+    setSortWitnesses(sort_by) {
+      this.sort_witness = sort_by;
+      this.sortWitnesses();
+    },
+    sortWitnesses() {
+      let canSort = true;
+      this.global_params.active_witnesses.forEach(item => {
+        if (!ChainStore.getObject(item)) {
+          canSort = false;
+        }
+      })
+      if (canSort) {
+        this.global_params.active_witnesses = this.global_params.active_witnesses.sort((a, b) => {
+          if (this.sort_witness === 'asc') {
+            return ChainStore.getObject(a).get('total_vote_weights') - ChainStore.getObject(b).get('total_vote_weights');
+          } else {
+            return ChainStore.getObject(b).get('total_vote_weights') - ChainStore.getObject(a).get('total_vote_weights');
+          }
+        });
+      }
+    },
     loadTrustNodeCandidates() {
       this.$http.get('/api/trustnode/candidates').then(resp => {
         this.candidates = resp.data;
+        this.sortCandidate();
       });
     },
     getCommitteeAccountName(member) {
@@ -286,6 +350,16 @@ export default {
       }
 
       this.global_params = ChainStore.getObject('2.0.0').toJS();
+      let config = this.global_params && this.global_params.parameters.extensions.find(item => {
+        return item[0] === 12;
+      });
+      if (config) {
+        this.show_switch = !(config[1].staking_mode_on);
+        if (!this.show_switch) {
+          this.show_original_votes = false;
+        }
+      }
+      this.sortWitnesses();
       this.block_info = ChainStore.getObject('2.1.0').toJS();
     }
   },
