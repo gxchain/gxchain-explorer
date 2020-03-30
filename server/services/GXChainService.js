@@ -335,7 +335,8 @@ const fetch_candidates = function() {
     'dennis1',
     'david12',
     'marks-lee',
-    'robin-green'
+    'robin-green',
+    'coinget-bp'
   ];
   return Apis.instance()
     .db_api()
@@ -378,13 +379,21 @@ const fetch_candidates = function() {
           candidates = candidates
             .map((c, i) => {
               c.votes = witnesses[i].total_votes;
+              c.total_vote_weights = witnesses[i].total_vote_weights;
+              c.commission_rate = witnesses[i].commission_rate;
               c.witness_info = witnesses[i];
               return c;
             })
             .sort((a, b) => {
-              return b.votes - a.votes;
+              if (a.commission_rate === b.commission_rate) {
+                return a.total_vote_weights - b.total_vote_weights;
+              } else {
+                return b.commission_rate - a.commission_rate;
+              }
             });
-          return candidates;
+          return candidates.filter((c) => {
+            return c.witness_info.is_valid;
+          });
         });
       });
     })

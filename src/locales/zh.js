@@ -43,21 +43,26 @@ const locale = {
       title: '活跃公信节点',
       witness: '公信节点',
       last_confirmed_block: '最近确认',
-      votes: '得票数/新票数',
+      votes: '得票数',
+      new_votes: '新票数',
+      switch_label: '展示老票数',
       rate: '分成比例'
     },
     committee: {
       title: '活跃理事会成员',
       account: '账户',
-      votes: '得票数'
+      votes: '得票数',
+      new_votes: '新票数'
     },
     candidate: {
       title: '公信节点候选人',
       account: '账号',
       comments: '备注',
       votes: '得票数',
+      new_votes: '新票数',
       pre: '备注信息来源',
-      margin: '保证金余额'
+      margin: '保证金余额',
+      rate: '分成比例'
     },
     transactions: {
       title: '最近交易记录',

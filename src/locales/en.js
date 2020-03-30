@@ -46,21 +46,26 @@ const locale = {
       title: 'Active TrustNodes',
       witness: 'TrustNode',
       last_confirmed_block: 'Confirmed',
-      votes: 'Votes/New Votes',
+      votes: 'Votes',
+      new_votes: 'New Votes',
+      switch_label: 'Show Original Votes',
       rate: 'Commission Rate'
     },
     committee: {
       title: 'Active Committees',
       account: 'Account',
-      votes: 'Votes'
+      votes: 'Votes',
+      new_votes: 'New Votes'
     },
     candidate: {
       title: 'TrustNode Candidates',
       account: 'Account',
       comments: 'Comment',
       votes: 'Votes',
+      new_votes: 'New Votes',
       pre: 'Comments by',
-      margin: 'Margin'
+      margin: 'Margin',
+      rate: 'Commission Rate'
     },
     transactions: {
       title: 'Recent Transaction Records',
