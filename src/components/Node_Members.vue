@@ -154,7 +154,8 @@
               <table class="table table-striped no-margin">
                 <thead>
                   <tr>
-                    <th width='20%'>{{ $t('index.candidate.account') }}</th>
+                    <th width='15'>No.</th>
+                    <th width='100'>{{ $t('index.candidate.account') }}</th>
                     <th>URL</th>
                     <th class="text-right">
                       {{ $t('index.candidate.margin') }}
@@ -172,7 +173,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(c) in candidates" :key="c.account">
+                  <tr v-for="(c,i) in candidates" :key="c.account">
+                    <td>{{i+1}}</td>
                     <td>
                       <div>
                         <img
@@ -214,9 +216,9 @@
               </table>
             </div>
             <pre>
-                      <div>{{$t('index.candidate.pre')}}:</div>
-                      <div>github.com/gxchain/TrustNodes</div>
-                  </pre>
+                <div>{{$t('index.candidate.pre')}}:</div>
+                <div>github.com/gxchain/TrustNodes</div>
+            </pre>
           </div>
         </div>
       </div>
