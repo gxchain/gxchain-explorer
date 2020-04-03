@@ -2,8 +2,7 @@
   <div class="container">
     <Loading v-show="loading"></Loading>
 
-    <div class="row">
-      <!-- TrustNodes Staking Progress -->
+    <!-- <div class="row">
       <div class="col-md-12">
         <div class="panel panel-default panel-progress">
           <div class="panel-heading">
@@ -26,7 +25,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <h4 class="page-header" v-show="!loading">
       {{ $t('index.latest_status') }}:
@@ -416,7 +415,7 @@ export default {
         );
       });
     // this.loadVoteNumbers();
-    this.loadStakingStatistics();
+    // this.loadStakingStatistics();
     this.loadAssets();
     this.loadAccountNumber();
     this.accountNumberInterval = setInterval(() => {
