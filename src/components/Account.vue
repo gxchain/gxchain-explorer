@@ -330,7 +330,7 @@
                       </td>
                     </tr>
                     <tr v-if="stakings.length == 0">
-                      <td class="text-center" colspan="5">
+                      <td class="text-center" colspan="6">
                         <small>{{ $t('account.staking.no_record') }}</small>
                       </td>
                     </tr>
@@ -389,7 +389,7 @@
                       </td>
                     </tr>
                     <tr v-if="awarded_stakings.records.length == 0">
-                      <td class="text-center" colspan="5">
+                      <td class="text-center" colspan="6">
                         <small>{{ $t('account.staking.no_record') }}</small>
                       </td>
                     </tr>
