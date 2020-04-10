@@ -129,6 +129,14 @@
                       </div>
                     </td>
                   </tr>
+                  <tr v-if="stakings.length > 0">
+                    <th class="color-warning">
+                      {{ $t('account.staking.sub_title') }}
+                    </th>
+                    <td align="right">
+                      {{ stakingAmount }}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -341,6 +349,59 @@
           </div>
         </div>
       </div>
+      <!-- vest balance Income-->
+      <div class="row" v-if="!is_contract_account">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="fa fa-fw fa-wallet"></span>&nbsp;{{ $t('account.staking.Income_received') }}
+              <div class="pull-right">
+                <label class="staking-filter-title">
+                  <input type="checkbox" v-model="filter_check" @click="handleCheck"> {{ $t('account.staking.filter_record') }}
+                </label>
+              </div>
+            </div>
+            <div class="panel-body no-padding">
+              <Loading v-show="vestBalance_loading"></Loading>
+              <div class="table-responsive no-margin" v-show="!vestBalance_loading">
+                <table class="table table-bordered table-striped no-margin">
+                  <thead>
+                    <tr>
+                      <th>id</th>
+                      <th>{{ $t('account.staking.get_earned') }}</th>
+                      <th class="right">{{ $t('account.staking.earned_coin_day') }}</th>
+                      <th class="right">{{ $t('account.staking.required_coin_day') }}</th>
+                      <th class="right">{{ $t('account.staking.remain_day') }}</th>
+                      <th class="right">{{ $t('account.staking.get_amount') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-if="vestBalance.length > 0" v-for="item in vestBalance">
+                      <td>{{ item.id }}</td>
+                      <td>
+                        {{ formatted_asset(item.balance.asset_id, item.balance.amount) }}
+                      </td>
+                      <td class="right">
+                        {{ getEarned(item) }}
+                      </td>
+                      <td class="right">{{ getRequired(item) }}</td>
+                      <td class="right">{{ getRemain(item) }}</td>
+                      <td class="right">
+                        {{ getAvailableCoin(item) }}
+                      </td>
+                    </tr>
+                    <tr v-if="vestBalance.length == 0">
+                      <td class="text-center" colspan="6">
+                        <small>{{ $t('account.staking.no_record') }}</small>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--Awarded Stakings-->
       <div class="row" v-if="isTrustNode">
         <div class="col-md-12">
@@ -443,6 +504,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { ChainStore } from 'gxbjs';
 import { Apis } from 'gxbjs-ws';
 import filters from '@/filters';
+import {accAdd, accDiv, accMult} from '../common/util';
 import { calc_block_time, fetch_witness_account, fetch_account } from '@/services/CommonService';
 import HistoryOp from './partial/HistoryOp.vue';
 import modalHistory from '@/components/modals/modal-history.vue';
@@ -454,6 +516,10 @@ export default {
       loading: true,
       history_loading: true,
       stakings_loading: true,
+      vestBalance_loading: true,
+      secondsPerDay: 60 * 60 * 24,
+      stakingAmount: 0,
+      filter_check: true,
       awarded_stakings: {
         loading: true,
         more: false,
@@ -461,6 +527,7 @@ export default {
         starts: ['1.27.0']
       },
       stakings: [],
+      vestBalance: [],
       history_length: 10,
       items: {},
       account: {},
@@ -626,12 +693,94 @@ export default {
         .exec('get_staking_objects', [id])
         .then((resp) => {
           this.stakings = resp;
+          this.getStakingAmount(this.stakings)
           this.stakings_loading = false;
         })
         .catch((ex) => {
           console.error('get_staking_objetcs failed', ex);
           this.stakings_loading = false;
         });
+    },
+    getStakingAmount(res) {
+      let stakingList = res;
+      let amount = 0;
+      for (let i = 0; i < stakingList.length; i++) {
+        amount = accAdd(amount * 1, stakingList[i].amount.amount * 1);
+      }
+      this.stakingAmount = filters.number(accDiv(amount, 100000), 5);
+    },
+    handleCheck() {
+      this.loadVestBalance(this.account_info.id);
+    },
+    loadVestBalance(id) {
+      Apis.instance()
+        .db_api()
+        .exec('get_vesting_balances', [id])
+        .then((resp) => {
+          let res = resp;
+          if (this.filter_check) {
+            res = res.filter(item => {
+              return item.balance.amount !== 0;
+            })
+          }
+          this.vestBalance = res;
+          this.vestBalance_loading = false;
+        })
+        .catch((ex) => {
+          console.error('get_vesting_balances failed', ex);
+          this.vestBalance_loading = false;
+        });
+    },
+    getEarned(vb) {
+      if (vb.policy[0] === 1) {
+        let earned = vb.policy[1].coin_seconds_earned;
+        let earnedAmount = accDiv(earned, this.secondsPerDay);
+        if (earnedAmount >= 1) {
+          let res = earnedAmount / 100000;
+          return filters.number(res, 0);
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    },
+    getRequired(vb) {
+      if (vb.policy[0] === 1) {
+        let vestingPeriod = vb.policy[1].vesting_seconds;
+        let requiredAmount = accDiv(accMult(vb.balance.amount, vestingPeriod), this.secondsPerDay);
+        if (requiredAmount >= 1) {
+          let res = requiredAmount / 100000;
+          return filters.number(res, 0);
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    },
+    getRemain(vb) {
+      if (vb.policy[0] === 1) {
+        let earned = vb.policy[1].coin_seconds_earned;
+        if (Number(earned) === 0) {
+          return '0.00';
+        }
+        let vestingPeriod = vb.policy[1].vesting_seconds;
+        let availablePercent = vestingPeriod === 0 ? 1 : accDiv(earned, accMult(vb.balance.amount, vestingPeriod));
+        let res = vestingPeriod * (1 - availablePercent) / this.secondsPerDay;
+        return filters.number(res, 2);
+      } else {
+        return 0;
+      }
+    },
+    getAvailableCoin(vb) {
+      let earned = vb.policy[1].coin_seconds_earned;
+      let vestingPeriod = vb.policy[1].vesting_seconds;
+      let availablePercent = vestingPeriod === 0 ? 1 : accDiv(earned, accMult(vb.balance.amount, vestingPeriod));
+      if (Number(earned) === 0) {
+        return 0;
+      }
+      return filters.number(availablePercent * 100, 2) + '% / ' + Math.round(availablePercent * vb.balance.amount / 100000 * 100000, 5) / 100000;
     },
     loadAwardedStakings() {
       this.awarded_stakings.loading = true;
@@ -698,6 +847,7 @@ export default {
       }
       if (this.account_info && this.account_info.id) {
         this.loadStakings(this.account_info.id);
+        this.loadVestBalance(this.account_info.id);
       }
       if (this.account_info && this.account_info.id && this.isTrustNode === -1) {
         this.loadTrustNodeInfo(this.account_info.id);
@@ -873,6 +1023,10 @@ export default {
   cursor: pointer;
 }
 
+.staking-filter-title {
+  font-size: .5rem;
+  color: #666;
+}
 .overflow-wrap {
   word-break: break-all;
 }
