@@ -675,6 +675,7 @@ const locale = {
     query_account: 'Query Account:',
     query_account_history: 'Query Account History',
     query_account_balance: 'Query Account Balance:',
+    fetch_vest_balance: 'Query Vest Balance',
     get_account_header: 'Get Account Header:',
     assets: 'Assets:',
     asset_info: 'Asset Info:',

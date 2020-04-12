@@ -161,6 +161,38 @@ const fetch_account_balance = id_or_name => {
 };
 
 /**
+ * fetch vest balance of GXC by account name or id
+ * @param id_or_name
+ * @returns {bluebird}
+ */
+const get_vesting_balances = (id_or_name) => {
+  return new Promise((resolve, reject) => {
+    if (id_or_name.indexOf('.') === -1) {
+      fetch_account(id_or_name)
+        .then((account) => {
+          return Apis.instance().db_api().exec('get_vesting_balances', [account.id, []]);
+        })
+        .then((balances) => {
+          resolve(balances);
+        })
+        .catch((ex) => {
+          reject(ex);
+        });
+    } else {
+      Apis.instance()
+        .db_api()
+        .exec('get_vesting_balances', [id_or_name, []])
+        .then((balances) => {
+          resolve(balances);
+        })
+        .catch((ex) => {
+          reject(ex);
+        });
+    }
+  });
+};
+
+/**
  * 获取区块信息
  * @param block_height 区块高度
  */
@@ -411,6 +443,7 @@ export default {
   fetch_full_account,
   fetch_account_history,
   fetch_account_balance,
+  get_vesting_balances,
   fetch_product,
   fetch_candidates
 };

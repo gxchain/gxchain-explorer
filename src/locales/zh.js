@@ -672,6 +672,7 @@ const locale = {
     query_account: '账户查询',
     query_account_history: '账户历史查询',
     query_account_balance: '余额查询',
+    fetch_vest_balance: '账户收益查询',
     get_account_header: '账户头像',
     assets: '资产列表:',
     asset_info: '资产信息:',
