@@ -5,7 +5,7 @@
       <div class="col-md-12">
         <div class="pagination">
           <pagination ref="pagination" class="pagination-box" :pagination="pagination" :callback="fetch_transactions" :options="paginationOptions"></pagination>
-          <div class="pagination-input"><input class="input-page" :value="this.pagination.current_page" @change="onPageChange" /> / {{ pagination.last_page }}</div>
+          <div class="pagination-input"><input maxlength="7" class="input-page" :value="this.pagination.current_page" @change="onPageChange" /> / {{ pagination.last_page }}</div>
         </div>
       </div>
       <div class="col-md-12">
@@ -166,7 +166,7 @@ export default {
 }
 .input-page {
   display: inline-block;
-  width: 50px;
+  width: 70px;
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
