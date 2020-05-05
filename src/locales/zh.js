@@ -635,12 +635,20 @@ const locale = {
       title: '参与Staking记录',
       title_award: '获得的Staking记录',
       tooltip: '黄色背景的记录代表已到期，将不计入票数',
-      no_record: '没有Staking记录',
+      no_record: '没有记录',
       trust_node: '节点',
       amount: '数量',
       days: '天数',
       weight: '权重',
-      period: '时间'
+      period: '时间',
+      sub_title: '质押(GXC)',
+      Income_received: '收益',
+      get_earned: '返现',
+      earned_coin_day: '已完成的币天',
+      required_coin_day: '要求的的币天',
+      remain_day: '剩余解冻天数',
+      get_amount: '可领取数量',
+      filter_record: '过滤0记录'
     }
   },
   // asset
@@ -676,6 +684,7 @@ const locale = {
     query_account: '账户查询',
     query_account_history: '账户历史查询',
     query_account_balance: '余额查询',
+    fetch_vest_balance: '账户收益查询',
     get_account_header: '账户头像',
     assets: '资产列表:',
     asset_info: '资产信息:',

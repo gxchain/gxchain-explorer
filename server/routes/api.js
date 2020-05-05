@@ -162,6 +162,19 @@ router.get('/account_balance/:account_id_or_name', function(req, res) {
 })
 
 /**
+ * 账户收益查询
+ */
+router.get('/vest_balance/:account_id_or_name', function(req, res) {
+  GXChainService.get_vesting_balances(req.params.account_id_or_name)
+    .then((balances) => {
+      res.send(balances);
+    })
+    .catch(() => {
+      res.send({});
+    });
+});
+
+/**
  * 账户头像获取
  */
 router.get('/header/:account_name', function(req, res) {

@@ -62,6 +62,11 @@ export default {
           example: `http://${location.host}/api/account_balance/paul`
         },
         {
+          name: this.$t('api.fetch_vest_balance'),
+          api: '/api/vest_balance/:id_or_name',
+          example: `http://${location.host}/api/vest_balance/paul`
+        },
+        {
           name: this.$t('api.get_account_header'),
           api: '/api/header/:account_name',
           example: `http://${location.host}/api/header/paul`

@@ -28,6 +28,12 @@ export const fetch_account = id_or_name => {
   });
 };
 
+export const vest_balance = (id_or_name) => {
+  return Vue.http.get(`//${baseURL}/api/vest_balance/${id_or_name}`, {
+    responseType: 'json'
+  });
+};
+
 export const fetch_witness_account = id => {
   return get_objects([id]).then(objs => {
     return Vue.http.get(`//${baseURL}/api/account/${objs[0].witness_account}`, {

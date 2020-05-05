@@ -642,7 +642,15 @@ const locale = {
       amount: 'Amount',
       days: 'Days',
       weight: 'Weights',
-      period: 'Period'
+      period: 'Period',
+      sub_title: 'Staking(GXC)',
+      Income_received: 'Income',
+      get_earned: 'Vesting balance amount',
+      earned_coin_day: 'Coin days earned',
+      required_coin_day: 'Coin days required',
+      remain_day: 'Days left of vesting period',
+      get_amount: 'Available to claim',
+      filter_record: 'Filter 0 records'
     }
   },
   // asset
@@ -679,6 +687,7 @@ const locale = {
     query_account: 'Query Account:',
     query_account_history: 'Query Account History',
     query_account_balance: 'Query Account Balance:',
+    fetch_vest_balance: 'Query Account Vest Balance',
     get_account_header: 'Get Account Header:',
     assets: 'Assets:',
     asset_info: 'Asset Info:',
