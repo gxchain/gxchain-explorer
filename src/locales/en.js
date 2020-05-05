@@ -16,7 +16,7 @@ const locale = {
     fee: 'Network Fees',
     tools: 'Tools',
     node_members: 'Node Members',
-    transactions: 'Transactions',
+    transactions: 'Recent Transactions',
     profile: 'Profile',
     download: "You haven't download extension, confirm to download",
     logout: 'Logout'
@@ -25,7 +25,8 @@ const locale = {
     total_txs: 'Total Transactions',
     block: 'Block Number',
     timestamp: 'Timestamp',
-    witness: 'Witness'
+    witness: 'Witness',
+    tips: 'Only show rencent 1,000,000 records'
   },
   pagination: {
     page: 'Page',
@@ -83,7 +84,8 @@ const locale = {
       title: 'Recent Transaction Records',
       type: 'Type',
       content: 'Content',
-      time: 'Time'
+      time: 'Time',
+      more: 'More'
     },
     asset: {
       title: 'Assets on GXChain',

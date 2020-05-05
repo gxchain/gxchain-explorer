@@ -3,15 +3,14 @@
     <Loading v-show="loading"></Loading>
     <div class="row" v-show="!loading">
       <div class="col-md-12">
-        <div class="pull-left color-gray">
-          <div>{{ $t('pagination.page') }}: {{ this.current_page }} / {{ this.total_page }}</div>
-          <div>{{ $t('transactions.total_txs') }}：{{ total }}</div>
+        <div class="pagination">
+          <pagination ref="pagination" class="pagination-box" :pagination="pagination" :callback="fetch_transactions" :options="paginationOptions"></pagination>
+          <div class="pagination-input"><input class="input-page" :value="this.pagination.current_page" @change="onPageChange" /> / {{ pagination.last_page }}</div>
         </div>
-        <div class="pull-right">
-          <div class="btn-group">
-            <button :disabled="current_page == 1" class="btn btn-primary" @click="goPrev">{{ $t('pagination.prev') }}</button>
-            <button :disabled="current_page == total_page" class="btn btn-primary" @click="goNext">{{ $t('pagination.next') }}</button>
-          </div>
+      </div>
+      <div class="col-md-12">
+        <div class="tips">
+          <div>{{ $t('transactions.total_txs') }}：{{ total }}({{ $t('transactions.tips') }})</div>
         </div>
       </div>
       <div class="col-md-12">
@@ -19,7 +18,7 @@
           <table class="table table-striped table-bordered no-margin">
             <thead>
               <tr>
-                <th>txid</th>
+                <th>TXID</th>
                 <th>{{ $t('transactions.block') }}</th>
                 <th>{{ $t('transactions.timestamp') }}</th>
                 <th>{{ $t('transactions.witness') }}</th>
@@ -66,48 +65,55 @@ export default {
     return {
       loading: true,
       indexId: -1,
-      current_page: 1,
       transactions: [],
       total: 0,
-      pageSize: 20
+      pagination: {
+        per_page: 20, // required
+        current_page: 1, // required
+        last_page: 50000 // required
+      },
+      paginationOptions: {
+        offset: 5,
+        previousText: this.$t('pagination.prev'),
+        nextText: this.$t('pagination.next'),
+        alwaysShowPrevNext: true
+      }
     };
   },
-  computed: {
-    total_page() {
-      let page = Math.ceil(this.total / this.pageSize);
-      return page;
-    }
-  },
   methods: {
-    goPrev() {
-      this.indexId += 20;
-      this.current_page -= 1;
-      this.fetch_transactions();
-    },
-    goNext() {
-      this.indexId -= 20;
-      this.current_page += 1;
-      this.fetch_transactions();
+    onPageChange(e) {
+      let page = Number(e.target.value);
+      if (!isNaN(page)) {
+        if (page < 1) {
+          page = 1;
+        }
+        if (page > this.pagination.last_page) {
+          page = this.pagination.last_page;
+        }
+        this.$refs.pagination.changePage(page);
+      }
     },
     fetch_transactions() {
       this.loading = true;
+      let indexId = this.indexId + this.pagination.per_page - this.pagination.current_page * this.pagination.per_page;
+      indexId = indexId > 0 ? indexId : undefined;
       this.$http
         .get(`${process.env.STA_SERVICE}/transaction/list`, {
           params: {
-            limit: 20,
-            indexId: this.indexId === -1 ? undefined : this.indexId
+            limit: this.pagination.per_page,
+            indexId: indexId
           }
         })
         .then((resp) => {
           this.loading = false;
-
           this.transactions = resp.body.result.map((item) => {
             item.blockInfo = null;
             item.witness_info = null;
             return item;
           });
-          this.total = resp.body.totalCnt;
-          this.indexId = resp.body.indexId;
+          // Assign total only once
+          this.total = this.total || resp.body.totalCnt;
+          this.indexId = this.indexId > 0 ? this.indexId : resp.body.indexId + this.pagination.per_page;
           this.transactions.forEach((tx) => {
             fetch_block(tx.blockNum).then((resp) => {
               tx.blockInfo = resp.body;
@@ -139,11 +145,36 @@ export default {
 };
 </script>
 
-<style scoped>
-.color-gray {
+<style scoped lang="less">
+.tips {
   color: #999;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.pagination {
+  margin: 0;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 .pagination-box {
-  text-align: center;
+  display: flex;
+}
+.pagination-input {
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.input-page {
+  display: inline-block;
+  width: 50px;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 </style>

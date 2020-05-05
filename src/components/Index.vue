@@ -40,10 +40,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="title">{{ $t('index.overview.transactions') }}</div>
-                <digital-roll
-                  :number="transaction_num"
-                  :font-size="digital_roll_font_size"
-                ></digital-roll>
+                <digital-roll :number="transaction_num" :font-size="digital_roll_font_size"></digital-roll>
               </div>
             </div>
             <hr />
@@ -60,37 +57,21 @@
           </div>
         </div>
         <div class="col-md-7">
-          <Chart
-            ref="sta"
-            style="width:100%;height:250px;"
-            :options="statistics"
-            theme="light"
-            auto-resize
-          >
-          </Chart>
+          <Chart ref="sta" style="width: 100%; height: 250px;" :options="statistics" theme="light" auto-resize> </Chart>
         </div>
       </div>
 
       <!--Blocks-->
       <div class="col-md-12">
-        <div
-          v-if="block_info && global_params && supply_info"
-          class="panel panel-default"
-        >
-          <div class="panel-heading">
-            <span class="fa fa-fw gxicon gxicon-block"></span>&nbsp;{{
-              $t('index.summary.title')
-            }}
-          </div>
+        <div v-if="block_info && global_params && supply_info" class="panel panel-default">
+          <div class="panel-heading"><span class="fa fa-fw gxicon gxicon-block"></span>&nbsp;{{ $t('index.summary.title') }}</div>
           <div class="panel-body no-padding table-responsive">
             <table class="table table-striped table-bordered no-margin">
               <tbody>
                 <tr>
                   <th>{{ $t('index.summary.head_block_number') }}</th>
                   <td>
-                    <router-link
-                      :to="{ path: '/block/' + block_info.head_block_number }"
-                    >
+                    <router-link :to="{ path: '/block/' + block_info.head_block_number }">
                       {{ block_info.head_block_number }}
                     </router-link>
                   </td>
@@ -121,16 +102,12 @@
       <div class="col-md-12">
         <div v-if="latestBlocks" class="panel panel-default panel-histories">
           <div class="panel-heading">
-            <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{
-              $t('index.transactions.title')
-            }}
+            <span class="fa fa-fw gxicon gxicon-transaction"></span>&nbsp;{{ $t('index.transactions.title') }}
+            <router-link class="pull-right" :to="`/transactions`">{{ $t('index.transactions.more') }}</router-link>
           </div>
           <div class="panel-body no-padding">
             <Loading v-show="history_loading"></Loading>
-            <table
-              class="table table-striped no-margin"
-              v-show="!history_loading"
-            >
+            <table class="table table-striped no-margin" v-show="!history_loading">
               <thead>
                 <tr>
                   <th>{{ $t('index.transactions.type') }}</th>
@@ -150,16 +127,9 @@
       <div class="col-md-12">
         <div class="panel panel-default panel-ranking">
           <div class="panel-heading">
-            <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{
-              $t('index.ranking.title')
-            }}
+            <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{ $t('index.ranking.title') }}
             <span>
-              <button
-                class="btn btn-xs btn-ranking"
-                v-for="asset in supportedAssets"
-                :class="{ active: currentAsset === asset }"
-                @click="currentAsset = asset"
-              >
+              <button class="btn btn-xs btn-ranking" :key="asset" v-for="asset in supportedAssets" :class="{ active: currentAsset === asset }" @click="currentAsset = asset">
                 {{ asset }}
               </button>
             </span>
@@ -181,14 +151,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, i) in rankings">
+                <tr :key="`ranking_${i}`" v-for="(item, i) in rankings">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <account-image
-                      :size="8"
-                      :account="item.accountName"
-                      :type="item.accountType"
-                    ></account-image>
+                    <account-image :size="8" :account="item.accountName" :type="item.accountType"></account-image>
                     &nbsp;
                     <router-link :to="{ path: '/account/' + item.accountName }">
                       {{ item.accountName }}
@@ -225,10 +191,7 @@
           </div>
           <div class="panel-body no-padding">
             <Loading v-show="assets_loading"></Loading>
-            <table
-              class="table table-striped no-margin"
-              v-show="!assets_loading"
-            >
+            <table class="table table-striped no-margin" v-show="!assets_loading">
               <thead>
                 <tr>
                   <th>{{ $t('index.asset.symbol') }}</th>
@@ -239,33 +202,17 @@
               <tbody>
                 <tr v-for="asset in assets" :key="asset.id">
                   <td>
-                    <account-image
-                      :size="8"
-                      :account="asset.symbol"
-                      :type="3"
-                    ></account-image>
+                    <account-image :size="8" :account="asset.symbol" :type="3"></account-image>
                     &nbsp;
-                    <router-link :to="{ path: `/asset/${asset.symbol}` }">{{
-                      asset.symbol
-                    }}</router-link>
+                    <router-link :to="{ path: `/asset/${asset.symbol}` }">{{ asset.symbol }}</router-link>
                   </td>
                   <td>
-                    <account-image
-                      :size="8"
-                      :account="asset.issuer.name"
-                      :type="asset.issuer.code ? 2 : 1"
-                    ></account-image>
+                    <account-image :size="8" :account="asset.issuer.name" :type="asset.issuer.code ? 2 : 1"></account-image>
                     &nbsp;
-                    <router-link :to="{ path: `/account/${asset.issuer.name}` }"
-                      >{{ asset.issuer.name }}
-                    </router-link>
+                    <router-link :to="{ path: `/account/${asset.issuer.name}` }">{{ asset.issuer.name }} </router-link>
                   </td>
                   <td class="right">
-                    {{
-                      (asset.detail.current_supply /
-                        Math.pow(10, asset.precision))
-                        | number(asset.precision)
-                    }}
+                    {{ (asset.detail.current_supply / Math.pow(10, asset.precision)) | number(asset.precision) }}
                   </td>
                 </tr>
               </tbody>
@@ -386,7 +333,7 @@ export default {
     },
     assets_info() {
       let result = {};
-      this.assets.forEach(asset => {
+      this.assets.forEach((asset) => {
         result[asset.symbol] = asset;
       });
       return result;
@@ -410,9 +357,7 @@ export default {
       .exec('get_objects', [['2.0.0', '2.1.0', '2.3.1']])
       .then(() => {
         this.onUpdate();
-        this.getInitialBlocks(
-          ChainStore.getObject('2.1.0').toJS().head_block_number
-        );
+        this.getInitialBlocks(ChainStore.getObject('2.1.0').toJS().head_block_number);
       });
     // this.loadVoteNumbers();
     // this.loadStakingStatistics();
@@ -429,26 +374,15 @@ export default {
 
       let days = parseInt(duration / MS_PER_DAY);
       let hours = parseInt((duration - days * MS_PER_DAY) / MS_PER_HOUR);
-      let minutes = parseInt(
-        (duration - days * MS_PER_DAY - hours * MS_PER_HOUR) / MS_PER_MINUTES
-      );
-      let seconds = parseInt(
-        (duration -
-          days * MS_PER_DAY -
-          hours * MS_PER_HOUR -
-          minutes * MS_PER_MINUTES) /
-          1000
-      );
+      let minutes = parseInt((duration - days * MS_PER_DAY - hours * MS_PER_HOUR) / MS_PER_MINUTES);
+      let seconds = parseInt((duration - days * MS_PER_DAY - hours * MS_PER_HOUR - minutes * MS_PER_MINUTES) / 1000);
       seconds = seconds < 9 ? '0' + seconds : seconds;
-      this.blockchain_run_duration = this.$t(
-        'index.statistics.blockchain_run_duration',
-        {
-          days,
-          hours,
-          minutes,
-          seconds
-        }
-      );
+      this.blockchain_run_duration = this.$t('index.statistics.blockchain_run_duration', {
+        days,
+        hours,
+        minutes,
+        seconds
+      });
     }, 500);
     this.loadTotalTransactionNum();
     this.transactionNumInterval = setInterval(() => {
@@ -478,7 +412,7 @@ export default {
     loadStakingStatistics() {
       this.$http
         .get(`${process.env.STA_SERVICE}/staking/sum`)
-        .then(resp => {
+        .then((resp) => {
           this.staking.count = Math.max(resp.body.totalCount, 0);
           this.staking.amount = resp.body.totalAmount || 0;
         })
@@ -487,7 +421,7 @@ export default {
     loadVoteNumbers() {
       this.$http
         .get(`${process.env.STA_SERVICE}/vote/statistics`)
-        .then(resp => {
+        .then((resp) => {
           this.vote.num = Math.max(resp.body.voteSum, 0);
           this.vote.accounts = resp.body.accountSum || 0;
         })
@@ -503,37 +437,25 @@ export default {
             pageSize: 20
           }
         })
-        .then(resp => {
+        .then((resp) => {
           let assetInfo = this.assets_info[asset];
-          let currentSupply =
-            assetInfo.detail.current_supply / Math.pow(10, assetInfo.precision);
-          this.rankings = resp.body.map(item => {
+          let currentSupply = assetInfo.detail.current_supply / Math.pow(10, assetInfo.precision);
+          this.rankings = resp.body.map((item) => {
             return {
               accountName: item.accountName,
               accountType: item.accountType || 1,
               amount: filters.number(item.amount, assetInfo.precision),
-              freezeAmount: filters.number(
-                item.freezeAmount,
-                assetInfo.precision
-              ),
-              totalAmount: filters.number(
-                item.totalAmount,
-                assetInfo.precision
-              ),
-              percent: filters.number(
-                (item.amount + item.freezeAmount) / currentSupply,
-                assetInfo.precision
-              )
+              freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
+              totalAmount: filters.number(item.totalAmount, assetInfo.precision),
+              percent: filters.number((item.amount + item.freezeAmount) / currentSupply, assetInfo.precision)
             };
           });
         });
     },
     loadTotalTransactionNum() {
-      this.$http
-        .get(`${process.env.STA_SERVICE}/transaction/num`)
-        .then(resp => {
-          this.transaction_num = resp.body.num;
-        });
+      this.$http.get(`${process.env.STA_SERVICE}/transaction/num`).then((resp) => {
+        this.transaction_num = resp.body.num;
+      });
     },
     loadStatistics() {
       // debugger; // eslint-disable-line
@@ -544,15 +466,12 @@ export default {
             days: 10
           }
         })
-        .then(resp => {
-          let xAxisData = resp.body.map(item => {
-            return item.date
-              .split('-')
-              .slice(1)
-              .join('/');
+        .then((resp) => {
+          let xAxisData = resp.body.map((item) => {
+            return item.date.split('-').slice(1).join('/');
           });
           let min = Number.MAX_VALUE;
-          let data = resp.body.map(item => {
+          let data = resp.body.map((item) => {
             min = Math.min(item.num, min);
             return item.num;
           });
@@ -574,12 +493,12 @@ export default {
       Apis.instance()
         .db_api()
         .exec('get_account_count', [])
-        .then(resp => {
+        .then((resp) => {
           this.account_number = resp;
         });
     },
     loadAssets() {
-      this.$http.get('/api/assets').then(resp => {
+      this.$http.get('/api/assets').then((resp) => {
         this.assets = resp.body;
         this.assets_loading = false;
         this.loadRankings();
@@ -597,7 +516,7 @@ export default {
         Apis.instance()
           .db_api()
           .exec('get_block', [height])
-          .then(result => {
+          .then((result) => {
             if (!result) {
               return false;
             }
@@ -608,28 +527,14 @@ export default {
               this.latestBlocks.pop();
             }
             if (result.transactions.length > 0) {
-              result.transactions.forEach(trx => {
-                trx.operations.forEach(op => {
+              result.transactions.forEach((trx) => {
+                trx.operations.forEach((op) => {
                   op.block_id = result.id;
-                  if (
-                    ChainStore.getObject('2.0.0') &&
-                    ChainStore.getObject('2.1.0')
-                  ) {
-                    let block_interval = ChainStore.getObject('2.0.0')
-                      .get('parameters')
-                      .get('block_interval');
-                    let head_block_number = ChainStore.getObject('2.1.0').get(
-                      'head_block_number'
-                    );
-                    let head_block_time = new Date(
-                      ChainStore.getObject('2.1.0').get('time') + '+00:00'
-                    );
-                    op.timestamp = calc_block_time(
-                      result.id,
-                      block_interval,
-                      head_block_number,
-                      head_block_time
-                    );
+                  if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
+                    let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
+                    let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
+                    let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
+                    op.timestamp = calc_block_time(result.id, block_interval, head_block_number, head_block_time);
                   }
                   // console.log(this.account_info)
                   // let op_item = this.account_info.history[i].op;
@@ -648,7 +553,7 @@ export default {
               this.history_loading = false;
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.log('Error in Index.getBlocks: ', error);
             this.loading = false;
             this.history_loading = false;
@@ -656,23 +561,17 @@ export default {
       }
     },
 
-    runTimer: function() {
-      let self = this;
-      this.intervalHandler = setInterval(function() {
-        self.timer = new Date();
+    runTimer() {
+      this.intervalHandler = setInterval(() => {
+        this.timer = new Date();
       }, 300);
     },
-
     onUpdate() {
       if (this.timer === 0) {
         this.runTimer();
       }
       this.last_updated_at = new Date();
-      if (
-        !ChainStore.getObject('2.0.0') ||
-        !ChainStore.getObject('2.1.0') ||
-        !ChainStore.getObject('2.3.1')
-      ) {
+      if (!ChainStore.getObject('2.0.0') || !ChainStore.getObject('2.1.0') || !ChainStore.getObject('2.3.1')) {
         return;
       }
 
@@ -682,8 +581,7 @@ export default {
 
       if (this.latestBlocks[0]) {
         if (this.block_info.head_block_number > this.latestBlocks[0].id) {
-          let length =
-            this.block_info.head_block_number - this.latestBlocks[0].id;
+          let length = this.block_info.head_block_number - this.latestBlocks[0].id;
           this.getBlocks(this.block_info.head_block_number, length);
         }
       }

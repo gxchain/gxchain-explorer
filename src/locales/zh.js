@@ -15,7 +15,7 @@ const locale = {
     tools: '工具',
     fee: '网络费率',
     node_members: '节点成员',
-    transactions: '交易',
+    transactions: '最近交易',
     profile: '账户资料',
     download: '你还没有安装gscatter，是否前往安装？',
     logout: '退出'
@@ -24,7 +24,8 @@ const locale = {
     total_txs: '总交易数',
     block: '区块',
     timestamp: '创建时间',
-    witness: '公信节点'
+    witness: '公信节点',
+    tips: '仅展示最近1,000,000条交易'
   },
   pagination: {
     page: '页数',
@@ -80,7 +81,8 @@ const locale = {
       title: '最近交易记录',
       type: '类型',
       content: '内容',
-      time: '时间'
+      time: '时间',
+      more: '更多'
     },
     asset: {
       title: 'GXChain资产',
