@@ -15,9 +15,21 @@ const locale = {
     tools: '工具',
     fee: '网络费率',
     node_members: '节点成员',
+    transactions: '交易',
     profile: '账户资料',
     download: '你还没有安装gscatter，是否前往安装？',
     logout: '退出'
+  },
+  transactions: {
+    total_txs: '总交易数',
+    block: '区块',
+    timestamp: '创建时间',
+    witness: '公信节点'
+  },
+  pagination: {
+    page: '页数',
+    next: '下一页',
+    prev: '上一页'
   },
   // index
   index: {
@@ -510,8 +522,7 @@ const locale = {
       update_account: '{account} 更新了它的账户信息',
       limit_order_sell: '{account} 提交卖单，以 {price} 的价格卖出 {amount} ',
       limit_order_buy: '{account} 提交买单，以 {price} 的价格买入 {amount} ',
-      call_order_update:
-        '{account} 调整了 {debtSymbol} 债务 {debt} ，以及抵押 {collateral}',
+      call_order_update: '{account} 调整了 {debtSymbol} 债务 {debt} ，以及抵押 {collateral}',
       asset_reserve: '{account} 保留（销毁）了 {amount}',
       asset_issue: '{account} 发行了 {amount} 到 {to}',
       asset_create: '{account} 创建了资产 {asset}',
@@ -526,15 +537,13 @@ const locale = {
       asset_update_feed_producers: '{account} 更新了资产 {asset} 的喂价者',
       asset_fund_fee_pool: '{account} 向 {asset} 手续费池注入 {amount}',
       asset_settle: '{account} 请求清算 {amount}',
-      asset_global_settle:
-        '{account} 请求以 {price} 的价格进行全局清算 {asset}',
+      asset_global_settle: '{account} 请求以 {price} 的价格进行全局清算 {asset}',
       witness_create: '{account} 升级到公信节点候选人',
       witness_update: '{account} 更新了公信节点候选人信息',
       witness_pay: '提取候选人收入到账户',
       witness_receive: 'Received witness from witness',
       worker_create: '{account} 创建了预算提案，请求每日支付 {pay}',
-      committee_member_update_global_parameters:
-        '{account} 更新了全局理事会参数',
+      committee_member_update_global_parameters: '{account} 更新了全局理事会参数',
       committee_member_create: '{account} 升级到理事会成员',
       committee_member_update: '{account} 更新了理事会成员信息',
       override_transfer: '{issuer} 从 {from} 到 {to} 发送 {amount} ',
@@ -543,41 +552,31 @@ const locale = {
       data_market_category_create: '{issuer} 创建了类目 {category}',
       data_market_category_update: '{issuer} 决议通过并更新了类目 {category}',
       free_data_product_create: '{issuer} 创建了自由市场数据产品 {product}',
-      free_data_product_update:
-        '{issuer} 决议通过并更新了自由市场数据产品 {product}',
+      free_data_product_update: '{issuer} 决议通过并更新了自由市场数据产品 {product}',
       league_data_product_create: '{issuer} 创建了联盟数据产品 {product}',
-      league_data_product_update:
-        '{issuer} 决议通过并更新了联盟数据产品 {product}',
+      league_data_product_update: '{issuer} 决议通过并更新了联盟数据产品 {product}',
       league_create: '{issuer} 创建了联盟 {league}',
       league_update: '{issuer} 决议通过并更新了联盟 {league}',
       data_transaction_create: '{account} 发起了一笔数据交易请求',
       data_transaction_update: '{account} 更新了一笔数据交易请求状态',
       data_transaction_pay: '{from} 支付金额为 {amount} 的数据购买费用到 {to}',
       account_upgrade_data_transaction_member: '{account} 升级为交易确认节点',
-      data_transaction_datasource_upload:
-        '{account} 验证了数据源 {datasource} 的数据上传',
+      data_transaction_datasource_upload: '{account} 验证了数据源 {datasource} 的数据上传',
       data_transaction_datasource_validate_error: '{account} 数据返回验证失败',
       balance_lock: '{account} 参与忠诚计划，冻结了 {amount}',
       balance_unlock: '{account} 完成一笔忠诚计划余额解冻操作',
-      proxy_transfer:
-        '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
+      proxy_transfer: '{account} 发起了一笔代理转账交易: {from} 发送 {amount} 到 {to}',
       create_contract: '{account} 创建了智能合约 {contract_name}',
-      call_contract:
-        '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
-      call_contract_and_transfer:
-        '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户',
+      call_contract: '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法',
+      call_contract_and_transfer: '{account} 调用了智能合约 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户',
       update_contract: '{account} 更新了智能合约 {contract_name}',
       custom: '{account} 创建了一笔自定义操作',
       trust_node_pledge_withdraw: '{account} 取回公信节点保证金',
       inline_transfer: '合约账户 {from} 发送 {amount} 到 {to}, 备注: {memo}',
-      inter_contract_call:
-        '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法',
-      inter_contract_call_and_transfer:
-        '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户',
-      staking_create:
-        '{account} 创建了抵押投票: {amount} 给 {trust_node}, 抵押时间: {days} 天',
-      staking_update:
-        '{account} 修改了抵押投票的对象, 从{original}修改为{trust_node}',
+      inter_contract_call: '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法',
+      inter_contract_call_and_transfer: '合约账户 {sender_contract} 跨合约调用了合约账户 {contract_name} 的 {method_name} 方法, 并发送 {amount} 到合约账户',
+      staking_create: '{account} 创建了抵押投票: {amount} 给 {trust_node}, 抵押时间: {days} 天',
+      staking_update: '{account} 修改了抵押投票的对象, 从{original}修改为{trust_node}',
       staking_claim: '{account} 取回了一笔抵押 {amount}',
       witness_set_commission: '{account} 设置得票奖励分成比例 {rate}',
       witness_unbanned: '{account} 离开了小黑屋'
@@ -659,19 +658,14 @@ const locale = {
     title: '关于GXChain区块浏览器',
     version: '版本号',
     version_intro_title: '版本介绍',
-    version_intro:
-      '本版本实现了区块、交易记录和账户信息的功能,同时提供了网页和API两个两种方式进行查询, 不同的用户可以根据不同的需求进行选择',
+    version_intro: '本版本实现了区块、交易记录和账户信息的功能,同时提供了网页和API两个两种方式进行查询, 不同的用户可以根据不同的需求进行选择',
     project_intro_title: '项目介绍',
-    project_intro:
-      '本项目是公信链（GXChain）的浏览器，GXChain基于Graphene底层进行开发，因此本项目也可支持所有基于Graphene的链，任何的项目可以无偿使用和任意修改，并且欢迎对此项目有兴趣的小伙伴来提交Pull Request，你的贡献将有可能获得GXC作为奖励',
+    project_intro: '本项目是公信链（GXChain）的浏览器，GXChain基于Graphene底层进行开发，因此本项目也可支持所有基于Graphene的链，任何的项目可以无偿使用和任意修改，并且欢迎对此项目有兴趣的小伙伴来提交Pull Request，你的贡献将有可能获得GXC作为奖励',
     github: '开源地址',
     about_company: '关于GXChain',
-    company_intro1:
-      '公信链（GXChain）是一条为全球数据经济服务的基础链，旨在打造可信数据的价值网络。',
-    company_intro2:
-      '公信链具有基于DPoS共识机制的石墨烯底层架构的性能优势，同时具备G-ID、GVM、BaaS、Blockcity pay等链上配套功能，方便各类应用开发。',
-    company_intro3:
-      '基于公信链的Dapp布洛克城已经拥有百万级实名用户，为链上应用和合作伙伴提供丰富的数据资源；面向企业服务的公信宝数据交易所也已上线，服务企业数量超过数百家。公信链基于区块链的分布式特性、密码学等技术手段和通证设计，为数据经济的发展提供了全新的区块链解决思路，引领了数据服务的新变革。公信链开发了丰富的可信数据组件，逐渐打通数据上链、数据储存、数据计算、数据交换的各个环节，并且已经有了众多落地的应用和实践。'
+    company_intro1: '公信链（GXChain）是一条为全球数据经济服务的基础链，旨在打造可信数据的价值网络。',
+    company_intro2: '公信链具有基于DPoS共识机制的石墨烯底层架构的性能优势，同时具备G-ID、GVM、BaaS、Blockcity pay等链上配套功能，方便各类应用开发。',
+    company_intro3: '基于公信链的Dapp布洛克城已经拥有百万级实名用户，为链上应用和合作伙伴提供丰富的数据资源；面向企业服务的公信宝数据交易所也已上线，服务企业数量超过数百家。公信链基于区块链的分布式特性、密码学等技术手段和通证设计，为数据经济的发展提供了全新的区块链解决思路，引领了数据服务的新变革。公信链开发了丰富的可信数据组件，逐渐打通数据上链、数据储存、数据计算、数据交换的各个环节，并且已经有了众多落地的应用和实践。'
   },
   // api
   api: {
@@ -688,8 +682,7 @@ const locale = {
     candidates: '候选公信节点:'
   },
   fee: {
-    mark:
-      '在GXChain系统中，每一种操作都将花费相应手续费。手续费率可能发生变化。然而，手续费的调整需要获得股东的授权。所以每一位持有GXChain核心资产的股东对费率的构成都有话语权。如果股东确信某种手续费的降低将带来好处，并且达成共识，那么该种手续费则由区块链自动进行调低。区块链参数的改变由理事会成员提出动议。这些成员由全体股东投票选举产生，以提高系统灵活性和响应率。',
+    mark: '在GXChain系统中，每一种操作都将花费相应手续费。手续费率可能发生变化。然而，手续费的调整需要获得股东的授权。所以每一位持有GXChain核心资产的股东对费率的构成都有话语权。如果股东确信某种手续费的降低将带来好处，并且达成共识，那么该种手续费则由区块链自动进行调低。区块链参数的改变由理事会成员提出动议。这些成员由全体股东投票选举产生，以提高系统灵活性和响应率。',
     feeGroups: {
       general_row: '一般费率',
       asset_row: '资产相关',

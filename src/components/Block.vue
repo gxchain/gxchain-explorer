@@ -1,28 +1,15 @@
 <template>
   <div class="container">
     <Loading v-show="loading"></Loading>
-    <div
-      class="panel panel-default"
-      v-if="block && block.block_id"
-      v-show="!loading"
-    >
+    <div class="panel panel-default" v-if="block && block.block_id" v-show="!loading">
       <div class="panel-heading">
         <span class="fa fa-chain"></span>&nbsp;{{ $t('block.title') }}
-        <a
-          class="pull-right"
-          target="_blank"
-          :href="'https://wallet.gxb.io/#/block/' + keywords"
-          >{{ $t('block.more') }}</a
-        >
+        <a class="pull-right" target="_blank" :href="'https://wallet.gxb.io/#/block/' + keywords">{{ $t('block.more') }}</a>
       </div>
       <div class="panel-body no-padding">
         <ul class="block-summary">
           <li>{{ $t('block.id') }}：{{ block.block_id }}</li>
-          <li>
-            {{ $t('block.timestamp') }}：{{
-              new Date(block.timestamp + 'Z').format('yyyy-MM-dd hh:mm:ss')
-            }}
-          </li>
+          <li>{{ $t('block.timestamp') }}：{{ new Date(block.timestamp + 'Z').format('yyyy-MM-dd hh:mm:ss') }}</li>
           <li>
             {{ $t('block.witness') }}：
             <router-link :to="{ path: '/account/' + account_name }">
@@ -30,9 +17,7 @@
             </router-link>
           </li>
           <li>{{ $t('block.previous') }}：{{ block.previous }}</li>
-          <li>
-            {{ $t('block.transactions') }}：{{ block.transactions.length }}
-          </li>
+          <li>{{ $t('block.transactions') }}：{{ block.transactions.length }}</li>
         </ul>
         <!--翻页-->
         <div class="pager" v-if="block && block.block_id">
@@ -43,19 +28,8 @@
             <span class="fa fa-angle-right"></span>
           </button>
         </div>
-        <div
-          class="table-responsive"
-          v-for="(transaction, i) in block.transactions"
-        >
-          <Operation
-            v-if="block"
-            v-for="(operation, index) in transaction.operations"
-            :key="index"
-            :id="index"
-            :operation="operation"
-            :op_result="transaction.operation_results[index]"
-            :txid="block.transaction_ids[i]"
-          ></Operation>
+        <div :key="`tx_${i}`" class="table-responsive" v-for="(transaction, i) in block.transactions">
+          <Operation v-if="block" v-for="(operation, index) in transaction.operations" :key="index" :id="index" :operation="operation" :op_result="transaction.operation_results[index]" :txid="block.transaction_ids[i]"></Operation>
         </div>
       </div>
     </div>
@@ -70,9 +44,8 @@
 </template>
 
 <script>
-import { Apis } from 'gxbjs-ws';
 import { mapActions, mapGetters } from 'vuex';
-import { fetch_account, fetch_block } from '@/services/CommonService';
+import { fetch_account, fetch_block, get_objects } from '@/services/CommonService';
 import JSON from './partial/JSON.vue';
 import Operation from './partial/Operation.vue';
 
@@ -99,27 +72,22 @@ export default {
       this.block = null;
       this.account_name = null;
       fetch_block(this.$route.params.block_height).then(
-        function(resp) {
+        (resp) => {
           self.block = resp.body;
           self.loading = false;
           if (self.block) {
-            Apis.instance()
-              .db_api()
-              .exec('get_objects', [[self.block.witness]])
-              .then(res => {
-                fetch_account(res[0].witness_account)
-                  .then(function(res) {
-                    self.account_name = res.body.account
-                      ? res.body.account.name
-                      : '';
-                  })
-                  .catch(ex => {
-                    console.error(ex);
-                  });
-              });
+            get_objects([self.block.witness]).then((res) => {
+              fetch_account(res[0].witness_account)
+                .then((res) => {
+                  self.account_name = res.body.account ? res.body.account.name : '';
+                })
+                .catch((ex) => {
+                  console.error(ex);
+                });
+            });
           }
         },
-        function() {
+        () => {
           self.block = { error: this.$t('block.error') };
           self.loading = false;
         }

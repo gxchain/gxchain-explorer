@@ -16,9 +16,21 @@ const locale = {
     fee: 'Network Fees',
     tools: 'Tools',
     node_members: 'Node Members',
+    transactions: 'Transactions',
     profile: 'Profile',
     download: "You haven't download extension, confirm to download",
     logout: 'Logout'
+  },
+  transactions: {
+    total_txs: 'Total Transactions',
+    block: 'Block Number',
+    timestamp: 'Timestamp',
+    witness: 'Witness'
+  },
+  pagination: {
+    page: 'Page',
+    next: 'Next',
+    prev: 'Prev'
   },
   // index
   index: {
@@ -113,8 +125,7 @@ const locale = {
   // transaction
   transaction: {
     title: 'Transaction Info',
-    empty:
-      'No record, Possible reason: The transaction information has not yet been recorded to the irreversible block',
+    empty: 'No record, Possible reason: The transaction information has not yet been recorded to the irreversible block',
     error: 'Fetch error',
     current_block_number: 'Current Block',
     trx_op: 'Operation Info',
@@ -506,8 +517,7 @@ const locale = {
       account_create: '{registrar} created a account {account}',
       account_transfer: '{account} transfer to {new_account}',
       fill_order: '{account} bought {received} at {price}',
-      vesting_balance_withdraw:
-        '{account} withdrew vesting balance of {amount}',
+      vesting_balance_withdraw: '{account} withdrew vesting balance of {amount}',
       balance_claim: '{account} claimed a balance of {amount}',
       publish_feed: '{account} published feed price of {price}',
       set_proxy: '{account} set {proxy} as their voting proxy',
@@ -515,8 +525,7 @@ const locale = {
       limit_order_sell: '{account} placed an order to sell {amount} at {price}',
       limit_order_buy: '{account} placed an order to buy {amount} at {price}',
       limit_order_cancel: '{account} cancelled order #%(order)s',
-      call_order_update:
-        '{account} changed {debtSymbol} debt by {debt} and collateral by {collateral}',
+      call_order_update: '{account} changed {debtSymbol} debt by {debt} and collateral by {collateral}',
       asset_reserve: '{account} reserved (burnt) {amount}',
       asset_issue: '{account} issued {amount} to {to}',
       asset_fund_fee_pool: '{account} funded {asset} fee pool with {amount}',
@@ -528,69 +537,48 @@ const locale = {
       whitelisted_by: '{lister} whitelisted the account {listee}',
       blacklisted_by: '{lister} blacklisted the account {listee}',
       transfer_account: '{account} ownership transferred to {to}',
-      asset_update_feed_producers:
-        '{account} updated the feed producers for the asset {asset}',
+      asset_update_feed_producers: '{account} updated the feed producers for the asset {asset}',
       asset_settle: '{account} requested settlement of {amount}',
-      asset_global_settle:
-        '{account} requested global settlement of {asset} at {price}',
+      asset_global_settle: '{account} requested global settlement of {asset} at {price}',
       witness_create: '{account} was upgraded to become a TrustNode candidate',
       witness_update: '{account} update its candidate info',
       witness_pay: 'Withdraw TrustNode pay to account',
       witness_receive: 'Received witness from witness',
-      committee_member_update_global_parameters:
-        '{account} updated the global committee parameters',
+      committee_member_update_global_parameters: '{account} updated the global committee parameters',
       committee_member_create: '{account} was upgraded to become a witness',
       committee_member_update: '{account} update its committee info',
-      worker_create:
-        '{account} created a worker proposal with daily pay of {pay}',
+      worker_create: '{account} created a worker proposal with daily pay of {pay}',
       override_transfer: '{issuer} transferred {amount} from {from} to {to}',
       account_upgrade_merchant: '{account} was upgraded to merchant',
       account_upgrade_datasource: '{account} was upgraded to datasource',
-      data_market_category_create:
-        '{issuer} created the market category {category}',
-      data_market_category_update:
-        '{issuer} passed the proposal and updated the market category {category}',
-      free_data_product_create:
-        '{issuer} created the free market product {product}',
-      free_data_product_update:
-        '{issuer} passed the proposal and updated the free market product {product}',
-      league_data_product_create:
-        '{issuer} created the alliance market product {product}',
-      league_data_product_update:
-        '{issuer} passed the proposal and updated the alliance market product named  {product}',
+      data_market_category_create: '{issuer} created the market category {category}',
+      data_market_category_update: '{issuer} passed the proposal and updated the market category {category}',
+      free_data_product_create: '{issuer} created the free market product {product}',
+      free_data_product_update: '{issuer} passed the proposal and updated the free market product {product}',
+      league_data_product_create: '{issuer} created the alliance market product {product}',
+      league_data_product_update: '{issuer} passed the proposal and updated the alliance market product named  {product}',
       league_create: '{issuer} created the league {league}',
-      league_update:
-        '{issuer} passed the proposal and updated the league {league}',
+      league_update: '{issuer} passed the proposal and updated the league {league}',
       data_transaction_create: '{account} created a data transaction',
       data_transaction_update: '{account} updated a data transaction',
-      data_transaction_pay:
-        '{from} payed {amount} for data transaction to {to}',
-      account_upgrade_data_transaction_member:
-        '{account} was upgraded to data transaction confirm node',
-      data_transaction_datasource_upload:
-        '{account} confirmed an data upload from {datasource}',
-      data_transaction_datasource_validate_error:
-        '{account} returned an error when processing the data upload',
+      data_transaction_pay: '{from} payed {amount} for data transaction to {to}',
+      account_upgrade_data_transaction_member: '{account} was upgraded to data transaction confirm node',
+      data_transaction_datasource_upload: '{account} confirmed an data upload from {datasource}',
+      data_transaction_datasource_validate_error: '{account} returned an error when processing the data upload',
       balance_lock: '{account} locked {amount} for loyalty program',
       balance_unlock: '{account} complete a loyalty program',
       proxy_transfer: '{from} sent {amount} to {to} delegated by {account}',
       create_contract: '{account} created the contract {contract_name}',
-      call_contract:
-        "{account} call the contract {contract_name} 's {method_name} method",
-      call_contract_and_transfer:
-        "{account} call the contract {contract_name} 's {method_name} method and sent {amount} to contract account",
+      call_contract: "{account} call the contract {contract_name} 's {method_name} method",
+      call_contract_and_transfer: "{account} call the contract {contract_name} 's {method_name} method and sent {amount} to contract account",
       update_contract: '{account} updated the contract {contract_name}',
       custom: '{account} created a custom operation',
       trust_node_pledge_withdraw: '{account} withdraw trustnode margin',
-      inline_transfer:
-        'contract account {from} sent {amount} to {to} with memo {memo}',
-      inter_contract_call:
-        "contract account {sender_contract} call the contract account {contract_name} 's {method_name} method",
-      inter_contract_call_and_transfer:
-        "contract account {sender_contract} call the contract account {contract_name} 's {method_name} method and sent {amount} to contract account",
+      inline_transfer: 'contract account {from} sent {amount} to {to} with memo {memo}',
+      inter_contract_call: "contract account {sender_contract} call the contract account {contract_name} 's {method_name} method",
+      inter_contract_call_and_transfer: "contract account {sender_contract} call the contract account {contract_name} 's {method_name} method and sent {amount} to contract account",
       staking_create: '{account} staking {amount} for {days} to {trust_node}',
-      staking_update:
-        '{account} updated a staking record from {original} to {trust_node}',
+      staking_update: '{account} updated a staking record from {original} to {trust_node}',
       staking_claim: '{account} claimed a staking {amount}',
       witness_set_commission: '{account} set commission rates {rate}',
       witness_unbanned: '{account} restarted and unbanded'
@@ -672,17 +660,13 @@ const locale = {
     title: 'About GXChain Blockchain Explorer',
     version: 'Version',
     version_intro_title: 'About this version',
-    version_intro:
-      'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
+    version_intro: 'Providing search function for Block, Transaction and Account for both API and UI. Choose one that match your requirements',
     project_intro_title: 'About this project',
-    project_intro:
-      "GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it's very welcome to commit your pull request, you'll probably be rewarded of some GXC for your good job.",
+    project_intro: "GXChain is a Graphene technology based Blockchain, so GXChain Explorer can also work with any Graphene based chain, anyone can fork and modify this project for free, and it's very welcome to commit your pull request, you'll probably be rewarded of some GXC for your good job.",
     github: 'Github',
     about_company: 'About GXChain',
-    company_intro1:
-      'GXChain is a fundamental blockchain for the global data economy, designed to build a trusted data internet of value.',
-    company_intro2:
-      'Benefiting from DPoS based Graphene underlying architecture, GXChain possesses functions including G-ID, GVM, BaaS and Blockcity, which are convenient for application development. ',
+    company_intro1: 'GXChain is a fundamental blockchain for the global data economy, designed to build a trusted data internet of value.',
+    company_intro2: 'Benefiting from DPoS based Graphene underlying architecture, GXChain possesses functions including G-ID, GVM, BaaS and Blockcity, which are convenient for application development. ',
     company_intro3:
       'GXChain based DApp-Blockcity has more than two million verified users and provides abundant data for other DApps and strategic partners. GXChain launched decentralized data marketplace as well which is serving hundreds of Chinese enterprises. GXChain team independently developed its main net and launched it in June 2017. Based on decentralization, cryptography, and smart token design, GXChain provides a leading solution for the data economy by developing multiple trusted data modules. Data uploading, storage, computation, and exchange has been gradually realized with many commercialized applications.'
   },
@@ -824,8 +808,7 @@ const locale = {
     browser_not_support: 'Browser does not support',
     bulk_transfer: {
       title: ' Bulk Transfer',
-      des:
-        'Bulk transfer utility, suitable for community airdrops, batch awards',
+      des: 'Bulk transfer utility, suitable for community airdrops, batch awards',
       download_template: 'Download Template',
       import: 'Import',
       execute: 'Execute',

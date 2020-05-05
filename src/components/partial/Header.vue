@@ -3,14 +3,7 @@
     <nav class="navbar navbar-static-top main-navbar" id="top">
       <div class="container">
         <div class="navbar-header">
-          <button
-            class="navbar-toggle collapsed"
-            type="button"
-            data-toggle="collapse"
-            data-target="#bs-navbar"
-            aria-controls="bs-navbar"
-            aria-expanded="false"
-          >
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -26,30 +19,16 @@
               <a href="/#/">{{ $t('header.home') }}</a>
             </li>
             <li class="dropdown" v-if="account && account.name">
-              <a
-                href="#"
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <account-image :size="8" :account="account.name"></account-image
-                >&nbsp;{{ account.name }}
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <account-image :size="8" :account="account.name"></account-image>&nbsp;{{ account.name }}
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <router-link :to="{ path: '/account/' + account.name }">
-                    <i class="fa fa-user"></i>&nbsp;{{ $t('header.profile') }}
-                  </router-link>
+                  <router-link :to="{ path: '/account/' + account.name }"> <i class="fa fa-user"></i>&nbsp;{{ $t('header.profile') }} </router-link>
                 </li>
                 <li @click="logout">
-                  <a href="#">
-                    <i class="fa fa-sign-out-alt"></i>&nbsp;{{
-                      $t('header.logout')
-                    }}
-                  </a>
+                  <a href="#"> <i class="fa fa-sign-out-alt"></i>&nbsp;{{ $t('header.logout') }} </a>
                 </li>
               </ul>
             </li>
@@ -58,9 +37,10 @@
             </li>
             <li><a href="#modal-api" data-toggle="modal">API</a></li>
             <li>
-              <router-link :to="{ path: '/tools/index' }">{{
-                $t('header.tools')
-              }}</router-link>
+              <router-link :to="{ path: '/tools/index' }">{{ $t('header.tools') }}</router-link>
+            </li>
+            <li>
+              <router-link :to="{ path: '/transactions' }">{{ $t('header.transactions') }}</router-link>
             </li>
             <li>
               <a href="/#/fee">{{ $t('header.fee') }}</a>
@@ -69,33 +49,20 @@
               <a href="/#/node_members">{{ $t('header.node_members') }}</a>
             </li>
             <li>
-              <a href="#modal-about" data-toggle="modal">{{
-                $t('header.about')
-              }}</a>
+              <a href="#modal-about" data-toggle="modal">{{ $t('header.about') }}</a>
             </li>
             <li class="dropdown">
-              <a
-                href="#"
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <img class="flagimg" :src="flagImg[$t('header.flag')]" />
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
                 <li @click="switchLanguage('zh')">
-                  <a href="javascript:;">
-                    <img class="flagimg" :src="flagImg['zh']" />中文</a
-                  >
+                  <a href="javascript:;"> <img class="flagimg" :src="flagImg['zh']" />中文</a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li @click="switchLanguage('en')">
-                  <a href="javascript:;">
-                    <img class="flagimg" :src="flagImg['en']" />English</a
-                  >
+                  <a href="javascript:;"> <img class="flagimg" :src="flagImg['en']" />English</a>
                 </li>
               </ul>
             </li>
@@ -108,28 +75,12 @@
         <div class="col-xs-12">
           <p class="text-center">
             <router-link :to="{ path: '/' }">
-              <img
-                height="40px"
-                alt="logo-gxchain"
-                src="/static/exploer-logo.png"
-                v-on:click="clearInput"
-              />
+              <img height="40px" alt="logo-gxchain" src="/static/exploer-logo.png" v-on:click="clearInput" />
             </router-link>
           </p>
           <div class="search-wraper" role="search">
             <div class="form-group">
-              <input
-                @change="eventChanged"
-                v-model="search"
-                class="form-control search clearable"
-                :placeholder="$t('header.search')"
-                autocomplete="off"
-                autofocus=""
-                tabindex="0"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-              />
+              <input @change="eventChanged" v-model="search" class="form-control search clearable" :placeholder="$t('header.search')" autocomplete="off" autofocus="" tabindex="0" autocorrect="off" autocapitalize="off" spellcheck="false" />
               <i class="gxicon gxicon-search"></i>
             </div>
           </div>
@@ -164,7 +115,7 @@ export default {
     };
   },
   mounted() {
-    GScatterJS.gscatter.connect(location.host).then(connected => {
+    GScatterJS.gscatter.connect(location.host).then((connected) => {
       if (!connected) return false;
       this.connected = connected;
       this.setPlugin({
@@ -173,9 +124,7 @@ export default {
       });
       // if identity exist, means user has authorize the website and already unlock, you could display user info then
       if (this.gscatter.identity) {
-        this.account = this.gscatter.identity.accounts.find(
-          x => x.blockchain === 'gxc'
-        );
+        this.account = this.gscatter.identity.accounts.find((x) => x.blockchain === 'gxc');
         this.setAccount({
           account: this.account
         });
@@ -223,18 +172,14 @@ export default {
         this.gscatter
           .suggestNetwork(process.env.network)
           .then(() => {
-            this.gscatter
-              .getIdentity({ accounts: [process.env.network] })
-              .then(() => {
-                this.account = this.gscatter.identity.accounts.find(
-                  x => x.blockchain === 'gxc'
-                );
-                this.setAccount({
-                  account: this.account
-                });
+            this.gscatter.getIdentity({ accounts: [process.env.network] }).then(() => {
+              this.account = this.gscatter.identity.accounts.find((x) => x.blockchain === 'gxc');
+              this.setAccount({
+                account: this.account
               });
+            });
           })
-          .catch(ex => {
+          .catch((ex) => {
             console.error('login failed:', ex);
           });
       }

@@ -53,8 +53,8 @@ export default {
       },
       paginationOptions: {
         offset: 5,
-        previousText: 'Prev',
-        nextText: 'Next',
+        previousText: this.$t('pagination.prev'),
+        nextText: this.$t('pagination.next'),
         alwaysShowPrevNext: true
       }
     };

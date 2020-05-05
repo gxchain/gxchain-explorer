@@ -11,6 +11,7 @@ import Node_Members from '@/components/Node_Members';
 import Tools_Index from '@/components/tools/Index';
 import Tools_BulkTransfer from '@/components/tools/BulkTransfer';
 import KeyGen from '@/components/tools/KeyGen';
+import Transactions from '@/components/Transactions';
 
 Vue.use(Router);
 
@@ -50,6 +51,11 @@ const router = new Router({
       path: '/node_members/',
       name: 'Node_Members',
       component: Node_Members
+    },
+    {
+      path: '/transactions/',
+      name: 'Transactions',
+      component: Transactions
     },
     {
       path: '/tools/index',
