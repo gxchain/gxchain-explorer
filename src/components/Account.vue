@@ -829,7 +829,7 @@ export default {
     },
     onUpdate() {
       try {
-        if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name)) {
+        if (!ChainStore.fetchFullAccount(this.$route.params.id_or_name.toLowerCase())) {
           this.loading = false;
           return;
         }

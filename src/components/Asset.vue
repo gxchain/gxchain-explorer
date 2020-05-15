@@ -7,10 +7,7 @@
           <div class="panel-heading">{{ asset.symbol }}-{{ asset.id }}</div>
           <div class="panel-body">
             <p>
-              {{
-                asset.options.description &&
-                  JSON.parse(asset.options.description).main
-              }}
+              {{ asset.options.description && JSON.parse(asset.options.description).main }}
             </p>
             <div class="table-responsive">
               <table class="table table-striped table-bordered no-margin">
@@ -20,9 +17,7 @@
                       {{ $t('asset.issuer') }}
                     </th>
                     <td>
-                      <router-link
-                        :to="{ path: '/account/' + asset.issuer.name }"
-                      >
+                      <router-link :to="{ path: '/account/' + asset.issuer.name }">
                         {{ asset.issuer.name }}
                       </router-link>
                     </td>
@@ -32,31 +27,12 @@
                   <tr>
                     <th>{{ $t('asset.max_supply') }}</th>
                     <td>
-                      {{
-                        (asset.options.max_supply /
-                          Math.pow(10, asset.precision))
-                          | number(2)
-                      }}
+                      {{ (asset.options.max_supply / Math.pow(10, asset.precision)) | number(2) }}
                     </td>
                     <th>{{ $t('asset.current_supply') }}</th>
                     <td>
-                      {{
-                        (asset.detail.current_supply /
-                          Math.pow(10, asset.precision))
-                          | number(2)
-                      }}
-                      <router-link
-                        to="/account/gxb-foundation"
-                        v-if="
-                          asset.id == '1.3.1' &&
-                            network.chainId ==
-                              '4f7d07969c446f8342033acb3ab2ae5044cbe0fde93db02de75bd17fa8fd84b8'
-                        "
-                        class="fa fa-question-circle"
-                        data-toggle="tooltip"
-                        :title="$t('asset.gxc')"
-                      >
-                      </router-link>
+                      {{ (asset.detail.current_supply / Math.pow(10, asset.precision)) | number(2) }}
+                      <router-link to="/account/gxb-foundation" v-if="asset.id == '1.3.1' && network.chainId == '4f7d07969c446f8342033acb3ab2ae5044cbe0fde93db02de75bd17fa8fd84b8'" class="fa fa-question-circle" data-toggle="tooltip" :title="$t('asset.gxc')"> </router-link>
                     </td>
                   </tr>
                 </tbody>
@@ -64,15 +40,8 @@
             </div>
           </div>
         </div>
-        <div
-          class="panel panel-default panel-ranking"
-          v-if="rankings && rankings.length > 0"
-        >
-          <div class="panel-heading">
-            <span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{
-              $t('index.ranking.title')
-            }}
-          </div>
+        <div class="panel panel-default panel-ranking" v-if="rankings && rankings.length > 0">
+          <div class="panel-heading"><span class="fa fa-fw gxicon gxicon-rank"></span>&nbsp;{{ $t('index.ranking.title') }}</div>
           <div class="pabel-body table-responsive no-padding">
             <table class="table table-striped">
               <thead>
@@ -93,11 +62,7 @@
                 <tr v-for="(item, i) in rankings">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <account-image
-                      :size="8"
-                      :account="item.accountName"
-                      :type="item.accountType"
-                    ></account-image>
+                    <account-image :size="8" :account="item.accountName" :type="item.accountType"></account-image>
                     &nbsp;
                     <router-link :to="{ path: '/account/' + item.accountName }">
                       {{ item.accountName }}
@@ -157,18 +122,12 @@ export default {
       setKeywords: 'setKeywords'
     }),
     loadData() {
-      if (
-        !/^1.3.\d+$/.test(this.keywords) &&
-        !(
-          this.keywords.charCodeAt(0) <= 'Z'.charCodeAt(0) &&
-          this.keywords.charCodeAt(0) >= 'A'.charCodeAt(0)
-        )
-      ) {
+      if (!/^1.3.\d+$/.test(this.keywords) && !/^[a-z]+$/i.test(this.keywords)) {
         this.loading = false;
         return;
       }
 
-      this.$http.get(`/api/asset/${this.keywords.toUpperCase()}`).then(resp => {
+      this.$http.get(`/api/asset/${this.keywords.toUpperCase()}`).then((resp) => {
         let asset = resp.body;
         this.asset = asset;
         this.loading = false;
@@ -185,19 +144,18 @@ export default {
             pageSize: pageSize
           }
         })
-        .then(resp => {
+        .then((resp) => {
           this.page = page;
           let assetInfo = this.asset;
           if (!assetInfo || !assetInfo.id) return;
 
-          let currentSupply =
-            assetInfo.detail.current_supply / Math.pow(10, assetInfo.precision);
+          let currentSupply = assetInfo.detail.current_supply / Math.pow(10, assetInfo.precision);
           if (!resp.body || resp.body.length < pageSize) {
             this.hasMore = false;
           }
           this.rankings = this.rankings.slice(0, (page - 1) * pageSize);
           this.rankings = this.rankings.concat(
-            resp.body.map(item => {
+            resp.body.map((item) => {
               if (item.accountName === 'jwj168') {
                 debugger; // eslint-disable-line
               }
@@ -205,23 +163,14 @@ export default {
                 accountName: item.accountName,
                 accountType: item.accountType || 1,
                 amount: filters.number(item.amount, assetInfo.precision),
-                freezeAmount: filters.number(
-                  item.freezeAmount,
-                  assetInfo.precision
-                ),
-                totalAmount: filters.number(
-                  item.totalAmount,
-                  assetInfo.precision
-                ),
-                percent: filters.number(
-                  (item.amount + item.freezeAmount) / currentSupply,
-                  assetInfo.precision
-                )
+                freezeAmount: filters.number(item.freezeAmount, assetInfo.precision),
+                totalAmount: filters.number(item.totalAmount, assetInfo.precision),
+                percent: filters.number((item.amount + item.freezeAmount) / currentSupply, assetInfo.precision)
               };
             })
           );
         })
-        .catch(ex => {
+        .catch((ex) => {
           console.error(ex);
         });
     }
