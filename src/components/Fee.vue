@@ -12,7 +12,6 @@ tbody tr td {
     <Loading v-show="loading" />
     <div class="row" v-show="!loading">
       <div class="col-md-12">
-        <hr />
         <div class="alert alert-info" role="alert">
           <button
             type="button"
@@ -27,7 +26,7 @@ tbody tr td {
           </p>
         </div>
         <div class="panel-body no-padding table-responsive">
-          <template v-for="(item_g, index_g) in fee_grouping">
+          <div :key="index_g" v-for="(item_g, index_g) in fee_grouping">
             <blockquote>
               <p>{{ $t('fee.feeGroups.' + index_g) }}</p>
             </blockquote>
@@ -39,8 +38,8 @@ tbody tr td {
                   <td class="text-right">{{ $t('fee.title.fee') }}(GXC)</td>
                   <td class="text-right">{{ $t('fee.title.feeltm') }}(GXC)</td>
                 </tr>
-                <template v-for="(item, index) in get_data(index_g)">
-                  <tr v-for="(item2, index2) in item">
+                <template v-for="item in get_data(index_g)">
+                  <tr :key="`item_${index2}`" v-for="(item2, index2) in item">
                     <td
                       v-if="index2 == 0"
                       :rowspan="item.length"
@@ -66,7 +65,7 @@ tbody tr td {
               </tbody>
             </table>
             <hr />
-          </template>
+          </div>
         </div>
       </div>
     </div>

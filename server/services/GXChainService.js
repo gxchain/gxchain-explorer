@@ -400,7 +400,7 @@ const fetch_candidates = function() {
           };
         });
         candidates = candidates.filter(c => {
-          return filtered_nodes.indexOf(c.account) === -1;
+          return filtered_nodes.indexOf(c.account) === -1 && c.margin > 0;
         });
         let promises = candidates.map(c => {
           return Apis.instance()

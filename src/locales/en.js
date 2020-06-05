@@ -14,6 +14,7 @@ const locale = {
     home: 'Home',
     login: 'Login',
     fee: 'Network Fees',
+    params: 'Global params',
     tools: 'Tools',
     node_members: 'Node Members',
     transactions: 'Recent Transactions',
@@ -694,6 +695,55 @@ const locale = {
     assets: 'Assets:',
     asset_info: 'Asset Info:',
     candidates: 'TrustNode Candidates:'
+  },
+  params: {
+    mark: 'In the GXChain network，there are a bunch of global params managed by committee members, which enables on-chain governance',
+    titles: {
+      params: 'Basic Chain Params',
+      staking_items: 'Staking options',
+      staking_params: 'Chain Params of Staking',
+      key: 'Key',
+      value: 'Value',
+      desc: 'Description'
+    },
+    params: {
+      block_interval: 'interval in seconds between blocks',
+      maintenance_interval: 'interval in sections between blockchain maintenance events',
+      maintenance_skip_slots: 'number of block_intervals to skip at maintenance time',
+      committee_proposal_review_period: 'minimum time in seconds that a proposed transaction requiring committee authority may not be signed, prior to expiration',
+      maximum_transaction_size: 'maximum allowable size in bytes for a transaction',
+      maximum_block_size: 'maximum allowable size in bytes for a block',
+      maximum_time_until_expiration: 'maximum lifetime in seconds for transactions to be valid, before expiring',
+      maximum_proposal_lifetime: 'maximum lifetime in seconds for proposed transactions to be kept, before expiring',
+      maximum_witness_count: 'maximum number of active witnesses',
+      maximum_committee_count: 'maximum number of active committee_members',
+      maximum_authority_membership: 'largest number of keys/accounts an authority can have',
+      network_percent_of_fee: 'the percentage of the network\'s allocation of a fee that is taken out of circulation',
+      lifetime_referrer_percent_of_fee: 'percent of transaction fees paid to referrer',
+      cashback_vesting_period_seconds: 'time after cashback rewards are accrued before they become liquid',
+      cashback_vesting_threshold: 'the maximum cashback that can be received without vesting',
+      count_non_member_votes: 'set to false to restrict voting privlegages to member accounts',
+      witness_pay_per_block: 'CORE to be allocated to witnesses (per block)',
+      accounts_per_fee_scale: 'number of accounts between fee scalings',
+      account_fee_scale_bitshifts: 'number of times to left bitshift account registration fee at each scaling',
+      max_authority_depth: 'max signature check depth',
+      staking: {
+        id: 'staking id',
+        staking_days: 'staking days',
+        weight: 'weight',
+        is_valid: 'valid flag'
+      },
+      staking_params: {
+        staking_mode_on: 'set to true to set staking mode on',
+        set_commission_interval: 'the time interval that witness node can reset commission rate',
+        staking_rewards_vesting_seconds: 'vesting seconds for staking reward',
+        missed_block_limit: 'the max number of blocks that a node could miss in one maintenance period',
+        max_staking_count: 'the max number of stakings that an account could create',
+        witness_reward_proportion: 'the percentage of witness_pay_per_block that will be rewarded to stakers',
+        valid_nodes_number: 'the max number of available witnesses that will receive staking reward',
+        min_staking_amount: 'the min amount to stake'
+      }
+    }
   },
   fee: {
     mark:

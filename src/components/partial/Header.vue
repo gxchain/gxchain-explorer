@@ -46,6 +46,9 @@
               <a href="/#/fee">{{ $t('header.fee') }}</a>
             </li>
             <li>
+              <a href="/#/params">{{ $t('header.params') }}</a>
+            </li>
+            <li>
               <a href="/#/node_members">{{ $t('header.node_members') }}</a>
             </li>
             <li>

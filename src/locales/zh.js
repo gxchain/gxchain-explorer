@@ -14,6 +14,7 @@ const locale = {
     login: 'GXC Wallet登录',
     tools: '工具',
     fee: '网络费率',
+    params: '链上参数',
     node_members: '节点成员',
     transactions: '最近交易',
     profile: '账户资料',
@@ -691,6 +692,55 @@ const locale = {
     assets: '资产列表:',
     asset_info: '资产信息:',
     candidates: '候选公信节点:'
+  },
+  params: {
+    mark: '在GXChain网络中，维护了一些可以投票变更的全局参数，这些参数可以通过理事会成员投票变更，从而达到网络治理的目的',
+    titles: {
+      params: '基本参数',
+      staking_items: '质押选项',
+      staking_params: '质押相关参数',
+      key: '参数',
+      value: '值',
+      desc: '描述'
+    },
+    params: {
+      block_interval: '出块间隔(秒)',
+      maintenance_interval: '维护周期间隔(秒)',
+      maintenance_skip_slots: '维护周期跳过出块次数',
+      committee_proposal_review_period: '理事会提案公示时间(秒)',
+      maximum_transaction_size: '交易大小上限(字节)',
+      maximum_block_size: '区块大小上限(字节)',
+      maximum_time_until_expiration: '交易过期时间(秒)',
+      maximum_proposal_lifetime: '提案操作最长过期时间(秒)',
+      maximum_witness_count: '出块节点数量上限',
+      maximum_committee_count: '理事会成员数量上限',
+      maximum_authority_membership: '多签权限拆分上限',
+      network_percent_of_fee: '分配给网络的交易手续费百分比（1000 = 10.00%）',
+      lifetime_referrer_percent_of_fee: '默认分配给推荐人的交易手续费百分比（1000 = 10.00%）',
+      cashback_vesting_period_seconds: '返现冻结时间（秒）',
+      cashback_vesting_threshold: '手续费是否需要冻结返还的阈值',
+      count_non_member_votes: '是否计算非会员账户的投票',
+      witness_pay_per_block: '每个区块奖励',
+      accounts_per_fee_scale: '手续费增长间隔账户数',
+      account_fee_scale_bitshifts: '账户注册手续费增长系数',
+      max_authority_depth: '多签账户权限检测深度'
+    },
+    staking_items: {
+      id: 'id',
+      staking_days: '锁仓天数',
+      weight: '权重',
+      is_valid: '是否启用'
+    },
+    staking_params: {
+      staking_mode_on: '是否启用staking计票模式',
+      set_commission_interval: '节点设置分成比例时间间隔',
+      staking_rewards_vesting_seconds: 'staking奖励线性锁仓时间（秒）',
+      missed_block_limit: '丢块阈值，一个维护周期（1小时）内丢块超过阈值的节点将失去出块资格，并且无法获取到相应奖励',
+      max_staking_count: '每隔账户创建staking上限',
+      witness_reward_proportion: '出块奖励中投票奖励占比',
+      valid_nodes_number: '可以得到投票奖励的节点数',
+      min_staking_amount: '最少staking数量限制'
+    }
   },
   fee: {
     mark: '在GXChain系统中，每一种操作都将花费相应手续费。手续费率可能发生变化。然而，手续费的调整需要获得股东的授权。所以每一位持有GXChain核心资产的股东对费率的构成都有话语权。如果股东确信某种手续费的降低将带来好处，并且达成共识，那么该种手续费则由区块链自动进行调低。区块链参数的改变由理事会成员提出动议。这些成员由全体股东投票选举产生，以提高系统灵活性和响应率。',

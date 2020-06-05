@@ -7,6 +7,7 @@ import Account from '@/components/Account';
 import Asset from '@/components/Asset';
 import connect from '@/common/connect';
 import Fee from '@/components/Fee';
+import Params from '@/components/Params';
 import Node_Members from '@/components/Node_Members';
 import Tools_Index from '@/components/tools/Index';
 import Tools_BulkTransfer from '@/components/tools/BulkTransfer';
@@ -43,9 +44,14 @@ const router = new Router({
       component: Asset
     },
     {
-      path: '/fee/',
+      path: '/fee',
       name: 'Fee',
       component: Fee
+    },
+    {
+      path: '/params',
+      name: 'Params',
+      component: Params
     },
     {
       path: '/node_members/',
