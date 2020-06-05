@@ -726,23 +726,23 @@ const locale = {
       witness_pay_per_block: 'CORE to be allocated to witnesses (per block)',
       accounts_per_fee_scale: 'number of accounts between fee scalings',
       account_fee_scale_bitshifts: 'number of times to left bitshift account registration fee at each scaling',
-      max_authority_depth: 'max signature check depth',
-      staking_items: {
-        id: 'staking id',
-        staking_days: 'staking days',
-        weight: 'weight',
-        is_valid: 'valid flag'
-      },
-      staking_params: {
-        staking_mode_on: 'set to true to set staking mode on',
-        set_commission_interval: 'the time interval that witness node can reset commission rate',
-        staking_rewards_vesting_seconds: 'vesting seconds for staking reward',
-        missed_block_limit: 'the max number of blocks that a node could miss in one maintenance period',
-        max_staking_count: 'the max number of stakings that an account could create',
-        witness_reward_proportion: 'the percentage of witness_pay_per_block that will be rewarded to stakers',
-        valid_nodes_number: 'the max number of available witnesses that will receive staking reward',
-        min_staking_amount: 'the min amount to stake'
-      }
+      max_authority_depth: 'max signature check depth'
+    },
+    staking_items: {
+      id: 'staking id',
+      staking_days: 'staking days',
+      weight: 'weight',
+      is_valid: 'valid flag'
+    },
+    staking_params: {
+      staking_mode_on: 'set to true to set staking mode on',
+      set_commission_interval: 'the time interval that witness node can reset commission rate',
+      staking_rewards_vesting_seconds: 'vesting seconds for staking reward',
+      missed_block_limit: 'the max number of blocks that a node could miss in one maintenance period',
+      max_staking_count: 'the max number of stakings that an account could create',
+      witness_reward_proportion: 'the percentage of witness_pay_per_block that will be rewarded to stakers',
+      valid_nodes_number: 'the max number of available witnesses that will receive staking reward',
+      min_staking_amount: 'the min amount to stake'
     }
   },
   fee: {
