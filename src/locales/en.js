@@ -727,7 +727,7 @@ const locale = {
       accounts_per_fee_scale: 'number of accounts between fee scalings',
       account_fee_scale_bitshifts: 'number of times to left bitshift account registration fee at each scaling',
       max_authority_depth: 'max signature check depth',
-      staking: {
+      staking_items: {
         id: 'staking id',
         staking_days: 'staking days',
         weight: 'weight',
