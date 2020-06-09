@@ -736,7 +736,7 @@ const locale = {
       set_commission_interval: '节点设置分成比例时间间隔',
       staking_rewards_vesting_seconds: 'staking奖励线性锁仓时间（秒）',
       missed_block_limit: '丢块阈值，一个维护周期（1小时）内丢块超过阈值的节点将失去出块资格，并且无法获取到相应奖励',
-      max_staking_count: '每隔账户创建staking上限',
+      max_staking_count: '每个账户创建staking上限',
       witness_reward_proportion: '出块奖励中投票奖励占比',
       valid_nodes_number: '可以得到投票奖励的节点数',
       min_staking_amount: '最少staking数量限制'
