@@ -18,7 +18,7 @@ router.get('/supply', function(req, res) {
   GXChainService.gxc_supply().then(function(gxc) {
     res.send({
       total_supply: gxc.current_supply / 100000,
-      circulating_supply: 65000000
+      circulating_supply: 70000000
     })
   })
 })
