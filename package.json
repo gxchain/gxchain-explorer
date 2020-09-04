@@ -49,7 +49,7 @@
     "js-sha256": "^0.9.0",
     "level": "^4.0.0",
     "morgan": "^1.9.1",
-    "papaparse": "^5.0.2",
+    "papaparse": "^5.2.0",
     "prismjs": "^1.21.0",
     "superagent": "^4.0.0",
     "vue": "^2.3.3",
