@@ -469,6 +469,7 @@ const locale = {
         sender_contract: 'Account',
         contract_name: 'Contract Name',
         method_name: 'Method Name',
+        data: 'Parameters',
         params: 'Parameters',
         fee: 'Fee',
         amount: 'Sending Assets'
@@ -718,7 +719,7 @@ const locale = {
       maximum_witness_count: 'maximum number of active witnesses',
       maximum_committee_count: 'maximum number of active committee_members',
       maximum_authority_membership: 'largest number of keys/accounts an authority can have',
-      network_percent_of_fee: 'the percentage of the network\'s allocation of a fee that is taken out of circulation',
+      network_percent_of_fee: "the percentage of the network's allocation of a fee that is taken out of circulation",
       lifetime_referrer_percent_of_fee: 'percent of transaction fees paid to referrer',
       cashback_vesting_period_seconds: 'time after cashback rewards are accrued before they become liquid',
       cashback_vesting_threshold: 'the maximum cashback that can be received without vesting',

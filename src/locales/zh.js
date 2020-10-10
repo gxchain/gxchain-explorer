@@ -468,6 +468,7 @@ const locale = {
         contract_name: '接受合约',
         method_name: '方法名',
         data: '参数',
+        params: '参数',
         fee: '手续费',
         amount: '发送资产'
       },
