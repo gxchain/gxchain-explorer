@@ -3,12 +3,7 @@
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title">{{ $t('contract.title') }}</h4>
@@ -19,45 +14,19 @@
           <h3 v-if="payable" class="page-header">
             {{ $t('contract.payable_asset') }}
           </h3>
-          <amount-asset
-            v-if="payable"
-            :assets="assets"
-            @assetChanged="assetChanged"
-          ></amount-asset>
+          <amount-asset v-if="payable" :assets="assets" @assetChanged="assetChanged"></amount-asset>
           <h3 class="page-header" v-if="fields.length > 0">
             {{ $t('contract.params') }}
           </h3>
           <form @submit="submit">
-            <div
-              :class="{
-                'form-group': f.type != 'bool',
-                checkbox: f.type == 'bool'
-              }"
-              v-for="(f, index) in fields"
-            >
+            <div :key="index" :class="{ 'form-group': f.type != 'bool', checkbox: f.type == 'bool' }" v-for="(f, index) in fields">
               <label v-if="f.type != 'bool'">{{ f.name }}</label>
-              <input
-                v-if="f.type != 'bool' && f.type != 'contract_asset'"
-                type="text"
-                class="form-control"
-                v-model="f.value"
-              />
-              <label v-if="f.type == 'bool'">
-                <input type="checkbox" /> {{ f.name }}
-              </label>
-              <amount-asset
-                v-if="f.type == 'contract_asset'"
-                :assets="assets"
-                @assetChanged="a => fieldAssetChanged(f, a)"
-              >
-              </amount-asset>
+              <input v-if="f.type != 'bool' && f.type != 'contract_asset'" type="text" class="form-control" v-model="f.value" />
+              <label v-if="f.type == 'bool'"> <input type="checkbox" /> {{ f.name }} </label>
+              <amount-asset v-if="f.type == 'contract_asset'" :assets="assets" @assetChanged="(a) => fieldAssetChanged(f, a)"> </amount-asset>
             </div>
             <hr />
-            <button
-              type="submit"
-              :class="{ disabled: submitting }"
-              class="btn btn-default"
-            >
+            <button type="submit" :class="{ disabled: submitting }" class="btn btn-default">
               {{ submitting ? 'Submitting...' : 'Submit' }}
             </button>
           </form>
@@ -95,7 +64,7 @@ export default {
     };
   },
   mounted() {
-    this.$http.get('/api/assets').then(resp => {
+    this.$http.get('/api/assets').then((resp) => {
       this.assets = resp.body;
     });
   },
@@ -109,26 +78,24 @@ export default {
       e.preventDefault();
       this.submitting = true;
       let params = {};
-      this.fields.forEach(f => {
-        params[f.name] = f.value;
+      this.fields.forEach((f) => {
+        if (f.type.indexOf('[]') > -1) {
+          params[f.name] = JSON.parse(f.value);
+        } else {
+          params[f.name] = f.value;
+        }
       });
       let assetAmount = '';
       if (this.payable) {
         assetAmount = `${this.asset.amount} ${this.asset.symbol}`;
       }
       this.gxc
-        .callContract(
-          this.contract,
-          this.method,
-          params,
-          this.payable ? assetAmount : '',
-          true
-        )
-        .then(resp => {
+        .callContract(this.contract, this.method, params, this.payable ? assetAmount : '', true)
+        .then((resp) => {
           this.result = JSON.stringify(resp, null, '  ');
           this.submitting = false;
         })
-        .catch(ex => {
+        .catch((ex) => {
           this.result = JSON.stringify(ex, null, '  ');
           this.submitting = false;
         });
