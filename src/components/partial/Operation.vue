@@ -2051,7 +2051,7 @@
           return this.op[1][key];
         },
         formatted_asset(asset_id, amount) {
-          return filters.number((amount / Math.pow(10,this.assetList[asset_id].precision)).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
+          return filters.number((amount / Math.pow(10, this.assetList[asset_id].precision)).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
         },
         formatted_params(contract, method, data) {
           if (this.items[`${contract}_${method}_${data}`]) {

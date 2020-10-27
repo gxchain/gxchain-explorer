@@ -57,7 +57,7 @@
           </div>
         </div>
         <div class="col-md-7">
-          <Chart ref="sta" style="width: 100%; height: 250px;" :options="statistics" theme="light" auto-resize> </Chart>
+          <Chart ref="sta" style="width: 100%; height: 250px" :options="statistics" theme="light" auto-resize> </Chart>
         </div>
       </div>
 

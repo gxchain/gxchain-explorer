@@ -105,6 +105,9 @@ export default {
               item[1].request_params.amount = item[1].request_params.amount_;
             }
           }
+          if (item[1].hasOwnProperty('asset_to_issue') && item[1].asset_to_issue.hasOwnProperty('amount_str')) {
+            item[1].asset_to_issue.amount = item[1].asset_to_issue.amount_str;
+          }
           item['block_id'] = respList[i].block_data.block_num;
           item['timestamp'] = new Date(respList[i].block_data.block_time + 'Z').format('yyyy-MM-dd hh:mm:ss');
           list.push(item);

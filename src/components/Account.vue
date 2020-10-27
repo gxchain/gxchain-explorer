@@ -13,7 +13,7 @@
 
               <a v-else class="pull-right" :href="'https://testnet.wallet.gxchain.org/#/account/' + account_info.name + '/overview'" target="_blank">{{ $t('account.basic.more') }}</a>
             </div>
-            <div class="panel-body no-padding  panel-contract-info">
+            <div class="panel-body no-padding panel-contract-info">
               <div class="table-responsive">
                 <table class="table table-striped no-margin">
                   <tbody>
@@ -192,7 +192,7 @@
               </ul>
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane" :class="{ active: abi.type == 'action' }">
-                  <div class="table-responsive no-padding no-margin" style="border:none">
+                  <div class="table-responsive no-padding no-margin" style="border: none">
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -356,9 +356,7 @@
             <div class="panel-heading">
               <span class="fa fa-fw fa-wallet"></span>&nbsp;{{ $t('account.staking.Income_received') }}
               <div class="pull-right">
-                <label class="staking-filter-title">
-                  <input type="checkbox" v-model="filter_check" @click="handleCheck"> {{ $t('account.staking.filter_record') }}
-                </label>
+                <label class="staking-filter-title"> <input type="checkbox" v-model="filter_check" @click="handleCheck" /> {{ $t('account.staking.filter_record') }} </label>
               </div>
             </div>
             <div class="panel-body no-padding">
@@ -504,7 +502,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { ChainStore } from 'gxbjs';
 import { Apis } from 'gxbjs-ws';
 import filters from '@/filters';
-import {accAdd, accDiv, accMult} from '../common/util';
+import { accAdd, accDiv, accMult } from '../common/util';
 import { calc_block_time, fetch_witness_account, fetch_account } from '@/services/CommonService';
 import HistoryOp from './partial/HistoryOp.vue';
 import modalHistory from '@/components/modals/modal-history.vue';
@@ -671,14 +669,7 @@ export default {
         return;
       }
       this.trustNodeInfoLoading = true;
-      Promise.all([
-        Apis.instance()
-          .db_api()
-          .exec('get_witness_by_account', [id]),
-        Apis.instance()
-          .db_api()
-          .exec('get_committee_member_by_account', [id])
-      ]).then((results) => {
+      Promise.all([Apis.instance().db_api().exec('get_witness_by_account', [id]), Apis.instance().db_api().exec('get_committee_member_by_account', [id])]).then((results) => {
         this.isTrustNode = results[0] && results[1];
         if (this.isTrustNode) {
           this.witness_id = results[0].id;
@@ -693,7 +684,7 @@ export default {
         .exec('get_staking_objects', [id])
         .then((resp) => {
           this.stakings = resp;
-          this.getStakingAmount(this.stakings)
+          this.getStakingAmount(this.stakings);
           this.stakings_loading = false;
         })
         .catch((ex) => {
@@ -719,9 +710,9 @@ export default {
         .then((resp) => {
           let res = resp;
           if (this.filter_check) {
-            res = res.filter(item => {
+            res = res.filter((item) => {
               return item.balance.amount !== 0;
-            })
+            });
           }
           this.vestBalance = res;
           this.vestBalance_loading = false;
@@ -767,7 +758,7 @@ export default {
         }
         let vestingPeriod = vb.policy[1].vesting_seconds;
         let availablePercent = vestingPeriod === 0 ? 1 : accDiv(earned, accMult(vb.balance.amount, vestingPeriod));
-        let res = vestingPeriod * (1 - availablePercent) / this.secondsPerDay;
+        let res = (vestingPeriod * (1 - availablePercent)) / this.secondsPerDay;
         return filters.number(res, 2);
       } else {
         return 0;
@@ -780,7 +771,7 @@ export default {
       if (Number(earned) === 0) {
         return 0;
       }
-      return filters.number(availablePercent * 100, 2) + '% / ' + Math.round(availablePercent * vb.balance.amount / 100000 * 100000, 5) / 100000;
+      return filters.number(availablePercent * 100, 2) + '% / ' + Math.round(((availablePercent * vb.balance.amount) / 100000) * 100000, 5) / 100000;
     },
     loadAwardedStakings() {
       this.awarded_stakings.loading = true;
@@ -857,7 +848,7 @@ export default {
         for (let i = 0; i < ids.length; i++) {
           let obj = {
             symbol: this.assetList[ids[i]].symbol,
-            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / Math.pow(10,this.assetList[ids[i]].precision)).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
+            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / Math.pow(10, this.assetList[ids[i]].precision)).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
           };
           this.account_info.balances[ids[i]] = obj;
         }
@@ -868,9 +859,7 @@ export default {
           this.account_info.history[i].op.block_id = this.account_info.history[i].block_num;
 
           if (ChainStore.getObject('2.0.0') && ChainStore.getObject('2.1.0')) {
-            let block_interval = ChainStore.getObject('2.0.0')
-              .get('parameters')
-              .get('block_interval');
+            let block_interval = ChainStore.getObject('2.0.0').get('parameters').get('block_interval');
             let head_block_number = ChainStore.getObject('2.1.0').get('head_block_number');
             let head_block_time = new Date(ChainStore.getObject('2.1.0').get('time') + '+00:00');
             this.account_info.history[i].op.timestamp = calc_block_time(this.account_info.history[i].block_num, block_interval, head_block_number, head_block_time);
@@ -1024,7 +1013,7 @@ export default {
 }
 
 .staking-filter-title {
-  font-size: .5rem;
+  font-size: 0.5rem;
   color: #666;
 }
 .overflow-wrap {

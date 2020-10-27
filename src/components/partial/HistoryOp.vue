@@ -1148,7 +1148,8 @@ export default {
       return this.account[id];
     },
     formatted_asset(asset_id, amount) {
-      return filters.number((amount / Math.pow(10,this.assetList[asset_id].precision)).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
+      console.log(asset_id, amount, (amount / Math.pow(10, this.assetList[asset_id].precision)));
+      return filters.number((amount / Math.pow(10, this.assetList[asset_id].precision)).toFixed(this.assetList[asset_id].precision), this.assetList[asset_id].precision) + ' ' + this.assetList[asset_id].symbol;
     },
     formatted_params(contract, method, data) {
       if (this.items[`${contract}_${method}_${data}`]) {
@@ -1186,10 +1187,10 @@ export default {
 .params:hover {
   text-decoration: none;
 }
-.no-border{
-    border:none;
+.no-border {
+  border: none;
 }
-.no-margin{
-    margin:0
+.no-margin {
+  margin: 0;
 }
 </style>
