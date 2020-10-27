@@ -857,7 +857,7 @@ export default {
         for (let i = 0; i < ids.length; i++) {
           let obj = {
             symbol: this.assetList[ids[i]].symbol,
-            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / 100000).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
+            amount: filters.number(((ChainStore.getObject(this.account_info.balances[ids[i]]).get('balance') || 0) / Math.pow(10,this.assetList[ids[i]].precision)).toFixed(this.assetList[ids[i]].precision), this.assetList[ids[i]].precision)
           };
           this.account_info.balances[ids[i]] = obj;
         }
