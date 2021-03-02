@@ -137,6 +137,8 @@ router.get('/account/:account_id_or_name', function(req, res) {
 router.get('/account_history/:account_id_or_name', function(req, res) {
   GXChainService.fetch_account_history(
     req.params.account_id_or_name,
+    req.query.asset_id,
+    req.query.operation_type,
     req.query.pageNo || 1,
     req.query.pageSize || 10
   )

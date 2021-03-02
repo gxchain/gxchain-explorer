@@ -31,25 +31,40 @@ const fetch_full_account = account => {
  * @param id_or_name
  * @returns {bluebird}
  */
-const fetch_account_history = (id_or_name, pageNo, pageSize) => {
+const fetch_account_history = (id_or_name, asset_id, operation_type, pageNo, pageSize) => {
   console.log(JSON.parse(config.build.env.ES_PLUGIN));
   return new Promise(function(resolve, reject) {
     if (id_or_name.indexOf('.') === -1) {
       fetch_account(id_or_name)
         .then(account => {
+            let param = [
+                {
+                  term: {
+                    'account_history.account': account.id
+                  }
+                }
+              ]
+              if(asset_id) {
+                param.push({
+                    term: {
+                        'operation_history.op_object.amount_.asset_id': asset_id
+                    }
+                })
+              }
+              if(operation_type) {
+                param.push({
+                    term: {
+                        'operation_type': operation_type
+                    }
+                })
+              }
           superagent
             .post(JSON.parse(config.build.env.ES_PLUGIN))
             .set('Content-Type', 'application/json')
             .send({
               query: {
                 bool: {
-                  must: [
-                    {
-                      term: {
-                        'account_history.account': account.id
-                      }
-                    }
-                  ]
+                  must: param
                 }
               },
               from: (pageNo - 1) * pageSize,
