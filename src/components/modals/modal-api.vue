@@ -53,8 +53,8 @@ export default {
         },
         {
           name: this.$t('api.query_account_history'),
-          api: '/api/account/:id_or_name?pageNo=:pageNo&pageSize=:pageSize',
-          example: `http://${location.host}/api/account_history/paul?pageNo=1&pageSize=10`
+          api: '/api/account_history/:id_or_name?pageNo=:pageNo&pageSize=:pageSize&asset_id=:asset_id&operation_type=:operation_type',
+          example: `http://${location.host}/api/account_history/paul?pageNo=1&pageSize=10&asset_id=1.3.1&operation_type=0`
         },
         {
           name: this.$t('api.query_account_balance'),
