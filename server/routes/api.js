@@ -19,9 +19,9 @@ router.get('/supply', function(req, res) {
   GXChainService.gxc_supply().then(function(gxc) {
     if (req.query.type === 'total') {
       let total_supply = gxc.current_supply / 100000;
-      res.send(total_supply);
+      res.send(String(total_supply));
     } else if (req.query.type === 'circulating') {
-      res.send(circulatingSupply);
+      res.send(String(circulatingSupply));
     } else {
       res.send({
         total_supply: gxc.current_supply / 100000,
