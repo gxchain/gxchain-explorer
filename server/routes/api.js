@@ -17,10 +17,10 @@ let router = express.Router();
 router.get('/supply', function(req, res) {
   const circulatingSupply = 75000000;
   GXChainService.gxc_supply().then(function(gxc) {
-    if(req.query.type == 'total') {
+    if (req.query.type === 'total') {
       let total_supply = gxc.current_supply / 100000;
       res.send(total_supply);
-    } else if(req.query.type == 'circulating') {
+    } else if (req.query.type === 'circulating') {
       res.send(circulatingSupply);
     } else {
       res.send({
