@@ -394,7 +394,7 @@ const fetch_candidates = function() {
           .db_api()
           .exec('get_full_accounts', [nodes, false]),
         superagent.get(
-          'https://static.gxb.io/dapp/blockcity/nodevote/trustNode.json'
+          'https://www.gxchain.org/getUrl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgxchain%2FTrustNodes%2Fmaster%2FtrustNodes.json'
         )
       ]).then(results => {
         let accounts = results[0];
