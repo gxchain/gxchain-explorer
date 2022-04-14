@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/gxchain/gxb-explorer#readme",
   "dependencies": {
-    "async": "^2.5.0",
+    "async": "^3.2.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^3.4.1",
