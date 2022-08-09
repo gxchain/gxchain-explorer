@@ -75,43 +75,50 @@ router.get('/asset/:asset_name', function(req, res) {
  */
 router.get('/transaction/:tx_id', function(req, res) {
   let txid = req.params.tx_id.toLowerCase();
-  let STA_SERVICE = config.build.env.STA_SERVICE;
+  let STA_SERVICE = config.build.env.ES_PLUGIN;
   superagent
-    .get(`${JSON.parse(STA_SERVICE)}/blockInfo/getBlockNumByTxid`)
-    .query({
-      txid: txid
+    .post(`${JSON.parse(STA_SERVICE)}`)
+    .send({
+      query: {
+        bool: { must: [{ term: { 'block_data.trx_id': txid } }] }
+      }
     })
     .end((err, resp) => {
       if (err) {
         console.error('error when get block by txid', err);
         return res.send({});
       }
-      let blockInfo = JSON.parse(resp.text || '{}');
-      GXChainService.fetch_block(blockInfo.blockNum)
-        .then((block) => {
-          if (!block) {
-            console.log('block not found:', blockInfo.blockNum);
-            return res.send({});
-          }
-          let index = -1;
-          block.transaction_ids.forEach((id, i) => {
-            if (id === txid) {
-              index = i;
+      let resBody = JSON.parse(resp.text || '{}');
+      if (resBody.hits.total > 0) {
+        let blockNum = resBody.hits.hits[0]._source.block_data.block_num;
+        GXChainService.fetch_block(blockNum)
+          .then((block) => {
+            if (!block) {
+              console.log('block not found:', blockNum);
+              return res.send({});
             }
-          });
-          console.log('>>>', index);
-          if (index >= 0) {
-            let tx = block.transactions[index];
-            tx.current_block_number = blockInfo.blockNum;
-            res.send(block.transactions[index]);
-          } else {
+            let index = -1;
+            block.transaction_ids.forEach((id, i) => {
+              if (id === txid) {
+                index = i;
+              }
+            });
+            console.log('>>>', index);
+            if (index >= 0) {
+              let tx = block.transactions[index];
+              tx.current_block_number = blockNum;
+              res.send(block.transactions[index]);
+            } else {
+              res.send({});
+            }
+          })
+          .catch((ex) => {
+            console.error('error fetching block', ex);
             res.send({});
-          }
-        })
-        .catch((ex) => {
-          console.error('error fetching block', ex);
-          res.send({});
-        });
+          });
+      } else {
+        res.send({})
+      }
     });
 });
 
